@@ -7,7 +7,7 @@ const HomePage = async () => {
   const session = await auth();
 
   return (
-    <main className="w-full min-h-screen bg-cover bg-center" style={{ backgroundImage: 'url(/path/to/your/background-image.jpg)' }}>
+    <main className="w-full min-h-screen bg-cover bg-center">
       <div className="absolute inset-0 h-full w-full flex flex-col items-center gap-12 p-4 bg-white bg-opacity-70">
         <Navbar session={session} />
         <section className="flex flex-col justify-start items-center gap-8 text-center p-4">
