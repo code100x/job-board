@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:14
+    container_name: job_board_db
+    restart: always
+    environment:
+      POSTGRES_DB: job_board
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: iamsuperhandsome
+    ports:
+      - "5432:5432"
+    volumes:
+      - job_board_data:/var/lib/postgresql/data
+
+volumes:
+  job_board_data:
