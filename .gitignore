@@ -28,6 +28,7 @@ yarn.lock
 
 # local env files
 .env*.local
+.env
 
 # vercel
 .vercel
