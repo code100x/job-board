@@ -2,7 +2,7 @@
 
 import { auth } from "@/auth";
 import { SAPayload } from "@/types";
-import { NewJob } from "@/zod/user";
+import { NewJob } from "@/zod/job";
 import { prisma } from "@/lib/db";
 import { Currency } from "@prisma/client";
 
