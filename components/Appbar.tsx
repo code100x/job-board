@@ -4,7 +4,6 @@ import { Button } from "./ui/button";
 
 export const Appbar = () => {
   const session = useSession();
-  console.log('session', session)
   return (
     <div className="border-b py-2 px-4 flex justify-between items-center">
       <div className="text-4xl p-3 font-bold">100xJobs</div>
