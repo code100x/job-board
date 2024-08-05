@@ -21,6 +21,8 @@ model User {
   password      String?
   image         String?
   accounts      Account[]
+  jobs          Job[]
+  role          UserRole  @default(USER)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -63,4 +65,40 @@ model PasswordResetToken {
   expiresAt DateTime
 
   @@unique([email, token])
+}
+
+model Job {
+  id          String          @id @default(cuid())
+  title       String
+  description String
+  type        JobType
+  location    String
+  salaryRange String
+  experience  ExperienceLevel
+  companyName String
+  companyLogo String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum JobType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERNSHIP
+}
+
+enum ExperienceLevel {
+  ENTRY
+  MID
+  SENIOR
 }

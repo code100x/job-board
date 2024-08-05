@@ -29,7 +29,7 @@ export default function LoginForm() {
   const searchParams = useSearchParams();
   const urlError =
     searchParams.get("error") === "OAuthAccountNotLinked"
-      ? "Email already in use with different provider."
+      ? "Email already in use, try with different provider."
       : "";
 
   useEffect(() => {
