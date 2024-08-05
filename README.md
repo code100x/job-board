@@ -32,6 +32,8 @@ cd job-board
 docker-compose up
 ```
 
+- Access the Next.js project on `http://localhost:3000` and prisma studio on `http://localhost:5555`
+
 ### Without Docker
 
 - Clone the project
