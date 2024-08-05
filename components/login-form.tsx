@@ -56,9 +56,6 @@ export default function LoginForm() {
       if (result) {
         setSuccess(result.success);
         setMessage(result.message);
-      } else {
-        setSuccess(false);
-        setMessage("An unexpected error occurred.");
       }
     });
   }
