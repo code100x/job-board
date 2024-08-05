@@ -1,7 +1,13 @@
 import JobCard from "@/components/JobCard";
 import Sidebar from "@/components/Sidebar";
+import { prisma } from "@/lib/db";
+import { cn } from "@/lib/utils";
 
-const JobsPage = () => {
+const JobsPage = async () => {
+  const allJobs = await prisma.job.findMany({
+    where: {},
+  });
+
   return (
     <section className="relative w-full h-fit flex gap-2 flex-grow p-2">
       <Sidebar />
@@ -14,10 +20,24 @@ const JobsPage = () => {
             Amplify Your Career: Where Top Developers Meet 100x Opportunities
           </p>
         </div>
-        <div className="jobs flex flex-col max-h-[420px] gap-3 overflow-y-scroll">
-          <JobCard />
-          <JobCard />
-          <JobCard />
+        <div
+          className={cn(
+            "jobs flex flex-col max-h-[420px] gap-3 overflow-y-scroll",
+            {
+              "h-[420px] flex justify-center items-center":
+                allJobs.length === 0,
+            }
+          )}
+        >
+          {allJobs &&
+            allJobs.map((job) => {
+              return <JobCard key={job.id} job={job} />;
+            })}
+          {allJobs.length === 0 ? (
+            <h3 className="text-2xl font-semibold text-gray-800">
+              No Jobs Found!
+            </h3>
+          ) : null}
         </div>
       </section>
     </section>

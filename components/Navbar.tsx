@@ -4,7 +4,8 @@ import { Button } from "./ui/button";
 import { logOutUser } from "@/actions/user";
 import { Session } from "next-auth";
 import { toast } from "./ui/use-toast";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 type NavbarProps = {
   session: Session | null;
@@ -12,6 +13,18 @@ type NavbarProps = {
 
 const Navbar = ({ session }: NavbarProps) => {
   const router = useRouter();
+  const pathName = usePathname();
+
+  const navItems = [
+    {
+      name: "Home",
+      route: "/",
+    },
+    {
+      name: "Explore",
+      route: "/jobs",
+    },
+  ];
 
   const handleSignOut = async () => {
     const response = await logOutUser();
@@ -38,17 +51,28 @@ const Navbar = ({ session }: NavbarProps) => {
         </h3>
 
         <div className="flex justify-center items-center gap-5 text-gray-500 font-semibold tracking-tighter">
-          <Link href="/">
-            <p className="cursor-pointer hover:text-gray-900">Home</p>
-          </Link>
-
-          <Link href="/jobs">
-            <p className="cursor-pointer hover:text-gray-900">Explore</p>
-          </Link>
-
+          {navItems.map((item) => {
+            return (
+              <Link key={item.name} href={item.route}>
+                <p
+                  className={cn("cursor-pointer hover:text-gray-900", {
+                    "text-gray-900": pathName === item.route,
+                  })}
+                >
+                  {item.name}
+                </p>
+              </Link>
+            );
+          })}
           {userRole === "ADMIN" ? (
             <Link href="/jobs/manage">
-              <p className="cursor-pointer hover:text-gray-900">Manage</p>
+              <p
+                className={cn("cursor-pointer hover:text-gray-900", {
+                  "text-gray-900": pathName === "/jobs/manage",
+                })}
+              >
+                Manage
+              </p>
             </Link>
           ) : null}
         </div>
