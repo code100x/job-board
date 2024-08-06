@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,mdx}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,md,mdx}\"",
+    "prepare": "husky"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
@@ -41,7 +44,10 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
+    "husky": "^9.1.4",
     "postcss": "^8",
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.5",
     "prisma": "^5.17.0",
     "tailwindcss": "^3.4.1",
     "ts-node": "^10.9.2",

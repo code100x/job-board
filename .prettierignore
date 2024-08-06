@@ -1,0 +1,7 @@
+node_modules/
+.next/
+.react-email/
+.vercel/
+.github/
+*.min.js
+*.min.css

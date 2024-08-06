@@ -26,7 +26,7 @@ const JobsPage = async () => {
             {
               "h-[420px] flex justify-center items-center":
                 allJobs.length === 0,
-            }
+            },
           )}
         >
           {allJobs &&
