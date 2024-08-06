@@ -13,10 +13,10 @@ const MainLayout = async ({ children }: MainLayoutProps) => {
 
   return (
     <div className="w-full min-h-screen flex flex-col gap-4 items-center pt-4 pb-20">
-      <div className="hidden w-full justify-center sm:flex">
+      <div className="hidden w-full justify-center mobile:flex">
         <Navbar session={session} />
       </div>
-      <div className="flex w-full justify-center sm:hidden">
+      <div className="flex w-full justify-center mobile:hidden">
         <MobileNavbar session={session}/>
       </div>
       {children}

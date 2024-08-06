@@ -23,7 +23,7 @@ const config = {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
       screens:{
-        sm:"724px"
+        mobile:"724px"
       },
       keyframes: {
         "accordion-down": {
