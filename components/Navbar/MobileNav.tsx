@@ -19,17 +19,6 @@ const MobileNav = ({ session }: NavbarProps) => {
   const router = useRouter();
   const pathName = usePathname();
 
-  const navItems = [
-    {
-      name: "Home",
-      route: "/",
-    },
-    {
-      name: "Explore",
-      route: "/jobs",
-    },
-  ];
-
   const handleSignOut = async () => {
     const response = await logOutUser();
 
@@ -65,11 +54,11 @@ const MobileNav = ({ session }: NavbarProps) => {
             100xJobs
           </h3>{" "}
         </MobileLink>
-        <div className="flex flex-col gap-3 mt-3">
+        <div className="flex flex-col gap-3 mt-10 text-lg">
           <MobileLink onOpenChange={setOpen} href="/">
             Home
           </MobileLink>
-          <MobileLink onOpenChange={setOpen} href="/explore">
+          <MobileLink onOpenChange={setOpen} href="/jobs">
             Explore
           </MobileLink>
           {userRole === "ADMIN" ? (
@@ -124,7 +113,7 @@ function MobileLink({
         router.push(href.toString());
         onOpenChange?.(false);
       }}
-      className={className}
+      className={`text-black hover:text-green-600 transition duration-300 mb-5 ${className}`}
       {...props}
     >
       {children}

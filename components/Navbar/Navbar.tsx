@@ -6,6 +6,7 @@ import { Session } from "next-auth";
 import { toast } from "../ui/use-toast";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { NavItems } from "@/data/NavItems";
 
 type NavbarProps = {
   session: Session | null;
@@ -14,17 +15,6 @@ type NavbarProps = {
 const Navbar = ({ session }: NavbarProps) => {
   const router = useRouter();
   const pathName = usePathname();
-
-  const navItems = [
-    {
-      name: "Home",
-      route: "/",
-    },
-    {
-      name: "Explore",
-      route: "/jobs",
-    },
-  ];
 
   const handleSignOut = async () => {
     const response = await logOutUser();
@@ -51,7 +41,7 @@ const Navbar = ({ session }: NavbarProps) => {
         </h3>
 
         <div className="flex justify-center items-center gap-5 text-gray-500 font-semibold tracking-tighter">
-          {navItems.map((item) => {
+          {NavItems.map((item) => {
             return (
               <Link key={item.name} href={item.route}>
                 <p
