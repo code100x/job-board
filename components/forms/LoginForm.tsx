@@ -13,27 +13,44 @@ const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isEmailError, setIsEmailError] = useState(false);
+  const [isPasswordError, setIsPasswordError] = useState(false);
+
+  const validateForm = () => {
+    let isValid = true;
+    const errors: { field: string; message: string }[] = [];
+  
+    if (!email.trim()) {
+      errors.push({ field: 'email', message: 'Email cannot be empty!' });
+      isValid = false;
+    }
+  
+    if (!password.trim()) {
+      errors.push({ field: 'password', message: 'Password cannot be empty!' });
+      isValid = false;
+    }
+  
+    if (!isValid) {
+      errors.forEach(({ field, message }) => {
+        toast({
+          title: message,
+          variant: "destructive",
+        });
+        if (field === 'email') setIsEmailError(true);
+        if (field === 'password') setIsPasswordError(true);
+      });
+      setIsLoading(false);
+    }
+  
+    return isValid;
+  };
 
   const handleClick = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     setIsLoading(true);
-    if (!email || email === "") {
-      toast({
-        title: "Email cannot be empty!",
-        variant: "destructive",
-      });
-      setIsLoading(false);
-      return;
-    }
-
-    if (!password || password === "") {
-      toast({
-        title: "Email cannot be empty!",
-        variant: "destructive",
-      });
-      setIsLoading(false);
-      return;
-    }
+    if (!validateForm()) {
+    return;
+  }
 
     const credentials = { email, password };
     const response = await loginUser(credentials);
@@ -77,7 +94,9 @@ const LoginForm = () => {
               value={email}
               onChange={(evt) => setEmail(evt.target.value)}
               placeholder="Email"
-              className="w-full border-gray-400 outline-none text-gray-800"
+              className={`w-full border-gray-400 outline-none text-gray-800 ${
+                isEmailError ? "border-red-600" : null
+              }`}
             />
           </div>
           <div className="mb-6">
@@ -92,7 +111,9 @@ const LoginForm = () => {
               value={password}
               onChange={(evt) => setPassword(evt.target.value)}
               placeholder="••••••••••"
-              className="w-full border-gray-400 outline-none text-gray-800"
+              className={`w-full border-gray-400 outline-none text-gray-800 ${
+                isPasswordError ? "border-red-600" : null
+              }`}
             />
           </div>
           <Button
