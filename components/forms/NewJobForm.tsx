@@ -16,11 +16,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { NewJob, newJobSchema } from "@/zod/job";
 import { useToast } from "../ui/use-toast";
 import { createJob } from "@/actions/job";
+import { useEffect, useState } from "react";
 
 type NewJobFormProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -28,6 +30,8 @@ type NewJobFormProps = {
 
 const NewJobForm = ({ setOpen }: NewJobFormProps) => {
   const { toast } = useToast();
+  const [isStateClosed, setIsStateClosed] = useState(true);
+  const [isCountryClosed, setIsCountryClosed] = useState(true);
 
   const form = useForm<NewJob>({
     resolver: zodResolver(newJobSchema),
@@ -38,8 +42,12 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
       salary: "",
       currency: "",
       location: "",
+      state: undefined,
+      country: undefined,
     },
   });
+
+  const location = form.watch("location");
 
   const handleFormSubmit = async (values: NewJob) => {
     const { currency, location } = values;
@@ -86,28 +94,52 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleFormSubmit)}
-        className="h-fit flex flex-col gap-3 p-2"
+        className="w-full h-fit flex flex-col gap-3"
       >
-        <div className="flex flex-col gap-1">
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm font-semibold text-gray-800">
-                  Job Title *
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    className="w-full border-gray-400"
-                    placeholder="Job Title"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <div className="w-full flex justify-between items-center gap-2">
+          <div className="w-full flex flex-col gap-1">
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-semibold text-gray-800">
+                    Job Title *
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className="w-full border-gray-400"
+                      placeholder="Enter job title here"
+                    />
+                  </FormControl>
+                  <FormMessage className="text-xs" />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="w-full flex flex-col gap-1">
+            <FormField
+              control={form.control}
+              name="companyName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-semibold text-gray-800">
+                    Company Name *
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className="w-full border-gray-400"
+                      placeholder="Enter comapany name here"
+                    />
+                  </FormControl>
+                  <FormMessage className="text-xs" />
+                </FormItem>
+              )}
+            />
+          </div>
         </div>
 
         <div className="flex flex-col gap-1">
@@ -120,35 +152,13 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
                   Description *
                 </FormLabel>
                 <FormControl>
-                  <Input
+                  <Textarea
                     {...field}
-                    className="w-full border-gray-400"
+                    className="w-full h-28 max-h-28 overflow-auto border-gray-400 resize-none"
                     placeholder="Enter description here"
                   />
                 </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        <div className="flex flex-col gap-1">
-          <FormField
-            control={form.control}
-            name="companyName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm font-semibold text-gray-800">
-                  Company Name *
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    className="w-full border-gray-400"
-                    placeholder="Enter comapany name here"
-                  />
-                </FormControl>
-                <FormMessage />
+                <FormMessage className="text-xs" />
               </FormItem>
             )}
           />
@@ -172,8 +182,8 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger className="w-24">
-                        <SelectValue placeholder="select" />
+                      <SelectTrigger className="w-28">
+                        <SelectValue placeholder="Currency" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -181,7 +191,7 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
                       <SelectItem value="INR">INR</SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormMessage />
+                  <FormMessage className="text-xs" />
                 </FormItem>
               )}
             />
@@ -197,7 +207,7 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
                       placeholder="Enter comapany name here"
                     />
                   </FormControl>
-                  <FormMessage className="absolute" />
+                  <FormMessage className="text-xs absolute" />
                 </FormItem>
               )}
             />
@@ -233,7 +243,55 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
             )}
           />
         </div>
-        <div className="w-full flex justify-end items-center mt-4">
+
+        <div className="w-full flex justify-between items-center gap-2">
+          <div className="w-full flex flex-col gap-1">
+            <FormField
+              disabled={location === "" || location === "REMOTE"}
+              control={form.control}
+              name="state"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-semibold text-gray-800">
+                    State
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className="w-full border-gray-400"
+                      placeholder="Enter your state here"
+                    />
+                  </FormControl>
+                  <FormMessage className="text-xs absolute" />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="w-full flex flex-col gap-1">
+            <FormField
+              disabled={location === "" || location === "REMOTE"}
+              control={form.control}
+              name="country"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-semibold text-gray-800">
+                    Country
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className="w-full border-gray-400"
+                      placeholder="Enter your country here"
+                    />
+                  </FormControl>
+                  <FormMessage className="text-xs absolute" />
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
+        <div className="w-full flex justify-end items-center mt-5">
           <Button type="submit">Create Job</Button>
         </div>
       </form>

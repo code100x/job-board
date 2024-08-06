@@ -19,6 +19,18 @@ export const newJobSchema = z.object({
   location: z.string({
     required_error: "Please select one location type",
   }),
+  state: z
+    .string()
+    .min(5, {
+      message: "State must be atleast 5 characters long",
+    })
+    .optional(),
+  country: z
+    .string()
+    .min(5, {
+      message: "Country must be atleast 5 characters long",
+    })
+    .optional(),
 });
 
 export type NewJob = z.infer<typeof newJobSchema>;
