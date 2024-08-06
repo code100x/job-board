@@ -48,7 +48,7 @@ export const MobileNavbar = ({ session }: NavbarProps) => {
 
   const userRole = session?.user.role;
   return (
-    <nav className="w-[60vw] flex items-center justify-between h-14 border-t shadow border-gray-150 rounded-lg px-3 transition-all backdrop-blur-lg bg-background/50">
+    <nav className="w-[90vw] flex items-center justify-between h-14 border-t shadow border-gray-150 rounded-lg px-3 transition-all backdrop-blur-lg bg-background/50">
       <h3 className="text-xl bg-gradient-to-r from-indigo-600 via-violet-500 to-blue-700 bg-clip-text text-transparent font-black">
         100xJobs
       </h3>
