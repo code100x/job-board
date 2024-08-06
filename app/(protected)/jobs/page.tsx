@@ -22,7 +22,7 @@ const JobsPage = async () => {
         </div>
         <div
           className={cn(
-            "jobs flex flex-col max-h-[420px] gap-3 overflow-y-scroll",
+            "jobs flex flex-col max-h-[600px] gap-3 overflow-y-scroll",
             {
               "h-[420px] flex justify-center items-center":
                 allJobs.length === 0,
