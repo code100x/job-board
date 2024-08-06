@@ -76,3 +76,25 @@ export const getJobs = async (data: GetJobSchemaType) => {
     return { status: "error", message: "Internal Server Error" };
   }
 };
+
+
+export const deleteJob = async (id:string): Promise<SAPayload> => {
+  const session = await auth();
+
+  if (!session) {
+    return { status: "error", message: "Internal Server Error" };
+  }
+
+  try {
+    await prisma.job.delete({
+      where:{
+        id:id,
+      }
+    });
+    return { status: "success", message: "Job deleted Successfully" };
+  } catch (error) {
+    console.log(error);
+    return { status: "error", message: "Internal Server Error" };
+  }
+};
+
