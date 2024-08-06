@@ -21,6 +21,7 @@ import { useForm } from "react-hook-form";
 import { NewJob, newJobSchema } from "@/zod/job";
 import { useToast } from "../ui/use-toast";
 import { createJob } from "@/actions/job";
+import { stat } from "fs";
 
 type NewJobFormProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -38,11 +39,13 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
       salary: "",
       currency: "",
       location: "",
+      state:"",
     },
   });
 
   const handleFormSubmit = async (values: NewJob) => {
-    const { currency, location } = values;
+    const { currency, location, state } = values;
+
 
     if (currency !== "USD" && currency !== "INR") {
       toast({
@@ -60,6 +63,13 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
       toast({
         title: "Please select the location",
         variant: "destructive",
+      });
+      return;
+    }
+    if(state !== "ACTIVE" && state !== "INACTIVE") {
+      toast({
+        title:"Please select the state",
+        variant:"destructive",
       });
       return;
     }
@@ -200,7 +210,7 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
                   <FormMessage className="absolute" />
                 </FormItem>
               )}
-            />
+            /> 
           </div>
         </div>
 
@@ -226,6 +236,29 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
                     <SelectItem value="REMOTE">Remote</SelectItem>
                     <SelectItem value="HYBRID">Hybird</SelectItem>
                     <SelectItem value="OFFICE">Office</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+           <FormField
+            control={form.control}
+            name="state"
+            render={({ field }) => (
+              <FormItem>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger className="w-24">
+                      <SelectValue placeholder="select" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="ACTIVE">ACTIVE</SelectItem>
+                    <SelectItem value="INACTIVE">INACTIVE</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />

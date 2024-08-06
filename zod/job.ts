@@ -19,6 +19,9 @@ export const newJobSchema = z.object({
   location: z.string({
     required_error: "Please select one location type",
   }),
+  state: z.string({
+    required_error:"Please select one",
+  }),
 });
 
 export type NewJob = z.infer<typeof newJobSchema>;

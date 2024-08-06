@@ -5,7 +5,9 @@ import { cn } from "@/lib/utils";
 
 const JobsPage = async () => {
   const allJobs = await prisma.job.findMany({
-    where: {},
+    where: {
+      state:"ACTIVE"
+    },
   });
 
   return (
@@ -14,11 +16,15 @@ const JobsPage = async () => {
       <section className="w-full h-fit flex flex-col gap-8 rounded-md py-4 px-6">
         <div className="flex flex-col gap-1">
           <h3 className="lg:text-5xl text-gray-900 tracking-tight font-semibold">
-            All Developer Jobs
+            Developer Jobs
           </h3>
-          <p className="lg:text-lg font-medium text-gray-500 tracking-tighter">
-            Amplify Your Career: Where Top Developers Meet 100x Opportunities
-          </p>
+          {allJobs ? (
+            " "
+          ) : (
+            <p className="lg:text-lg font-medium text-gray-500 tracking-tighter pt-4">
+              Amplify Your Career: Where Top Developers Meet 100x Opportunities
+            </p>
+          )}
         </div>
         <div
           className={cn(

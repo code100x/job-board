@@ -8,9 +8,12 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// prisma/schema.prisma
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  // uncomment next line if you use Prisma <5.10
+  directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
 model Account {
@@ -76,7 +79,7 @@ model Job {
   salary      String
   currency    Currency @default(INR)
   location    String
-  state       String?
+  state       State  @default(ACTIVE)
   country     String?
 
   user User @relation(fields: [userId], references: [id])
@@ -96,4 +99,9 @@ enum JobType {
   REMOTE
   HYBIRD
   OFFICE
+}
+
+enum State {
+  ACTIVE
+  INACTIVE
 }

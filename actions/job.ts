@@ -4,7 +4,7 @@ import { auth } from "@/auth";
 import { SAPayload } from "@/types";
 import { NewJob } from "@/zod/job";
 import { prisma } from "@/lib/db";
-import { Currency } from "@prisma/client";
+import { Currency, State } from "@prisma/client";
 
 export const createJob = async (data: NewJob): Promise<SAPayload> => {
   const session = await auth();
@@ -23,6 +23,7 @@ export const createJob = async (data: NewJob): Promise<SAPayload> => {
         currency: data.currency as Currency,
         salary: data.salary,
         location: data.location,
+        state: data.state as State,
       },
     });
 
