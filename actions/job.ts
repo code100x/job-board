@@ -1,16 +1,16 @@
-"use server";
+'use server';
 
-import { auth } from "@/auth";
-import { SAPayload } from "@/types";
-import { NewJob } from "@/zod/job";
-import { prisma } from "@/lib/db";
-import { Currency } from "@prisma/client";
+import { auth } from '@/auth';
+import { SAPayload } from '@/types';
+import { NewJob } from '@/zod/job';
+import { prisma } from '@/lib/db';
+import { Currency } from '@prisma/client';
 
 export const createJob = async (data: NewJob): Promise<SAPayload> => {
   const session = await auth();
 
   if (!session) {
-    return { status: "error", message: "Internal Server Error" };
+    return { status: 'error', message: 'Internal Server Error' };
   }
 
   try {
@@ -22,13 +22,13 @@ export const createJob = async (data: NewJob): Promise<SAPayload> => {
         companyName: data.companyName,
         currency: data.currency as Currency,
         salary: data.salary,
-        location: data.location,
-      },
+        location: data.location
+      }
     });
 
-    return { status: "success", message: "Job created Successfully" };
+    return { status: 'success', message: 'Job created Successfully' };
   } catch (error) {
     console.log(error);
-    return { status: "error", message: "Internal Server Error" };
+    return { status: 'error', message: 'Internal Server Error' };
   }
 };

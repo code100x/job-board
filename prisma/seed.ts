@@ -1,32 +1,32 @@
-import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs";
+import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 async function main() {
-  const hashedPassword = await bcrypt.hash("123456", 10);
+  const hashedPassword = await bcrypt.hash('123456', 10);
   const users = await prisma.user.createMany({
     data: [
       {
-        name: "Jane",
-        email: "user1@gmail.com",
+        name: 'Jane',
+        email: 'user1@gmail.com',
         password: hashedPassword,
-        role: "USER",
+        role: 'USER'
       },
       {
-        name: "Max",
-        email: "user2gmail.com",
+        name: 'Max',
+        email: 'user2gmail.com',
         password: hashedPassword,
-        role: "USER",
+        role: 'USER'
       },
       {
-        name: "Admin",
-        email: "admin@gmail.com",
+        name: 'Admin',
+        email: 'admin@gmail.com',
         password: hashedPassword,
-        role: "ADMIN",
-      },
-    ],
+        role: 'ADMIN'
+      }
+    ]
   });
-  console.log(users, "Users created");
+  console.log(users, 'Users created');
 }
 main()
   .then(async () => {

@@ -1,8 +1,8 @@
-import { NextAuthConfig } from "next-auth";
-import Credentials from "next-auth/providers/credentials";
-import { prisma } from "@/lib/db";
-import bcrypt from "bcryptjs";
-import { userLoginSchema } from "./zod/user";
+import { NextAuthConfig } from 'next-auth';
+import Credentials from 'next-auth/providers/credentials';
+import { prisma } from '@/lib/db';
+import bcrypt from 'bcryptjs';
+import { userLoginSchema } from './zod/user';
 
 export default {
   providers: [
@@ -14,8 +14,8 @@ export default {
 
         const user = await prisma.user.findUnique({
           where: {
-            email: email,
-          },
+            email: email
+          }
         });
 
         if (!user || !user.password) return null;
@@ -25,7 +25,7 @@ export default {
         if (!passwordsMatch) return null;
 
         return user;
-      },
-    }),
-  ],
+      }
+    })
+  ]
 } satisfies NextAuthConfig;

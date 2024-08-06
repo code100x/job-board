@@ -1,11 +1,11 @@
-"use client";
-import Link from "next/link";
-import { Button } from "./ui/button";
-import { logOutUser } from "@/actions/user";
-import { Session } from "next-auth";
-import { toast } from "./ui/use-toast";
-import { usePathname, useRouter } from "next/navigation";
-import { cn } from "@/lib/utils";
+'use client';
+import Link from 'next/link';
+import { Button } from './ui/button';
+import { logOutUser } from '@/actions/user';
+import { Session } from 'next-auth';
+import { toast } from './ui/use-toast';
+import { usePathname, useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
 type NavbarProps = {
   session: Session | null;
@@ -17,27 +17,27 @@ const Navbar = ({ session }: NavbarProps) => {
 
   const navItems = [
     {
-      name: "Home",
-      route: "/",
+      name: 'Home',
+      route: '/'
     },
     {
-      name: "Explore",
-      route: "/jobs",
-    },
+      name: 'Explore',
+      route: '/jobs'
+    }
   ];
 
   const handleSignOut = async () => {
     const response = await logOutUser();
 
-    if (response?.status !== "success") {
+    if (response?.status !== 'success') {
       toast({
-        variant: "destructive",
-        title: response?.message,
+        variant: 'destructive',
+        title: response?.message
       });
       return;
     }
 
-    router.push("/");
+    router.push('/');
     router.refresh();
   };
 
@@ -55,8 +55,8 @@ const Navbar = ({ session }: NavbarProps) => {
             return (
               <Link key={item.name} href={item.route}>
                 <p
-                  className={cn("cursor-pointer hover:text-gray-900", {
-                    "text-gray-900": pathName === item.route,
+                  className={cn('cursor-pointer hover:text-gray-900', {
+                    'text-gray-900': pathName === item.route
                   })}
                 >
                   {item.name}
@@ -64,11 +64,11 @@ const Navbar = ({ session }: NavbarProps) => {
               </Link>
             );
           })}
-          {userRole === "ADMIN" ? (
+          {userRole === 'ADMIN' ? (
             <Link href="/jobs/manage">
               <p
-                className={cn("cursor-pointer hover:text-gray-900", {
-                  "text-gray-900": pathName === "/jobs/manage",
+                className={cn('cursor-pointer hover:text-gray-900', {
+                  'text-gray-900': pathName === '/jobs/manage'
                 })}
               >
                 Manage

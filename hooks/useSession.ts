@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { getSession } from "next-auth/react";
-import { Session } from "next-auth";
+import { useState, useEffect } from 'react';
+import { getSession } from 'next-auth/react';
+import { Session } from 'next-auth';
 
 export const useSession = () => {
   const [session, setSession] = useState<Session | null>(null);

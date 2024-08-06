@@ -1,7 +1,7 @@
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
-import { ReactNode } from "react";
-import { auth } from "@/auth";
+import Footer from '@/components/Footer';
+import Navbar from '@/components/Navbar';
+import { ReactNode } from 'react';
+import { auth } from '@/auth';
 
 type AuthLayoutProps = {
   children: ReactNode;

@@ -1,11 +1,11 @@
-import JobCard from "@/components/JobCard";
-import Sidebar from "@/components/Sidebar";
-import { prisma } from "@/lib/db";
-import { cn } from "@/lib/utils";
+import JobCard from '@/components/JobCard';
+import Sidebar from '@/components/Sidebar';
+import { prisma } from '@/lib/db';
+import { cn } from '@/lib/utils';
 
 const JobsPage = async () => {
   const allJobs = await prisma.job.findMany({
-    where: {},
+    where: {}
   });
 
   return (
@@ -22,11 +22,10 @@ const JobsPage = async () => {
         </div>
         <div
           className={cn(
-            "jobs flex flex-col max-h-[420px] gap-3 overflow-y-scroll",
+            'jobs flex flex-col max-h-[420px] gap-3 overflow-y-scroll',
             {
-              "h-[420px] flex justify-center items-center":
-                allJobs.length === 0,
-            },
+              'h-[420px] flex justify-center items-center': allJobs.length === 0
+            }
           )}
         >
           {allJobs &&

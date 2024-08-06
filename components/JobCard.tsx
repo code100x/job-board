@@ -1,5 +1,5 @@
-import { Job } from "@prisma/client";
-import { Banknote, MapPin, SquareArrowOutUpRight } from "lucide-react";
+import { Job } from '@prisma/client';
+import { Banknote, MapPin, SquareArrowOutUpRight } from 'lucide-react';
 
 type JobCardProps = {
   job: Job;
@@ -8,7 +8,7 @@ type JobCardProps = {
 const JobCard = ({ job }: JobCardProps) => {
   const { title, description, companyName, salary, currency, location } = job;
 
-  const currencySign = currency === "USD" ? "$" : "₹";
+  const currencySign = currency === 'USD' ? '$' : '₹';
 
   return (
     <div className="h-fit w-5/6 flex items-start gap-4 border border-gray-200 hover:border-gray-300 transition-all shadow-sm rounded-md px-4 py-3">
@@ -35,7 +35,7 @@ const JobCard = ({ job }: JobCardProps) => {
             <h4 className="text-sm tracking-tight font-medium">{location}</h4>
           </span>
           <p className="flex gap-2 items-center cursor-pointer hover:underline">
-            view details{" "}
+            view details{' '}
             <span>
               <SquareArrowOutUpRight size={14} />
             </span>

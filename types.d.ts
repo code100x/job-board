@@ -1,24 +1,24 @@
-import { DefaultSession, User as DefaultUser } from "next-auth";
-import { JWT } from "next-auth/jwt";
+import { DefaultSession, User as DefaultUser } from 'next-auth';
+import { JWT } from 'next-auth/jwt';
 
-type Role = "ADMIN" | "USER";
+type Role = 'ADMIN' | 'USER';
 
-declare module "next-auth" {
+declare module 'next-auth' {
   interface Session {
     user: {
       role?: Role;
-    } & DefaultSession["user"];
+    } & DefaultSession['user'];
   }
 }
 
-declare module "next-auth/jwt" {
+declare module 'next-auth/jwt' {
   interface JWT {
     role?: Role;
   }
 }
 
 type SAPayload = {
-  status: "success" | "error";
+  status: 'success' | 'error';
   message?: string;
 };
 

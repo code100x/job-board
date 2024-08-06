@@ -1,26 +1,26 @@
-"use client";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+'use client';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  SelectValue
+} from '@/components/ui/select';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { NewJob, newJobSchema } from "@/zod/job";
-import { useToast } from "../ui/use-toast";
-import { createJob } from "@/actions/job";
+  FormMessage
+} from '@/components/ui/form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { NewJob, newJobSchema } from '@/zod/job';
+import { useToast } from '../ui/use-toast';
+import { createJob } from '@/actions/job';
 
 type NewJobFormProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -32,44 +32,44 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
   const form = useForm<NewJob>({
     resolver: zodResolver(newJobSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      companyName: "",
-      salary: "",
-      currency: "",
-      location: "",
-    },
+      title: '',
+      description: '',
+      companyName: '',
+      salary: '',
+      currency: '',
+      location: ''
+    }
   });
 
   const handleFormSubmit = async (values: NewJob) => {
     const { currency, location } = values;
 
-    if (currency !== "USD" && currency !== "INR") {
+    if (currency !== 'USD' && currency !== 'INR') {
       toast({
-        title: "Please select the currency",
-        variant: "destructive",
+        title: 'Please select the currency',
+        variant: 'destructive'
       });
       return;
     }
 
     if (
-      location !== "REMOTE" &&
-      location !== "HYBRID" &&
-      location !== "OFFICE"
+      location !== 'REMOTE' &&
+      location !== 'HYBRID' &&
+      location !== 'OFFICE'
     ) {
       toast({
-        title: "Please select the location",
-        variant: "destructive",
+        title: 'Please select the location',
+        variant: 'destructive'
       });
       return;
     }
 
     const response = await createJob(values);
 
-    if (response?.status !== "success") {
+    if (response?.status !== 'success') {
       toast({
         title: response.message,
-        variant: "destructive",
+        variant: 'destructive'
       });
       setOpen(false);
       return;
@@ -77,7 +77,7 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
 
     toast({
       title: response.message,
-      variant: "default",
+      variant: 'default'
     });
     setOpen(false);
   };

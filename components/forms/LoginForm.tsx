@@ -1,35 +1,35 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useToast } from "../ui/use-toast";
-import { FormEvent, useState } from "react";
-import { loginUser } from "@/actions/user";
-import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
+'use client';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { useToast } from '../ui/use-toast';
+import { FormEvent, useState } from 'react';
+import { loginUser } from '@/actions/user';
+import { useRouter } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
 
 const LoginForm = () => {
   const { toast } = useToast();
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     setIsLoading(true);
-    if (!email || email === "") {
+    if (!email || email === '') {
       toast({
-        title: "Email cannot be empty!",
-        variant: "destructive",
+        title: 'Email cannot be empty!',
+        variant: 'destructive'
       });
       setIsLoading(false);
       return;
     }
 
-    if (!password || password === "") {
+    if (!password || password === '') {
       toast({
-        title: "Email cannot be empty!",
-        variant: "destructive",
+        title: 'Email cannot be empty!',
+        variant: 'destructive'
       });
       setIsLoading(false);
       return;
@@ -38,10 +38,10 @@ const LoginForm = () => {
     const credentials = { email, password };
     const response = await loginUser(credentials);
 
-    if (response?.status !== "success") {
+    if (response?.status !== 'success') {
       toast({
         title: response.message,
-        variant: "destructive",
+        variant: 'destructive'
       });
       setIsLoading(false);
       return;
@@ -49,9 +49,9 @@ const LoginForm = () => {
 
     toast({
       title: response.message,
-      variant: "default",
+      variant: 'default'
     });
-    router.push("/jobs");
+    router.push('/jobs');
     setIsLoading(false);
   };
 
@@ -88,7 +88,7 @@ const LoginForm = () => {
           {isLoading ? (
             <Loader2 size={20} className="animate-spin " />
           ) : (
-            "Sign In"
+            'Sign In'
           )}
         </Button>
       </form>

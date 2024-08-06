@@ -1,7 +1,7 @@
-import { auth } from "@/auth";
-import Footer from "@/components/Footer";
-import GithuBadge from "@/components/GithubBadge";
-import Navbar from "@/components/Navbar";
+import { auth } from '@/auth';
+import Footer from '@/components/Footer';
+import GithuBadge from '@/components/GithubBadge';
+import Navbar from '@/components/Navbar';
 
 const HomePage = async () => {
   const session = await auth();

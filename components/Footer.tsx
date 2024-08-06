@@ -1,4 +1,4 @@
-import { Copyright, Github, GlobeIcon, Linkedin, Twitter } from "lucide-react";
+import { Copyright, Github, GlobeIcon, Linkedin, Twitter } from 'lucide-react';
 
 const Footer = () => {
   return (

@@ -1,25 +1,25 @@
-import NextAuth from "next-auth";
-import authConfig from "@/auth.config";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import { prisma } from "@/lib/db";
+import NextAuth from 'next-auth';
+import authConfig from '@/auth.config';
+import { PrismaAdapter } from '@auth/prisma-adapter';
+import { prisma } from '@/lib/db';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
 
   session: {
-    strategy: "jwt",
+    strategy: 'jwt'
   },
 
   pages: {
-    signIn: "/login",
+    signIn: '/login'
   },
 
   callbacks: {
     async signIn({ user, account }) {
       const exisitngUser = await prisma.user.findUnique({
         where: {
-          id: user.id,
-        },
+          id: user.id
+        }
       });
 
       if (!exisitngUser) return false;
@@ -44,8 +44,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       const exisitngUser = await prisma.user.findUnique({
         where: {
-          id: token.sub,
-        },
+          id: token.sub
+        }
       });
 
       if (!exisitngUser) return token;
@@ -53,8 +53,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       token.role = exisitngUser.role;
 
       return token;
-    },
+    }
   },
 
-  ...authConfig,
+  ...authConfig
 });

@@ -1,13 +1,13 @@
-import { auth } from "@/auth";
-import NewJobModal from "@/components/NewJobModal";
-import { redirect } from "next/navigation";
+import { auth } from '@/auth';
+import NewJobModal from '@/components/NewJobModal';
+import { redirect } from 'next/navigation';
 
 const ManageJobsPage = async () => {
   const session = await auth();
   const role = session?.user.role;
 
-  if (role !== "ADMIN") {
-    redirect("/");
+  if (role !== 'ADMIN') {
+    redirect('/');
   }
 
   return (
