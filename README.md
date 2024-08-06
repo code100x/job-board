@@ -1,6 +1,5 @@
 # Project Name: Job Board
 
-### The following description is going to be updated once the project is complete. Until then, look for all the research and development-related progress here at this [Notion Page](https://example.notion.site).
 
 ## Table of Contents
 
