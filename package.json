@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "db:seed" : "npx prisma db push --force-rest && npx prisma db seed",
     "lint": "next lint",
     "postinstall": "prisma generate"
   },
