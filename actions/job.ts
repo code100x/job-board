@@ -33,3 +33,17 @@ export const createJob = async (data: NewJob): Promise<SAPayload> => {
     return { status: "error", message: "Internal Server Error" };
   }
 };
+
+export const fetchJobDetails = async ({ id }: { id: string }) => {
+  try {
+    const response = await prisma.job.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    return { status: "success", data: response };
+  } catch (error) {
+    console.log(error);
+    return { status: "error", message: "Internal error" };
+  }
+};

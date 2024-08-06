@@ -6,6 +6,7 @@ import { Session } from "next-auth";
 import { toast } from "./ui/use-toast";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import NewJobModal from "./NewJobModal";
 
 type NavbarProps = {
   session: Session | null;
@@ -65,15 +66,18 @@ const Navbar = ({ session }: NavbarProps) => {
             );
           })}
           {userRole === "ADMIN" ? (
-            <Link href="/jobs/manage">
-              <p
-                className={cn("cursor-pointer hover:text-gray-900", {
-                  "text-gray-900": pathName === "/jobs/manage",
-                })}
-              >
-                Manage
-              </p>
-            </Link>
+            <div className="flex items-center justify-between gap-4">
+              <Link href="/jobs/manage">
+                <p
+                  className={cn("cursor-pointer hover:text-gray-900", {
+                    "text-gray-900": pathName === "/jobs/manage",
+                  })}
+                >
+                  Manage
+                </p>
+              </Link>
+              <NewJobModal />
+            </div>
           ) : null}
         </div>
       </div>

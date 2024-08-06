@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 const JobsPage = async () => {
   const allJobs = await prisma.job.findMany({
     where: {
-      state:"ACTIVE"
+      state: "ACTIVE",
     },
   });
 

@@ -8,32 +8,33 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
-import NewJobForm from "./forms/NewJobForm";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
+import EditJobForm from "./forms/EditJobForm";
 
-const NewJobModal = () => {
+
+type EditModalProp ={
+  id: string;
+}
+
+export const EditJobModal = ({id}:EditModalProp) => {
   const [open, setOpen] = useState(false);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <h3 className="text-2xl bg-gradient-to-r from-indigo-600 via-violet-500 to-blue-700 bg-clip-text text-transparent font-black hover:cursor-pointer">
-          Create Job
-        </h3>
+       <Button variant={"outline"} size={"sm"}>Edit</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Enter the Job details below</DialogTitle>
+          <DialogTitle>Edit the Job details </DialogTitle>
           <DialogDescription>
             This form contains all the job details that are required to post a
             job
           </DialogDescription>
         </DialogHeader>
-        <NewJobForm setOpen={setOpen} />
+        <EditJobForm id={id} setOpen={setOpen} />
       </DialogContent>
     </Dialog>
   );
 };
 
-export default NewJobModal;

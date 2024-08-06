@@ -10,6 +10,7 @@ import { MapPin } from "lucide-react";
 import { cva } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
+import { EditJobModal } from "./EditJobModal";
 type JobDisplayProps = {
   job: Job;
 };
@@ -34,7 +35,6 @@ export const JobDisplay = ({ job }: JobDisplayProps) => {
         <div className="space-y-2">
           <CardTitle className="text-2xl">{companyName}</CardTitle>
           <CardDescription className=" line-clamp-1">
-            {" "}
             <h1 className="text-md">{title}</h1>
           </CardDescription>
         </div>
@@ -53,19 +53,15 @@ export const JobDisplay = ({ job }: JobDisplayProps) => {
           <h1 className="mb-2 line-clamp-1 font-semibold">
             {job.currency} {job.salary}
           </h1>
-          <p className="line-clamp-1">{job.description}</p>
+          <h1 className="line-clamp-1">{job.description}</h1>
         </div>
         {job.state === "ACTIVE" ? (
           <div>
-            <Button variant={"outline"} size={"sm"}>
-              Edit
-            </Button>
+            <EditJobModal id={job.id} />
           </div>
         ) : (
           <div className="flex items-center justify-between gap-2">
-            <Button variant={"outline"} size={"sm"}>
-              Edit
-            </Button>
+            <EditJobModal id={job.id} />
             <Button variant={"default"}>Publish</Button>
           </div>
         )}

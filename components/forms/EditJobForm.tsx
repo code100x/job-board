@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import {
@@ -20,19 +21,36 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { NewJob, newJobSchema } from "@/zod/job";
 import { useToast } from "../ui/use-toast";
-import { createJob } from "@/actions/job";
-import { stat } from "fs";
+import { createJob, fetchJobDetails } from "@/actions/job";
 
 type NewJobFormProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  id: string;
 };
 
-const NewJobForm = ({ setOpen }: NewJobFormProps) => {
+const EditJobForm = ({ setOpen, id }: NewJobFormProps) => {
   const { toast } = useToast();
+  const [jobDetails, setJobDetails] = useState<NewJob | null>(null);
+
+  useEffect(() => {
+    const getJobDetails = async () => {
+      const response = await fetchJobDetails({ id });
+      if (response.status === "success") {
+        setJobDetails(response.data || null);
+      } else {
+        toast({
+          title: "Failed to fetch job details",
+          variant: "destructive",
+        });
+        setOpen(false);
+      }
+    };
+    getJobDetails();
+  }, [id, setOpen, toast]);
 
   const form = useForm<NewJob>({
     resolver: zodResolver(newJobSchema),
-    defaultValues: {
+    defaultValues: jobDetails || {
       title: "",
       description: "",
       companyName: "",
@@ -42,6 +60,12 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
       state: "",
     },
   });
+
+  useEffect(() => {
+    if (jobDetails) {
+      form.reset(jobDetails);
+    }
+  }, [jobDetails, form]);
 
   const handleFormSubmit = async (values: NewJob) => {
     const { currency, location, state } = values;
@@ -154,7 +178,7 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
                   <Input
                     {...field}
                     className="w-full border-gray-400"
-                    placeholder="Enter comapany name here"
+                    placeholder="Enter company name here"
                   />
                 </FormControl>
                 <FormMessage />
@@ -203,7 +227,7 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
                     <Input
                       {...field}
                       className="w-full border-gray-400"
-                      placeholder="Enter comapany name here"
+                      placeholder="Enter salary here"
                     />
                   </FormControl>
                   <FormMessage className="absolute" />
@@ -233,7 +257,7 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
                   </FormControl>
                   <SelectContent>
                     <SelectItem value="REMOTE">Remote</SelectItem>
-                    <SelectItem value="HYBRID">Hybird</SelectItem>
+                    <SelectItem value="HYBRID">Hybrid</SelectItem>
                     <SelectItem value="OFFICE">Office</SelectItem>
                   </SelectContent>
                 </Select>
@@ -267,11 +291,11 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
           />
         </div>
         <div className="w-full flex justify-end items-center mt-4">
-          <Button type="submit">Create Job</Button>
+          <Button type="submit">Submit</Button>
         </div>
       </form>
     </Form>
   );
 };
 
-export default NewJobForm;
+export default EditJobForm;

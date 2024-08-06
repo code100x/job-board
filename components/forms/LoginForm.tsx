@@ -37,7 +37,6 @@ const LoginForm = () => {
   });
 
   const handleClick = async (value: z.infer<typeof userLoginSchema>) => {
-
     const response = await loginUser(value);
     toast({
       title: response.message,
@@ -108,4 +107,3 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
-
