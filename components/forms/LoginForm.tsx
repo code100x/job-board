@@ -56,42 +56,62 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="h-fit p-4 bg-white flex flex-col items-start gap-8 rounded-md shadow-lg border-t border-gray-200">
-      <h3 className="max-w-64 flex-wrap text-lg text-gray-700 tracking-tight">
-        Login with your 100xdevs to continue.
-      </h3>
+    <div className="h-fit bg-white flex flex-col items-start gap-8 rounded-md shadow-lg border-t border-gray-200">
+      <div className=" bg-white p-8 rounded-lg shadow-md w-96">
+        <h3 className=" max-w-64 flex-wrap text-xl text-gray-900 font-medium tracking-tight ">
+          Login with your 100xdevs credentials.
+        </h3>
+        <div className="flex justify-center mb-6 "></div>
 
-      <form
-        className="h-full flex flex-col items-center gap-3"
-        onSubmit={(evt) => handleClick(evt)}
-      >
-        <Input
-          value={email}
-          onChange={(evt) => setEmail(evt.target.value)}
-          placeholder="Email"
-          className="w-64 border-gray-400 outline-none text-gray-800"
-        />
-
-        <Input
-          type="password"
-          value={password}
-          onChange={(evt) => setPassword(evt.target.value)}
-          placeholder="Password"
-          className="w-64 border-gray-400 outline-none text-gray-800"
-        />
-
-        <Button
-          disabled={isLoading}
-          type="submit"
-          className="w-full flex justify-center items-center rounded-lg"
-        >
-          {isLoading ? (
-            <Loader2 size={20} className="animate-spin " />
-          ) : (
-            "Sign In"
-          )}
-        </Button>
-      </form>
+        <form className="" onSubmit={(evt) => handleClick(evt)}>
+          <div className="flex justify-between mb-4"></div>
+          <div className="mb-4">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              E-Mail Address
+            </label>
+            <Input
+              type="email"
+              value={email}
+              onChange={(evt) => setEmail(evt.target.value)}
+              placeholder="Email"
+              className="w-full border-gray-400 outline-none text-gray-800"
+            />
+          </div>
+          <div className="mb-6">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Password
+            </label>
+            <Input
+              type="password"
+              value={password}
+              onChange={(evt) => setPassword(evt.target.value)}
+              placeholder="••••••••••"
+              className="w-full border-gray-400 outline-none text-gray-800"
+            />
+          </div>
+          <Button
+            disabled={isLoading}
+            type="submit"
+            className="w-full flex justify-center items-center rounded-lg"
+          >
+            {isLoading ? (
+              <Loader2 size={20} className="animate-spin " />
+            ) : (
+              "Sign In"
+            )}
+          </Button>
+          <div className="text-center text-gray-500 my-4">OR</div>
+          <Button className="flex-1 w-full mx-2 py-2 px-4 border bg-gray-100 border-gray-300 rounded-md flex items-center justify-center">
+            <img src="/google.svg" alt="Google" className="w-5 h-5 mr-2" />
+          </Button>
+        </form>
+      </div>
     </div>
   );
 };
