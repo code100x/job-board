@@ -11,7 +11,7 @@ const JobsPage = async () => {
   return (
     <section className="relative w-full h-fit flex gap-2 flex-grow p-2">
       <Sidebar />
-      <section className="w-full h-fit flex flex-col gap-8 rounded-md py-4 px-6">
+      <section className="w-full h-fit flex flex-col gap-8 rounded-md -z-10 py-4 px-6">
         <div className="flex flex-col gap-1">
           <h3 className="lg:text-5xl text-gray-900 tracking-tight font-semibold">
             All Developer Jobs
