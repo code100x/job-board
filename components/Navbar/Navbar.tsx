@@ -6,7 +6,7 @@ import { Session } from "next-auth";
 import { toast } from "../ui/use-toast";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { NavItems } from "@/data/NavItems";
+import { NavItems } from "@/constants/NavItems";
 
 type NavbarProps = {
   session: Session | null;
@@ -57,7 +57,7 @@ const Navbar = ({ session }: NavbarProps) => {
           {userRole === "ADMIN" ? (
             <Link href="/jobs/manage">
               <p
-                className={cn("cursor-pointer hover:text-gray-900", {
+                className={cn("cursor-pointer hover:text-green-600", {
                   "text-gray-900": pathName === "/jobs/manage",
                 })}
               >

@@ -64,7 +64,7 @@ const MobileNav = ({ session }: NavbarProps) => {
           {userRole === "ADMIN" ? (
             <Link href="/jobs/manage">
               <p
-                className={cn("cursor-pointer hover:text-gray-900", {
+                className={cn("cursor-pointer hover:text-green-600", {
                   "text-gray-900": pathName === "/jobs/manage",
                 })}
               >
@@ -113,7 +113,9 @@ function MobileLink({
         router.push(href.toString());
         onOpenChange?.(false);
       }}
-      className={`text-black hover:text-green-600 transition duration-300 mb-5 ${className}`}
+      className={cn(
+        `text-black hover:text-green-600 transition duration-300 mb-5 ${className}`
+      )}
       {...props}
     >
       {children}
