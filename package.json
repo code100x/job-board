@@ -8,6 +8,7 @@
     "start": "next start",
     "db:seed" : "npx prisma db push --force-rest && npx prisma db seed",
     "lint": "next lint",
+    "dev:docker":"npm run db:seed && npm run dev",
     "postinstall": "prisma generate"
   },
   "prisma": {
