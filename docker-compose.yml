@@ -7,7 +7,6 @@ services:
     environment:
       - DATABASE_URL=postgresql://user:password@db:5432/jobboard
       - AUTH_SECRET=${AUTH_SECRET}
-      - NEXTAUTH_URL=http://localhost:3000
     depends_on:
       db:
         condition: service_healthy
