@@ -1,5 +1,6 @@
 import { Job } from "@prisma/client";
 import { Banknote, MapPin, SquareArrowOutUpRight } from "lucide-react";
+import {Slider} from "@/components/ui/slider";
 
 type JobCardProps = {
   job: Job;
@@ -42,6 +43,7 @@ const JobCard = ({ job }: JobCardProps) => {
               <SquareArrowOutUpRight size={14} />
             </span>
           </p>
+
         </div>
       </div>
     </div>
