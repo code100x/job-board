@@ -5,11 +5,11 @@ First off, thank you for considering contributing to job-board! It's people like
 ## Table of Contents
 1. [Code of Conduct](#code-of-conduct)
 2. [Flow of Contribution](#flow-of-contribution)
-2. [Getting Started](#getting-started)
+3. [Getting Started](#getting-started)
    - [Issues](#issues)
    - [Pull Requests](#pull-requests)
    - [Conventional Commits](#conventional-commits)
-3. [Setting Up the Development Environment](#setting-up-the-development-environment)
+4. [Setting Up the Development Environment](#setting-up-the-development-environment)
 
 
 
