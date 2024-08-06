@@ -55,30 +55,3 @@ Now, you can run the project and make changes as needed.
       Password: "123456" 
    ```
 
-## Running the Project with Docker
-
-To set up and run the project using Docker, follow these steps:
-
-### Prerequisites
-
-Ensure you have Docker installed on your machine. If not, you can download and install it from the [official Docker website](https://www.docker.com/get-started).
-
-### Build and Run with Docker
-
-#### Build the Docker Image
-
-In the root directory of your project, where the Dockerfile is located, run the following command to build the Docker image:
-
-```bash
-docker build -t job-board .
-```
-
-This will create a Docker image named job-board.
-
-#### Run the Docker Container
-Once the image is built, you can run it using the following command:
-
-```bash
-docker run -p 3000:3000 --env-file .env job-board
-```
-This command maps port 3000 on your host to port 3000 in the container and uses the .env file for environment variables. Make sure you have a .env file in your project root with the appropriate configuration.
