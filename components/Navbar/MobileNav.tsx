@@ -3,9 +3,6 @@
 import { useState } from "react";
 import Link, { LinkProps } from "next/link";
 import { cn } from "@/lib/utils";
-
-// import { Icons } from "./icons";
-// import { siteConfig } from "@/config/site";
 import { Button } from "../ui/button";
 import { Menu } from "lucide-react";
 import { logOutUser } from "@/actions/user";

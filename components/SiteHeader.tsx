@@ -1,6 +1,3 @@
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { buttonVariants } from "./ui/button";
 import MobileNav from "./Navbar/MobileNav";
 import Navbar from "./Navbar/Navbar";
 import { auth } from "@/auth";
