@@ -54,3 +54,32 @@ Now, you can run the project and make changes as needed.
       Emails: "user1@gmail.com, user2@gmail.com, admin@gmail.com"
       Password: "123456" 
    ```
+
+
+## Running the Project with Docker
+
+To set up and run the project using Docker, follow these steps:
+
+### Prerequisites
+
+Ensure you have Docker installed on your machine. If not, you can download and install it from the [official Docker website](https://www.docker.com/get-started).
+
+### Build and Run with Docker
+
+#### Build the Docker Image
+
+In the root directory of your project, where the Dockerfile is located, run the following command to build the Docker image:
+
+```bash
+docker build -t 100x-job_board .
+```
+
+A Docker image named 100x-job_board will be created .
+
+#### Run the Docker Container
+Once the image is built, then run:
+
+```bash
+docker run -p 3000:3000 --env-file .env 100x-job_board
+```
+This command uses the .env file for environment variables and maps port 3000 on your host to port 3000 in the container.
