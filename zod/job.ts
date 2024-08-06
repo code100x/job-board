@@ -21,4 +21,6 @@ export const newJobSchema = z.object({
   }),
 });
 
+
+
 export type NewJob = z.infer<typeof newJobSchema>;
