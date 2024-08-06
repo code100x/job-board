@@ -26,14 +26,6 @@ const Navbar = ({ session }: NavbarProps) => {
       name: "Explore",
       route: "/jobs",
     },
-    {
-      name: "About",
-      route: "/about",
-    },
-    {
-      name: "Contact",
-      route: "/contact",
-    },
   ];
 
   const handleSignOut = async () => {
@@ -116,7 +108,7 @@ const Navbar = ({ session }: NavbarProps) => {
                   <Button
                     onClick={handleSignOut}
                     variant="outline"
-                    className="font-medium p rounded-md"
+                    className="font-medium rounded-md"
                   >
                     Sign Out
                   </Button>
