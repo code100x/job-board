@@ -48,6 +48,13 @@ Follow these steps to set up the repository locally and run it.
 
 Now, you can run the project and make changes as needed.
 
+## Quick Setup with docker
+
+```bash
+   docker-compose build
+   docker-compose up
+```
+
 ## Test User Credentials
 
    ```js
