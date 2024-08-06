@@ -1,9 +1,10 @@
 import React from "react";
+import Image from "next/image";
 
 export default function UserImage({ image }: any) {
     return (
         <div>
-            <img
+            <Image
                 className="w-full h-full rounded-full cursor-pointer"
                 src={image || ""}
                 width={100}
