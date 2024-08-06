@@ -2,7 +2,7 @@
 
 import { auth } from "@/auth";
 import { SAPayload } from "@/types";
-import { NewJob } from "@/zod/job";
+import {NewJob, UpdateJob} from "@/zod/job";
 import { prisma } from "@/lib/db";
 import { Currency, Job } from "@prisma/client";
 import z from "zod";
@@ -77,6 +77,34 @@ export const getJobs = async (data: GetJobSchemaType) => {
   }
 };
 
+export const updateJob = async (data: UpdateJob): Promise<SAPayload> => {
+  const session = await auth();
+
+  if (!session) {
+    return { status: "error", message: "Internal Server Error" };
+  }
+
+  try {
+    const newJob = await prisma.job.update({
+      where:{
+        id:data.id
+      },
+      data: {
+        title: data.title,
+        description: data.description,
+        companyName: data.companyName,
+        currency: data.currency as Currency,
+        salary: data.salary,
+        location: data.location,
+      },
+    });
+
+    return { status: "success", message: "Job updated Successfully" };
+  } catch (error) {
+    console.log(error);
+    return { status: "error", message: "Internal Server Error" };
+  }
+};
 
 export const deleteJob = async (id:string): Promise<SAPayload> => {
   const session = await auth();

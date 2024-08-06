@@ -13,7 +13,6 @@ const ManageJobsPage = async () => {
         redirect("/");
     }
     const jobs = await prisma.job.findMany({});
-    console.log("jobs", jobs);
     return (
         <div className="w-1/2 flex-grow justify-center items-center p-2 flex flex-col">
             <div className="flex flex-row gap-8 items-center w-full mb-4">

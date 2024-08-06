@@ -4,8 +4,18 @@ import { Banknote, MapPin, SquareArrowOutUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {deleteJob} from "@/actions/job";
 import {useToast} from "@/components/ui/use-toast";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
+} from "@/components/ui/dialog";
+import NewJobForm from "@/components/forms/NewJobForm";
+import UpdateJobForm from "@/components/forms/UpdateJobForm";
 
 type ManageJobsCardProps = {
     job: Job;
@@ -13,6 +23,7 @@ type ManageJobsCardProps = {
 
 const ManageJobsCard = ({ job }: ManageJobsCardProps) => {
     const router = useRouter()
+    const [open, setOpen] = useState(false);
     const { toast } = useToast();
     const { title, description, companyName, salary, currency, location } = job;
     const currencySign = currency === "USD" ? "$" : "₹";
@@ -32,6 +43,14 @@ const ManageJobsCard = ({ job }: ManageJobsCardProps) => {
             })
         }
     }
+    //refresh every time when open state change
+    //Implement other logic to update page after job is update
+    useEffect(()=>{
+        function refresh(){
+            router.refresh();
+        }
+        refresh();
+    },[open])
     return (
         <div className="max-w-full mx-auto h-fit w-full flex flex-col sm:flex-row items-start gap-4 border border-gray-200 hover:border-gray-300 transition-all shadow-sm rounded-md px-4 py-3 ">
             <div className="flex flex-col sm:flex-row w-full">
@@ -68,12 +87,24 @@ const ManageJobsCard = ({ job }: ManageJobsCardProps) => {
                 </div>
             </div>
             <div className="flex flex-col justify-end w-full gap-2 mt-4 sm:mt-0 sm:flex-row">
-                <Button className=" px-4 py-2 rounded-md shadow-md transition disabled:accent-gray-900" disabled={editing}>
 
-                    {
-                        editing?"Editing..":"Edit"
-                    }
-                </Button>
+                <Dialog open={open} onOpenChange={setOpen}>
+                    <DialogTrigger asChild>
+                        <Button className=" px-4 py-2 rounded-md shadow-md transition disabled:accent-gray-900" disabled={editing}>
+
+                            {
+                                editing?"Editing..":"Edit"
+                            }
+                        </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Enter the Job details below</DialogTitle>
+
+                        </DialogHeader>
+                        <UpdateJobForm setOpen={setOpen} title={job.title} description={job.description} companyName={job.companyName} salary={job.salary} currency={job.currency} location={job.location} id={job.id}/>
+                    </DialogContent>
+                </Dialog>
                 <Button className=" px-4 py-2 rounded-md shadow-md transition disabled:accent-gray-900" disabled={deleting} onClick={handleDelete}>
 
                     {deleting ? "Deleting.." : "Delete"}
