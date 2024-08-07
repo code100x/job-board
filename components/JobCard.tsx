@@ -12,7 +12,11 @@ import Link from "next/link";
 =======
 import { Banknote, MapPin, SquareArrowOutUpRight } from "lucide-react";
 import {Slider} from "@/components/ui/slider";
+<<<<<<< HEAD
 >>>>>>> 580e17e4ee12f0d085779f505e3d8859362de874
+=======
+>>>>>>> ef7acd5e2dc9a660f233907bebda64939c083201
+>>>>>>> zaki/jobIdPage-jops-placehoder-added
 
 type JobCardProps = {
   job: Job;
@@ -63,7 +67,11 @@ const JobCard = ({ job }: JobCardProps) => {
           {title}
         </h3>
         <h4 className="text-sm sm:text-base tracking-tight font-semibold text-gray-500">
+<<<<<<< HEAD
 >>>>>>> 580e17e4ee12f0d085779f505e3d8859362de874
+=======
+>>>>>>> ef7acd5e2dc9a660f233907bebda64939c083201
+>>>>>>> zaki/jobIdPage-jops-placehoder-added
           {companyName}
         </h4>
         <span className="flex items-end gap-2 text-gray-500">
@@ -94,7 +102,11 @@ const JobCard = ({ job }: JobCardProps) => {
             </span>
           </p>
 
+<<<<<<< HEAD
 >>>>>>> 580e17e4ee12f0d085779f505e3d8859362de874
+=======
+>>>>>>> ef7acd5e2dc9a660f233907bebda64939c083201
+>>>>>>> zaki/jobIdPage-jops-placehoder-added
         </div>
       </div>
     </Link>
