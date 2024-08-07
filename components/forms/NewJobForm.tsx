@@ -22,7 +22,8 @@ import { useForm } from "react-hook-form";
 import { NewJob, newJobSchema } from "@/zod/job";
 import { useToast } from "../ui/use-toast";
 import { createJob } from "@/actions/job";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import CustomInput from "../CustomInput";
 
 type NewJobFormProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -30,8 +31,6 @@ type NewJobFormProps = {
 
 const NewJobForm = ({ setOpen }: NewJobFormProps) => {
   const { toast } = useToast();
-  const [isStateClosed, setIsStateClosed] = useState(true);
-  const [isCountryClosed, setIsCountryClosed] = useState(true);
 
   const form = useForm<NewJob>({
     resolver: zodResolver(newJobSchema),
@@ -98,24 +97,12 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
       >
         <div className="w-full flex justify-between items-center gap-2">
           <div className="w-full flex flex-col gap-1">
-            <FormField
-              control={form.control}
+            <CustomInput
+              type="text"
               name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-semibold text-gray-800">
-                    Job Title *
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className="w-full border-gray-400"
-                      placeholder="Enter job title here"
-                    />
-                  </FormControl>
-                  <FormMessage className="text-xs" />
-                </FormItem>
-              )}
+              label="Job Title *"
+              control={form.control}
+              placeholderText="Enter job title here"
             />
           </div>
 
