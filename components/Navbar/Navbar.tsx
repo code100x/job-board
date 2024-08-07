@@ -156,12 +156,12 @@ const Navbar = ({ session }: NavbarProps) => {
             <DropdownMenuSeparator />
             {session?.user && (
               <AlertDialog
-              // onOpenChange={() => {
-              //   setTimeout(
-              //     () => (document.body.style.pointerEvents = ""),
-              //     100
-              //   );
-              // }}
+                onOpenChange={() => {
+                  setTimeout(
+                    () => (document.body.style.pointerEvents = ""),
+                    100
+                  );
+                }}
               >
                 <AlertDialogTrigger asChild>
                   <Button variant="destructive" className="my-2 mx-3">
