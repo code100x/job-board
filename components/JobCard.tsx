@@ -25,7 +25,7 @@ const JobCard = ({ job, userRole }: JobCardProps) => {
   };
 
   return (
-    <div>
+    <div className="relative">
       <div className="max-w-full mx-auto h-fit w-full flex flex-col sm:flex-row items-start gap-4 border border-gray-200 hover:border-gray-300 transition-all shadow-sm rounded-md px-4 py-3">
         <div className="logo-area p-2 flex-shrink-0">
           <div className="h-20 w-20 bg-gray-100 border border-gray-300 rounded-full"></div>
@@ -34,7 +34,7 @@ const JobCard = ({ job, userRole }: JobCardProps) => {
           <h3 className="text-lg sm:text-xl tracking-tight font-semibold text-gray-700">
             {title}
           </h3>
-          <h4 className="text-sm sm:text-base tracking-tight font-semibold text-gray-500">
+          <h4 className="text-sm sm:text-base tracking-tight font-semibold text-gray-500 truncate">
             {companyName}
           </h4>
           <span className="flex items-end gap-2 text-gray-500">
@@ -54,6 +54,8 @@ const JobCard = ({ job, userRole }: JobCardProps) => {
             <p
               onClick={viewDetails}
               className="flex gap-2 items-center cursor-pointer hover:underline mt-2 sm:mt-0"
+              aria-label="View job details"
+              role="button"
             >
               view details
               <span>

@@ -15,8 +15,10 @@ const Modal = ({ job, onClose, userRole }: ModalProps) => {
 
     useEffect(() => {
         setIsVisible(true);
+        document.body.style.overflow = 'hidden'; // Prevent background scroll
         return () => {
             setIsVisible(false);
+            document.body.style.overflow = ''; // Restore scroll
         };
     }, []);
 
@@ -24,6 +26,9 @@ const Modal = ({ job, onClose, userRole }: ModalProps) => {
 
     return (
         <div
+            role="dialog"
+            aria-labelledby="modal-title"
+            aria-modal="true"
             className={`fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50 transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
             style={{ transition: 'opacity 0.3s ease-in-out' }}
         >
@@ -33,10 +38,12 @@ const Modal = ({ job, onClose, userRole }: ModalProps) => {
             >
                 <button
                     onClick={onClose}
+                    aria-label="Close modal"
                     className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 transition-colors duration-200"
                 >
                     <X size={24} />
                 </button>
+                <h2 id="modal-title" className="text-lg font-semibold">Job Details</h2>
                 <JobDetails job={job} />
                 <div className="mt-4 flex justify-end gap-2">
                     <button
