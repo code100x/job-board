@@ -4,9 +4,7 @@ import { cn } from "@/lib/utils";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { SessionProvider } from "next-auth/react";
-import Footer from "@/components/Footer";
 import { auth } from "@/auth";
-import Navbar from "@/components/Navbar";
 
 const fontSans = FontSans({
   subsets: ["latin"],

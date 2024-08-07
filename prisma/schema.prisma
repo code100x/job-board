@@ -80,7 +80,7 @@ model Job {
   salary      String
   currency    Currency @default(INR)
   location    String
-  state       State  @default(ACTIVE)
+  status       Status  @default(ACTIVE)
   country     String?
 
   user User @relation(fields: [userId], references: [id])
@@ -102,7 +102,7 @@ enum JobType {
   OFFICE
 }
 
-enum State {
+enum Status {
   ACTIVE
   INACTIVE
 }

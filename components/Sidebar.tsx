@@ -60,20 +60,19 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
     });
   };
 
-  const fetchJobs = async () => {
-    setLoading(true);
-    //@ts-ignore
-    const response = await getJobs(filters);
-    if (response.status === "success") {
-      //@ts-ignore
-      setJobs(response.data);
-    }
-    setLoading(false);
-  };
-
   useEffect(() => {
+    const fetchJobs = async () => {
+      setLoading(true);
+      //@ts-ignore
+      const response = await getJobs(filters);
+      if (response.status === "success") {
+        //@ts-ignore
+        setJobs(response.data);
+      }
+      setLoading(false);
+    };
     fetchJobs();
-  }, [filters]);
+  }, []);
 
   return (
     <aside className="relative h-full p-4 min-w-48 border border-gray-200 rounded">

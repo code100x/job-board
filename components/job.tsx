@@ -27,7 +27,7 @@ export const Jobs = async ({job}:JobProps) =>{
           }
         };
         getJobDetails();
-      }, [job.id, toast]);
+      }, []);
     return(
         <div>
             {jobDetails?.companyName}

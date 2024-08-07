@@ -4,7 +4,7 @@ import { auth } from "@/auth";
 import { SAPayload } from "@/types";
 import { NewJob, UpdateJob } from "@/zod/job";
 import { prisma } from "@/lib/db";
-import { Currency, State } from "@prisma/client";
+import { Currency, Status } from "@prisma/client";
 import { z } from "zod";
 
 export const createJob = async (data: NewJob): Promise<SAPayload> => {
@@ -23,7 +23,7 @@ export const createJob = async (data: NewJob): Promise<SAPayload> => {
         currency: data.currency as Currency,
         salary: data.salary,
         location: data.location,
-        state: data.state as State,
+        status: data.status as Status,
       },
     });
     return { status: "success", message: "Job created Successfully" };
@@ -32,7 +32,6 @@ export const createJob = async (data: NewJob): Promise<SAPayload> => {
     return { status: "error", message: "Internal Server Error" };
   }
 };
-
 
 export const updateJob = async (data: UpdateJob): Promise<SAPayload> => {
   const session = await auth();
@@ -43,8 +42,8 @@ export const updateJob = async (data: UpdateJob): Promise<SAPayload> => {
 
   try {
     const newJob = await prisma.job.update({
-      where:{
-        id:data.id
+      where: {
+        id: data.id,
       },
       data: {
         title: data.title,
@@ -53,6 +52,7 @@ export const updateJob = async (data: UpdateJob): Promise<SAPayload> => {
         currency: data.currency as Currency,
         salary: data.salary,
         location: data.location,
+        status: data.status as Status,
       },
     });
 
@@ -63,6 +63,57 @@ export const updateJob = async (data: UpdateJob): Promise<SAPayload> => {
   }
 };
 
+export const fetchActiveJobs = async () => {
+  try {
+    const response = await prisma.job.findMany({
+      where: {
+        status: "ACTIVE",
+      },
+    });
+    return { status: "success", data: response };
+  } catch (error) {
+    console.error(error);
+    return { status: "error", message: "Internal error" };
+  }
+};
+
+export const fetchInActiveJobs = async () => {
+  try {
+    const response = await prisma.job.findMany({
+      where: {
+        status: "INACTIVE",
+      },
+    });
+    return { status: "success", data: response };
+  } catch (error) {
+    console.error(error);
+    return { status: "error", message: "Internal error" };
+  }
+};
+
+export const updateStatus = async (data: UpdateJob): Promise<SAPayload> => {
+  const session = await auth();
+
+  if (!session) {
+    return { status: "error", message: "Internal Server Error" };
+  }
+
+  try {
+    const newJob = await prisma.job.update({
+      where: {
+        id: data.id,
+      },
+      data: {
+        status: "ACTIVE",
+      },
+    });
+
+    return { status: "success", message: "Published" };
+  } catch (error) {
+    console.log(error);
+    return { status: "error", message: "Internal Server Error" };
+  }
+};
 
 export const fetchJobDetails = async ({ id }: { id: string }) => {
   try {

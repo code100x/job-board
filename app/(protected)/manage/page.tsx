@@ -1,7 +1,6 @@
 import { auth } from "@/auth";
 
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/db";
 import { ActiveJobs } from "@/components/active-jobs";
 import { InActiveJobs } from "@/components/inactive-jobs";
 

@@ -39,12 +39,12 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
       salary: "",
       currency: "",
       location: "",
-      state: "",
+      status: "",
     },
   });
 
   const handleFormSubmit = async (values: NewJob) => {
-    const { currency, location, state } = values;
+    const { currency, location, status } = values;
 
     if (currency !== "USD" && currency !== "INR") {
       toast({
@@ -65,7 +65,7 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
       });
       return;
     }
-    if (state !== "ACTIVE" && state !== "INACTIVE") {
+    if (status !== "ACTIVE" && status !== "INACTIVE") {
       toast({
         title: "Please select the state",
         variant: "destructive",
@@ -243,7 +243,7 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
           />
           <FormField
             control={form.control}
-            name="state"
+            name="status"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Publish*</FormLabel>

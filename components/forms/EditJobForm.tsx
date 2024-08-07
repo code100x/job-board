@@ -37,7 +37,7 @@ const EditJobForm = ({ setOpen, id }: NewJobFormProps) => {
     const getJobDetails = async () => {
       const response = await fetchJobDetails({ id });
       if (response.status === "success") {
-        setJobDetails(response.data || null);
+          setJobDetails(response.data || null)
       } else {
         toast({
           title: "Failed to fetch job details",
@@ -58,7 +58,7 @@ const EditJobForm = ({ setOpen, id }: NewJobFormProps) => {
       salary: "",
       currency: "",
       location: "",
-      state: "",
+      status: "",
     },
   });
 
@@ -261,7 +261,7 @@ const EditJobForm = ({ setOpen, id }: NewJobFormProps) => {
           />
           <FormField
             control={form.control}
-            name="state"
+            name="status"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>State*</FormLabel>

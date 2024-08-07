@@ -19,7 +19,7 @@ type JobDisplayProps = {
 const boxVariant = cva("shrink-0 rounded-md p-2", {
   variants: {
     variant: {
-      default: "bg-blue-500/20 hover:bg-blue-500/40",
+      default: "bg-gray-500/20 hover:bg-gray-500/40",
       remote: "bg-emerald-500/20 hover:bg-emerald-500/40",
       hybrid: "bg-rose-500/20 hover:bg-rose-500/40",
     },
@@ -42,7 +42,7 @@ export const JobDisplay = ({ job }: JobDisplayProps) => {
         </div>
         <div
           className={cn(
-            boxVariant({ variant: "remote" }),
+            boxVariant({ variant: "default" }),
             "flex items-center justify-center size-sm"
           )}
         >
@@ -63,52 +63,53 @@ export const JobDisplay = ({ job }: JobDisplayProps) => {
   );
 };
 
-export const JobLoading = () =>{
-  return(<>
-    <Card className="border-none drop-shadow-lg my-4 border-b rounded-md hover:shadow-lg hover:bg-gray-50">
-      <CardHeader className="flex flex-row items-center justify-between gap-x-4">
-      <Skeleton className="h-8 w-48"/>
-      <Skeleton className="h-8 lg:w-[120px] w-full"/>
-      </CardHeader>
-      <CardContent className="flex items-center justify-between">
-        <div className="h-[50px] w-full flex items-center justify-center">
-          <Loader2 className="h-6 w-6 text-slate-300 animate-spin"/>
-        </div>
-      </CardContent>
-    </Card>
-    <Card className="border-none drop-shadow-lg my-4 border-b rounded-md hover:shadow-lg hover:bg-gray-50">
-    <CardHeader className="flex flex-row items-center justify-between gap-x-4">
-    <Skeleton className="h-8 w-48"/>
-    <Skeleton className="h-8 lg:w-[120px] w-full"/>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <div className="h-[50px] w-full flex items-center justify-center">
-        <Loader2 className="h-6 w-6 text-slate-300 animate-spin"/>
-      </div>
-    </CardContent>
-  </Card>
-  <Card className="border-none drop-shadow-lg my-4 border-b rounded-md hover:shadow-lg hover:bg-gray-50">
-    <CardHeader className="flex flex-row items-center justify-between gap-x-4">
-    <Skeleton className="h-8 w-48"/>
-    <Skeleton className="h-8 lg:w-[120px] w-full"/>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <div className="h-[50px] w-full flex items-center justify-center">
-        <Loader2 className="h-6 w-6 text-slate-300 animate-spin"/>
-      </div>
-    </CardContent>
-  </Card>
-  <Card className="border-none drop-shadow-lg my-4 border-b rounded-md hover:shadow-lg hover:bg-gray-50">
-    <CardHeader className="flex flex-row items-center justify-between gap-x-4">
-    <Skeleton className="h-8 w-48"/>
-    <Skeleton className="h-8 lg:w-[120px] w-full"/>
-    </CardHeader>
-    <CardContent className="flex items-center justify-between">
-      <div className="h-[50px] w-full flex items-center justify-center">
-        <Loader2 className="h-6 w-6 text-slate-300 animate-spin"/>
-      </div>
-    </CardContent>
-  </Card>
-  </>
+export const JobLoading = () => {
+  return (
+    <>
+      <Card className="border-none drop-shadow-lg my-4 border-b rounded-md hover:shadow-lg hover:bg-gray-50">
+        <CardHeader className="flex flex-row items-center justify-between gap-x-4">
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-8 lg:w-[120px] w-full" />
+        </CardHeader>
+        <CardContent className="flex items-center justify-between">
+          <div className="h-[50px] w-full flex items-center justify-center">
+            <Loader2 className="h-6 w-6 text-slate-300 animate-spin" />
+          </div>
+        </CardContent>
+      </Card>
+      <Card className="border-none drop-shadow-lg my-4 border-b rounded-md hover:shadow-lg hover:bg-gray-50">
+        <CardHeader className="flex flex-row items-center justify-between gap-x-4">
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-8 lg:w-[120px] w-full" />
+        </CardHeader>
+        <CardContent className="flex items-center justify-between">
+          <div className="h-[50px] w-full flex items-center justify-center">
+            <Loader2 className="h-6 w-6 text-slate-300 animate-spin" />
+          </div>
+        </CardContent>
+      </Card>
+      <Card className="border-none drop-shadow-lg my-4 border-b rounded-md hover:shadow-lg hover:bg-gray-50">
+        <CardHeader className="flex flex-row items-center justify-between gap-x-4">
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-8 lg:w-[120px] w-full" />
+        </CardHeader>
+        <CardContent className="flex items-center justify-between">
+          <div className="h-[50px] w-full flex items-center justify-center">
+            <Loader2 className="h-6 w-6 text-slate-300 animate-spin" />
+          </div>
+        </CardContent>
+      </Card>
+      <Card className="border-none drop-shadow-lg my-4 border-b rounded-md hover:shadow-lg hover:bg-gray-50">
+        <CardHeader className="flex flex-row items-center justify-between gap-x-4">
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-8 lg:w-[120px] w-full" />
+        </CardHeader>
+        <CardContent className="flex items-center justify-between">
+          <div className="h-[50px] w-full flex items-center justify-center">
+            <Loader2 className="h-6 w-6 text-slate-300 animate-spin" />
+          </div>
+        </CardContent>
+      </Card>
+    </>
   );
 };
