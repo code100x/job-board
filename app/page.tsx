@@ -24,8 +24,9 @@ const HomePage = async () => {
             </p>
           </div>
         </section>
-        <Footer />
       </div>
+      \
+      <Footer />
     </main>
   );
 };
