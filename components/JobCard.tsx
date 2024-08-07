@@ -1,6 +1,7 @@
 import { Job } from "@prisma/client";
 import { Banknote, MapPin, SquareArrowOutUpRight } from "lucide-react";
-import {Slider} from "@/components/ui/slider";
+import { Slider } from "@/components/ui/slider";
+import { Button } from "./ui/button";
 
 type JobCardProps = {
   job: Job;
@@ -16,8 +17,8 @@ const JobCard = ({ job }: JobCardProps) => {
       <div className="logo-area p-2 flex-shrink-0">
         <div className="h-20 w-20 bg-gray-100 border border-gray-300 rounded-full"></div>
       </div>
-      <div className="p-2 h-full flex-grow flex flex-col gap-1">
-        <h3 className="text-lg sm:text-xl tracking-tight font-semibold text-gray-700">
+      <div className="p-2 h-full flex-grow flex flex-col gap-4">
+        <h3 className="text-lg sm:text-xl tracking-tight font-semibold text-black">
           {title}
         </h3>
         <h4 className="text-sm sm:text-base tracking-tight font-semibold text-gray-500">
@@ -43,8 +44,8 @@ const JobCard = ({ job }: JobCardProps) => {
               <SquareArrowOutUpRight size={14} />
             </span>
           </p>
-
         </div>
+        <Button style={{ width: "max-content" }}>Apply Now</Button>
       </div>
     </div>
   );
