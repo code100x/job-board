@@ -1,99 +1,177 @@
 "use client";
+import { loginUser } from "@/actions/user";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useToast } from "../ui/use-toast";
-import { FormEvent, useState } from "react";
-import { loginUser } from "@/actions/user";
+import { GoogleIcon } from "@/icons/GoogleIcon";
+import { LoginUser, userLoginSchema } from "@/zod/user";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "../ui/form";
+import { useToast } from "../ui/use-toast";
 
 const LoginForm = () => {
-  const { toast } = useToast();
-  const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+	const { toast } = useToast();
+	const router = useRouter();
+	const [isLoading, setIsLoading] = useState(false);
+	const [showPassword, setShowPassword] = useState(false);
 
-  const handleClick = async (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-    setIsLoading(true);
-    if (!email || email === "") {
-      toast({
-        title: "Email cannot be empty!",
-        variant: "destructive",
-      });
-      setIsLoading(false);
-      return;
-    }
+	const togglePasswordVisibility = () => {
+		setShowPassword(!showPassword);
+	};
 
-    if (!password || password === "") {
-      toast({
-        title: "Email cannot be empty!",
-        variant: "destructive",
-      });
-      setIsLoading(false);
-      return;
-    }
+	const form = useForm<LoginUser>({
+		resolver: zodResolver(userLoginSchema),
+		defaultValues: {
+			email: "",
+			password: "",
+		},
+	});
 
-    const credentials = { email, password };
-    const response = await loginUser(credentials);
+	const handleFormSubmit = async (values: LoginUser) => {
+		setIsLoading(true);
+		const response = await loginUser(values);
+		if (response?.status !== "success") {
+			toast({
+				title: response.message,
+				variant: "destructive",
+			});
+			setIsLoading(false);
+			return;
+		}
+		toast({
+			title: response.message,
+			variant: "default",
+		});
+		router.push("/jobs");
+		setIsLoading(false);
+	};
 
-    if (response?.status !== "success") {
-      toast({
-        title: response.message,
-        variant: "destructive",
-      });
-      setIsLoading(false);
-      return;
-    }
+	return (
+		<Form {...form}>
+			<div className="h-fit p-8 bg-white flex flex-col items-start gap-8 rounded-xl shadow-lg border-t border-gray-200">
+				<div className="w-full flex flex-col justify-center items-center gap-3">
+					<h3 className="text-3xl bg-gradient-to-r from-indigo-600 via-violet-500 to-blue-700 bg-clip-text text-transparent font-black">
+						100xJobs
+					</h3>
+					<div className="flex flex-col gap-1 justify-center items-center">
+						<h4 className="text-lg font-medium">Welcome Back</h4>
+						<p className="text-sm text-gray-500 font-medium">
+							Please enter your details to sign in
+						</p>
+					</div>
+				</div>
 
-    toast({
-      title: response.message,
-      variant: "default",
-    });
-    router.push("/jobs");
-    setIsLoading(false);
-  };
+				<form
+					className="h-full flex flex-col justify-center items-center gap-5"
+					onSubmit={form.handleSubmit(handleFormSubmit)}
+				>
+					<FormField
+						control={form.control}
+						name="email"
+						render={({ field }) => (
+							<FormItem className="w-64">
+								<FormLabel className="text-sm font-semibold text-gray-800">
+									Email *
+								</FormLabel>
+								<FormControl>
+									<Input
+										{...field}
+										className="border-gray-400"
+										placeholder="Enter your email here"
+									/>
+								</FormControl>
+								<FormMessage className="text-sm" />
+							</FormItem>
+						)}
+					/>
 
-  return (
-    <div className="h-fit p-4 bg-white flex flex-col items-start gap-8 rounded-md shadow-lg border-t border-gray-200">
-      <h3 className="max-w-64 flex-wrap text-lg text-gray-700 tracking-tight">
-        Login with your 100xdevs to continue.
-      </h3>
+					<FormField
+						control={form.control}
+						name="password"
+						render={({ field }) => (
+							<FormItem className="w-64">
+								<FormLabel className="text-sm font-semibold text-gray-800">
+									Password *
+								</FormLabel>
+								<FormControl>
+									<Input
+										type={
+											showPassword ? "text" : "password"
+										}
+										{...field}
+										className="border-gray-400"
+										placeholder="Enter password here"
+									/>
+								</FormControl>
+								<div className="flex relative justify-center items-center">
+									<div className="absolute right-2 transform -translate-y-[110%]">
+										{showPassword ? (
+											<Eye
+												className="w-6 h-6 text-gray-400 cursor-pointer"
+												onClick={
+													togglePasswordVisibility
+												}
+											/>
+										) : (
+											<EyeOff
+												className="w-6 h-6 text-gray-400 cursor-pointer"
+												onClick={
+													togglePasswordVisibility
+												}
+											/>
+										)}
+									</div>
+								</div>
+								<FormMessage className="text-sm" />
+							</FormItem>
+						)}
+					/>
 
-      <form
-        className="h-full flex flex-col items-center gap-3"
-        onSubmit={(evt) => handleClick(evt)}
-      >
-        <Input
-          value={email}
-          onChange={(evt) => setEmail(evt.target.value)}
-          placeholder="Email"
-          className="w-64 border-gray-400 outline-none text-gray-800"
-        />
-
-        <Input
-          type="password"
-          value={password}
-          onChange={(evt) => setPassword(evt.target.value)}
-          placeholder="Password"
-          className="w-64 border-gray-400 outline-none text-gray-800"
-        />
-
-        <Button
-          disabled={isLoading}
-          type="submit"
-          className="w-full flex justify-center items-center rounded-lg"
-        >
-          {isLoading ? (
-            <Loader2 size={20} className="animate-spin " />
-          ) : (
-            "Sign In"
-          )}
-        </Button>
-      </form>
-    </div>
-  );
+					<Button
+						disabled={isLoading}
+						type="submit"
+						className="w-full flex justify-center items-center rounded-lg"
+					>
+						{isLoading ? (
+							<Loader2
+								size={20}
+								className="animate-spin "
+							/>
+						) : (
+							"Sign In"
+						)}
+					</Button>
+					<div className="flex px-2 sm:px-0 items-center gap-3 self-stretch">
+						<div className="w-full h-[1px] bg-gray-300"></div>
+						<p className="text-sm font-normal text-gray-700 min-w-fit">
+							Or continue with
+						</p>
+						<div className="w-full h-[1px] bg-gray-300"></div>
+					</div>
+					<Button
+						type="submit"
+						className="w-full flex justify-center items-center rounded-lg"
+						variant="outline"
+						onClick={() => signIn()}
+					>
+						<GoogleIcon />
+						Sign in with Google
+					</Button>
+				</form>
+			</div>
+		</Form>
+	);
 };
 
 export default LoginForm;

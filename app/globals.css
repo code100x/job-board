@@ -5,3 +5,7 @@
 .jobs::-webkit-scrollbar {
     width: 0;
 }
+
+.goolge-icon {
+    margin-right: 10px;
+}
