@@ -1,7 +1,10 @@
 import { auth } from "@/auth";
+import FeatureCardsContainer from "@/components/FeatureCardsContainer";
 import Footer from "@/components/Footer";
+import GettingStartedcard from "@/components/GettingStartedcard";
 import GithubBadge from "@/components/GithubBadge";
 import { SiteHeader } from "@/components/SiteHeader";
+import TrustedCompanies from "@/components/TrustedCompanies";
 
 const HomePage = () => {
   return (
@@ -22,6 +25,9 @@ const HomePage = () => {
             </p>
           </div>
         </section>
+        <FeatureCardsContainer/>
+        <TrustedCompanies/>
+        <GettingStartedcard/>
         <Footer />
       </div>
     </main>
