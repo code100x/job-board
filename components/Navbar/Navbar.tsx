@@ -4,18 +4,30 @@ import { logOutUser } from "@/actions/user";
 import { Session } from "next-auth";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import {Button} from "@/components/ui/button";
-import {toast} from "@/components/ui/use-toast";
+import { Button } from "@/components/ui/button";
+import { toast } from "@/components/ui/use-toast";
 import {
   DropdownMenu,
-  DropdownMenuContent, DropdownMenuItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import UserImage from "@/components/UserImage";
-import {LogOut, UserRound} from "lucide-react";
-import {signOut} from "next-auth/react";
+import { LogOut, UserRound } from "lucide-react";
+import { signOut } from "next-auth/react";
 
 type NavbarProps = {
   session: Session | null;
@@ -97,70 +109,97 @@ const Navbar = ({ session }: NavbarProps) => {
       </div>
 
       {session && session?.user && (
-          <DropdownMenu>
-            <DropdownMenuTrigger className="w-[2rem] flex items-center p-[0.2rem]  justify-center h-[2rem]">
-              {!session?.user.image ? (
-                  <div className="p-1 border-2 rounded-md">
+        <DropdownMenu>
+          <DropdownMenuTrigger className="w-[2rem] flex items-center p-[0.2rem]  justify-center h-[2rem]">
+            {!session?.user.image ? (
+              <div className="p-1 border-2 rounded-md">
+                <UserRound />
+              </div>
+            ) : (
+              <UserImage image={session?.user.image} />
+            )}
+          </DropdownMenuTrigger>
+
+          <DropdownMenuContent className="!w-[15rem] dark:shadow-[#030712] translate-y-8 scale-110 -translate-x-10 shadow-lg bg-white">
+            <DropdownMenuLabel className="flex gap-4 items-center">
+              <div className="!w-[2rem] flex items-center p-[0.2rem]  justify-center !h-[2rem]">
+                {!session?.user.image ? (
+                  <div className="p-1 border-2 rounded-full border-[#1a1a1a]">
                     <UserRound />
                   </div>
-              ) : (
+                ) : (
                   <UserImage image={session?.user.image} />
-              )}
-            </DropdownMenuTrigger>
+                )}
+              </div>
 
-            <DropdownMenuContent className="!w-[15rem] dark:shadow-[#030712] translate-y-8 scale-110 -translate-x-10 shadow-lg bg-white">
-              <DropdownMenuLabel className="flex gap-4 items-center">
-                <div className="!w-[2rem] flex items-center p-[0.2rem]  justify-center !h-[2rem]">
-                  {!session?.user.image ? (
-                      <div className="p-1 border-2 rounded-full border-[#1a1a1a]">
-                        <UserRound />
-                      </div>
-                  ) : (
-                      <UserImage image={session?.user.image} />
-                  )}
-                </div>
+              <div className="flex flex-col">
+                <span className="max-w-[200px]">{session?.user?.name}</span>
+                <span className="text-[0.8rem] max-w-[200px] text-gray-400">
+                  {session?.user?.email}
+                </span>
+              </div>
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
 
-                <div className="flex flex-col">
-                  <span className="max-w-[200px]">{session?.user?.name}</span>
-                  <span className="text-[0.8rem] max-w-[200px] text-gray-400">
-                    {session?.user?.email}
-                  </span>
-                </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-
-              {dropDownData.map((item, index) => {
-                return (
-                    <DropdownMenuItem
-                        className="flex gap-2 focus:border-gray-500 cursor-pointer"
-                        onClick={() => router.push("/profile")}
-                        key={index}
-                    >
-                      <span>{item.icon}</span>
-                      <span>{item.name}</span>
-                    </DropdownMenuItem>
-                );
-              })}
-              <DropdownMenuSeparator />
-              {session?.user && (
-                  <DropdownMenuItem
+            {dropDownData.map((item, index) => {
+              return (
+                <DropdownMenuItem
+                  className="flex gap-2 focus:border-gray-500 cursor-pointer"
+                  onClick={() => router.push("/profile")}
+                  key={index}
+                >
+                  <span>{item.icon}</span>
+                  <span>{item.name}</span>
+                </DropdownMenuItem>
+              );
+            })}
+            <DropdownMenuSeparator />
+            {session?.user && (
+              <AlertDialog
+              // onOpenChange={() => {
+              //   setTimeout(
+              //     () => (document.body.style.pointerEvents = ""),
+              //     100
+              //   );
+              // }}
+              >
+                <AlertDialogTrigger asChild>
+                  <Button variant="destructive" className="my-2 mx-3">
+                    Logout
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Confirm Logout</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Are you sure you want to log out? You will need to log in
+                      again to access your account.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
                       onClick={async () => {
-                        await signOut();
+                        await handleSignOut();
                         router.push("/");
                       }}
-                      className="flex gap-2 cursor-pointer"
-                  >
-                    <LogOut size={15} />
-                    Logout
-                  </DropdownMenuItem>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
+                    >
+                      <div className="flex gap-2">
+                        <LogOut />
+                        Logout
+                      </div>
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
       )}
       {!session && (
-          <Link href="/login">
-            <Button className="font-medium">Join Now</Button>
-          </Link>
+        <Link href="/login">
+          <Button className="font-medium">Join Now</Button>
+        </Link>
       )}
     </nav>
   );
