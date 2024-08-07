@@ -28,6 +28,47 @@ async function main() {
     skipDuplicates: true,
   });
   console.log(users, "Users created");
+
+  const adminUser = await prisma.user.findUnique({
+    where: { email: "admin@gmail.com" },
+  });
+
+  // Check if Admin user exists
+  if (adminUser) {
+    const adminUserId = adminUser.id;
+
+    // Create job entries with the Admin user ID
+    const jobs = await prisma.job.createMany({
+      data: [
+        {
+          userId: adminUserId,
+          title: "Software Engineer",
+          description: "Develop and maintain software solutions.",
+          companyName: "Tech Corp",
+          salary: "100000",
+          currency: "USD",
+          location: "New York",
+          state: "NY",
+          country: "USA",
+        },
+        {
+          userId: adminUserId,
+          title: "Product Manager",
+          description: "Lead the product team and define product strategy.",
+          companyName: "Innovate Ltd",
+          salary: "120000",
+          currency: "USD",
+          location: "San Francisco",
+          state: "CA",
+          country: "USA",
+        },
+      ],
+    });
+    console.log(jobs, "Jobs created");
+  } else {
+    console.log("Admin user not found");
+  }
+  
 }
 main()
   .then(async () => {
