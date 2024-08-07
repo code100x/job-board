@@ -5,7 +5,7 @@ services:
       target: development # Change this to production for prod builds (WIP)
     container_name: job-board-app
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/job-board-db
+      - DATABASE_URL=$DATABASE_URL
       - AUTH_SECRET=$AUTH_SECRET
     ports:
       - '3000:3000'

@@ -47,6 +47,7 @@ Follow these steps to set up the repository locally and run it.
 
    ```bash
    AUTH_SECRET="MY_SECRET_KEY"
+   DATABASE_URL=postgres://********
    ```
 
 2. To generate AUTH_SECRET, 
