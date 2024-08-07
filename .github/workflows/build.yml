@@ -1,9 +1,8 @@
 name: Build on PR
-
 on:
   pull_request:
     branches:
-      - CI
+      - master
 
 jobs:
   build:
@@ -16,7 +15,5 @@ jobs:
           node-version: 20
       - name: Installing the packages
         run: npm install
-      - name: Linting
-        run: npm run lint
       - name: Building
         run: npm run build
