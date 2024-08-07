@@ -47,7 +47,7 @@ const Navbar = ({ session }: NavbarProps) => {
   return (
     <nav className="w-3/6 flex items-center justify-between h-14 border-t shadow border-gray-150 rounded-lg px-3 transition-all backdrop-blur-lg bg-background/50">
       <div className="flex justify-center items-center gap-10">
-        <h3 className="text-xl bg-gradient-to-r from-indigo-600 via-violet-500 to-blue-700 bg-clip-text text-transparent font-black">
+        <h3 className="text-xl bg-gradient-to-r from-indigo-600 via-violet-500 to-blue-700 bg-clip-text text-transparent font-black hidden md:block">
           100xJobs
         </h3>
 

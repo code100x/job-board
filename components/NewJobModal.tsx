@@ -18,7 +18,7 @@ const NewJobModal = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <h3 className="text-2xl bg-gradient-to-r from-indigo-600 via-violet-500 to-blue-700 bg-clip-text text-transparent font-black hover:cursor-pointer">
+        <h3 className="text-sm lg:text-3xl bg-gradient-to-r from-indigo-600 via-violet-500 to-blue-700 bg-clip-text text-transparent font-black hover:cursor-pointer ">
           Create Job
         </h3>
       </DialogTrigger>

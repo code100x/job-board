@@ -246,7 +246,7 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
             name="state"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>State*</FormLabel>
+                <FormLabel>Publish*</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
