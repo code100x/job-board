@@ -14,8 +14,10 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import UserImage from "@/components/UserImage";
-import {LogOut, UserRound} from "lucide-react";
+import {Icon, LogOut, UserRound} from "lucide-react";
 import {signOut} from "next-auth/react";
+import { Icons } from "../Icons";
+import { useTheme } from "next-themes";
 
 type NavbarProps = {
   session: Session | null;
@@ -24,6 +26,7 @@ type NavbarProps = {
 const Navbar = ({ session }: NavbarProps) => {
   const router = useRouter();
   const pathName = usePathname();
+  const { theme, setTheme } = useTheme()
 
   const navItems = [
     {
@@ -66,9 +69,9 @@ const Navbar = ({ session }: NavbarProps) => {
   const userRole = session?.user.role;
 
   return (
-    <nav className="w-full flex items-center justify-between h-14 border-t shadow border-gray-150 rounded-lg px-2 transition-all backdrop-blur-lg bg-background/50">
+    <nav className="w-full flex items-center justify-between h-14 border shadow-[0 0 10px hsl(var(--blue) / 1)] border-secondary/60 rounded-lg px-2 transition-all backdrop-blur-lg bg-background">
       <div className="flex justify-center items-center gap-10 ml-2">
-        <h3 className="animate-text-gradient text-xl font-bold inline-flex bg-gradient-to-r from-neutral-900 via-slate-500 to-neutral-500 bg-[200%_auto] bg-clip-text leading-tight text-transparent dark:from-neutral-100 dark:via-slate-400 dark:to-neutral-400">
+        <h3 className="animate-text-gradient text-xl font-bold inline-flex bg-gradient-to-r from-neutral-900 via-slate-500 to-neutral-500 bg-[200%_auto] bg-clip-text leading-tight text-transparent dark:from-neutral-100 dark:via-slate-600 dark:to-neutral-400">
           100xJobs
         </h3>
       </div>
@@ -78,8 +81,9 @@ const Navbar = ({ session }: NavbarProps) => {
           return (
             <Link key={item.name} href={item.route}>
               <p
-                className={cn("cursor-pointer hover:text-gray-900 hover:underline", {
-                  "text-gray-900": pathName === item.route,
+                className={cn("cursor-pointer", {
+                  "text-foreground": pathName === item.route,
+                  "hover:text-foreground hover:underline": pathName != item.route
                 })}
               >
                 {item.name}
@@ -161,11 +165,39 @@ const Navbar = ({ session }: NavbarProps) => {
             </DropdownMenuContent>
           </DropdownMenu>
       )}
-      {!session && (
-          <Link href="/login">
-            <Button size={'sm'} className="font-medium">Join Now</Button>
-          </Link>
-      )}
+      <div className="flex justify-center items-center gap-4">
+        {/* {
+          theme === 'light' ?
+          <Icons.moon onClick={() => setTheme("dark")} className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          :
+          <Icons.sun onClick={() => setTheme("light")} className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+        } */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <Icons.sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+              <Icons.moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              <span className="sr-only">Toggle theme</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => setTheme("light")}>
+              Light
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme("dark")}>
+              Dark
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme("system")}>
+              System
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        {!session && (
+            <Link href="/login">
+              <Button size={'sm'} className="font-medium">Join Now</Button>
+            </Link>
+        )}
+      </div>
     </nav>
   );
 };
