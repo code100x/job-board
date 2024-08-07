@@ -1,11 +1,15 @@
 import { Job } from "@prisma/client";
 import { Banknote, MapPin, SquareArrowOutUpRight } from "lucide-react";
+
 import { useRouter } from "next/navigation";
+
+import {Slider} from "@/components/ui/slider";
 type JobCardProps = {
   job: Job;
 };
 
 const JobCard = ({ job }: JobCardProps) => {
+
   const { id,title, description, companyName, salary, currency, location } = job;
   const currencySign = currency === "USD" ? "$" : "₹";
 
@@ -18,6 +22,12 @@ const JobCard = ({ job }: JobCardProps) => {
     router.push(`/jobs/job-details/${id}`);
   };
  
+
+  const { title, description, companyName, salary, currency, location } = job;
+
+  const currencySign = currency === "USD" ? "$" : "₹";
+
+
   return (
     <div  onClick={handleCardClick}  className="cursor-pointer max-w-full mx-auto h-fit w-full flex flex-col sm:flex-row items-start gap-4 border border-gray-200 hover:border-gray-300 transition-all shadow-sm rounded-md px-4 py-3">
       <div className="logo-area p-2 flex-shrink-0">
@@ -44,12 +54,15 @@ const JobCard = ({ job }: JobCardProps) => {
               {location}
             </h4>
           </span>
+
           <p onClick={handleCardClick} className="flex gap-2 items-center cursor-pointer hover:underline mt-2 sm:mt-0">
             View details{" "}
+
             <span>
               <SquareArrowOutUpRight size={14} />
             </span>
           </p>
+
         </div>
       </div>
     </div>
