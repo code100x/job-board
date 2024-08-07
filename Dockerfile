@@ -1,31 +1,38 @@
-# Use an official Node runtime as the base image
+
+#Pull the base image
 FROM node:20-alpine
 
-# Set the working directory in the container
+# Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Copy the package.json files
 COPY package*.json ./
 
+# Copy the prisma folder
 COPY prisma ./prisma/
 
-# Install dependencies
+# Install the dependencies
 RUN npm install
 
-# Copy the rest of the application code
-COPY . .
-
-# Generate Prisma client
+# Generate the prisma client
 RUN npx prisma generate
 
-# Build the Next.js application
+#Copy the rest of the files
+COPY . .
+
+# Build the app
 RUN npm run build
 
-# Add Prisma CLI and ts-node to the PATH
+# Set the environment variables
 ENV PATH /app/node_modules/.bin:$PATH
 
-# Expose the port the app runs on
+# Push the database
+RUN npx prisma db push
+RUN npx prisma db seed
+
+# Expose the port
 EXPOSE 3000
 
-# The command will be overridden by docker-compose
-CMD ["npm", "run", "start"]
+# Start the app
+CMD ["npm", "run", "dev"]
+

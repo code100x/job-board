@@ -92,3 +92,42 @@ Now, you can run the project and make changes as needed.
       Password: "123456" 
    ```
 
+## Running the Project in Docker Way
+1. Clone the repository and navigate to the project directory:
+
+   ```bash
+   git clone https://github.com/code100x/job-board/
+   cd job-board
+   ```
+
+## Configuration
+
+1. Create a `.env` file in the root folder of your project. Update it following the convention of the `.env.example` file. Here's an example:
+
+   ```bash
+   DATABASE_URL=postgres://********
+   AUTH_SECRET="MY_SECRET_KEY"
+   ```
+
+   To generate AUTH_SECRET, run this command in your terminal:
+
+   ```bash
+   openssl rand -base64 33
+   ```
+
+## Running the Project
+
+1. Build the Image:
+
+    ```bash
+   docker build -t job-board .
+    ```
+
+2. Start the Instance of the Image:
+
+    ```bash
+    docker run -e DATABASE_URL="" -e AUTH_SECRET="" -p 3000:3000 job-board
+    ```
+
+Now, you can run the project and make changes as needed.
+
