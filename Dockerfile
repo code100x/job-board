@@ -1,3 +1,4 @@
+
 #Pull the base image
 FROM node:20-alpine
 
@@ -34,3 +35,4 @@ EXPOSE 3000
 
 # Start the app
 CMD ["npm", "run", "dev"]
+
