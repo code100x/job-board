@@ -1,26 +1,25 @@
 import { Job } from "@prisma/client";
 import { Banknote, MapPin, SquareArrowOutUpRight } from "lucide-react";
-import { useState } from "react";
-import JobDetailModal from "./JobDetailModal";
-
+import { useRouter } from "next/navigation";
 type JobCardProps = {
   job: Job;
 };
 
 const JobCard = ({ job }: JobCardProps) => {
-  const { title, description, companyName, salary, currency, location } = job;
+  const { id,title, description, companyName, salary, currency, location } = job;
   const currencySign = currency === "USD" ? "$" : "₹";
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
 
-  const handleModalOpen = () => {
-   
-    setIsModalOpen(true);
+  
+  const router = useRouter();
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    router.push(`/jobs/job-details/${id}`);
   };
-
-
+ 
   return (
-    <div className="max-w-full mx-auto h-fit w-full flex flex-col sm:flex-row items-start gap-4 border border-gray-200 hover:border-gray-300 transition-all shadow-sm rounded-md px-4 py-3">
+    <div  onClick={handleCardClick}  className="cursor-pointer max-w-full mx-auto h-fit w-full flex flex-col sm:flex-row items-start gap-4 border border-gray-200 hover:border-gray-300 transition-all shadow-sm rounded-md px-4 py-3">
       <div className="logo-area p-2 flex-shrink-0">
         <div className="h-20 w-20 bg-gray-100 border border-gray-300 rounded-full"></div>
       </div>
@@ -45,7 +44,7 @@ const JobCard = ({ job }: JobCardProps) => {
               {location}
             </h4>
           </span>
-          <p onClick={handleModalOpen} className="flex gap-2 items-center cursor-pointer hover:underline mt-2 sm:mt-0">
+          <p onClick={handleCardClick} className="flex gap-2 items-center cursor-pointer hover:underline mt-2 sm:mt-0">
             View details{" "}
             <span>
               <SquareArrowOutUpRight size={14} />
@@ -53,7 +52,6 @@ const JobCard = ({ job }: JobCardProps) => {
           </p>
         </div>
       </div>
-      <JobDetailModal job={job} isOpen={isModalOpen} onClose={setIsModalOpen} />
     </div>
   );
 };
