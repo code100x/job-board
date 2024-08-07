@@ -1,38 +1,31 @@
-
-#Pull the base image
-FROM node:20-alpine
-
-# Set the working directory
-WORKDIR /app
-
-# Copy the package.json files
+FROM node:20-alpine AS base
+WORKDIR /usr/src/app
 COPY package*.json ./
+COPY ./prisma ./prisma
+RUN npm install && npx prisma generate
 
-# Copy the prisma folder
-COPY prisma ./prisma/
-
-# Install the dependencies
-RUN npm install
-
-# Generate the prisma client
-RUN npx prisma generate
-
-#Copy the rest of the files
+FROM node:20-alpine AS development
+WORKDIR /usr/src/app
 COPY . .
+COPY --from=base /usr/src/app/node_modules ./node_modules
+CMD ["npm", "run", "dev:docker"]
 
-# Build the app
-RUN npm run build
+# WIP
+FROM node:20-alpine AS build
+ARG DATABASE_URL
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN DATABASE_URL=$DATABASE_URL npx prisma generate
+RUN DATABASE_URL=$DATABASE_URL npm run build
 
-# Set the environment variables
-ENV PATH /app/node_modules/.bin:$PATH
+FROM node:20-alpine AS production
+WORKDIR /usr/src/app
+COPY --from=build /usr/src/app/.next ./.next
+COPY --from=build /usr/src/app/node_modules ./node_modules
+COPY --from=build /usr/src/app/public ./public
+COPY --from=build /usr/src/app/package.json ./package.json
+CMD ["npm", "run", "start"]
 
-# Push the database
-RUN npx prisma db push
-RUN npx prisma db seed
-
-# Expose the port
 EXPOSE 3000
-
-# Start the app
-CMD ["npm", "run", "dev"]
-
