@@ -13,7 +13,7 @@ export async function SiteHeader() {
       </div>
 
       {/* MobileNav visible on screens smaller than 'sm' */}
-      <div className="sm:hidden absolute inset-x-0  transform -translate-y-1/2 flex justify-between px-4">
+      <div className="sm:hidden absolute inset-x-0 transform -translate-y-1/2 flex justify-between px-4 mt-14">
         <h3 className="text-xl bg-gradient-to-r from-indigo-600 via-violet-500 to-blue-700 bg-clip-text text-transparent font-black">
           100xJobs
         </h3>
