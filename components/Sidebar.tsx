@@ -59,6 +59,7 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
       salRange: value,
     });
   };
+
   const fetchJobs = async () => {
     setLoading(true);
     //@ts-ignore
@@ -71,7 +72,6 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
   };
 
   useEffect(() => {
-   
     fetchJobs();
   }, [filters]);
 

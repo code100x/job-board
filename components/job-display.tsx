@@ -110,6 +110,17 @@ export const JobLoading = () => {
           </div>
         </CardContent>
       </Card>
+      <Card className="border-none drop-shadow-lg my-4 border-b rounded-md hover:shadow-lg hover:bg-gray-50">
+        <CardHeader className="flex flex-row items-center justify-between gap-x-4">
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-8 lg:w-[120px] w-full" />
+        </CardHeader>
+        <CardContent className="flex items-center justify-between">
+          <div className="h-[50px] w-full flex items-center justify-center">
+            <Loader2 className="h-6 w-6 text-slate-300 animate-spin" />
+          </div>
+        </CardContent>
+      </Card>
     </>
   );
 };
