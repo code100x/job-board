@@ -44,17 +44,8 @@ const MobileNav = ({ session }: NavbarProps) => {
           <span className="sr-only">Toggle Theme</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="right">
-        <MobileLink
-          onOpenChange={setOpen}
-          href="/"
-          className="flex items-center"
-        >
-          <h3 className="text-xl bg-gradient-to-r from-indigo-600 via-violet-500 to-blue-700 bg-clip-text text-transparent font-black">
-            100xJobs
-          </h3>{" "}
-        </MobileLink>
-        <div className="flex flex-col gap-3 mt-10 text-lg">
+      <SheetContent side="right" className="flex flex-col justify-start gap-8 p-4">
+        <div className="flex flex-col gap-1 text-md mt-8">
           <MobileLink onOpenChange={setOpen} href="/">
             Home
           </MobileLink>
@@ -64,7 +55,7 @@ const MobileNav = ({ session }: NavbarProps) => {
           {userRole === "ADMIN" ? (
             <Link href="/jobs/manage">
               <p
-                className={cn("cursor-pointer hover:text-green-600", {
+                className={cn("cursor-pointer", {
                   "text-gray-900": pathName === "/jobs/manage",
                 })}
               >
@@ -72,8 +63,8 @@ const MobileNav = ({ session }: NavbarProps) => {
               </p>
             </Link>
           ) : null}
-
-          {!session ? (
+        </div>
+        {!session ? (
             <Link href="/login">
               <Button className="font-medium">Join Now</Button>
             </Link>
@@ -86,7 +77,6 @@ const MobileNav = ({ session }: NavbarProps) => {
               Sign Out
             </Button>
           )}
-        </div>
       </SheetContent>
     </Sheet>
   );
@@ -114,7 +104,7 @@ function MobileLink({
         onOpenChange?.(false);
       }}
       className={cn(
-        `text-black hover:text-green-600 transition duration-300 mb-5 ${className}`
+        `text-black transition duration-300 mb-0 hover:bg-slate-100 p-2 pl-4 rounded-sm ${className}`
       )}
       {...props}
     >

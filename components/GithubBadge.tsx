@@ -1,10 +1,28 @@
+import { Icons } from "./Icons";
+
 const GithubBadge = () => {
   return (
-    <a href="https://github.com/code100x/job-board" target="_blank">
-      <div className="shadow-md cursor-pointer tracking-tight font-medium group mx-auto flex max-w-fit items-center justify-center space-x-2 overflow-hidden rounded-full border-2 bg-black hover:bg-black/90 px-7 py-1 border-black/20 hover:border-black text-white">
-        <p>✨ Star us on Github</p>
-      </div>
-    </a>
+    <div className="mb-6 flex">
+      <a
+        href="https://github.com/Harit007x/job-board"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex"
+      >
+        <span className="relative inline-block overflow-hidden rounded-full p-[1px]">
+          <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#a9a9a9_0%,#0c0c0c_50%,#a9a9a9_100%)] dark:bg-[conic-gradient(from_90deg_at_50%_50%,#171717_0%,#737373_50%,#171717_100%)]" />
+          <div className="inline-flex h-full w-full cursor-pointer justify-center rounded-full bg-white px-3 py-1 text-xs font-medium leading-5 text-slate-600 backdrop-blur-xl dark:bg-black dark:text-slate-200">
+            ✨ Star us on Github
+            <span className="inline-flex items-center pl-2 text-black dark:text-white">
+              <Icons.arrowRight
+                className="pl-0.5 text-black dark:text-white"
+                size={16}
+              />
+            </span>
+          </div>
+        </span>
+      </a>
+    </div>
   );
 };
 

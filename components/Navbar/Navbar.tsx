@@ -31,8 +31,12 @@ const Navbar = ({ session }: NavbarProps) => {
       route: "/",
     },
     {
-      name: "Explore",
+      name: "Jobs",
       route: "/jobs",
+    },
+    {
+      name: "Contact Us",
+      route: "/contact-us",
     },
   ];
 
@@ -62,38 +66,38 @@ const Navbar = ({ session }: NavbarProps) => {
   const userRole = session?.user.role;
 
   return (
-    <nav className="w-3/6 flex items-center justify-between h-14 border-t shadow border-gray-150 rounded-lg px-3 transition-all backdrop-blur-lg bg-background/50">
-      <div className="flex justify-center items-center gap-10">
-        <h3 className="text-xl bg-gradient-to-r from-indigo-600 via-violet-500 to-blue-700 bg-clip-text text-transparent font-black">
+    <nav className="w-full flex items-center justify-between h-14 border-t shadow border-gray-150 rounded-lg px-2 transition-all backdrop-blur-lg bg-background/50">
+      <div className="flex justify-center items-center gap-10 ml-2">
+        <h3 className="animate-text-gradient text-xl font-bold inline-flex bg-gradient-to-r from-neutral-900 via-slate-500 to-neutral-500 bg-[200%_auto] bg-clip-text leading-tight text-transparent dark:from-neutral-100 dark:via-slate-400 dark:to-neutral-400">
           100xJobs
         </h3>
+      </div>
 
-        <div className="flex justify-center items-center gap-5 text-gray-500 font-semibold tracking-tighter">
-          {navItems.map((item) => {
-            return (
-              <Link key={item.name} href={item.route}>
-                <p
-                  className={cn("cursor-pointer hover:text-gray-900", {
-                    "text-gray-900": pathName === item.route,
-                  })}
-                >
-                  {item.name}
-                </p>
-              </Link>
-            );
-          })}
-          {userRole === "ADMIN" ? (
-            <Link href="/jobs/manage">
+      <div className=" border border-secondary rounded-full flex items-center p-2 px-4 text-sm justify-center w-fit items-center gap-5 text-gray-500 font-semibold tracking-tighter">
+        {navItems.map((item) => {
+          return (
+            <Link key={item.name} href={item.route}>
               <p
-                className={cn("cursor-pointer hover:text-gray-900", {
-                  "text-gray-900": pathName === "/jobs/manage",
+                className={cn("cursor-pointer hover:text-gray-900 hover:underline", {
+                  "text-gray-900": pathName === item.route,
                 })}
               >
-                Manage
+                {item.name}
               </p>
             </Link>
-          ) : null}
-        </div>
+          );
+        })}
+        {userRole === "ADMIN" ? (
+          <Link href="/jobs/manage">
+            <p
+              className={cn("cursor-pointer hover:text-gray-900 hover:underline", {
+                "text-gray-900": pathName === "/jobs/manage",
+              })}
+            >
+              Manage
+            </p>
+          </Link>
+        ) : null}
       </div>
 
       {session && session?.user && (
@@ -159,7 +163,7 @@ const Navbar = ({ session }: NavbarProps) => {
       )}
       {!session && (
           <Link href="/login">
-            <Button className="font-medium">Join Now</Button>
+            <Button size={'sm'} className="font-medium">Join Now</Button>
           </Link>
       )}
     </nav>
