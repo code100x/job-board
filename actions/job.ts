@@ -36,9 +36,12 @@ export const createJob = async (data: NewJob): Promise<SAPayload> => {
 
 const GetJobSchema = z.object({
   title: z.string().optional().default(""),
-  companyName: z.string().min(5, {
-    message: "Company Name must be at least 5 characters long.",
-  }).optional(),
+  companyName: z
+    .string()
+    .min(5, {
+      message: "Company Name must be at least 5 characters long.",
+    })
+    .optional(),
   location: z.string().optional().default(""),
   currency: z.enum(["INR", "USD"]).optional(),
   salRange: z.array(z.number()).optional().default([0, 1000000]),
@@ -59,15 +62,21 @@ export const getJobs = async (data: GetJobSchemaType) => {
     const jobs = await prisma.job.findMany({
       where: {
         ...(title && { title: { contains: title, mode: "insensitive" } }),
-        ...(companyName && { companyName: { contains: companyName, mode: "insensitive" } }),
-        ...(location && { location: { contains: location, mode: "insensitive" } }),
+        ...(companyName && {
+          companyName: { contains: companyName, mode: "insensitive" },
+        }),
+        ...(location && {
+          location: { contains: location, mode: "insensitive" },
+        }),
         ...(currency && { currency }),
       },
     });
 
     const filteredJobs = jobs.filter((job) => {
       const salary = parseFloat(job.salary);
-      return !isNaN(salary) && salary >= salRange[0] && salary <= salRange[1];
+      return salRange !== undefined
+        ? !isNaN(salary) && salary >= salRange[0] && salary <= salRange[1]
+        : true;
     });
 
     return { status: "success", data: filteredJobs };
