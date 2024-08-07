@@ -1,6 +1,7 @@
 import { Job } from "@prisma/client";
 import { Banknote, MapPin, SquareArrowOutUpRight } from "lucide-react";
-import {Slider} from "@/components/ui/slider";
+import { useState } from "react";
+import JobDetailModal from "./JobDetailModal";
 
 type JobCardProps = {
   job: Job;
@@ -8,8 +9,15 @@ type JobCardProps = {
 
 const JobCard = ({ job }: JobCardProps) => {
   const { title, description, companyName, salary, currency, location } = job;
-
   const currencySign = currency === "USD" ? "$" : "₹";
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+
+  const handleModalOpen = () => {
+   
+    setIsModalOpen(true);
+  };
+
 
   return (
     <div className="max-w-full mx-auto h-fit w-full flex flex-col sm:flex-row items-start gap-4 border border-gray-200 hover:border-gray-300 transition-all shadow-sm rounded-md px-4 py-3">
@@ -37,15 +45,15 @@ const JobCard = ({ job }: JobCardProps) => {
               {location}
             </h4>
           </span>
-          <p className="flex gap-2 items-center cursor-pointer hover:underline mt-2 sm:mt-0">
-            view details{" "}
+          <p onClick={handleModalOpen} className="flex gap-2 items-center cursor-pointer hover:underline mt-2 sm:mt-0">
+            View details{" "}
             <span>
               <SquareArrowOutUpRight size={14} />
             </span>
           </p>
-
         </div>
       </div>
+      <JobDetailModal job={job} isOpen={isModalOpen} onClose={setIsModalOpen} />
     </div>
   );
 };
