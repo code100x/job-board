@@ -1,11 +1,16 @@
 "use client";
-import { ChangeEvent, useEffect, useState } from "react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import { useState, useEffect, ChangeEvent } from "react";
+import { getJobs } from "@/actions/job";
+import { Slider } from "@/components/ui/slider";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 import { Job } from "@prisma/client";
-import { Select, SelectContent, SelectItem, SelectTrigger } from "./ui/select";
-import { SelectValue } from "@radix-ui/react-select";
-import { Slider } from "./ui/slider";
 
 interface SidebarProps {
   setJobs: (jobs: Job[]) => void;
@@ -19,6 +24,7 @@ interface Filters {
   currency: string;
   salRange: [number, number];
 }
+
 const formatSalary = (value: number, currency: string) => {
   let formattedValue = value / 1000;
   let unit = "k";
@@ -31,7 +37,7 @@ const formatSalary = (value: number, currency: string) => {
   return `${formattedValue} ${unit}`;
 };
 
-const Sidebar = () => {
+const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
   const [filters, setFilters] = useState<Filters>({
     title: "",
     companyName: "",
@@ -70,9 +76,9 @@ const Sidebar = () => {
   }, [filters]);
 
   return (
-    <div className="w-[250px] font-medium text-xs flex border flex-col items-center mt-4 pb-4">
-      <span className="text-2xl m-4">Filter Job</span>
-      <div className="flex flex-col gap-y-4 w-60">
+    <aside className="relative h-full p-4 min-w-48 border border-gray-200 rounded">
+      <h2 className="mb-4">Job Filters</h2>
+      <div className="flex flex-col gap-2">
         <Input
           type="text"
           name="title"
@@ -141,11 +147,11 @@ const Sidebar = () => {
           </div>
         </div>
       </div>
-    </div>
+    </aside>
   );
 };
 
 export default Sidebar;
-function setLoading(arg0: boolean) {
-  throw new Error("Function not implemented.");
-}
+
+// <div className="fixed w-[250px] font-medium text-xs flex border flex-col items-center mt-4 pb-4">
+// <span className="text-2xl m-4">Filter Job</span>

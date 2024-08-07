@@ -11,7 +11,7 @@ const HomePage = async () => {
     <main className="w-full">
       <div className="absolute inset-0 h-full w-full flex flex-col items-center gap-24 p-4 bg-white bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]">
       <Navbar session={session} />
-        <section className="flex flex-col justify-start gap-8">
+        <section className="flex flex-col justify-start gap-8 lg:mt-20 xl:mt-24 ">
           <GithuBadge />
           <div className="flex flex-col justify-start gap-4">
             <p className="lg:text-4xl tracking-tight font-semibold text-slate-700">
@@ -25,7 +25,6 @@ const HomePage = async () => {
             </p>
           </div>
         </section>
-        <Footer />
       </div>
     </main>
   );

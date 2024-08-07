@@ -21,7 +21,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { NewJob, newJobSchema } from "@/zod/job";
 import { useToast } from "../ui/use-toast";
-import { createJob, fetchJobDetails } from "@/actions/job";
+import { createJob, fetchJobDetails, updateJob } from "@/actions/job";
+import useRouter from "next/navigation";
 
 type NewJobFormProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -68,7 +69,7 @@ const EditJobForm = ({ setOpen, id }: NewJobFormProps) => {
   }, [jobDetails, form]);
 
   const handleFormSubmit = async (values: NewJob) => {
-    const { currency, location, state } = values;
+    const { currency, location } = values;
 
     if (currency !== "USD" && currency !== "INR") {
       toast({
@@ -89,15 +90,8 @@ const EditJobForm = ({ setOpen, id }: NewJobFormProps) => {
       });
       return;
     }
-    if (state !== "ACTIVE" && state !== "INACTIVE") {
-      toast({
-        title: "Please select the state",
-        variant: "destructive",
-      });
-      return;
-    }
 
-    const response = await createJob(values);
+    const response = await updateJob({ ...values, id });
 
     if (response?.status !== "success") {
       toast({

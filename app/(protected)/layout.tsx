@@ -12,12 +12,11 @@ const MainLayout = async ({ children }: MainLayoutProps) => {
 
   return (
     <>
-    <div className="flex flex-col items-center py-4" >
+
+    <div className="h-full py-4 px-2">
     <Navbar session={session}/>
-    </div>
-    <div className="h-full">
       {children}
-      <Footer />
+      <Footer/>
     </div>
     </>
   );

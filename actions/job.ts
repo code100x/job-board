@@ -2,11 +2,10 @@
 
 import { auth } from "@/auth";
 import { SAPayload } from "@/types";
-import { NewJob } from "@/zod/job";
+import { NewJob, UpdateJob } from "@/zod/job";
 import { prisma } from "@/lib/db";
 import { Currency, State } from "@prisma/client";
 import { z } from "zod";
-
 
 export const createJob = async (data: NewJob): Promise<SAPayload> => {
   const session = await auth();
@@ -14,7 +13,6 @@ export const createJob = async (data: NewJob): Promise<SAPayload> => {
   if (!session) {
     return { status: "error", message: "Internal Server Error" };
   }
-
   try {
     const newJob = await prisma.job.create({
       data: {
@@ -28,13 +26,43 @@ export const createJob = async (data: NewJob): Promise<SAPayload> => {
         state: data.state as State,
       },
     });
-
     return { status: "success", message: "Job created Successfully" };
   } catch (error) {
     console.log(error);
     return { status: "error", message: "Internal Server Error" };
   }
 };
+
+
+export const updateJob = async (data: UpdateJob): Promise<SAPayload> => {
+  const session = await auth();
+
+  if (!session) {
+    return { status: "error", message: "Internal Server Error" };
+  }
+
+  try {
+    const newJob = await prisma.job.update({
+      where:{
+        id:data.id
+      },
+      data: {
+        title: data.title,
+        description: data.description,
+        companyName: data.companyName,
+        currency: data.currency as Currency,
+        salary: data.salary,
+        location: data.location,
+      },
+    });
+
+    return { status: "success", message: "Job updated Successfully" };
+  } catch (error) {
+    console.log(error);
+    return { status: "error", message: "Internal Server Error" };
+  }
+};
+
 
 export const fetchJobDetails = async ({ id }: { id: string }) => {
   try {
@@ -52,9 +80,12 @@ export const fetchJobDetails = async ({ id }: { id: string }) => {
 
 const GetJobSchema = z.object({
   title: z.string().optional().default(""),
-  companyName: z.string().min(5, {
-    message: "Company Name must be at least 5 characters long.",
-  }).optional(),
+  companyName: z
+    .string()
+    .min(5, {
+      message: "Company Name must be at least 5 characters long.",
+    })
+    .optional(),
   location: z.string().optional().default(""),
   currency: z.enum(["INR", "USD"]).optional(),
   salRange: z.array(z.number()).optional().default([0, 1000000]),
@@ -75,8 +106,12 @@ export const getJobs = async (data: GetJobSchemaType) => {
     const jobs = await prisma.job.findMany({
       where: {
         ...(title && { title: { contains: title, mode: "insensitive" } }),
-        ...(companyName && { companyName: { contains: companyName, mode: "insensitive" } }),
-        ...(location && { location: { contains: location, mode: "insensitive" } }),
+        ...(companyName && {
+          companyName: { contains: companyName, mode: "insensitive" },
+        }),
+        ...(location && {
+          location: { contains: location, mode: "insensitive" },
+        }),
         ...(currency && { currency }),
       },
     });

@@ -2,7 +2,8 @@
 import { getJobs } from "@/actions/job";
 import JobCard from "@/components/JobCard";
 import Sidebar from "@/components/Sidebar";
-import { JobDisplay } from "@/components/job-display";
+import { JobDisplay, JobLoading } from "@/components/job-display";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { prisma } from "@/lib/db";
 import { cn } from "@/lib/utils";
 import { Job } from "@prisma/client";
@@ -12,28 +13,63 @@ const JobsPage = () => {
     const [jobs, setJobs] = useState<Job[]>([]);
     const [loading, setLoading] = useState(false);
 
-    useEffect(()=>{
-      const fetchJobs = async () =>{
-        setLoading(true);
-        const response = await getJobs({});
-        if(response.status === "success"){
-          setJobs(response.data as Job[]);
-        }
-        setLoading(false);
+    useEffect(() => {
+      const fetchJobs = async () => {
+          setLoading(true);
+          //@ts-ignore
+          const response = await getJobs({});
+          if (response.status === "success") {
+              //@ts-ignore
+              setJobs(response.data);
+          }
+          setLoading(false);
       };
+
       fetchJobs();
-    },[])
+  }, []);
+
+  if(loading){
+    return(
+      <main className="max-w-full mx-2">
+      <div className="flex">
+      <div className="w-64 pr-4 shrink-0 hidden md:block mt-4">
+            <Sidebar setJobs={setJobs} setLoading={setLoading} />
+            </div>
+    <div className="w-full">
+      {jobs &&
+        jobs.map((job) => {
+          return <JobLoading/>
+        })}
+      {jobs.length === 0 ? (
+       <JobLoading/>
+      ) : null}
+    </div>
+    </div>
+    </main>
+    );
+  }
 
   return (
+    <main className="max-w-full mx-2">
+      <div className="flex">
+      <div className="w-64 pr-4 shrink-0 hidden md:block mt-4">
+            <Sidebar setJobs={setJobs} setLoading={setLoading} />
+            </div>
     <div className="w-full">
       {jobs &&
         jobs.map((job) => {
           return <JobDisplay key={job.id} job={job} />;
         })}
       {jobs.length === 0 ? (
-        <h3 className="text-2xl font-semibold text-gray-800">No Jobs Found!</h3>
+        <Card className="w-full h-screen mt-4">
+          <CardHeader>
+            <CardTitle><span>No published job</span></CardTitle>
+          </CardHeader>
+        </Card>
       ) : null}
     </div>
+    </div>
+    </main>
   );
 };
 
