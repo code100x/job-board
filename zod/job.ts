@@ -10,7 +10,7 @@ export const newJobSchema = z.object({
   companyName: z.string().min(5, {
     message: "Company Name must be atleast 5 characters long.",
   }),
-  salary: z.string().min(5, {
+  salary: z.string().min(1, {
     message: "Salary must be atleast 5 characters long.",
   }),
   currency: z.string({

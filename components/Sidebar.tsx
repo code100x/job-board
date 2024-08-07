@@ -1,9 +1,10 @@
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent, useCallback } from "react";
 import { getJobs } from "@/actions/job";
 import { Slider } from "@/components/ui/slider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Job } from "@prisma/client";
+import { debounce } from 'lodash';
 
 interface SidebarProps {
     setJobs: (jobs: Job[]) => void;
@@ -39,34 +40,42 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
         salRange: [0, 1000000],
     });
 
+    const debouncedFetchJobs = useCallback(
+        debounce(async (currentFilters: Filters) => {
+            setLoading(true);
+            try {
+                const response = await getJobs(currentFilters);
+                if (response.status === "success") {
+                    setJobs(response?.data);
+                }
+            } catch (error) {
+                console.error("Error fetching jobs:", error);
+            } finally {
+                setLoading(false);
+            }
+        }, 2000),
+        [setJobs, setLoading]
+    );
+
+    useEffect(() => {
+        debouncedFetchJobs(filters);
+        // Cancel the debounced call if the component unmounts
+        return () => debouncedFetchJobs.cancel();
+    }, [filters, debouncedFetchJobs]);
+
     const handleFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setFilters({
-            ...filters,
+        setFilters(prevFilters => ({
+            ...prevFilters,
             [e.target.name]: e.target.value,
-        });
+        }));
     };
 
     const handleSliderChange = (value: [number, number]) => {
-        setFilters({
-            ...filters,
+        setFilters(prevFilters => ({
+            ...prevFilters,
             salRange: value,
-        });
+        }));
     };
-
-    const fetchJobs = async () => {
-        setLoading(true);
-        //@ts-ignore
-        const response = await getJobs(filters);
-        if (response.status === "success") {
-            //@ts-ignore
-            setJobs(response.data);
-        }
-        setLoading(false);
-    };
-
-    useEffect(() => {
-        fetchJobs();
-    }, [filters]);
 
     return (
         <aside className="p-4 min-w-48 border border-gray-200 rounded">
@@ -89,10 +98,10 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
 
                 <Select
                     onValueChange={(value) => {
-                        setFilters({
-                            ...filters,
+                        setFilters(prevFilters => ({
+                            ...prevFilters,
                             currency: value,
-                        });
+                        }));
                     }}
                 >
                     <SelectTrigger className="w-[180px]">
@@ -106,10 +115,10 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
 
                 <Select
                     onValueChange={(value) => {
-                        setFilters({
-                            ...filters,
+                        setFilters(prevFilters => ({
+                            ...prevFilters,
                             location: value,
-                        });
+                        }));
                     }}
                 >
                     <SelectTrigger className="w-[180px]">
