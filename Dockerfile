@@ -1,31 +1,31 @@
-# Use an official Node runtime as the base image
-FROM node:20-alpine
-
-# Set the working directory in the container
-WORKDIR /app
-
-# Copy package.json and package-lock.json
+FROM node:20-alpine AS base
+WORKDIR /usr/src/app
 COPY package*.json ./
+COPY ./prisma ./prisma
+RUN npm install && npx prisma generate
 
-COPY prisma ./prisma/
-
-# Install dependencies
-RUN npm install
-
-# Copy the rest of the application code
+FROM node:20-alpine AS development
+WORKDIR /usr/src/app
 COPY . .
+COPY --from=base /usr/src/app/node_modules ./node_modules
+CMD ["npm", "run", "dev:docker"]
 
-# Generate Prisma client
-RUN npx prisma generate
+# WIP
+FROM node:20-alpine AS build
+ARG DATABASE_URL
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN DATABASE_URL=$DATABASE_URL npx prisma generate
+RUN DATABASE_URL=$DATABASE_URL npm run build
 
-# Build the Next.js application
-RUN npm run build
-
-# Add Prisma CLI and ts-node to the PATH
-ENV PATH /app/node_modules/.bin:$PATH
-
-# Expose the port the app runs on
-EXPOSE 3000
-
-# The command will be overridden by docker-compose
+FROM node:20-alpine AS production
+WORKDIR /usr/src/app
+COPY --from=build /usr/src/app/.next ./.next
+COPY --from=build /usr/src/app/node_modules ./node_modules
+COPY --from=build /usr/src/app/public ./public
+COPY --from=build /usr/src/app/package.json ./package.json
 CMD ["npm", "run", "start"]
+
+EXPOSE 3000
