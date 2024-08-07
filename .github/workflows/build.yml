@@ -3,7 +3,7 @@ name: Build on PR
 on:
   pull_request:
     branches:
-      - master
+      - CI
 
 jobs:
   build:
