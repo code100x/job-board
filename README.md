@@ -27,67 +27,72 @@ Job Board is a platform designed to connect employers with potential employees. 
 - **Database**: Prisma ORM, Postgres
 - **Authentication**: NextAuth
 - **Hosting**: Vercel, Heroku
+- **Containerization**: Docker
 
 ## Getting Started
 
 To get started with the Job Board app, follow these steps:
 
 1. Clone the repository:
+
    ```sh
    git clone https://github.com/yourusername/job-board
-
+   ```
 
 Follow these steps to set up the repository locally and run it.
-
-### Installation
-
-1. Clone the repository and navigate to the project directory:
-
-   ```bash
-   git clone https://github.com/code100x/job-board/
-   cd job-board
-   ```
-
-2. Install the necessary dependencies:
-   ```bash
-   npm install
-   ```
 
 ### Configuration
 
 1. Create a `.env` file in the root folder of your project. Update it following the convention of the `.env.example` file. Here's an example:
 
    ```bash
-   DATABASE_URL=postgres://********
    AUTH_SECRET="MY_SECRET_KEY"
+   DATABASE_URL=postgres://********
    ```
 
-   To generate AUTH_SECRET, run this command in your terminal:
+2. To generate AUTH_SECRET, 
+
+   Run this command in your terminal:
 
    ```bash
    openssl rand -base64 33
    ```
 
-### Running the Project
+   or
 
-1. Sync & Seed your database:
+   [Run in browser](https://www.cryptool.org/en/cto/openssl/)
 
-    ```bash
-    npx prisma db push
-    npx prisma db seed
-    ```
+### Running the Project with Docker
 
-2. Start the development server:
+```bash
+docker compose up --build
+```
 
-    ```bash
-    npm run dev
-    ```
+### Running the Project without Docker
+
+1. Install the necessary dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Sync & Seed your database:
+
+   ```bash
+   npx prisma db push
+   npx prisma db seed
+   ```
+
+3. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
 
 Now, you can run the project and make changes as needed.
 
 ### Test User Credentials
 
-   ```js
-      Emails: "user1@gmail.com, user2@gmail.com, admin@gmail.com"
-      Password: "123456" 
-   ```
+```js
+Emails: "user1@gmail.com, user2@gmail.com, admin@gmail.com"
+Password: "123456" 
+```
