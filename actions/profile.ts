@@ -13,6 +13,7 @@ export const getProfile = async (userId: string): Promise<SAPayload> => {
         email: true,
         name: true,
         image: true,
+        role: true,
       },
     });
 
