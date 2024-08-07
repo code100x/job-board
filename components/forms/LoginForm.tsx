@@ -5,10 +5,17 @@ import { useToast } from "../ui/use-toast";
 import { useState } from "react";
 import { loginUser } from "@/actions/user";
 import { useRouter } from "next/navigation";
+<<<<<<< HEAD
 import { FaCircleNotch, FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
+=======
+import { Loader2 } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { LoginUser, userLoginSchema } from "@/zod/user";
+import { zodResolver } from "@hookform/resolvers/zod";
+>>>>>>> ef7acd5e2dc9a660f233907bebda64939c083201
 import {
   Form,
   FormControl,
@@ -16,17 +23,28 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+<<<<<<< HEAD
 } from "@/components/ui/form";
 import { userLoginSchema } from "@/zod/user";
 import { motion } from "framer-motion";
+=======
+} from "../ui/form";
+>>>>>>> ef7acd5e2dc9a660f233907bebda64939c083201
 
 const LoginForm = () => {
   const { toast } = useToast();
+
   const router = useRouter();
+<<<<<<< HEAD
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const loginForm = useForm<z.infer<typeof userLoginSchema>>({
+=======
+  const [isLoading, setIsLoading] = useState(false);
+
+  const form = useForm<LoginUser>({
+>>>>>>> ef7acd5e2dc9a660f233907bebda64939c083201
     resolver: zodResolver(userLoginSchema),
     defaultValues: {
       email: "",
@@ -34,6 +52,7 @@ const LoginForm = () => {
     },
   });
 
+<<<<<<< HEAD
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -43,6 +62,11 @@ const LoginForm = () => {
     setIsLoading(true);
     const response = await loginUser(credentials);
 
+=======
+  const handleFormSubmit = async (values: LoginUser) => {
+    setIsLoading(true);
+    const response = await loginUser(values);
+>>>>>>> ef7acd5e2dc9a660f233907bebda64939c083201
     if (response?.status !== "success") {
       toast({
         title: response.message,
@@ -51,7 +75,6 @@ const LoginForm = () => {
       setIsLoading(false);
       return;
     }
-
     toast({
       title: response.message,
       variant: "default",
@@ -62,6 +85,7 @@ const LoginForm = () => {
   };
 
   return (
+<<<<<<< HEAD
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -141,6 +165,80 @@ const LoginForm = () => {
         </div>
       </div>
     </motion.div>
+=======
+    <Form {...form}>
+      <div className="h-fit p-8 bg-white flex flex-col items-start gap-8 rounded-xl shadow-lg border-t border-gray-200">
+        <div className="w-full flex flex-col justify-center items-center gap-3">
+          <h3 className="text-3xl bg-gradient-to-r from-indigo-600 via-violet-500 to-blue-700 bg-clip-text text-transparent font-black">
+            100xJobs
+          </h3>
+          <div className="flex flex-col gap-1 justify-center items-center">
+            <h4 className="text-lg font-medium">Welcome Back</h4>
+            <p className="text-sm text-gray-500 font-medium">
+              Please enter your details to sign in
+            </p>
+          </div>
+        </div>
+
+        <form
+          className="h-full flex flex-col justify-center items-center gap-5"
+          onSubmit={form.handleSubmit(handleFormSubmit)}
+        >
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem className="w-64">
+                <FormLabel className="text-sm font-semibold text-gray-800">
+                  Email *
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    className="border-gray-400"
+                    placeholder="Enter your email here"
+                  />
+                </FormControl>
+                <FormMessage className="text-sm" />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem className="w-64">
+                <FormLabel className="text-sm font-semibold text-gray-800">
+                  Password *
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    {...field}
+                    className="border-gray-400"
+                    placeholder="Enter password here"
+                  />
+                </FormControl>
+                <FormMessage className="text-sm" />
+              </FormItem>
+            )}
+          />
+          <Button
+            disabled={isLoading}
+            className="w-full flex justify-center items-center"
+            type="submit"
+          >
+            {isLoading ? (
+              <Loader2 className="animate-spin" size={20} />
+            ) : (
+              "Sign In"
+            )}
+          </Button>
+        </form>
+      </div>
+    </Form>
+>>>>>>> ef7acd5e2dc9a660f233907bebda64939c083201
   );
 };
 
