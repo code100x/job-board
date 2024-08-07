@@ -1,4 +1,4 @@
-name : Build on PR
+name: Build on PR
 
 on:
   pull_request:
@@ -7,15 +7,16 @@ on:
 
 jobs:
   build:
-    run-on: ubuntu-latest
-    setps:
+    runs-on: ubuntu-latest
+    steps:
       - uses: actions/checkout@v3
-      - name : Use Node.js
-        uses : actions/setup-node@v3
-        with :
-          node-version : '20'
-      - name : Installing the packages
-        run : npm install
-
-      - name : Building
-        run : npm run build
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - name: Installing the packages
+        run: npm install
+      - name: Linting
+        run: npm run lint
+      - name: Building
+        run: npm run build
