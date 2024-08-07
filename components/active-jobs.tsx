@@ -4,9 +4,10 @@ import { CardWrapper } from "./card-wrapper";
 import { JobDisplay } from "./job-display";
 import { Job } from "@prisma/client";
 import { fetchActiveJobs } from "@/actions/job";
-
+import { useRouter } from "next/navigation";
 
 export const ActiveJobs = () => {
+  const router = useRouter();
 
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(false);
@@ -19,7 +20,7 @@ export const ActiveJobs = () => {
       if (response.status === "success") {
         //@ts-ignore
         setJobs(response.data);
-
+        router.refresh();
       }
       setLoading(false);
       
