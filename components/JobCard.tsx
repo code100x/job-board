@@ -17,7 +17,7 @@ const JobCard = ({ job }: JobCardProps) => {
       <div className="logo-area p-2 flex-shrink-0">
         <div className="h-20 w-20 bg-gray-100 border border-gray-300 rounded-full"></div>
       </div>
-      <div className="p-2 h-full flex-grow flex flex-col gap-4">
+      <div className="p-2 h-full flex-grow flex flex-col gap-1">
         <h3 className="text-lg sm:text-xl tracking-tight font-semibold text-black">
           {title}
         </h3>
@@ -45,7 +45,7 @@ const JobCard = ({ job }: JobCardProps) => {
             </span>
           </p>
         </div>
-        <Button style={{ width: "max-content" }}>Apply Now</Button>
+        <Button className="w-fit mt-4">Apply Now</Button>
       </div>
     </div>
   );
