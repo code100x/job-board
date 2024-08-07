@@ -1,21 +1,22 @@
-FROM node:20
-
+#Pull the base image
+FROM node:20-alpine
+# Set the working directory
 WORKDIR /app
-
+# Copy the package.json files
 COPY package*.json ./
+# Copy the prisma folder
 COPY prisma ./prisma/
-COPY . .
-
-# Copy the .env file
-COPY .env .env
-
-# Install dependencies
+# Install the dependencies
 RUN npm install
-
-# Run database migrations and seed the database
-RUN npx prisma db push && npx prisma db seed
-
+# Generate the prisma client
+RUN npx prisma generate
+#Copy the rest of the files
+COPY . .
+# Build the app
+RUN npm run build
+# Set the environment variables
+ENV PATH /app/node_modules/.bin:$PATH
+# Expose the port
 EXPOSE 3000
-
-# Run the application
+# Start the app
 CMD ["npm", "run", "dev"]

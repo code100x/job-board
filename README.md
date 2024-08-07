@@ -88,7 +88,7 @@ Now, you can run the project and make changes as needed.
 2. Start the Instance of the Image:
 
     ```bash
-    docker run -p 3000:3000 job-board
+    docker run -e DATABASE_URL="" -e AUTH_SECRET="" -p 3000:3000 job-board
     ```
 
 Now, you can run the project and make changes as needed.
