@@ -1,13 +1,18 @@
+'use client'
+import { motion } from "framer-motion";
 import { Icons } from "./Icons";
 
 const GithubBadge = () => {
   return (
     <div className="mb-6 flex">
-      <a
+      <motion.a
         href="https://github.com/Harit007x/job-board"
         target="_blank"
         rel="noopener noreferrer"
         className="inline-flex"
+        initial={{ clipPath: "inset(0 50% 0 50%)" }}
+        animate={{ clipPath: "inset(0 0% 0 0%)" }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
       >
         <span className="relative inline-block overflow-hidden rounded-full p-[1px]">
           <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#a9a9a9_0%,#0c0c0c_50%,#a9a9a9_100%)] dark:bg-[conic-gradient(from_90deg_at_50%_50%,#171717_0%,#737373_50%,#171717_100%)]" />
@@ -21,7 +26,7 @@ const GithubBadge = () => {
             </span>
           </div>
         </span>
-      </a>
+      </motion.a>
     </div>
   );
 };

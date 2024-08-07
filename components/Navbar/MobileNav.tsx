@@ -104,7 +104,7 @@ function MobileLink({
         onOpenChange?.(false);
       }}
       className={cn(
-        `text-black transition duration-300 mb-0 hover:bg-slate-100 p-2 pl-4 rounded-sm ${className}`
+        `text-foreground transition duration-300 mb-0 hover:bg-secondary p-2 pl-4 rounded-sm ${className}`
       )}
       {...props}
     >
