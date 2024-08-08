@@ -37,14 +37,14 @@ const LoginForm = () => {
     const response = await loginUser(values);
     if (response?.status !== "success") {
       toast({
-        title: response.message,
+        title: response?.message,
         variant: "destructive",
       });
       setIsLoading(false);
       return;
     }
     toast({
-      title: response.message,
+      title: response?.message,
       variant: "default",
     });
     router.push("/jobs");
