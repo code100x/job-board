@@ -192,8 +192,7 @@ const Navbar = ({ session }: NavbarProps) => {
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction
                       onClick={async () => {
-                        await signOut();
-                        router.push("/");
+                        await handleSignOut()
                       }}
                       className="flex gap-2 items-center cursor-pointer"
                     >
