@@ -19,6 +19,9 @@ export const newJobSchema = z.object({
   location: z.string().min(4, {
     message: "Please select one location",
   }),
+  jobType: z.string().min(4, {
+    message: "Please select role type",
+  }),
   state: z.string().optional(),
   country: z.string().optional(),
 });

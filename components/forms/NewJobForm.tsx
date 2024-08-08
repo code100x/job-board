@@ -40,6 +40,7 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
       salary: "",
       currency: "",
       location: "",
+      jobType: "",
       state: undefined,
       country: undefined,
     },
@@ -94,7 +95,7 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleFormSubmit)}
-        className="w-full h-fit flex flex-col gap-3"
+        className="w-full h-fit flex flex-col gap-5"
       >
         <div className="w-full flex justify-between items-center gap-2">
           <div className="w-full flex flex-col gap-1">
@@ -207,34 +208,66 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
           </div>
         </div>
 
-        <div className="flex flex-col gap-1">
-          <FormField
-            control={form.control}
-            name="location"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm font-semibold text-gray-800">
-                  Location *
-                </FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select location type" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="REMOTE">Remote</SelectItem>
-                    <SelectItem value="HYBRID">Hybird</SelectItem>
-                    <SelectItem value="OFFICE">Office</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage className="text-xs" />
-              </FormItem>
-            )}
-          />
+        <div className="w-full flex justify-between items-center gap-2">
+          <div className="w-full flex flex-col gap-1">
+            <FormField
+              control={form.control}
+              name="location"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-semibold text-gray-800">
+                    Location *
+                  </FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select location type" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="REMOTE">Remote</SelectItem>
+                      <SelectItem value="HYBRID">Hybird</SelectItem>
+                      <SelectItem value="OFFICE">Office</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage className="text-xs" />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="w-full flex flex-col gap-1">
+            <FormField
+              control={form.control}
+              name="jobType"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-semibold text-gray-800">
+                    Select Role Type *
+                  </FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Role type" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="Internship">Internship</SelectItem>
+                      <SelectItem value="FullTime">Full Time</SelectItem>
+                      <SelectItem value="PartTime">Part Time</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage className="text-xs" />
+                </FormItem>
+              )}
+            />
+          </div>
         </div>
 
         <div className="w-full flex justify-between items-center gap-2">

@@ -68,14 +68,15 @@ model VerificationToken {
 }
 
 model Job {
-  id          String   @id @default(cuid())
+  id          String       @id @default(cuid())
   userId      String
   title       String
   description String
-  companyName String   @map("company_name")
+  companyName String       @map("company_name")
   salary      String
-  currency    Currency @default(INR)
-  location    String
+  currency    Currency     @default(INR)
+  location    LocationType
+  jobtype     JobType
   state       String?
   country     String?
 
@@ -92,8 +93,14 @@ enum Currency {
   USD
 }
 
-enum JobType {
+enum LocationType {
   REMOTE
   HYBIRD
   OFFICE
+}
+
+enum JobType {
+  Internship
+  FullTime
+  PartTime
 }
