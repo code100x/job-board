@@ -10,6 +10,7 @@ import { Session } from "next-auth";
 import { toast } from "../ui/use-toast";
 import { usePathname, useRouter } from "next/navigation";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import { ModeToggle } from "../DarkModeToggle";
 type NavbarProps = {
   session: Session | null;
 };
@@ -45,6 +46,7 @@ const MobileNav = ({ session }: NavbarProps) => {
         </Button>
       </SheetTrigger>
       <SheetContent side="right" className="flex flex-col justify-start gap-8 p-4">
+      <ModeToggle />
         <div className="flex flex-col gap-1 text-md mt-8">
           <MobileLink onOpenChange={setOpen} href="/">
             Home
@@ -53,16 +55,15 @@ const MobileNav = ({ session }: NavbarProps) => {
             Explore
           </MobileLink>
           {userRole === "ADMIN" ? (
-            <Link href="/jobs/manage">
+            <MobileLink href="/jobs/manage">
               <p
-                className={cn("cursor-pointer", {
-                  "text-gray-900": pathName === "/jobs/manage",
-                })}
+                className={cn("cursor-pointer")}
               >
                 Manage
               </p>
-            </Link>
+            </MobileLink>
           ) : null}
+           
         </div>
         {!session ? (
             <Link href="/login">
