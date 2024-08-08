@@ -21,7 +21,7 @@ const NewJobModal = () => {
       <DialogTrigger asChild>
         <Button>Create Job</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="min-w-[650px] p-6">
         <DialogHeader>
           <DialogTitle>Enter the Job details below</DialogTitle>
           <DialogDescription>
