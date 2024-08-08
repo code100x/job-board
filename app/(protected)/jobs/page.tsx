@@ -49,10 +49,12 @@ const JobsPage = () => {
         >
           {loading ? (
             <div className="flex justify-center items-center h-screen">
-                <PropagateLoader size={15} />
+              <PropagateLoader size={15} />
             </div>
-            
-            // </div>
+          ) : jobs.length === 0 ? (
+            <h3 className="text-2xl font-semibold text-gray-800">
+              No Jobs Found!
+            </h3>
           ) : (
             jobs.map((job) => <JobCard key={job.id} job={job} />)
           )}
