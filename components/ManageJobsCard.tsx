@@ -1,6 +1,6 @@
 "use client"
 import { Job } from "@prisma/client";
-import { Banknote, MapPin, SquareArrowOutUpRight } from "lucide-react";
+import {Banknote, Building2, MapPin, SquareArrowOutUpRight} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {deleteJob} from "@/actions/job";
 import {useToast} from "@/components/ui/use-toast";
@@ -14,6 +14,13 @@ import {
     DialogTrigger
 } from "@/components/ui/dialog";
 import UpdateJobForm from "@/components/forms/UpdateJobForm";
+import {
+    AlertDialog, AlertDialogAction, AlertDialogCancel,
+    AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger
+} from "@/components/ui/alert-dialog";
 
 type ManageJobsCardProps = {
     job: Job;
@@ -55,7 +62,9 @@ const ManageJobsCard = ({ job,setJobs }: ManageJobsCardProps) => {
         <div className="max-w-full mx-auto h-fit w-full flex flex-col sm:flex-row items-start gap-4 border border-gray-200 hover:border-gray-300 transition-all shadow-sm rounded-md px-4 py-3 ">
             <div className="flex flex-col sm:flex-row w-full">
                 <div className="logo-area p-2 flex-shrink-0">
-                    <div className="h-20 w-20 bg-gray-100 border border-gray-300 rounded-full"></div>
+                    <div className="h-20 w-20 bg-gray-100 border border-gray-300 rounded-full justify-center items-center text-center flex">
+                        <Building2 size={40}/>
+                    </div>
                 </div>
                 <div className="p-2 h-full flex-grow flex flex-col gap-1">
                     <h3 className="text-lg sm:text-xl tracking-tight font-semibold text-gray-700">
@@ -105,10 +114,32 @@ const ManageJobsCard = ({ job,setJobs }: ManageJobsCardProps) => {
                         <UpdateJobForm setOpen={setOpen} title={job.title} description={job.description} companyName={job.companyName} salary={job.salary} currency={job.currency} location={job.location} id={job.id}/>
                     </DialogContent>
                 </Dialog>
-                <Button className=" px-4 py-2 rounded-md shadow-md transition disabled:accent-gray-900" disabled={deleting} onClick={handleDelete}>
 
-                    {deleting ? "Deleting.." : "Delete"}
-                </Button>
+
+                <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                        <Button className=" px-4 py-2 rounded-md shadow-md transition disabled:accent-gray-900" >
+                          Delete
+                        </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                                This action cannot be undone and will permanently remove the job from your server. Please confirm if you wish to proceed.
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction className={"bg-red-600"} onClick={handleDelete} disabled={deleting}>Continue</AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
+
+                {/*<Button className=" px-4 py-2 rounded-md shadow-md transition disabled:accent-gray-900" disabled={deleting} onClick={handleDelete}>*/}
+
+                {/*    {deleting ? "Deleting.." : "Delete"}*/}
+                {/*</Button>*/}
             </div>
         </div>
     );
