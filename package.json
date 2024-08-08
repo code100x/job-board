@@ -11,7 +11,6 @@
     "db:seed": "npx prisma db push & npx prisma db seed",
     "format:fix": "prettier --write \"**/*.{ts,tsx,js,jsx,md,mdx,css,yaml,yml}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,json}\"",
-    "check": "prettier --check \"**/*.{ts,tsx,js,jsx,md,mdx,css,yaml,yml}\"",
     "prepare": "husky install"
   },
   "prisma": {
