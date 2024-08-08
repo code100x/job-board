@@ -7,15 +7,23 @@ import { prisma } from "@/lib/db";
 import { Currency, Job } from "@prisma/client";
 import z from "zod";
 
-export const createJob = async (data: NewJob): Promise<SAPayload> => {
+// Define the structure of the response payload
+type ResponsePayload = {
+  status: "success" | "error";
+  message?: string;
+  data?: Job[];
+};
+
+// Improved function to create a new job
+export const createJob = async (data: NewJob): Promise<ResponsePayload> => {
   const session = await auth();
 
   if (!session) {
-    return { status: "error", message: "Internal Server Error" };
+    return { status: "error", message: "Authentication required" };
   }
 
   try {
-    const newJob = await prisma.job.create({
+    await prisma.job.create({
       data: {
         userId: session.user.id as string,
         title: data.title,
@@ -27,10 +35,10 @@ export const createJob = async (data: NewJob): Promise<SAPayload> => {
       },
     });
 
-    return { status: "success", message: "Job created Successfully" };
+    return { status: "success", message: "Job created successfully" };
   } catch (error) {
-    console.log(error);
-    return { status: "error", message: "Internal Server Error" };
+    console.error("Error creating job:", error);
+    return { status: "error", message: "Failed to create job" };
   }
 };
 
@@ -41,16 +49,17 @@ const GetJobSchema = z.object({
   }).optional(),
   location: z.string().optional().default(""),
   currency: z.enum(["INR", "USD"]).optional(),
-  salRange: z.array(z.number()).optional().default([0, 1000000]),
+  salRange: z.array(z.number()).length(2).default([0, 1000000]),
 });
 
 type GetJobSchemaType = z.infer<typeof GetJobSchema>;
 
-export const getJobs = async (data: GetJobSchemaType) => {
+// Improved function to get jobs with error handling
+export const getJobs = async (data: GetJobSchemaType): Promise<ResponsePayload> => {
   const session = await auth();
 
   if (!session) {
-    return { status: "error", message: "Internal Server Error" };
+    return { status: "error", message: "Authentication required" };
   }
 
   const { salRange, title, companyName, location, currency } = data;
@@ -65,6 +74,11 @@ export const getJobs = async (data: GetJobSchemaType) => {
       },
     });
 
+    // Ensure salRange is always an array of two numbers
+    if (!Array.isArray(salRange) || salRange.length !== 2) {
+      return { status: "error", message: "Invalid salary range format" };
+    }
+    
     const filteredJobs = jobs.filter((job) => {
       const salary = parseFloat(job.salary);
       return !isNaN(salary) && salary >= salRange[0] && salary <= salRange[1];
@@ -72,7 +86,7 @@ export const getJobs = async (data: GetJobSchemaType) => {
 
     return { status: "success", data: filteredJobs };
   } catch (error) {
-    console.log(error);
-    return { status: "error", message: "Internal Server Error" };
+    console.error("Error fetching jobs:", error);
+    return { status: "error", message: "Failed to retrieve jobs" };
   }
 };
