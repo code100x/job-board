@@ -31,9 +31,13 @@ const JobDetails: React.FC<JobDetailsProps> = ({ job, onApply }) => {
                     </span>
                 </span>
             </div>
-            <div className="mb-4">
-                <h3 className="text-lg font-semibold mb-2 text-blue-400">Info</h3>
-                <p className="text-gray-200">{description}</p>
+            <div className="flex">
+                <div className="w-1/4">
+                    <h3 className="text-lg font-semibold text-blue-400">Info</h3>
+                </div>
+                <div className="w-3/4">
+                    <p className="text-gray-200">{description}</p>
+                </div>
             </div>
         </div>
     );
