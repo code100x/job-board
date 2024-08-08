@@ -6,7 +6,7 @@ const GithubBadge = () => {
   return (
     <div className="mb-6 flex">
       <motion.a
-        href="https://github.com/Harit007x/job-board"
+        href="https://github.com/code100x/job-board"
         target="_blank"
         rel="noopener noreferrer"
         className="inline-flex"
