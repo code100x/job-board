@@ -4,7 +4,8 @@ import { auth } from "@/auth";
 import { SAPayload } from "@/types";
 import { NewJob } from "@/zod/job";
 import { prisma } from "@/lib/db";
-import { Currency, Job } from "@prisma/client";
+import { Currency } from "@prisma/client";
+import { notFound } from "next/navigation";
 import z from "zod";
 
 export const createJob = async (data: NewJob): Promise<SAPayload> => {
@@ -17,13 +18,13 @@ export const createJob = async (data: NewJob): Promise<SAPayload> => {
   try {
     const newJob = await prisma.job.create({
       data: {
-        userId: session.user.id as string,
         title: data.title,
         description: data.description,
         companyName: data.companyName,
         currency: data.currency as Currency,
         salary: data.salary,
         location: data.location,
+        type: "",
       },
     });
 
@@ -33,12 +34,39 @@ export const createJob = async (data: NewJob): Promise<SAPayload> => {
     return { status: "error", message: "Internal Server Error" };
   }
 };
+export const getJob = async (id: string) => {
+  const session = await auth();
+
+  if (!session) {
+    return { status: "error", message: "Internal Server Error" };
+  }
+
+  try {
+    const job = await prisma.job.findFirst({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!job) {
+      return notFound();
+    }
+
+    return job;
+  } catch (error) {
+    console.log(error);
+    return { status: "error", message: "Internal Server Error" };
+  }
+};
 
 const GetJobSchema = z.object({
   title: z.string().optional().default(""),
-  companyName: z.string().min(5, {
-    message: "Company Name must be at least 5 characters long.",
-  }).optional(),
+  companyName: z
+    .string()
+    .min(5, {
+      message: "Company Name must be at least 5 characters long.",
+    })
+    .optional(),
   location: z.string().optional().default(""),
   currency: z.enum(["INR", "USD"]).optional(),
   salRange: z.array(z.number()).optional().default([0, 1000000]),
@@ -59,8 +87,12 @@ export const getJobs = async (data: GetJobSchemaType) => {
     const jobs = await prisma.job.findMany({
       where: {
         ...(title && { title: { contains: title, mode: "insensitive" } }),
-        ...(companyName && { companyName: { contains: companyName, mode: "insensitive" } }),
-        ...(location && { location: { contains: location, mode: "insensitive" } }),
+        ...(companyName && {
+          companyName: { contains: companyName, mode: "insensitive" },
+        }),
+        ...(location && {
+          location: { contains: location, mode: "insensitive" },
+        }),
         ...(currency && { currency }),
       },
     });

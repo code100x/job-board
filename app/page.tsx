@@ -5,7 +5,11 @@ import { SmoothTextReveal } from "@/components/framer-motion/smoothTextReveal";
 import GithubBadge from "@/components/GithubBadge";
 import { Icons } from "@/components/Icons";
 import { SiteHeader } from "@/components/SiteHeader";
+<<<<<<< HEAD
+import Footer from "@/components/Footer";
+=======
 import { Button } from "@/components/ui/button";
+>>>>>>> 34785959f71bea0f3e0d60b03721f8a8dec34d1c
 
 const HomePage = () => {
   return (
@@ -66,6 +70,8 @@ const HomePage = () => {
           </div>
         </section>
       </div>
+
+      <Footer />
     </main>
   );
 };

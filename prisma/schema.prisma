@@ -53,7 +53,6 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  jobs          Job[]
 
   @@map("users")
 }
@@ -69,8 +68,8 @@ model VerificationToken {
 
 model Job {
   id          String   @id @default(cuid())
-  userId      String
   title       String
+  type        String
   description String
   companyName String   @map("company_name")
   salary      String
@@ -78,8 +77,10 @@ model Job {
   location    String
   state       String?
   country     String?
+  approved    Boolean  @default(false)
 
-  user User @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum Role {

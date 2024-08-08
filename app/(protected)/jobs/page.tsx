@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import JobCard from "@/components/JobCard";
 import Sidebar from "@/components/Sidebar";
 import { cn } from "@/lib/utils";
-import { getJobs } from "@/actions/job";
 import { Job } from "@prisma/client";
 
 const JobsPage = () => {
@@ -27,7 +26,7 @@ const JobsPage = () => {
   }, []);
 
   return (
-    <section className="relative w-full h-fit flex gap-2 flex-grow">
+    <section className="relative w-full h-fit flex gap-2 flex-grow p-2">
       <Sidebar setJobs={setJobs} setLoading={setLoading} />
       <section className="w-full h-fit flex flex-col gap-8 rounded-md py-4 px-6">
         <div className="flex flex-col gap-1">
@@ -44,7 +43,7 @@ const JobsPage = () => {
             {
               "h-[420px] flex justify-center items-center":
                 jobs.length === 0 && !loading,
-            },
+            }
           )}
         >
           {loading ? (
