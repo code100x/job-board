@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Job } from "@prisma/client";
+import { Button } from "./ui/button";
 
 interface SidebarProps {
   setJobs: (jobs: Job[]) => void;
@@ -70,6 +71,16 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
     setLoading(false);
   };
 
+  const resetFilters = () => {
+    setFilters({
+      title: "",
+      companyName: "",
+      location: "",
+      currency: "",
+      salRange: [0, 1000000],
+    })
+  }
+
   useEffect(() => {
     fetchJobs();
   }, [filters]);
@@ -82,6 +93,7 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
           type="text"
           name="title"
           placeholder="Job Title"
+          value={filters.title}
           onChange={handleFilterChange}
           className="border p-2 rounded-md"
         />
@@ -89,11 +101,13 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
           type="text"
           name="companyName"
           placeholder="Company Name"
+          value={filters.companyName}
           onChange={handleFilterChange}
           className="border p-2 rounded-md"
         />
 
         <Select
+          value={filters.currency}
           onValueChange={(value) => {
             setFilters({
               ...filters,
@@ -111,6 +125,7 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
         </Select>
 
         <Select
+          value={filters.location}
           onValueChange={(value) => {
             setFilters({
               ...filters,
@@ -145,6 +160,8 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
             </span>
           </div>
         </div>
+
+        <Button onClick={resetFilters}>Clear All</Button>
       </div>
     </aside>
   );
