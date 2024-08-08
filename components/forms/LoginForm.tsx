@@ -5,7 +5,6 @@ import { useToast } from "../ui/use-toast";
 import { useState } from "react";
 import { loginUser } from "@/actions/user";
 import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { LoginUser, userLoginSchema } from "@/zod/user";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,8 +16,12 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
+import { cn } from "@/lib/utils";
+import { Icons } from "../Icons";
 
-const LoginForm = () => {
+interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+const LoginForm = ({ className, ...props }: UserAuthFormProps) => {
   const { toast } = useToast();
 
   const router = useRouter();
@@ -43,87 +46,52 @@ const LoginForm = () => {
       setIsLoading(false);
       return;
     }
+    router.push("/jobs");
     toast({
       title: response.message,
       variant: "default",
     });
-    router.push("/jobs");
-    setIsLoading(false);
   };
 
   return (
-    <Form {...form}>
-      <div className="h-fit p-8 bg-white flex flex-col items-start gap-8 rounded-xl shadow-lg border-t border-gray-200">
-        <div className="w-full flex flex-col justify-center items-center gap-3">
-          <h3 className="text-3xl bg-gradient-to-r from-indigo-600 via-violet-500 to-blue-700 bg-clip-text text-transparent font-black">
-            100xJobs
-          </h3>
-          <div className="flex flex-col gap-1 justify-center items-center">
-            <h4 className="text-lg font-medium">Welcome Back</h4>
-            <p className="text-sm text-gray-500 font-medium">
-              Please enter your details to sign in
-            </p>
+    <div className={cn('grid gap-6', className)} {...props}>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(handleFormSubmit)}>
+          <div className="flex flex-col gap-4 py-2 pb-6">
+            <FormField
+              control={form.control}
+              name="email"
+              disabled={isLoading}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder="example@gmail.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              disabled={isLoading}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input type="password" placeholder="password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
-        </div>
-
-        <form
-          className="h-full flex flex-col justify-center items-center gap-5"
-          onSubmit={form.handleSubmit(handleFormSubmit)}
-        >
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem className="w-64">
-                <FormLabel className="text-sm font-semibold text-gray-800">
-                  Email *
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    className="border-gray-400"
-                    placeholder="Enter your email here"
-                  />
-                </FormControl>
-                <FormMessage className="text-sm" />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem className="w-64">
-                <FormLabel className="text-sm font-semibold text-gray-800">
-                  Password *
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    {...field}
-                    className="border-gray-400"
-                    placeholder="Enter password here"
-                  />
-                </FormControl>
-                <FormMessage className="text-sm" />
-              </FormItem>
-            )}
-          />
-          <Button
-            disabled={isLoading}
-            className="w-full flex justify-center items-center"
-            type="submit"
-          >
-            {isLoading ? (
-              <Loader2 className="animate-spin" size={20} />
-            ) : (
-              "Sign In"
-            )}
+          <Button className="md:right-8 md:top-8 w-full" type="submit" disabled={isLoading}>
+            {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+            Sign In
           </Button>
         </form>
-      </div>
-    </Form>
+      </Form>
+    </div>
   );
 };
 
