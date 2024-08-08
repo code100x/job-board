@@ -23,4 +23,6 @@ export const newJobSchema = z.object({
   country: z.string().optional(),
 });
 
+
+
 export type NewJob = z.infer<typeof newJobSchema>;
