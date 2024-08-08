@@ -69,7 +69,7 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
     }, [filters]);
 
     return (
-        <aside className="p-4 min-w-48 border border-gray-200 rounded">
+        <aside className="p-4 min-w-48 border border-gray-200 dark:border-secondary rounded">
             <h2 className="mb-4">Job Filters</h2>
             <div className="flex flex-col gap-2">
                 <Input
@@ -95,7 +95,7 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
                         });
                     }}
                 >
-                    <SelectTrigger className="w-[180px]">
+                    <SelectTrigger>
                         <SelectValue placeholder="Choose currency" />
                     </SelectTrigger>
                     <SelectContent>
@@ -112,7 +112,7 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
                         });
                     }}
                 >
-                    <SelectTrigger className="w-[180px]">
+                    <SelectTrigger>
                         <SelectValue placeholder="Job Location" />
                     </SelectTrigger>
                     <SelectContent>
@@ -122,7 +122,7 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
                     </SelectContent>
                 </Select>
 
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 my-3">
                     <Slider
                         defaultValue={filters.salRange}
                         max={1000000}

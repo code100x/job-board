@@ -76,7 +76,7 @@ const Navbar = ({ session }: NavbarProps) => {
         </h3>
       </div>
 
-      <div className=" border border-secondary rounded-full flex items-center p-2 px-4 text-sm justify-center w-fit items-center gap-5 text-gray-500 font-semibold tracking-tighter">
+      <div className=" border border-secondary rounded-full flex items-center p-2 px-4 text-sm justify-center w-fit gap-5 text-gray-500 font-semibold tracking-tighter">
         {navItems.map((item) => {
           return (
             <Link key={item.name} href={item.route}>
@@ -104,99 +104,98 @@ const Navbar = ({ session }: NavbarProps) => {
         ) : null}
       </div>
 
-      {session && session?.user && (
-          <DropdownMenu>
-            <DropdownMenuTrigger className="w-[2rem] flex items-center p-[0.2rem]  justify-center h-[2rem]">
-              {!session?.user.image ? (
-                  <div className="p-1 border-2 rounded-md">
-                    <UserRound />
+      <div className="flex justify-center items-center gap-5">
+        {session && session?.user && (
+            <DropdownMenu>
+              <DropdownMenuTrigger className="w-[2rem] flex items-center p-[0.2rem]  justify-center h-[2rem]">
+                {!session?.user.image ? (
+                    <div className="p-1 border-2 rounded-md">
+                      <UserRound />
+                    </div>
+                ) : (
+                    <UserImage image={session?.user.image} />
+                )}
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="!w-[15rem] dark:shadow-[#030712] translate-y-8 scale-110 -translate-x-10 shadow-lg bg-white">
+                <DropdownMenuLabel className="flex gap-4 items-center">
+                  <div className="!w-[2rem] flex items-center p-[0.2rem]  justify-center !h-[2rem]">
+                    {!session?.user.image ? (
+                        <div className="p-1 border-2 rounded-full border-[#1a1a1a]">
+                          <UserRound />
+                        </div>
+                    ) : (
+                        <UserImage image={session?.user.image} />
+                    )}
                   </div>
-              ) : (
-                  <UserImage image={session?.user.image} />
-              )}
-            </DropdownMenuTrigger>
-
-            <DropdownMenuContent className="!w-[15rem] dark:shadow-[#030712] translate-y-8 scale-110 -translate-x-10 shadow-lg bg-white">
-              <DropdownMenuLabel className="flex gap-4 items-center">
-                <div className="!w-[2rem] flex items-center p-[0.2rem]  justify-center !h-[2rem]">
-                  {!session?.user.image ? (
-                      <div className="p-1 border-2 rounded-full border-[#1a1a1a]">
-                        <UserRound />
-                      </div>
-                  ) : (
-                      <UserImage image={session?.user.image} />
-                  )}
-                </div>
-
-                <div className="flex flex-col">
-                  <span className="max-w-[200px]">{session?.user?.name}</span>
-                  <span className="text-[0.8rem] max-w-[200px] text-gray-400">
-                    {session?.user?.email}
-                  </span>
-                </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-
-              {dropDownData.map((item, index) => {
-                return (
+                  <div className="flex flex-col">
+                    <span className="max-w-[200px]">{session?.user?.name}</span>
+                    <span className="text-[0.8rem] max-w-[200px] text-gray-400">
+                      {session?.user?.email}
+                    </span>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {dropDownData.map((item, index) => {
+                  return (
+                      <DropdownMenuItem
+                          className="flex gap-2 focus:border-gray-500 cursor-pointer"
+                          onClick={() => router.push("/profile")}
+                          key={index}
+                      >
+                        <span>{item.icon}</span>
+                        <span>{item.name}</span>
+                      </DropdownMenuItem>
+                  );
+                })}
+                <DropdownMenuSeparator />
+                {session?.user && (
                     <DropdownMenuItem
-                        className="flex gap-2 focus:border-gray-500 cursor-pointer"
-                        onClick={() => router.push("/profile")}
-                        key={index}
+                        onClick={async () => {
+                          await signOut();
+                          router.push("/");
+                        }}
+                        className="flex gap-2 cursor-pointer"
                     >
-                      <span>{item.icon}</span>
-                      <span>{item.name}</span>
+                      <LogOut size={15} />
+                      Logout
                     </DropdownMenuItem>
-                );
-              })}
-              <DropdownMenuSeparator />
-              {session?.user && (
-                  <DropdownMenuItem
-                      onClick={async () => {
-                        await signOut();
-                        router.push("/");
-                      }}
-                      className="flex gap-2 cursor-pointer"
-                  >
-                    <LogOut size={15} />
-                    Logout
-                  </DropdownMenuItem>
-              )}
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+        )}
+        <div className="flex justify-center items-center gap-4">
+          {/* {
+            theme === 'light' ?
+            <Icons.moon onClick={() => setTheme("dark")} className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+            :
+            <Icons.sun onClick={() => setTheme("light")} className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          } */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Icons.sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                <Icons.moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                <span className="sr-only">Toggle theme</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="mt-5" >
+              <DropdownMenuItem onClick={() => setTheme("light")}>
+                Light
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme("dark")}>
+                Dark
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme("system")}>
+                System
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-      )}
-      <div className="flex justify-center items-center gap-4">
-        {/* {
-          theme === 'light' ?
-          <Icons.moon onClick={() => setTheme("dark")} className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          :
-          <Icons.sun onClick={() => setTheme("light")} className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-        } */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <Icons.sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Icons.moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-              <span className="sr-only">Toggle theme</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => setTheme("light")}>
-              Light
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme("dark")}>
-              Dark
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme("system")}>
-              System
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-        {!session && (
-            <Link href="/login">
-              <Button size={'sm'} className="font-medium">Join Now</Button>
-            </Link>
-        )}
+          {!session && (
+              <Link href="/login">
+                <Button size={'sm'} className="font-medium">Join Now</Button>
+              </Link>
+          )}
+        </div>
       </div>
     </nav>
   );
