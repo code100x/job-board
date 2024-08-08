@@ -74,41 +74,24 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
     fetchJobs();
   }, [filters]);
 
-  return (
-    <aside className="p-4 min-w-48 border border-gray-200 rounded">
-      <h2 className="mb-4">Job Filters</h2>
-      <div className="flex flex-col gap-2">
-        <Input
-          type="text"
-          name="title"
-          placeholder="Job Title"
-          onChange={handleFilterChange}
-          className="border p-2 rounded-md"
-        />
-        <Input
-          type="text"
-          name="companyName"
-          placeholder="Company Name"
-          onChange={handleFilterChange}
-          className="border p-2 rounded-md"
-        />
-
-        <Select
-          onValueChange={(value) => {
-            setFilters({
-              ...filters,
-              currency: value,
-            });
-          }}
-        >
-          <SelectTrigger className="max-w">
-            <SelectValue placeholder="Choose currency" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="INR">₹ INR</SelectItem>
-            <SelectItem value="USD">$ USD</SelectItem>
-          </SelectContent>
-        </Select>
+    return (
+        <aside className="p-4 min-w-48 border border-gray-200 rounded dark:border-gray-800">
+            <h2 className="mb-4">Job Filters</h2>
+            <div className="flex flex-col gap-2">
+                <Input
+                    type="text"
+                    name="title"
+                    placeholder="Job Title"
+                    onChange={handleFilterChange}
+                    className="border p-2 rounded-md"
+                />
+                <Input
+                    type="text"
+                    name="companyName"
+                    placeholder="Company Name"
+                    onChange={handleFilterChange}
+                    className="border p-2 rounded-md"
+                />
 
         <Select
           onValueChange={(value) => {
