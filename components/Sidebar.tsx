@@ -11,6 +11,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Job } from "@prisma/client";
 
+// hooks
+import useDebouncedValue from "@/hooks/useDebounce";
+
 interface SidebarProps {
   setJobs: (jobs: Job[]) => void;
   setLoading: (value: boolean) => void;
@@ -45,6 +48,9 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
     salRange: [0, 1000000],
   });
 
+
+  const debouncedFilters = useDebouncedValue(filters, 500);
+
   const handleFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFilters({
       ...filters,
@@ -72,7 +78,7 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
 
   useEffect(() => {
     fetchJobs();
-  }, [filters]);
+  }, [debouncedFilters]);
 
   return (
     <aside className="p-4 min-w-48 border border-gray-200 rounded">
