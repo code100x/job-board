@@ -44,16 +44,17 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime? @map("email_verified")
-  password      String
-  role          Role      @default(USER)
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  jobs          Job[]
+  id                    String                  @id @default(cuid())
+  name                  String?
+  email                 String?                 @unique
+  emailVerified         DateTime?               @map("email_verified")
+  password              String
+  role                  Role                    @default(USER)
+  image                 String?
+  accounts              Account[]
+  sessions              Session[]
+  jobs                  Job[]
+  ContactFormSubmission ContactFormSubmission[]
 
   @@map("users")
 }
@@ -80,6 +81,16 @@ model Job {
   country     String?
 
   user User @relation(fields: [userId], references: [id])
+}
+
+model ContactFormSubmission {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
 }
 
 enum Role {
