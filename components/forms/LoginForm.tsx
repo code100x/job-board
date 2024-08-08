@@ -53,14 +53,14 @@ const LoginForm = () => {
 
   return (
     <Form {...form}>
-      <div className="h-fit p-8 bg-white flex flex-col items-start gap-8 rounded-xl shadow-lg border-t border-gray-200">
+      <div className="h-fit p-8 bg-white dark:bg-gray-950 dark:text-white dark:border-gray-700 flex flex-col items-start gap-8 rounded-xl shadow-lg border-t border-gray-200">
         <div className="w-full flex flex-col justify-center items-center gap-3">
-          <h3 className="text-3xl bg-gradient-to-r from-indigo-600 via-violet-500 to-blue-700 bg-clip-text text-transparent font-black">
+          <h3 className="text-3xl bg-gradient-to-r from-indigo-600 via-violet-500 to-blue-700 bg-clip-text text-transparent font-black dark:from-indigo-400 dark:via-violet-400 dark:to-blue-500">
             100xJobs
           </h3>
           <div className="flex flex-col gap-1 justify-center items-center">
-            <h4 className="text-lg font-medium">Welcome Back</h4>
-            <p className="text-sm text-gray-500 font-medium">
+            <h4 className="text-lg font-medium dark:text-gray-200">Welcome Back</h4>
+            <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
               Please enter your details to sign in
             </p>
           </div>
@@ -75,7 +75,7 @@ const LoginForm = () => {
             name="email"
             render={({ field }) => (
               <FormItem className="w-64">
-                <FormLabel className="text-sm font-semibold text-gray-800">
+                <FormLabel className="text-sm font-semibold text-gray-800 dark:text-white">
                   Email *
                 </FormLabel>
                 <FormControl>
@@ -95,7 +95,7 @@ const LoginForm = () => {
             name="password"
             render={({ field }) => (
               <FormItem className="w-64">
-                <FormLabel className="text-sm font-semibold text-gray-800">
+                <FormLabel className="text-sm font-semibold text-gray-800 dark:text-white">
                   Password *
                 </FormLabel>
                 <FormControl>
