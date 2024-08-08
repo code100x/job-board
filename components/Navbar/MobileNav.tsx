@@ -4,12 +4,12 @@ import { useState } from "react";
 import Link, { LinkProps } from "next/link";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
-import { Menu } from "lucide-react";
 import { logOutUser } from "@/actions/user";
 import { Session } from "next-auth";
 import { toast } from "../ui/use-toast";
 import { usePathname, useRouter } from "next/navigation";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import { Icons } from "../Icons";
 type NavbarProps = {
   session: Session | null;
 };
@@ -40,11 +40,14 @@ const MobileNav = ({ session }: NavbarProps) => {
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button variant="outline" className="w-10 px-0 sm:hidden">
-          <Menu className="h-5 w-5" />
+          <Icons.menu className="h-5 w-5" />
           <span className="sr-only">Toggle Theme</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="flex flex-col justify-start gap-8 p-4">
+      <SheetContent
+        side="right"
+        className="flex flex-col justify-start gap-8 p-4"
+      >
         <div className="flex flex-col gap-1 text-md mt-14">
           <MobileLink onOpenChange={setOpen} href="/">
             Home
@@ -65,18 +68,18 @@ const MobileNav = ({ session }: NavbarProps) => {
           ) : null}
         </div>
         {!session ? (
-            <Link href="/login">
-              <Button className="font-medium">Join Now</Button>
-            </Link>
-          ) : (
-            <Button
-              onClick={handleSignOut}
-              variant="outline"
-              className="font-medium rounded-md"
-            >
-              Sign Out
-            </Button>
-          )}
+          <Link href="/login">
+            <Button className="font-medium">Join Now</Button>
+          </Link>
+        ) : (
+          <Button
+            onClick={handleSignOut}
+            variant="outline"
+            className="font-medium rounded-md"
+          >
+            Sign Out
+          </Button>
+        )}
       </SheetContent>
     </Sheet>
   );

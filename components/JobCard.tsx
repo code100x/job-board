@@ -1,6 +1,5 @@
 import { Job } from "@prisma/client";
-import { Banknote, MapPin, SquareArrowOutUpRight } from "lucide-react";
-import {Slider} from "@/components/ui/slider";
+import { Icons } from "./Icons";
 
 type JobCardProps = {
   job: Job;
@@ -24,7 +23,7 @@ const JobCard = ({ job }: JobCardProps) => {
           {companyName}
         </h4>
         <span className="flex items-end gap-2 text-gray-500">
-          <Banknote className="text-gray-700" />
+          <Icons.bankNote className="text-gray-700" />
           <h4 className="text-sm sm:text-base tracking-tight font-medium">
             <span className="font-semibold">{currencySign}</span> {salary}
           </h4>
@@ -32,7 +31,7 @@ const JobCard = ({ job }: JobCardProps) => {
 
         <div className="w-full flex flex-col sm:flex-row justify-between">
           <span className="flex items-end gap-2 text-gray-500">
-            <MapPin className="text-gray-700" />
+            <Icons.mapPin className="text-gray-700" />
             <h4 className="text-sm sm:text-base tracking-tight font-medium">
               {location}
             </h4>
@@ -40,7 +39,7 @@ const JobCard = ({ job }: JobCardProps) => {
           <p className="flex gap-2 items-center cursor-pointer hover:underline mt-2 sm:mt-0">
             view details{" "}
             <span>
-              <SquareArrowOutUpRight size={14} />
+              <Icons.squareArrowOutUpRight className="h-4 w-4" />
             </span>
           </p>
 
