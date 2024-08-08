@@ -114,15 +114,48 @@ export const deleteJob = async (id:string): Promise<SAPayload> => {
   }
 
   try {
-    await prisma.job.delete({
+    const res = await prisma.job.delete({
       where:{
         id:id,
       }
     });
-    return { status: "success", message: "Job deleted Successfully" };
+    if(!res){
+      return { status: "error", message: "Internal Server Error" };
+    }
+    return { status: "success", message: "Job deleted Successfully"};
   } catch (error) {
     console.log(error);
     return { status: "error", message: "Internal Server Error" };
   }
 };
 
+interface getAllJobsForAdminProp{
+  page:number,
+  pageSize:number,
+
+}
+export const getAllJobsForAdmin = async (data:getAllJobsForAdminProp)=>{
+  const session = await auth();
+  if (!session) {
+    return { status: "error", message: "Internal Server Error" };
+  }
+  const {page,pageSize} = data
+    try {
+      const [jobs, totalJobs] = await Promise.all([
+        prisma.job.findMany({
+          skip: (page - 1) * pageSize,
+          take: pageSize,
+        }),
+        prisma.job.count({
+        }),
+      ]);
+
+      const totalPages = Math.ceil(totalJobs / pageSize);
+
+      return { status: "success", data: jobs, totalPages };
+    }catch (error){
+      console.log(error);
+      return { status: "error", message: "Internal Server Error" };
+    }
+
+}

@@ -4,24 +4,23 @@ import { Banknote, MapPin, SquareArrowOutUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {deleteJob} from "@/actions/job";
 import {useToast} from "@/components/ui/use-toast";
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogHeader,
     DialogTitle,
     DialogTrigger
 } from "@/components/ui/dialog";
-import NewJobForm from "@/components/forms/NewJobForm";
 import UpdateJobForm from "@/components/forms/UpdateJobForm";
 
 type ManageJobsCardProps = {
     job: Job;
+    setJobs: any;
 };
 
-const ManageJobsCard = ({ job }: ManageJobsCardProps) => {
+const ManageJobsCard = ({ job,setJobs }: ManageJobsCardProps) => {
     const router = useRouter()
     const [open, setOpen] = useState(false);
     const { toast } = useToast();
@@ -33,10 +32,10 @@ const ManageJobsCard = ({ job }: ManageJobsCardProps) => {
     const handleDelete = async ()=>{
         const res = await deleteJob(job.id);
         if(res.status==="success"){
+            setJobs((prevJobs:Job[])=>prevJobs.filter((currJob)=>currJob.id!==job.id))
             toast({
                 description: "Job deleted successfully!",
             })
-            router.refresh()
         }else {
             toast({
                 description: "Job deleted failed",
@@ -45,12 +44,13 @@ const ManageJobsCard = ({ job }: ManageJobsCardProps) => {
     }
     //refresh every time when open state change
     //Implement other logic to update page after job is update
-    useEffect(()=>{
-        function refresh(){
-            router.refresh();
-        }
-        refresh();
+    const refresh = useCallback(() => {
+        router.refresh();
     },[open])
+    useEffect(()=>{
+
+        refresh();
+    },[refresh])
     return (
         <div className="max-w-full mx-auto h-fit w-full flex flex-col sm:flex-row items-start gap-4 border border-gray-200 hover:border-gray-300 transition-all shadow-sm rounded-md px-4 py-3 ">
             <div className="flex flex-col sm:flex-row w-full">
