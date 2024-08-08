@@ -10,11 +10,11 @@ import { Button } from "@/components/ui/button";
 const HomePage = () => {
   return (
     <main className="w-full max-h-screen">
-      <div className="absolute inset-0 h-full w-full flex flex-col dark:bg-background items-center gap-24 p-4 dark:bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-white bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]">
-        <RevealAnimation>
-          <SiteHeader />
+      <div className="absolute inset-0 h-full w-full flex flex-col dark:bg-background items-center gap-0 dark:bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-white bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]">
+        <RevealAnimation className="absolute w-full top-4 left-0">
+          <SiteHeader/>
         </RevealAnimation>
-        <section className="flex flex-col justify-center items-center gap-0">
+        <section className="flex flex-col h-full w-full justify-center items-center gap-0">
           <RevealAnimation>
             <GithubBadge />
           </RevealAnimation>

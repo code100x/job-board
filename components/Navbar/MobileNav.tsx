@@ -45,7 +45,7 @@ const MobileNav = ({ session }: NavbarProps) => {
         </Button>
       </SheetTrigger>
       <SheetContent side="right" className="flex flex-col justify-start gap-8 p-4">
-        <div className="flex flex-col gap-1 text-md mt-8">
+        <div className="flex flex-col gap-1 text-md mt-14">
           <MobileLink onOpenChange={setOpen} href="/">
             Home
           </MobileLink>
@@ -104,7 +104,7 @@ function MobileLink({
         onOpenChange?.(false);
       }}
       className={cn(
-        `text-foreground transition duration-300 mb-0 hover:bg-secondary p-2 pl-4 rounded-sm ${className}`
+        `text-foreground transition duration-300 mb-0 hover:bg-secondary p-2 pl-4 rounded-md ${className}`
       )}
       {...props}
     >
