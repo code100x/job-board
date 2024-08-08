@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import JobCard from "@/components/JobCard";
 import Sidebar from "@/components/Sidebar";
@@ -22,16 +21,15 @@ const JobsPage = () => {
       }
       setLoading(false);
     };
-
     fetchJobs();
   }, []);
 
   return (
-    <section className="relative w-full h-fit flex gap-2 flex-grow">
+    <section className="relative w-full h-fit flex flex-col gap-2 flex-grow p-2 md:flex-row">
       <Sidebar setJobs={setJobs} setLoading={setLoading} />
       <section className="w-full h-fit flex flex-col gap-8 rounded-md py-4 px-6">
         <div className="flex flex-col gap-1">
-          <h3 className="lg:text-5xl text-gray-900 tracking-tight font-semibold">
+          <h3 className="lg:text-5xl text-gray-900 tracking-tight font-semibold dark:text-gray-200">
             All Developer Jobs
           </h3>
           <p className="lg:text-lg font-medium text-gray-500 tracking-tighter">
@@ -47,16 +45,19 @@ const JobsPage = () => {
             },
           )}
         >
-          {loading ? (
-            <h3 className="text-2xl font-semibold text-gray-800">Loading...</h3>
-          ) : jobs.length === 0 ? (
-            <h3 className="text-2xl font-semibold text-gray-800">
-              No Jobs Found!
-            </h3>
-          ) : (
-            jobs.map((job) => <JobCard key={job.id} job={job} />)
-          )}
-        </div>
+            {loading ? (
+              <h3 className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
+                Loading...
+              </h3>
+            ) : jobs.length === 0 ? (
+              <h3 className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
+                No Jobs Found!
+              </h3>
+            ) : (
+              jobs.map((job) => <JobCard key={job.id} job={job} />)
+            )}
+          </div>
+        
       </section>
     </section>
   );
