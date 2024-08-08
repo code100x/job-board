@@ -94,8 +94,9 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
                             currency: value,
                         });
                     }}
+                
                 >
-                    <SelectTrigger className="w-[180px]">
+                    <SelectTrigger>
                         <SelectValue placeholder="Choose currency" />
                     </SelectTrigger>
                     <SelectContent>
@@ -112,7 +113,7 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
                         });
                     }}
                 >
-                    <SelectTrigger className="w-[180px]">
+                    <SelectTrigger>
                         <SelectValue placeholder="Job Location" />
                     </SelectTrigger>
                     <SelectContent>
