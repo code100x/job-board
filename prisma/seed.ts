@@ -25,6 +25,7 @@ async function main() {
         role: "ADMIN",
       },
     ],
+    skipDuplicates: true,
   });
   console.log(users, "Users created");
 }
