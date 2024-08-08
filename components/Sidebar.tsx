@@ -95,7 +95,7 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
                         });
                     }}
                 >
-                    <SelectTrigger className="w-[180px]">
+                    <SelectTrigger className="max-w">
                         <SelectValue placeholder="Choose currency" />
                     </SelectTrigger>
                     <SelectContent>
@@ -112,7 +112,7 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
                         });
                     }}
                 >
-                    <SelectTrigger className="w-[180px]">
+                    <SelectTrigger className="max-w">
                         <SelectValue placeholder="Job Location" />
                     </SelectTrigger>
                     <SelectContent>
@@ -130,7 +130,7 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
                         onValueChange={handleSliderChange}
                         value={filters.salRange}
                     />
-                    <div className="flex justify-between">
+                    <div className="flex justify-between text-sm">
                         <span>Min: {formatSalary(filters.salRange[0], filters.currency)}</span>
                         <span>Max: {formatSalary(filters.salRange[1], filters.currency)}</span>
                     </div>
