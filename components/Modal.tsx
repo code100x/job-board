@@ -13,7 +13,6 @@ const Modal = ({ job, onClose, onApply }: ModalProps) => {
 
     useEffect(() => {
         setIsVisible(true);
-        document.body.style.overflow = 'hidden'; // Prevent background scroll
         return () => {
             setIsVisible(false);
             document.body.style.overflow = ''; // Restore scroll
@@ -35,7 +34,9 @@ const Modal = ({ job, onClose, onApply }: ModalProps) => {
                 className={`bg-[#1C1C1E] rounded-3xl shadow-lg p-6 max-w-lg w-full relative transition-transform transform ${isVisible ? 'scale-100' : 'scale-90'}`}
                 style={{ transition: 'transform 0.3s ease-in-out' }}
             >
-                <JobDetails job={job} onApply={onApply} />
+                <div className="max-h-[60vh] overflow-y-auto">
+                    <JobDetails job={job} onApply={onApply} />
+                </div>
                 <div className="mt-6 flex justify-between gap-4">
                     <button
                         onClick={onClose}
