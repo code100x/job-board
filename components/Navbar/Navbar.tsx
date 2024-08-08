@@ -26,7 +26,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import UserImage from "@/components/UserImage";
-import { Icon, LogOut, UserRound } from "lucide-react";
+import { Icon, LogOut, TriangleAlertIcon, UserRound } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { Icons } from "../Icons";
 import { useTheme } from "next-themes";
@@ -176,30 +176,36 @@ const Navbar = ({ session }: NavbarProps) => {
                 }}
               >
                 <AlertDialogTrigger asChild>
-                  <Button variant="destructive" className="my-2 mx-3">
+                  <Button
+                    variant="destructive"
+                    className="my-2 mx-3 bg-gradient-to-r from-red-500 to-red-700 shadow-lg hover:shadow-xl hover:from-red-600 hover:to-red-800 transition-all duration-200"
+                  >
                     Logout
                   </Button>
                 </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Confirm Logout</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Are you sure you want to log out? You will need to log in
-                      again to access your account.
-                    </AlertDialogDescription>
+                <AlertDialogContent className="animate-fade-in shadow-lg bg-white dark:bg-gray-950 rounded-lg p-6 sm:p-8">
+                  <AlertDialogHeader className="flex items-center gap-2">
+                    <TriangleAlertIcon className="text-red-600 w-6 h-6" />
+                    <AlertDialogTitle className="text-xl font-semibold text-gray-900 dark:text-white">
+                      Confirm Logout
+                    </AlertDialogTitle>
                   </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogDescription className="mt-2 text-sm text-gray-600 dark:text-white">
+                    Are you sure you want to log out? You will need to log in
+                    again to access your account.
+                  </AlertDialogDescription>
+                  <AlertDialogFooter className="mt-4 flex justify-end gap-3">
+                    <AlertDialogCancel className="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 dark:text-gray-200 transition-all">
+                      Cancel
+                    </AlertDialogCancel>
                     <AlertDialogAction
                       onClick={async () => {
-                        await handleSignOut()
+                        await handleSignOut();
                       }}
-                      className="flex gap-2 items-center cursor-pointer"
+                      className="px-4 py-2 rounded-lg bg-red-500 flex items-center gap-2 hover:bg-red-600 dark:bg-red-500 dark:hover:bg-red-600 dark:text-white transition-all"
                     >
-                      <div className="flex gap-2">
-                        <LogOut />
-                        Logout
-                      </div>
+                      <LogOut className="w-5 h-5" />
+                      Logout
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
