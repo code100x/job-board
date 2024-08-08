@@ -23,8 +23,12 @@ export const createJob = async (data: NewJob): Promise<SAPayload> => {
         currency: data.currency as Currency,
         salary: data.salary,
         location: data.location,
+        state: data.state,
+        country: data.country,
       },
     });
+
+    console.log(newJob);
 
     return { status: "success", message: "Job created Successfully" };
   } catch (error) {

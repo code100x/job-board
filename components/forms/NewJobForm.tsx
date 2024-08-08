@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "../ui/button";
-import { Input } from "../ui/input";
 import {
   Select,
   SelectContent,
@@ -22,8 +21,8 @@ import { useForm } from "react-hook-form";
 import { NewJob, newJobSchema } from "@/zod/job";
 import { useToast } from "../ui/use-toast";
 import { createJob } from "@/actions/job";
-import { useState } from "react";
 import CustomInput from "../CustomInput";
+import { INR, USD } from "@/lib/data";
 
 type NewJobFormProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -47,30 +46,32 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
   });
 
   const location = form.watch("location");
+  const currency = form.watch("currency");
+  let amount: {
+    placeholder: string;
+    value: string;
+  }[];
+
+  if (currency === "USD") {
+    amount = USD;
+  }
+
+  if (currency === "INR") {
+    amount = INR;
+  }
 
   const handleFormSubmit = async (values: NewJob) => {
-    const { currency, location } = values;
+    const { location, state, country } = values;
 
-    if (currency !== "USD" && currency !== "INR") {
-      toast({
-        title: "Please select the currency",
-        variant: "destructive",
-      });
-      return;
+    if (location !== "REMOTE") {
+      if (state === undefined || country === undefined) {
+        toast({
+          title: "Please select state and country",
+          variant: "destructive",
+        });
+        return;
+      }
     }
-
-    if (
-      location !== "REMOTE" &&
-      location !== "HYBRID" &&
-      location !== "OFFICE"
-    ) {
-      toast({
-        title: "Please select the location",
-        variant: "destructive",
-      });
-      return;
-    }
-
     const response = await createJob(values);
 
     if (response?.status !== "success") {
@@ -107,24 +108,12 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
           </div>
 
           <div className="w-full flex flex-col gap-1">
-            <FormField
-              control={form.control}
+            <CustomInput
+              type="text"
               name="companyName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-semibold text-gray-800">
-                    Company Name *
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className="w-full border-gray-400"
-                      placeholder="Enter comapany name here"
-                    />
-                  </FormControl>
-                  <FormMessage className="text-xs" />
-                </FormItem>
-              )}
+              label="Company Name *"
+              control={form.control}
+              placeholderText="Enter company name here"
             />
           </div>
         </div>
@@ -158,19 +147,19 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
           >
             Salary *
           </label>
-          <div className="flex justify-center items-center gap-2">
+          <div className="w-full flex justify-center items-center gap-2">
             <FormField
               control={form.control}
               name="currency"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-2/6">
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger className="w-28">
-                        <SelectValue placeholder="Currency" />
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Currency" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -186,15 +175,32 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
               control={form.control}
               name="salary"
               render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className="w-full border-gray-400"
-                      placeholder="Enter comapany name here"
-                    />
-                  </FormControl>
-                  <FormMessage className="text-xs absolute" />
+                <FormItem className="w-4/6">
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Salary Range" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {amount?.map((item) => {
+                        return (
+                          <SelectItem key={item.value} value={item.value}>
+                            {item.placeholder}
+                          </SelectItem>
+                        );
+                      })}
+                      {!amount || amount === null ? (
+                        <p className="text-rose-500 text-sm p-3">
+                          Please select currency
+                        </p>
+                      ) : null}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage className="text-xs" />
                 </FormItem>
               )}
             />
@@ -225,7 +231,7 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
                     <SelectItem value="OFFICE">Office</SelectItem>
                   </SelectContent>
                 </Select>
-                <FormMessage />
+                <FormMessage className="text-xs" />
               </FormItem>
             )}
           />
@@ -233,48 +239,24 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
 
         <div className="w-full flex justify-between items-center gap-2">
           <div className="w-full flex flex-col gap-1">
-            <FormField
-              disabled={location === "" || location === "REMOTE"}
-              control={form.control}
+            <CustomInput
+              type="text"
               name="state"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-semibold text-gray-800">
-                    State
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className="w-full border-gray-400"
-                      placeholder="Enter your state here"
-                    />
-                  </FormControl>
-                  <FormMessage className="text-xs absolute" />
-                </FormItem>
-              )}
+              disabled={location === "" || location === "REMOTE"}
+              label="State"
+              control={form.control}
+              placeholderText="Enter your state here"
             />
           </div>
 
           <div className="w-full flex flex-col gap-1">
-            <FormField
-              disabled={location === "" || location === "REMOTE"}
-              control={form.control}
+            <CustomInput
+              type="text"
               name="country"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-semibold text-gray-800">
-                    Country
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className="w-full border-gray-400"
-                      placeholder="Enter your country here"
-                    />
-                  </FormControl>
-                  <FormMessage className="text-xs absolute" />
-                </FormItem>
-              )}
+              disabled={location === "" || location === "REMOTE"}
+              label="Country"
+              control={form.control}
+              placeholderText="Enter your country here"
             />
           </div>
         </div>

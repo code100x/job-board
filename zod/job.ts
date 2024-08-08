@@ -11,26 +11,16 @@ export const newJobSchema = z.object({
     message: "Company Name must be atleast 5 characters long.",
   }),
   salary: z.string().min(5, {
-    message: "Salary must be atleast 5 characters long.",
+    message: "Please select salary range.",
   }),
-  currency: z.string({
-    required_error: "Please select one category",
+  currency: z.string().min(2, {
+    message: "Please select one category",
   }),
-  location: z.string({
-    required_error: "Please select one location type",
+  location: z.string().min(4, {
+    message: "Please select one location",
   }),
-  state: z
-    .string()
-    .min(5, {
-      message: "State must be atleast 5 characters long",
-    })
-    .optional(),
-  country: z
-    .string()
-    .min(5, {
-      message: "Country must be atleast 5 characters long",
-    })
-    .optional(),
+  state: z.string().optional(),
+  country: z.string().optional(),
 });
 
 export type NewJob = z.infer<typeof newJobSchema>;
