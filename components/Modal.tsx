@@ -35,7 +35,6 @@ const Modal = ({ job, onClose, onApply }: ModalProps) => {
                 className={`bg-[#1C1C1E] rounded-3xl shadow-lg p-6 max-w-lg w-full relative transition-transform transform ${isVisible ? 'scale-100' : 'scale-90'}`}
                 style={{ transition: 'transform 0.3s ease-in-out' }}
             >
-                <h2 id="modal-title" className="text-2xl font-semibold mb-4 text-white">Job Details</h2>
                 <JobDetails job={job} onApply={onApply} />
                 <div className="mt-6 flex justify-between gap-4">
                     <button
