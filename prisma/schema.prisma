@@ -54,6 +54,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   jobs          Job[]
+  experience   Profile[]
 
   @@map("users")
 }
@@ -82,6 +83,40 @@ model Job {
   user User @relation(fields: [userId], references: [id])
 }
 
+model Profile {
+  id            String   @id @default(cuid())
+  userId        String
+  name          String
+  location      String
+  role          String
+  experience    String
+  bio           String?
+  website       String?
+  linkedin      String?
+  github        String?
+  twitter       String?
+  projects      Project[] @relation(name: "ExperienceToProject")
+  skills        String[]
+  achievements  String?
+
+  user          User     @relation(fields: [userId], references: [id])
+}
+
+model Project {
+  id            String   @id @default(cuid())
+  userId  String
+  companyName   String
+  title         String
+  startDate     String
+  endDate       String?
+  currentlyWork Boolean
+  description   String?
+  positionType  PositionType
+
+  experience    Profile @relation(fields: [userId], references: [id], name: "ExperienceToProject")
+}
+
+
 enum Role {
   ADMIN
   USER
@@ -96,4 +131,11 @@ enum JobType {
   REMOTE
   HYBIRD
   OFFICE
+}
+
+enum PositionType {
+  FULLTIME
+  PARTTIME
+  CONTRACT
+  INTERNSHIP
 }
