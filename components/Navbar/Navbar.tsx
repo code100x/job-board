@@ -108,9 +108,9 @@ const Navbar = ({ session }: NavbarProps) => {
           <Link href="/jobs/manage">
             <p
               className={cn(
-                "cursor-pointer hover:text-gray-900 hover:underline",
+                "cursor-pointer hover:text-foreground hover:underline",
                 {
-                  "text-gray-900": pathName === "/jobs/manage",
+                  "text-foreground": pathName === "/jobs/manage",
                 }
               )}
             >
@@ -120,101 +120,101 @@ const Navbar = ({ session }: NavbarProps) => {
         ) : null}
       </div>
 
-      {session && session?.user && (
-        <DropdownMenu>
-          <DropdownMenuTrigger className="w-[2rem] flex items-center p-[0.2rem]  justify-center h-[2rem]">
-            {!session?.user.image ? (
-              <div className="p-1 border-2 rounded-md">
-                <UserRound />
-              </div>
-            ) : (
-              <UserImage image={session?.user.image} />
-            )}
-          </DropdownMenuTrigger>
-
-          <DropdownMenuContent className="!w-[15rem] dark:shadow-[#030712] translate-y-8 scale-110 -translate-x-10 shadow-lg bg-white">
-            <DropdownMenuLabel className="flex gap-4 items-center">
-              <div className="!w-[2rem] flex items-center p-[0.2rem]  justify-center !h-[2rem]">
-                {!session?.user.image ? (
-                  <div className="p-1 border-2 rounded-full border-[#1a1a1a]">
-                    <UserRound />
-                  </div>
-                ) : (
-                  <UserImage image={session?.user.image} />
-                )}
-              </div>
-
-              <div className="flex flex-col">
-                <span className="max-w-[200px]">{session?.user?.name}</span>
-                <span className="text-[0.8rem] max-w-[200px] text-gray-400">
-                  {session?.user?.email}
-                </span>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-
-            {dropDownData.map((item, index) => {
-              return (
-                <DropdownMenuItem
-                  className="flex gap-2 focus:border-gray-500 cursor-pointer"
-                  onClick={() => router.push("/profile")}
-                  key={index}
-                >
-                  <span>{item.icon}</span>
-                  <span>{item.name}</span>
-                </DropdownMenuItem>
-              );
-            })}
-            <DropdownMenuSeparator />
-            {session?.user && (
-              <AlertDialog
-                onOpenChange={() => {
-                  setTimeout(
-                    () => (document.body.style.pointerEvents = ""),
-                    100
-                  );
-                }}
-              >
-                <AlertDialogTrigger asChild>
-                  <Button
-                    variant="destructive"
-                    className="my-2 mx-3 bg-gradient-to-r from-red-500 to-red-700 shadow-lg hover:shadow-xl hover:from-red-600 hover:to-red-800 transition-all duration-200"
-                  >
-                    Logout
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent className="animate-fade-in shadow-lg bg-white dark:bg-gray-950 rounded-lg p-6 sm:p-8">
-                  <AlertDialogHeader className="flex items-center gap-2">
-                    <TriangleAlertIcon className="text-red-600 w-6 h-6" />
-                    <AlertDialogTitle className="text-xl font-semibold text-gray-900 dark:text-white">
-                      Confirm Logout
-                    </AlertDialogTitle>
-                  </AlertDialogHeader>
-                  <AlertDialogDescription className="mt-2 text-sm text-gray-600 dark:text-white">
-                    Are you sure you want to log out? You will need to log in
-                    again to access your account.
-                  </AlertDialogDescription>
-                  <AlertDialogFooter className="mt-4 flex justify-end gap-3">
-                    <AlertDialogCancel className="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 dark:text-gray-200 transition-all">
-                      Cancel
-                    </AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={async () => {
-                        await handleSignOut();
-                      }}
-                      className="px-4 py-2 rounded-lg bg-red-500 flex items-center gap-2 hover:bg-red-600 dark:bg-red-500 dark:hover:bg-red-600 dark:text-white transition-all"
-                    >
-                      <LogOut className="w-5 h-5" />
-                      Logout
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            )}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )}
       <div className="flex justify-center items-center gap-4">
+        {session && session?.user && (
+          <DropdownMenu>
+            <DropdownMenuTrigger className="w-[2rem] flex items-center p-[0.2rem]  justify-center h-[2rem]">
+              {!session?.user.image ? (
+                <div className="p-1 border-2 rounded-md">
+                  <UserRound />
+                </div>
+              ) : (
+                <UserImage image={session?.user.image} />
+              )}
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent className="!w-[15rem] dark:shadow-[#030712] translate-y-8 scale-110 -translate-x-10 shadow-lg bg-white">
+              <DropdownMenuLabel className="flex gap-4 items-center">
+                <div className="!w-[2rem] flex items-center p-[0.2rem]  justify-center !h-[2rem]">
+                  {!session?.user.image ? (
+                    <div className="p-1 border-2 rounded-full border-[#1a1a1a]">
+                      <UserRound />
+                    </div>
+                  ) : (
+                    <UserImage image={session?.user.image} />
+                  )}
+                </div>
+
+                <div className="flex flex-col">
+                  <span className="max-w-[200px]">{session?.user?.name}</span>
+                  <span className="text-[0.8rem] max-w-[200px] text-gray-400">
+                    {session?.user?.email}
+                  </span>
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+
+              {dropDownData.map((item, index) => {
+                return (
+                  <DropdownMenuItem
+                    className="flex gap-2 focus:border-gray-500 cursor-pointer"
+                    onClick={() => router.push("/profile")}
+                    key={index}
+                  >
+                    <span>{item.icon}</span>
+                    <span>{item.name}</span>
+                  </DropdownMenuItem>
+                );
+              })}
+              <DropdownMenuSeparator />
+              {session?.user && (
+                <AlertDialog
+                  onOpenChange={() => {
+                    setTimeout(
+                      () => (document.body.style.pointerEvents = ""),
+                      100
+                    );
+                  }}
+                >
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      variant="destructive"
+                      className="my-2 mx-3 bg-gradient-to-r from-red-500 to-red-700 shadow-lg hover:shadow-xl hover:from-red-600 hover:to-red-800 transition-all duration-200 dark:bg-gradient-to-r dark:from-pink-500 dark:to-purple-700 dark:hover:from-pink-600 dark:hover:to-purple-800 dark:shadow-pink-800/50"
+                    >
+                      Logout
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent className="animate-fade-in shadow-lg bg-white dark:bg-gray-950 rounded-lg p-6 sm:p-8 dark:shadow-md dark:shadow-purple-700/50">
+                    <AlertDialogHeader className="flex items-center gap-2">
+                      <TriangleAlertIcon className="text-red-600 dark:text-pink-500 w-6 h-6" />
+                      <AlertDialogTitle className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                        Confirm Logout
+                      </AlertDialogTitle>
+                    </AlertDialogHeader>
+                    <AlertDialogDescription className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                      Are you sure you want to log out?
+                    </AlertDialogDescription>
+                    <AlertDialogFooter className="mt-4 flex justify-end gap-3">
+                      <AlertDialogCancel className="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 transition-all">
+                        Cancel
+                      </AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={async () => {
+                          await handleSignOut();
+                        }}
+                        className="px-4 py-2 rounded-lg bg-red-500 flex items-center gap-2 hover:bg-red-600 dark:bg-purple-600 dark:hover:bg-purple-700 dark:text-white dark:hover:shadow-purple-700/50 transition-all"
+                      >
+                        <LogOut className="w-5 h-5" />
+                        Logout
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
+
         {/* {
           theme === 'light' ?
           <Icons.moon onClick={() => setTheme("dark")} className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
