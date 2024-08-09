@@ -5,7 +5,7 @@ import { Session } from "next-auth";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from 'sonner';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,11 +20,8 @@ import { signOut } from "next-auth/react";
 import { Icons } from "../Icons";
 import { useTheme } from "next-themes";
 
-type NavbarProps = {
-  session: Session | null;
-};
 
-const Navbar = ({ session }: NavbarProps) => {
+const Navbar = ({ session }:any) => {
   const router = useRouter();
   const pathName = usePathname();
   const { theme, setTheme } = useTheme();
@@ -52,20 +49,7 @@ const Navbar = ({ session }: NavbarProps) => {
     },
   ];
 
-  const handleSignOut = async () => {
-    const response = await logOutUser();
-
-    if (response?.status !== "success") {
-      toast({
-        variant: "destructive",
-        title: response?.message,
-      });
-      return;
-    }
-
-    router.push("/");
-    router.refresh();
-  };
+ 
 
   const userRole = session?.user.role;
 
@@ -158,10 +142,7 @@ const Navbar = ({ session }: NavbarProps) => {
               <DropdownMenuSeparator />
               {session?.user && (
                 <DropdownMenuItem
-                  onClick={async () => {
-                    await signOut();
-                    router.push("/");
-                  }}
+                  onClick={async () => {signOut(); }}
                   className="flex gap-2 cursor-pointer"
                 >
                   <LogOut size={15} />

@@ -10,29 +10,12 @@ import { Session } from "next-auth";
 import { toast } from "../ui/use-toast";
 import { usePathname, useRouter } from "next/navigation";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
-type NavbarProps = {
-  session: Session | null;
-};
+import { signOut } from "next-auth/react";
 
-const MobileNav = ({ session }: NavbarProps) => {
+const MobileNav = ({ session }: any) => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const pathName = usePathname();
-
-  const handleSignOut = async () => {
-    const response = await logOutUser();
-
-    if (response?.status !== "success") {
-      toast({
-        variant: "destructive",
-        title: response?.message,
-      });
-      return;
-    }
-
-    router.push("/");
-    router.refresh();
-  };
 
   const userRole = session?.user.role;
 
@@ -70,7 +53,10 @@ const MobileNav = ({ session }: NavbarProps) => {
             </Link>
           ) : (
             <Button
-              onClick={handleSignOut}
+              onClick={async () => {
+                await signOut();
+               
+              }}
               variant="outline"
               className="font-medium rounded-md"
             >

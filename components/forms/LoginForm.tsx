@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "../ui/use-toast";
 import { useState } from "react";
-import { loginUser } from "@/actions/user";
+import { toast } from 'sonner';
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -17,9 +17,10 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
+import { signIn } from "next-auth/react";
 
 const LoginForm = () => {
-  const { toast } = useToast();
+  
 
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -33,21 +34,27 @@ const LoginForm = () => {
   });
 
   const handleFormSubmit = async (values: LoginUser) => {
-    setIsLoading(true);
-    const response = await loginUser(values);
-    if (response?.status !== "success") {
-      toast({
-        title: response.message,
-        variant: "destructive",
-      });
-      setIsLoading(false);
-      return;
+    const loadId = toast.loading("Signing in...");
+    try {
+        const response = await signIn("credentials", {
+          email: values.email,
+          password: values.password,
+          redirect: false,
+        })
+
+        if (response?.ok) {
+          toast.success("Signed in successfully", { id: loadId });
+          router.push("/jobs");
+          return;
+        }else{
+          toast.error("Invalid credentials", { id: loadId });
+        }
+        
+      
+    } catch (error) {
+      console.error(error);
     }
-    toast({
-      title: response.message,
-      variant: "default",
-    });
-    router.push("/jobs");
+    
     setIsLoading(false);
   };
 

@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+
 import Footer from "@/components/Footer";
 import RevealAnimation from "@/components/framer-motion/revealAnimation";
 import { SmoothTextReveal } from "@/components/framer-motion/smoothTextReveal";

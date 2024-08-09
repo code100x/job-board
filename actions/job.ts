@@ -1,14 +1,17 @@
 "use server";
 
-import { auth } from "@/auth";
+
 import { SAPayload } from "@/types";
 import { NewJob } from "@/zod/job";
 import { prisma } from "@/lib/db";
 import { Currency, Job } from "@prisma/client";
 import z from "zod";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+
 
 export const createJob = async (data: NewJob): Promise<SAPayload> => {
-  const session = await auth();
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     return { status: "error", message: "Internal Server Error" };
@@ -47,7 +50,7 @@ const GetJobSchema = z.object({
 type GetJobSchemaType = z.infer<typeof GetJobSchema>;
 
 export const getJobs = async (data: GetJobSchemaType) => {
-  const session = await auth();
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     return { status: "error", message: "Internal Server Error" };

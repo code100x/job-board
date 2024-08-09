@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Footer from "@/components/Footer";
-
+import AuthProvider from "@/context/AuthContext";
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -23,12 +23,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+
+      
       <body
         className={cn(
           "relative min-h-screen bg-background font-sans antialiased",
           fontSans.variable
         )}
-      >
+        >
+        <AuthProvider>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
@@ -39,6 +42,7 @@ export default function RootLayout({
         </ThemeProvider>
         <Toaster />
         <Footer />
+        </AuthProvider>
       </body>
     </html>
   );
