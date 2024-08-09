@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Job } from "@prisma/client";
+import { debounce } from "lodash";
 
 interface SidebarProps {
   setJobs: (jobs: Job[]) => void;
@@ -59,19 +60,24 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
     });
   };
 
-  const fetchJobs = async () => {
+  const debouncedFetchJobs = debounce(async (updatedFilters: Filters) => {
     setLoading(true);
+    console.log('fetch')
     //@ts-ignore
-    const response = await getJobs(filters);
+    const response = await getJobs(updatedFilters);
     if (response.status === "success") {
       //@ts-ignore
       setJobs(response.data);
     }
     setLoading(false);
-  };
+  }, 300); 
 
   useEffect(() => {
-    fetchJobs();
+    debouncedFetchJobs(filters);
+
+    return () => {
+      debouncedFetchJobs.cancel();
+    };
   }, [filters]);
 
   return (
