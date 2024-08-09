@@ -54,6 +54,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   jobs          Job[]
+  customjobs    CustomJob[]
 
   @@map("users")
 }
@@ -80,6 +81,28 @@ model Job {
   country     String?
 
   user User @relation(fields: [userId], references: [id])
+}
+
+model CustomJob {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  description String
+  companyName String   @map("company_name")
+  payment_type PaymentMethod
+  location    String
+  state       String?
+  country     String?
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  CRYPTO
+  DEBIT_CARD
+  PAYPAL
+  BANK_TRANSFER
 }
 
 enum Role {

@@ -9,13 +9,16 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
 import NewJobForm from "./forms/NewJobForm";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs"
 import { useState } from "react";
+import CustomJobsForm from "./forms/CustomJobForm";
 
 
 const NewJobModal = () => {
 
   const [open, setOpen] = useState(false);
 
+ 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -24,12 +27,20 @@ const NewJobModal = () => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Enter the Job details below</DialogTitle>
-          <DialogDescription>
-            This form contains all the job details that are required to post a
-            job
-          </DialogDescription>
+          <DialogDescription>Choose your job type and fill the form</DialogDescription>
         </DialogHeader>
-        <NewJobForm setOpen={setOpen} />
+         <Tabs defaultValue="regular">
+          <TabsList className="flex ">
+            <TabsTrigger value="regular" className="flex-1 text-base font-semibold rounded-md border-2 border-b-black shadow-lg justify-center items-center data-[state=active]:border-indigo-700">
+              Regular
+            </TabsTrigger>
+            <TabsTrigger value="custom" className="flex-1 text-base font-semibold   rounded-md border-2 border-b-black shadow-lg justify-center items-center data-[state=active]:border-indigo-700">
+              Custom
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="regular" ><NewJobForm setOpen={setOpen} /></TabsContent>
+          <TabsContent value="custom"><CustomJobsForm setOpen={setOpen} /></TabsContent>
+        </Tabs>
       </DialogContent>
     </Dialog>
   );
