@@ -14,8 +14,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import UserImage from "@/components/UserImage";
-import { Icon, LogOut, UserRound } from "lucide-react";
+import { Icon, LogOut, TriangleAlertIcon, UserRound } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { Icons } from "../Icons";
 import { useTheme } from "next-themes";
@@ -157,16 +168,48 @@ const Navbar = ({ session }: NavbarProps) => {
               })}
               <DropdownMenuSeparator />
               {session?.user && (
-                <DropdownMenuItem
-                  onClick={async () => {
-                    await signOut();
-                    router.push("/");
+                <AlertDialog
+                  onOpenChange={() => {
+                    setTimeout(
+                      () => (document.body.style.pointerEvents = ""),
+                      100
+                    );
                   }}
-                  className="flex gap-2 cursor-pointer"
                 >
-                  <LogOut size={15} />
-                  Logout
-                </DropdownMenuItem>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      variant="destructive"
+                      className="my-2 mx-3 bg-gradient-to-r from-red-500 to-red-700 shadow-lg hover:shadow-xl hover:from-red-600 hover:to-red-800 transition-all duration-200 dark:bg-gradient-to-r dark:from-pink-500 dark:to-purple-700 dark:hover:from-pink-600 dark:hover:to-purple-800 dark:shadow-pink-800/50"
+                    >
+                      Logout
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent className="animate-fade-in shadow-lg bg-white dark:bg-gray-950 rounded-lg p-6 sm:p-8 dark:shadow-md dark:shadow-purple-700/50">
+                    <AlertDialogHeader className="flex items-center gap-2">
+                      <TriangleAlertIcon className="text-red-600 dark:text-pink-500 w-6 h-6" />
+                      <AlertDialogTitle className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                        Confirm Logout
+                      </AlertDialogTitle>
+                    </AlertDialogHeader>
+                    <AlertDialogDescription className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                      Are you sure you want to log out?
+                    </AlertDialogDescription>
+                    <AlertDialogFooter className="mt-4 flex justify-end gap-3">
+                      <AlertDialogCancel className="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 transition-all">
+                        Cancel
+                      </AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={async () => {
+                          await handleSignOut();
+                        }}
+                        className="px-4 py-2 rounded-lg bg-red-500 flex items-center gap-2 hover:bg-red-600 dark:bg-purple-600 dark:hover:bg-purple-700 dark:text-white dark:hover:shadow-purple-700/50 transition-all"
+                      >
+                        <LogOut className="w-5 h-5" />
+                        Logout
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               )}
             </DropdownMenuContent>
           </DropdownMenu>
