@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
   Dialog,
   DialogContent,
@@ -11,9 +11,7 @@ import { Button } from "./ui/button";
 import NewJobForm from "./forms/NewJobForm";
 import { useState } from "react";
 
-
 const NewJobModal = () => {
-
   const [open, setOpen] = useState(false);
 
   return (

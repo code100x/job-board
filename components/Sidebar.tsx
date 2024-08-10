@@ -75,7 +75,7 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
   }, [filters]);
 
   return (
-    <aside className="p-4 min-w-48 border border-gray-200 rounded">
+    <aside className="p-4 mb-10 min-w-48 border border-gray-200 dark:border-gray-900 rounded">
       <h2 className="mb-4">Job Filters</h2>
       <div className="flex flex-col gap-2">
         <Input

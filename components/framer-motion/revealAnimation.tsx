@@ -1,12 +1,12 @@
-'use client'
-import React, { ReactNode } from 'react';
+"use client";
+import React, { ReactNode } from "react";
 import { motion } from "framer-motion";
 
 interface RevealAnimationProps {
   children: ReactNode;
   className?: string;
-};
-  
+}
+
 const RevealAnimation = ({ children, className }: RevealAnimationProps) => {
   return (
     <motion.div

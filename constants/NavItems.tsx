@@ -1,10 +1,10 @@
 export const NavItems = [
-    {
-      name: "Home",
-      route: "/",
-    },
-    {
-      name: "Explore",
-      route: "/jobs",
-    },
-  ];
+  {
+    name: "Home",
+    route: "/",
+  },
+  {
+    name: "Explore",
+    route: "/jobs",
+  },
+];

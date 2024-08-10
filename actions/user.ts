@@ -5,7 +5,7 @@ import { prisma } from "@/lib/db";
 import { LoginAction, SAPayload } from "@/types";
 
 export const loginUser = async (
-  credentials: LoginAction
+  credentials: LoginAction,
 ): Promise<SAPayload> => {
   const isValidated = await userLoginSchema.safeParseAsync(credentials);
 

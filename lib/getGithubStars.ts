@@ -5,7 +5,7 @@ interface GitHubRepoResponse {
 
 export const getRepoStarCount = async () => {
   const response: any = await fetch(
-    "https://api.github.com/repos/code100x/job-board"
+    "https://api.github.com/repos/code100x/job-board",
   );
   const data: GitHubRepoResponse = await response.json();
   return data.stargazers_count;

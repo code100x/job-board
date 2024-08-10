@@ -31,10 +31,10 @@ const JobsPage = () => {
       <Sidebar setJobs={setJobs} setLoading={setLoading} />
       <section className="w-full h-fit flex flex-col gap-8 rounded-md py-4 px-6">
         <div className="flex flex-col gap-1">
-          <h3 className="lg:text-5xl text-gray-900 tracking-tight font-semibold">
+          <h3 className="lg:text-5xl dark:text-gray-200 text-gray-900 tracking-tight font-semibold">
             All Developer Jobs
           </h3>
-          <p className="lg:text-lg font-medium text-gray-500 tracking-tighter">
+          <p className="lg:text-lg dark:text-gray-300 font-medium text-gray-500 tracking-tighter">
             Amplify Your Career: Where Top Developers Meet 100x Opportunities
           </p>
         </div>

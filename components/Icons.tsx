@@ -55,7 +55,7 @@ import {
   ClipboardPaste,
   Eye,
   EyeOff,
-} from 'lucide-react';
+} from "lucide-react";
 
 export const Icons = {
   logo: Command,
