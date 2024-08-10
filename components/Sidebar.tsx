@@ -79,7 +79,7 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
   }, [filters]);
 
   return (
-    <aside className="p-4 min-w-48 border border-gray-200 rounded">
+    <aside className="p-4 min-w-48 border  rounded-lg h-[400px] md:h-[600px] bg-zinc-50  dark:bg-zinc-900">
       <h2 className="mb-4">Job Filters</h2>
       <div className="flex flex-col gap-2">
         <Input
@@ -87,14 +87,14 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
           name="title"
           placeholder="Job Title"
           onChange={handleFilterChange}
-          className="border p-2 rounded-md"
+          className="border p-2 rounded-md bg-zinc-100 dark:bg-zinc-800"
         />
         <Input
           type="text"
           name="companyName"
           placeholder="Company Name"
           onChange={handleFilterChange}
-          className="border p-2 rounded-md"
+          className="border p-2 rounded-md bg-zinc-100 dark:bg-zinc-800"
         />
 
         <Select
@@ -105,7 +105,7 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
             });
           }}
         >
-          <SelectTrigger className="max-w">
+          <SelectTrigger className="max-w bg-zinc-100 dark:bg-zinc-800">
             <SelectValue placeholder="Choose currency" />
           </SelectTrigger>
           <SelectContent>
@@ -122,7 +122,7 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
             });
           }}
         >
-          <SelectTrigger className="max-w">
+          <SelectTrigger className="max-w bg-zinc-100 dark:bg-zinc-800">
             <SelectValue placeholder="Job Location" />
           </SelectTrigger>
           <SelectContent>
@@ -132,7 +132,7 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
           </SelectContent>
         </Select>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 mt-4">
           <Slider
             defaultValue={filters.salRange}
             max={1000000}

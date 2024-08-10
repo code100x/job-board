@@ -6,7 +6,7 @@ import { authOptions } from "@/lib/auth";
 export async function SiteHeader() {
   const session = await getServerSession(authOptions);
   return (
-    <header className="container mx-auto p-0 flex h-16 items-center">
+    <header className="container mx-auto p-4 flex h-16 items-center">
       {/* Navbar visible on screens larger than 'sm' */}
       <div className="hidden sm:flex flex-1 justify-center items-center">
         <Navbar session={session} />

@@ -56,7 +56,7 @@ const LoginForm = () => {
 
   return (
     <Form {...form}>
-      <div className="h-fit p-8  flex flex-col items-start gap-8 rounded-xl shadow-lg border-t dark:bg-[#0f0f10] ">
+      <div className=" p-8  flex flex-col items-start gap-8 rounded-xl shadow-lg border-t dark:bg-[#0f0f10] ">
         <div className="w-full flex flex-col justify-center items-center gap-3">
           <h3 className="text-3xl bg-gradient-to-r from-indigo-600 via-violet-500 to-blue-700 bg-clip-text text-transparent font-black">
             100xJobs

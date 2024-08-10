@@ -27,10 +27,11 @@ const JobsPage = () => {
   }, []);
 
   return (
-    <section className=" w-full h-fit flex gap-2 flex-grow">
+    <section className=" w-full  flex gap-2 flex-grow  0">
+      <section className="w-full h-fit flex flex-col md:flex-row gap-8 rounded-md py-4 px-6">
       <Sidebar setJobs={setJobs} setLoading={setLoading} />
-      <section className="w-full h-fit flex flex-col gap-8 rounded-md py-4 px-6">
-        <div className="flex flex-col gap-1">
+      <div>
+      <div className="flex flex-col gap-1 mb-4">
           <h3 className="lg:text-5xl text-neutral-700 dark:text-neutral-400  tracking-tight font-semibold">
             All Developer Jobs
           </h3>
@@ -59,6 +60,7 @@ const JobsPage = () => {
             jobs.map((job) => <JobCard key={job.id} job={job} />)
           )}
         </div>
+      </div>
       </section>
     </section>
   );

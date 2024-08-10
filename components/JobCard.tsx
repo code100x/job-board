@@ -12,18 +12,18 @@ const JobCard = ({ job }: JobCardProps) => {
   const currencySign = currency === "USD" ? "$" : "₹";
 
   return (
-    <div className="max-w-full mx-auto h-fit w-full flex flex-col sm:flex-row items-start gap-4 border  hover:border-neutral-600 transition-all shadow-sm rounded-lg px-4 py-3">
+    <div className="bg-zinc-50 dark:bg-zinc-900 max-w-full mx-auto h-fit w-full flex flex-col sm:flex-row items-start gap-4 border  hover:border-neutral-600 transition-all shadow-sm rounded-lg px-4 py-3">
       <div className="logo-area p-2 flex-shrink-0">
         <div className="h-20 w-20 bg-gray-100 border  rounded-full"></div>
       </div>
       <div className="p-2 h-full flex-grow flex flex-col gap-1">
-        <h3 className="text-lg sm:text-xl tracking-tight font-semibold text-neutral-700">
+        <h3 className="text-lg sm:text-xl tracking-tight font-semibold text-neutral-700 dark:text-zinc-200">
           {title}
         </h3>
         <h4 className="text-sm sm:text-base tracking-tight font-semibold text-netural-500">
           {companyName}
         </h4>
-        <span className="flex items-end gap-2 text-neutral-500">
+        <span className="flex items-end gap-2 text-neutral-400">
           <Banknote className="text-netural-700" />
           <h4 className="text-sm sm:text-base tracking-tight font-medium">
             <span className="font-semibold">{currencySign}</span> {salary}

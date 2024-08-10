@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="absolute -bottom-30 w-full bg-neutral-100 text-white p-5 dark:bg-neutral-900">
+    <footer className=" w-full bg-neutral-50 text-white p-5 dark:bg-neutral-900">
       <div className="mx-auto w-full max-w-screen-xl p-4 py-4 lg:py-4">
         <div className="flex items-center  md:justify-between  md:flex-row flex-col gap-3 ">
           <h3 className="animate-text-gradient text-xl font-bold inline-flex bg-gradient-to-r from-neutral-700 via-neutral-400 to-neutral-100 bg-[200%_auto] bg-clip-text leading-tight text-transparent dark:from-neutral-100 dark:via-slate-400 dark:to-neutral-400">
