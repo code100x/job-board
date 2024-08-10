@@ -7,8 +7,7 @@ type MainLayoutProps = {
 
 const MainLayout = ({ children }: MainLayoutProps) => {
   return (
-       <div 
-        className="">
+    <div className="">
       <SiteHeader />
       {children}
     </div>
