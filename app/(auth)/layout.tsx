@@ -1,4 +1,3 @@
-import Footer from "@/components/Footer";
 import { ReactNode } from "react";
 import { SiteHeader } from "@/components/SiteHeader";
 

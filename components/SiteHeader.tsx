@@ -3,9 +3,8 @@ import Navbar from "./Navbar/Navbar";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
-
-export  async function SiteHeader() {  
- const session = await  getServerSession(authOptions);
+export async function SiteHeader() {
+  const session = await getServerSession(authOptions);
   return (
     <header className="container mx-auto p-0 flex h-16 items-center">
       {/* Navbar visible on screens larger than 'sm' */}

@@ -1,6 +1,7 @@
 import { useState, useEffect, ChangeEvent } from "react";
 import { getJobs } from "@/actions/job";
 import { Slider } from "@/components/ui/slider";
+import { useDebouncedCallback } from "use-debounce";
 import {
   Select,
   SelectContent,
@@ -45,19 +46,22 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
     salRange: [0, 1000000],
   });
 
-  const handleFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setFilters({
-      ...filters,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const handleFilterChange = useDebouncedCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setFilters({
+        ...filters,
+        [e.target.name]: e.target.value,
+      });
+    },
+    500,
+  );
 
-  const handleSliderChange = (value: [number, number]) => {
+  const handleSliderChange = useDebouncedCallback((value: [number, number]) => {
     setFilters({
       ...filters,
       salRange: value,
     });
-  };
+  }, 300);
 
   const fetchJobs = async () => {
     setLoading(true);
@@ -134,7 +138,6 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
             max={1000000}
             step={1000}
             onValueChange={handleSliderChange}
-            value={filters.salRange}
           />
           <div className="flex justify-between text-sm">
             <span>

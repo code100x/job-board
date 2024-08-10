@@ -6,8 +6,6 @@ import { prisma } from "@/lib/db";
 import { LoginAction, SAPayload } from "@/types";
 import { signIn, signOut } from "next-auth/react";
 
-
-
 export const logOutUser = async (): Promise<SAPayload> => {
   try {
     await signOut({ redirect: false });

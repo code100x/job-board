@@ -21,7 +21,7 @@ import { signIn } from "next-auth/react";
 const LoginForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const form = useForm<LoginUser>({
     resolver: zodResolver(userLoginSchema),
     defaultValues: {
@@ -44,14 +44,12 @@ const LoginForm = () => {
       if (response?.status === 200) {
         router.push("/jobs");
         toast.success("Signed in successfully", { id: loadId });
-        
       } else {
         toast.error("Invalid credentials", { id: loadId });
-
       }
     } catch (error) {
       console.error(error);
-    }finally{
+    } finally {
       setIsLoading(false);
     }
   };
