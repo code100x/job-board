@@ -46,7 +46,7 @@ const LoginForm = () => {
         router.push('/');
         toast.success('Signed In',{id:loadId});
       } else {
-        toast.error('oops something went wrong..!');
+        toast.error('invalid credentials!',{id:loadId});
         
       }
     } catch (error) {
