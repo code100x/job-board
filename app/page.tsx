@@ -33,7 +33,7 @@ const HomePage = () => {
               </BlurFade>
               <BlurFade delay={0.54} inView={true}>
                 <p className="mt-0 text-sm sm:text-md lg:text-md leading-6 text-gray-600 dark:text-gray-200">
-                  India's most rapidly growing developer community
+                  India&apos;s most rapidly growing developer community
                 </p>
               </BlurFade>
             </div>
