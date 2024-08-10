@@ -53,7 +53,7 @@ const LoginForm = () => {
 
   return (
     <Form {...form}>
-      <div className="h-fit p-8 dark:bg-black  flex flex-col items-start gap-8 rounded-xl shadow-lg border-t border-gray-200 dark:border-gray-900">
+      <div className="h-fit p-8 dark:bg-black bg-background  flex flex-col items-start gap-8 rounded-xl shadow-lg border-t border-gray-200 dark:border-gray-900">
         <div className="w-full flex flex-col justify-center items-center gap-3">
           <h3 className="text-3xl bg-gradient-to-r from-indigo-600 via-violet-500 to-blue-700 bg-clip-text text-transparent font-black">
             100xJobs
@@ -77,9 +77,7 @@ const LoginForm = () => {
             name="email"
             render={({ field }) => (
               <FormItem className="w-64">
-                <FormLabel className="text-sm font-semibold">
-                  Email *
-                </FormLabel>
+                <FormLabel className="text-sm font-semibold">Email *</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
