@@ -33,6 +33,7 @@ const LoginForm = () => {
   const handleFormSubmit = async (values: LoginUser) => {
     setIsLoading(true);
     const loadId = toast.loading("Signing in...");
+    
 
     try {
       const response = await signIn("credentials", {
@@ -41,11 +42,12 @@ const LoginForm = () => {
         redirect: false,
       });
 
-      if (response?.status === 200) {
-        router.push("/jobs");
-        toast.success("Signed in successfully", { id: loadId });
+      if (!response?.error) {
+        router.push('/');
+        toast.success('Signed In',{id:loadId});
       } else {
-        toast.error("Invalid credentials", { id: loadId });
+        toast.error('oops something went wrong..!');
+        
       }
     } catch (error) {
       console.error(error);
