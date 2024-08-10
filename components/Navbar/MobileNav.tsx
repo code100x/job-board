@@ -5,16 +5,13 @@ import Link, { LinkProps } from "next/link";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { Menu } from "lucide-react";
-import { logOutUser } from "@/actions/user";
-import { Session } from "next-auth";
-import { toast } from "../ui/use-toast";
 import { usePathname, useRouter } from "next/navigation";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { signOut } from "next-auth/react";
 
 const MobileNav = ({ session }: any) => {
   const [open, setOpen] = useState(false);
-  const router = useRouter();
+
   const pathName = usePathname();
 
   const userRole = session?.user.role;
@@ -27,7 +24,10 @@ const MobileNav = ({ session }: any) => {
           <span className="sr-only">Toggle Theme</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="flex flex-col justify-start gap-8 p-4">
+      <SheetContent
+        side="right"
+        className="flex flex-col justify-start gap-8 p-4"
+      >
         <div className="flex flex-col gap-1 text-md mt-8">
           <MobileLink onOpenChange={setOpen} href="/">
             Home
@@ -48,21 +48,20 @@ const MobileNav = ({ session }: any) => {
           ) : null}
         </div>
         {!session ? (
-            <Link href="/login">
-              <Button className="font-medium">Join Now</Button>
-            </Link>
-          ) : (
-            <Button
-              onClick={async () => {
-                await signOut();
-               
-              }}
-              variant="outline"
-              className="font-medium rounded-md"
-            >
-              Sign Out
-            </Button>
-          )}
+          <Link href="/login">
+            <Button className="font-medium">Join Now</Button>
+          </Link>
+        ) : (
+          <Button
+            onClick={async () => {
+              await signOut();
+            }}
+            variant="outline"
+            className="font-medium rounded-md"
+          >
+            Sign Out
+          </Button>
+        )}
       </SheetContent>
     </Sheet>
   );
@@ -90,7 +89,7 @@ function MobileLink({
         onOpenChange?.(false);
       }}
       className={cn(
-        `text-foreground transition duration-300 mb-0 hover:bg-secondary p-2 pl-4 rounded-sm ${className}`
+        `text-foreground transition duration-300 mb-0 hover:bg-secondary p-2 pl-4 rounded-sm ${className}`,
       )}
       {...props}
     >

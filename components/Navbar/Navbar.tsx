@@ -5,7 +5,7 @@ import { Session } from "next-auth";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { toast } from 'sonner';
+import { toast } from "sonner";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,8 +20,7 @@ import { signOut } from "next-auth/react";
 import { Icons } from "../Icons";
 import { useTheme } from "next-themes";
 
-
-const Navbar = ({ session }:any) => {
+const Navbar = ({ session }: any) => {
   const router = useRouter();
   const pathName = usePathname();
   const { theme, setTheme } = useTheme();
@@ -48,8 +47,6 @@ const Navbar = ({ session }:any) => {
       href: "/profile",
     },
   ];
-
- 
 
   const userRole = session?.user.role;
 
@@ -84,7 +81,7 @@ const Navbar = ({ session }:any) => {
                 "cursor-pointer hover:text-foreground hover:underline",
                 {
                   "text-foreground": pathName === "/jobs/manage",
-                }
+                },
               )}
             >
               Manage
@@ -98,7 +95,7 @@ const Navbar = ({ session }:any) => {
           <DropdownMenu>
             <DropdownMenuTrigger className="w-[2rem] flex items-center p-[0.2rem]  justify-center h-[2rem]">
               {!session?.user.image ? (
-                <div className="p-1 border-2 rounded-md">
+                <div className="p-1  rounded-md">
                   <UserRound />
                 </div>
               ) : (
@@ -106,7 +103,7 @@ const Navbar = ({ session }:any) => {
               )}
             </DropdownMenuTrigger>
 
-            <DropdownMenuContent className="!w-[15rem] dark:shadow-[#030712] translate-y-8 scale-110 -translate-x-10 shadow-lg bg-white">
+            <DropdownMenuContent className="!w-[15rem]  translate-y-8 scale-110 -translate-x-10 shadow-lg ">
               <DropdownMenuLabel className="flex gap-4 items-center">
                 <div className="!w-[2rem] flex items-center p-[0.2rem]  justify-center !h-[2rem]">
                   {!session?.user.image ? (
@@ -120,7 +117,7 @@ const Navbar = ({ session }:any) => {
 
                 <div className="flex flex-col">
                   <span className="max-w-[200px]">{session?.user?.name}</span>
-                  <span className="text-[0.8rem] max-w-[200px] text-gray-400">
+                  <span className="text-[0.8rem] max-w-[200px] text-neutral-400">
                     {session?.user?.email}
                   </span>
                 </div>
@@ -142,7 +139,9 @@ const Navbar = ({ session }:any) => {
               <DropdownMenuSeparator />
               {session?.user && (
                 <DropdownMenuItem
-                  onClick={async () => {signOut(); }}
+                  onClick={async () => {
+                    signOut();
+                  }}
                   className="flex gap-2 cursor-pointer"
                 >
                   <LogOut size={15} />

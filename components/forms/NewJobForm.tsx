@@ -17,9 +17,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { NewJob, newJobSchema } from "@/zod/job";
-import { useToast } from "../ui/use-toast";
+
 import { createJob } from "@/actions/job";
 
 type NewJobFormProps = {
@@ -27,8 +28,6 @@ type NewJobFormProps = {
 };
 
 const NewJobForm = ({ setOpen }: NewJobFormProps) => {
-  const { toast } = useToast();
-
   const form = useForm<NewJob>({
     resolver: zodResolver(newJobSchema),
     defaultValues: {
@@ -45,10 +44,7 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
     const { currency, location } = values;
 
     if (currency !== "USD" && currency !== "INR") {
-      toast({
-        title: "Please select the currency",
-        variant: "destructive",
-      });
+      toast.error("Please select the currency");
       return;
     }
 
@@ -57,28 +53,19 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
       location !== "HYBRID" &&
       location !== "OFFICE"
     ) {
-      toast({
-        title: "Please select the location",
-        variant: "destructive",
-      });
+      toast.error("Please select the location");
       return;
     }
 
     const response = await createJob(values);
 
     if (response?.status !== "success") {
-      toast({
-        title: response.message,
-        variant: "destructive",
-      });
+      toast.success(response.message);
       setOpen(false);
       return;
     }
 
-    toast({
-      title: response.message,
-      variant: "default",
-    });
+    toast(response.message);
     setOpen(false);
   };
 

@@ -1,68 +1,61 @@
-
-import Footer from "@/components/Footer";
-import RevealAnimation from "@/components/framer-motion/revealAnimation";
-import { SmoothTextReveal } from "@/components/framer-motion/smoothTextReveal";
+import BlurFade from "@/components/framer-motion/BlurFade";
 import GithubBadge from "@/components/GithubBadge";
 import { Icons } from "@/components/Icons";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Button } from "@/components/ui/button";
+import { Spotlight } from "@/components/ui/Spotlight";
+import Link from "next/link";
 
 const HomePage = () => {
   return (
-    <main className="w-full max-h-screen">
-      <div className="absolute inset-0 h-full w-full flex flex-col dark:bg-background items-center gap-24 p-4 dark:bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-white bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]">
-        <RevealAnimation>
-          <SiteHeader />
-        </RevealAnimation>
-        <section className="flex flex-col justify-center items-center gap-0">
-          <RevealAnimation>
+    <main className="rerlative w-full max-h-screen">
+      <Spotlight
+        className="-top-30 left-0 md:left-32 lg:left-40 md:-top-20 opacity-10 hidden dark:block"
+        fill="white"
+      />
+      <div className="w-full flex flex-col items-center gap-24 p-4 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] h-screen">
+        <SiteHeader />
+        <section className="flex flex-col justify-center items-center gap-0 mt-32 ">
+          <BlurFade delay={0.4} inView={true}>
             <GithubBadge />
-          </RevealAnimation>
+          </BlurFade>
           <div className="flex flex-col justify-start items-center gap-4 mt-0">
-          <h3 className="text-center text-4xl sm:text-6xl">
-            {/* <span className="animate-text-gradient font-bold inline-flex bg-gradient-to-r from-neutral-900 via-slate-500 to-neutral-500 bg-[200%_auto] bg-clip-text leading-tight text-transparent dark:from-neutral-100 dark:via-slate-600 dark:to-neutral-400">
-              100xJobs
-            </span> */}
-            {/* bg-clip-text text-transparent bg-gradient-to-r from-neutral-900 via-slate-500 to-neutral-500 dark:from-neutral-100 dark:via-slate-600 dark:to-neutral-400 */}
-            <SmoothTextReveal
-              className="text-4xl sm:text-6xl font-bold"
-              text="100xJobs"
-              animation="easeIn"
-              gradient={true}
-            />
-          </h3>
-          <div className="text-center text-foreground dark:text-foreground">
-            <SmoothTextReveal
-              className="text-lg sm:text-xl lg:text-2xl tracking-tight font-semibold"
-              text="Join the #1 Open Source Job-Platform"
-              direction="right"
-              animation="easeIn"
-            />
-            <SmoothTextReveal
-              className="mt-0 text-sm sm:text-md lg:text-xl leading-6 text-gray-600 dark:text-gray-200"
-              text="India&apos;s most rapidly growing developer community"
-              direction="left"
-            />
-          </div>
-          <div className="mt-10 flex gap-4">
-            <RevealAnimation
-              className="flex justify-center items-center gap-4"
-            >
-              <a
-                href="https://github.com/Harit007x/job-board"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center"
+            <h3 className="text-center text-4xl sm:text-6xl">
+              <BlurFade delay={0.45} inView={true}>
+                <p className="text-4xl sm:text-6xl font-bold">100xJobs</p>
+              </BlurFade>
+            </h3>
+            <div className="text-center text-foreground dark:text-foreground space-y-3">
+              <BlurFade delay={0.5} inView={true}>
+                <p className="text-lg sm:text-xl lg:text-4xl tracking-tight font-semibold">
+                  Join the #1 Open Source Job-Platform
+                </p>
+              </BlurFade>
+              <BlurFade delay={0.54} inView={true}>
+                <p className="mt-0 text-sm sm:text-md lg:text-md leading-6 text-gray-600 dark:text-gray-200">
+                  India's most rapidly growing developer community
+                </p>
+              </BlurFade>
+            </div>
+            <div className="flex gap-4">
+              <BlurFade
+                className="flex justify-center items-center gap-4"
+                delay={0.58}
               >
-                <Button>
-                  Go to GitHub <Icons.arrowRight className="pl-0.5" size={16} />
-                </Button>{' '}
-              </a>
-              <Button variant="secondary">
-                Contact Us
-              </Button>
-            </RevealAnimation>
-          </div>
+                <Link
+                  href="https://github.com/code100x"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center"
+                >
+                  <Button>
+                    Go to GitHub{" "}
+                    <Icons.arrowRight className="pl-0.5" size={16} />
+                  </Button>
+                </Link>
+                <Button variant="secondary">Contact Us</Button>
+              </BlurFade>
+            </div>
           </div>
         </section>
       </div>

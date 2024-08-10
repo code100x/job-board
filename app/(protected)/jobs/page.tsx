@@ -27,14 +27,14 @@ const JobsPage = () => {
   }, []);
 
   return (
-    <section className="relative w-full h-fit flex gap-2 flex-grow">
+    <section className=" w-full h-fit flex gap-2 flex-grow">
       <Sidebar setJobs={setJobs} setLoading={setLoading} />
       <section className="w-full h-fit flex flex-col gap-8 rounded-md py-4 px-6">
         <div className="flex flex-col gap-1">
-          <h3 className="lg:text-5xl text-gray-900 tracking-tight font-semibold">
+          <h3 className="lg:text-5xl text-neutral-700 dark:text-neutral-400  tracking-tight font-semibold">
             All Developer Jobs
           </h3>
-          <p className="lg:text-lg font-medium text-gray-500 tracking-tighter">
+          <p className="lg:text-lg font-medium  tracking-tighter text-neutral-600 dark:text-neutral-400">
             Amplify Your Career: Where Top Developers Meet 100x Opportunities
           </p>
         </div>
@@ -48,9 +48,11 @@ const JobsPage = () => {
           )}
         >
           {loading ? (
-            <h3 className="text-2xl font-semibold text-gray-800">Loading...</h3>
+            <h3 className="text-2xl font-semibold text-neutral-600 dark:text-neutral-400">
+              Loading...
+            </h3>
           ) : jobs.length === 0 ? (
-            <h3 className="text-2xl font-semibold text-gray-800">
+            <h3 className="text-2xl font-semibold text-neutral-600 dark:text-neutral-400">
               No Jobs Found!
             </h3>
           ) : (
