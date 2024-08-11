@@ -82,6 +82,11 @@ model Job {
   user User @relation(fields: [userId], references: [id])
 }
 
+model UnsubscribedEmail {
+  id    String @id @default(uuid())
+  email String @unique
+}
+
 enum Role {
   ADMIN
   USER
