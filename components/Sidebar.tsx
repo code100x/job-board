@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Job } from "@prisma/client";
+import { Button } from "./ui/button";
 
 interface SidebarProps {
   setJobs: (jobs: Job[]) => void;
@@ -72,7 +73,7 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
 
   useEffect(() => {
     fetchJobs();
-  }, [filters]);
+  }, []);
 
   return (
     <aside className="p-4 min-w-48 border border-gray-200 rounded">
@@ -146,6 +147,7 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
           </div>
         </div>
       </div>
+      <Button className="mt-2 w-full" onClick={() => fetchJobs()}>Submit</Button>
     </aside>
   );
 };
