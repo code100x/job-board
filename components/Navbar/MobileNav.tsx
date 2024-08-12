@@ -8,6 +8,7 @@ import { Menu } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { signOut } from "next-auth/react";
+import { ModeToggle } from "../ModeToggle";
 
 const MobileNav = ({ session }: any) => {
   const [open, setOpen] = useState(false);
@@ -28,6 +29,7 @@ const MobileNav = ({ session }: any) => {
         side="right"
         className="flex flex-col justify-start gap-8 p-4"
       >
+        <ModeToggle/>
         <div className="flex flex-col gap-1 text-md mt-8">
           <MobileLink onOpenChange={setOpen} href="/">
             Home
@@ -36,15 +38,15 @@ const MobileNav = ({ session }: any) => {
             Explore
           </MobileLink>
           {userRole === "ADMIN" ? (
-            <Link href="/jobs/manage">
+            <MobileLink href="/jobs/manage">
               <p
                 className={cn("cursor-pointer", {
-                  "text-gray-900": pathName === "/jobs/manage",
+                  "text-zinc-500": pathName === "/jobs/manage",
                 })}
               >
                 Manage
               </p>
-            </Link>
+            </MobileLink>
           ) : null}
         </div>
         {!session ? (
