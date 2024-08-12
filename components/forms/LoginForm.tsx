@@ -1,14 +1,13 @@
 "use client";
+import { loginUser } from "@/actions/user";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useToast } from "../ui/use-toast";
-import { useEffect, useRef, useState } from "react";
-import { loginUser } from "@/actions/user";
-import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
-import { useForm } from "react-hook-form";
 import { LoginUser, userLoginSchema } from "@/zod/user";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -17,6 +16,7 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
+import { useToast } from "../ui/use-toast";
 
 const LoginForm = () => {
   const { toast } = useToast();
@@ -59,14 +59,16 @@ const LoginForm = () => {
 
   return (
     <Form {...form}>
-      <div className="h-fit p-8 bg-white flex flex-col items-start gap-8 rounded-xl shadow-lg border-t border-gray-200">
+      <div className="h-fit p-8 bg-white dark:bg-gray-600 flex flex-col items-start gap-8 rounded-xl shadow-lg border-t border-gray-200 dark:border-gray-800 ">
         <div className="w-full flex flex-col justify-center items-center gap-3">
           <h3 className="text-3xl bg-gradient-to-r from-indigo-600 via-violet-500 to-blue-700 bg-clip-text text-transparent font-black">
             100xJobs
           </h3>
           <div className="flex flex-col gap-1 justify-center items-center">
-            <h4 className="text-lg font-medium">Welcome Back</h4>
-            <p className="text-sm text-gray-500 font-medium">
+            <h4 className="text-lg font-medium dark:text-white">
+              Welcome Back
+            </h4>
+            <p className="text-sm text-gray-400 font-medium">
               Please enter your details to sign in
             </p>
           </div>
@@ -74,14 +76,13 @@ const LoginForm = () => {
 
         <form
           className="h-full flex flex-col justify-center items-center gap-5"
-          onSubmit={form.handleSubmit(handleFormSubmit)}
-        >
+          onSubmit={form.handleSubmit(handleFormSubmit)}>
           <FormField
             control={form.control}
             name="email"
             render={({ field }) => (
               <FormItem className="w-64">
-                <FormLabel className="text-sm font-semibold text-gray-800">
+                <FormLabel className="text-sm font-semibold text-gray-800 dark:text-gray-200">
                   Email *
                 </FormLabel>
                 <FormControl>
@@ -102,7 +103,7 @@ const LoginForm = () => {
             name="password"
             render={({ field }) => (
               <FormItem className="w-64">
-                <FormLabel className="text-sm font-semibold text-gray-800">
+                <FormLabel className="text-sm font-semibold text-gray-800 dark:text-gray-200">
                   Password *
                 </FormLabel>
                 <FormControl>
@@ -119,9 +120,8 @@ const LoginForm = () => {
           />
           <Button
             disabled={isLoading}
-            className="w-full flex justify-center items-center"
-            type="submit"
-          >
+            className="w-full flex justify-center items-center dark:bg-gray-900 dark:text-white dark:hover:bg-gray-800"
+            type="submit">
             {isLoading ? (
               <Loader2 className="animate-spin" size={20} />
             ) : (
