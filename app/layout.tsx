@@ -26,7 +26,7 @@ export default function RootLayout({
       <body
         className={cn(
           "relative min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
+          fontSans.variable,
         )}
       >
         <ThemeProvider

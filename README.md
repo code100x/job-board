@@ -1,13 +1,11 @@
 # Project Name: Job Board
 
-
 ## Table of Contents
 
 - [Description](#description)
 - [Features](#features)
 - [Technologies](#technologies)
 - [Getting Started](#getting-started)
-
 
 ## Description
 
@@ -50,7 +48,7 @@ Follow these steps to set up the repository locally and run it.
    DATABASE_URL=postgres://********
    ```
 
-2. To generate AUTH_SECRET, 
+2. To generate AUTH_SECRET,
 
    Run this command in your terminal:
 
@@ -71,6 +69,7 @@ docker compose up --build
 ### Running the Project without Docker
 
 1. Install the necessary dependencies:
+
    ```bash
    npm install
    ```
@@ -93,6 +92,6 @@ Now, you can run the project and make changes as needed.
 ### Test User Credentials
 
 ```js
-Emails: "user1@gmail.com, user2@gmail.com, admin@gmail.com"
-Password: "123456" 
+Emails: "user1@gmail.com, user2@gmail.com, admin@gmail.com";
+Password: "123456";
 ```

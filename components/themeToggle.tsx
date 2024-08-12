@@ -1,10 +1,10 @@
-'use client'
-import { useEffect, useState } from 'react';
-import { Icons } from './Icons';
+"use client";
+import { useEffect, useState } from "react";
+import { Icons } from "./Icons";
 
-export function ThemeToggle () {
+export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState("light");
 
   useEffect(() => {
     setMounted(true);
@@ -16,7 +16,7 @@ export function ThemeToggle () {
 
   return (
     <>
-      {theme === 'light' ? (
+      {theme === "light" ? (
         <div>
           <Icons.moon
             onClick={() => setTheme("dark")}

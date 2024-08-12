@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -18,8 +16,8 @@
     --secondary-foreground: 240 5.9% 10%;
     --blue: 202 100% 50%;
     --blueBackground: 205 100% 93%;
-    --red : 0 100% 59%;
-    --redBackground : 0 100% 95%;
+    --red: 0 100% 59%;
+    --redBackground: 0 100% 95%;
     --green: 144 90% 36%;
     --greenBackground: 142 50% 89%;
     --purple: 259 100% 71%;
@@ -46,7 +44,7 @@
   .dark {
     --background: 240 10% 3.9%;
     --blueBackground: 205 100% 10%;
-    --redBackground : 0 100% 10%;
+    --redBackground: 0 100% 10%;
     --greenBackground: 142 50% 10%;
     --purpleBackground: 259 100% 10%;
     --orangeBackground: 36, 100%, 10%;
@@ -85,5 +83,5 @@
 }
 
 .jobs::-webkit-scrollbar {
-    width: 0;
+  width: 0;
 }

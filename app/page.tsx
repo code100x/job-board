@@ -19,50 +19,47 @@ const HomePage = () => {
             <GithubBadge />
           </RevealAnimation>
           <div className="flex flex-col justify-start items-center gap-4 mt-0">
-          <h3 className="text-center text-4xl sm:text-6xl">
-            {/* <span className="animate-text-gradient font-bold inline-flex bg-gradient-to-r from-neutral-900 via-slate-500 to-neutral-500 bg-[200%_auto] bg-clip-text leading-tight text-transparent dark:from-neutral-100 dark:via-slate-600 dark:to-neutral-400">
+            <h3 className="text-center text-4xl sm:text-6xl">
+              {/* <span className="animate-text-gradient font-bold inline-flex bg-gradient-to-r from-neutral-900 via-slate-500 to-neutral-500 bg-[200%_auto] bg-clip-text leading-tight text-transparent dark:from-neutral-100 dark:via-slate-600 dark:to-neutral-400">
               100xJobs
             </span> */}
-            {/* bg-clip-text text-transparent bg-gradient-to-r from-neutral-900 via-slate-500 to-neutral-500 dark:from-neutral-100 dark:via-slate-600 dark:to-neutral-400 */}
-            <SmoothTextReveal
-              className="text-4xl sm:text-6xl font-bold"
-              text="100xJobs"
-              animation="easeIn"
-              gradient={true}
-            />
-          </h3>
-          <div className="text-center text-foreground dark:text-foreground">
-            <SmoothTextReveal
-              className="text-lg sm:text-xl lg:text-2xl tracking-tight font-semibold"
-              text="Join the #1 Open Source Job-Platform"
-              direction="right"
-              animation="easeIn"
-            />
-            <SmoothTextReveal
-              className="mt-0 text-sm sm:text-md lg:text-xl leading-6 text-gray-600 dark:text-gray-200"
-              text="India&apos;s most rapidly growing developer community"
-              direction="left"
-            />
-          </div>
-          <div className="mt-10 flex gap-4">
-            <RevealAnimation
-              className="flex justify-center items-center gap-4"
-            >
-              <a
-                href="https://github.com/Harit007x/job-board"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center"
-              >
-                <Button>
-                  Go to GitHub <Icons.arrowRight className="pl-0.5" size={16} />
-                </Button>{' '}
-              </a>
-              <Button variant="secondary">
-                Contact Us
-              </Button>
-            </RevealAnimation>
-          </div>
+              {/* bg-clip-text text-transparent bg-gradient-to-r from-neutral-900 via-slate-500 to-neutral-500 dark:from-neutral-100 dark:via-slate-600 dark:to-neutral-400 */}
+              <SmoothTextReveal
+                className="text-4xl sm:text-6xl font-bold"
+                text="100xJobs"
+                animation="easeIn"
+                gradient={true}
+              />
+            </h3>
+            <div className="text-center text-foreground dark:text-foreground">
+              <SmoothTextReveal
+                className="text-lg sm:text-xl lg:text-2xl tracking-tight font-semibold"
+                text="Join the #1 Open Source Job-Platform"
+                direction="right"
+                animation="easeIn"
+              />
+              <SmoothTextReveal
+                className="mt-0 text-sm sm:text-md lg:text-xl leading-6 text-gray-600 dark:text-gray-200"
+                text="India's most rapidly growing developer community"
+                direction="left"
+              />
+            </div>
+            <div className="mt-10 flex gap-4">
+              <RevealAnimation className="flex justify-center items-center gap-4">
+                <a
+                  href="https://github.com/Harit007x/job-board"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center"
+                >
+                  <Button>
+                    Go to GitHub{" "}
+                    <Icons.arrowRight className="pl-0.5" size={16} />
+                  </Button>{" "}
+                </a>
+                <Button variant="secondary">Contact Us</Button>
+              </RevealAnimation>
+            </div>
           </div>
         </section>
       </div>
