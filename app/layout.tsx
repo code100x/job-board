@@ -35,10 +35,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <div className="min-h-screen flex flex-col justify-between">
+            <div className="flex-grow grid">{children}</div>
+            <Footer />
+          </div>
         </ThemeProvider>
         <Toaster />
-        <Footer />
       </body>
     </html>
   );

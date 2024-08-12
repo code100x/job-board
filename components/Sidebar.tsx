@@ -75,74 +75,76 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
   }, [filters]);
 
   return (
-    <aside className="p-4 min-w-48 border border-gray-200 rounded">
-      <h2 className="mb-4">Job Filters</h2>
-      <div className="flex flex-col gap-2">
-        <Input
-          type="text"
-          name="title"
-          placeholder="Job Title"
-          onChange={handleFilterChange}
-          className="border p-2 rounded-md"
-        />
-        <Input
-          type="text"
-          name="companyName"
-          placeholder="Company Name"
-          onChange={handleFilterChange}
-          className="border p-2 rounded-md"
-        />
-
-        <Select
-          onValueChange={(value) => {
-            setFilters({
-              ...filters,
-              currency: value,
-            });
-          }}
-        >
-          <SelectTrigger className="max-w">
-            <SelectValue placeholder="Choose currency" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="INR">₹ INR</SelectItem>
-            <SelectItem value="USD">$ USD</SelectItem>
-          </SelectContent>
-        </Select>
-
-        <Select
-          onValueChange={(value) => {
-            setFilters({
-              ...filters,
-              location: value,
-            });
-          }}
-        >
-          <SelectTrigger className="max-w">
-            <SelectValue placeholder="Job Location" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="REMOTE">Remote</SelectItem>
-            <SelectItem value="OFFICE">Office</SelectItem>
-            <SelectItem value="HYBRID">Hybrid</SelectItem>
-          </SelectContent>
-        </Select>
-
+    <aside className=" min-w-48 h-full ">
+      <div className="sticky top-12  border-gray-200 border rounded p-4">
+        <h2 className="mb-4">Job Filters</h2>
         <div className="flex flex-col gap-2">
-          <Slider
-            defaultValue={filters.salRange}
-            max={1000000}
-            step={1000}
-            onValueChange={handleSliderChange}
-            value={filters.salRange}
+          <Input
+            type="text"
+            name="title"
+            placeholder="Job Title"
+            onChange={handleFilterChange}
+            className="border p-2 rounded-md"
           />
-          <div className="flex justify-between text-sm">
-            <span>
-              Min: {formatSalary(filters.salRange[0], filters.currency)}
-            </span>
-            <span>
-              Max: {formatSalary(filters.salRange[1], filters.currency)}
-            </span>
+          <Input
+            type="text"
+            name="companyName"
+            placeholder="Company Name"
+            onChange={handleFilterChange}
+            className="border p-2 rounded-md"
+          />
+
+          <Select
+            onValueChange={(value) => {
+              setFilters({
+                ...filters,
+                currency: value,
+              });
+            }}
+          >
+            <SelectTrigger className="max-w">
+              <SelectValue placeholder="Choose currency" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="INR">₹ INR</SelectItem>
+              <SelectItem value="USD">$ USD</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Select
+            onValueChange={(value) => {
+              setFilters({
+                ...filters,
+                location: value,
+              });
+            }}
+          >
+            <SelectTrigger className="max-w">
+              <SelectValue placeholder="Job Location" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="REMOTE">Remote</SelectItem>
+              <SelectItem value="OFFICE">Office</SelectItem>
+              <SelectItem value="HYBRID">Hybrid</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <div className="flex flex-col gap-2">
+            <Slider
+              defaultValue={filters.salRange}
+              max={1000000}
+              step={1000}
+              onValueChange={handleSliderChange}
+              value={filters.salRange}
+            />
+            <div className="flex justify-between text-sm">
+              <span>
+                Min: {formatSalary(filters.salRange[0], filters.currency)}
+              </span>
+              <span>
+                Max: {formatSalary(filters.salRange[1], filters.currency)}
+              </span>
+            </div>
           </div>
         </div>
       </div>
