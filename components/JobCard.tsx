@@ -1,6 +1,7 @@
 import { Job } from "@prisma/client";
 import { Banknote, MapPin, SquareArrowOutUpRight } from "lucide-react";
-import {Slider} from "@/components/ui/slider";
+import { Slider } from "@/components/ui/slider";
+import Link from "next/link";
 
 type JobCardProps = {
   job: Job;
@@ -37,13 +38,15 @@ const JobCard = ({ job }: JobCardProps) => {
               {location}
             </h4>
           </span>
-          <p className="flex gap-2 items-center cursor-pointer hover:underline mt-2 sm:mt-0">
+          <Link
+            href={`/jobs/${job.id}`}
+            className="flex gap-2 items-center cursor-pointer hover:underline mt-2 sm:mt-0"
+          >
             view details{" "}
             <span>
               <SquareArrowOutUpRight size={14} />
             </span>
-          </p>
-
+          </Link>
         </div>
       </div>
     </div>
