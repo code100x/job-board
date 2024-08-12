@@ -1,30 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import JobCard from "@/components/JobCard";
 import Sidebar from "@/components/Sidebar";
 import { cn } from "@/lib/utils";
-import { getJobs } from "@/actions/job";
 import { Job } from "@prisma/client";
 
 const JobsPage = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const fetchJobs = async () => {
-      setLoading(true);
-      //@ts-ignore
-      const response = await getJobs({});
-      if (response.status === "success") {
-        //@ts-ignore
-        setJobs(response.data);
-      }
-      setLoading(false);
-    };
-
-    fetchJobs();
-  }, []);
+  const [loading, setLoading] = useState(true);
 
   return (
     <section className="relative w-full h-fit flex gap-2 flex-grow">
@@ -44,7 +28,7 @@ const JobsPage = () => {
             {
               "h-[420px] flex justify-center items-center":
                 jobs.length === 0 && !loading,
-            },
+            }
           )}
         >
           {loading ? (
