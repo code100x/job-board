@@ -6,15 +6,15 @@ export async function SiteHeader() {
   const session = await auth();
 
   return (
-    <header className="container mx-auto px-4 py-2 flex h-16 items-center">
+    <header className="container mx-auto p-0 flex h-16 items-center">
       {/* Navbar visible on screens larger than 'sm' */}
       <div className="hidden sm:flex flex-1 justify-center items-center">
         <Navbar session={session} />
       </div>
 
       {/* MobileNav visible on screens smaller than 'sm' */}
-      <div className="sm:hidden absolute inset-x-0  transform -translate-y-1/2 flex justify-between px-4">
-        <h3 className="text-xl bg-gradient-to-r from-indigo-600 via-violet-500 to-blue-700 bg-clip-text text-transparent font-black">
+      <div className="sm:hidden flex justify-between items-center w-full">
+        <h3 className="animate-text-gradient text-xl font-bold inline-flex bg-gradient-to-r from-neutral-900 via-slate-500 to-neutral-500 bg-[200%_auto] bg-clip-text leading-tight text-transparent dark:from-neutral-100 dark:via-slate-400 dark:to-neutral-400">
           100xJobs
         </h3>
         <MobileNav session={session} />
