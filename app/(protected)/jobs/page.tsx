@@ -40,9 +40,9 @@ const JobsPage = () => {
         </div>
         <div
           className={cn(
-            "jobs flex flex-col max-h-[420px] gap-3 overflow-y-scroll",
+            "jobs flex flex-col gap-3 overflow-y-scroll",
             {
-              "h-[420px] flex justify-center items-center":
+              "flex justify-center items-center":
                 jobs.length === 0 && !loading,
             },
           )}

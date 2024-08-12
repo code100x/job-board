@@ -69,6 +69,7 @@ const MobileNav = ({ session }: NavbarProps) => {
               <Button className="font-medium">Join Now</Button>
             </Link>
           ) : (
+            <div>
             <Button
               onClick={handleSignOut}
               variant="outline"
@@ -76,6 +77,7 @@ const MobileNav = ({ session }: NavbarProps) => {
             >
               Sign Out
             </Button>
+            </div>
           )}
       </SheetContent>
     </Sheet>
