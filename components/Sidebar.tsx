@@ -22,6 +22,7 @@ interface Filters {
   location: string;
   currency: string;
   salRange: [number, number];
+  job: string;
 }
 
 const formatSalary = (value: number, currency: string) => {
@@ -41,6 +42,7 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
     title: "",
     companyName: "",
     location: "",
+    job: "",
     currency: "",
     salRange: [0, 1000000],
   });
@@ -92,6 +94,24 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
           onChange={handleFilterChange}
           className="border p-2 rounded-md"
         />
+        <Select
+          onValueChange={(types) => {
+            setFilters({
+              ...filters,
+              job: types,
+            });
+          }}
+        >
+          <SelectTrigger className="max-w">
+            <SelectValue placeholder="Job Type" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Full Time">Full Time</SelectItem>
+            <SelectItem value="Part Time">Part Time</SelectItem>
+            <SelectItem value="Internship">Internship</SelectItem>
+            <SelectItem value="Contract">Contract</SelectItem>
+          </SelectContent>
+        </Select>
 
         <Select
           onValueChange={(value) => {
