@@ -12,7 +12,7 @@ const ManageJobsPage = async () => {
   }
 
   return (
-    <div className="w-full flex-grow flex justify-center items-center p-2">
+    <div className="h-screen w-full flex-grow flex justify-center items-center p-2">
       <NewJobModal />
     </div>
   );

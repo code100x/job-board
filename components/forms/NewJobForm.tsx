@@ -81,13 +81,13 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
             name="title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-semibold text-gray-800">
+                <FormLabel className="text-sm font-semibold text-zinc-800 dark:text-zinc-300">
                   Job Title *
                 </FormLabel>
                 <FormControl>
                   <Input
                     {...field}
-                    className="w-full border-gray-400"
+                    className="w-full"
                     placeholder="Job Title"
                   />
                 </FormControl>
@@ -103,13 +103,13 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-semibold text-gray-800">
+                <FormLabel className="text-sm font-semibold text-zinc-800 dark:text-zinc-300">
                   Description *
                 </FormLabel>
                 <FormControl>
                   <Input
                     {...field}
-                    className="w-full border-gray-400"
+                    className="w-full "
                     placeholder="Enter description here"
                   />
                 </FormControl>
@@ -125,13 +125,13 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
             name="companyName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-semibold text-gray-800">
+                <FormLabel className="text-sm font-semibold text-zinc-800 dark:text-zinc-300">
                   Company Name *
                 </FormLabel>
                 <FormControl>
                   <Input
                     {...field}
-                    className="w-full border-gray-400"
+                    className="w-full dark:text-zinc-300"
                     placeholder="Enter comapany name here"
                   />
                 </FormControl>
@@ -143,7 +143,7 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
 
         <div className="flex flex-col gap-1">
           <label
-            className="text-sm font-semibold text-gray-800"
+            className="text-sm font-semibold text-zinc-800 dark:text-zinc-300"
             htmlFor="salary"
           >
             Salary *
@@ -180,7 +180,7 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
                   <FormControl>
                     <Input
                       {...field}
-                      className="w-full border-gray-400"
+                      className="w-full"
                       placeholder="Estimate Salary"
                     />
                   </FormControl>
@@ -197,7 +197,7 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
             name="location"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-semibold text-gray-800">
+                <FormLabel className="text-sm font-semibold text-gray-800 dark:text-zinc-300">
                   Location *
                 </FormLabel>
                 <Select

@@ -27,11 +27,11 @@ const JobsPage = () => {
   }, []);
 
   return (
-    <section className=" w-full  flex gap-2 flex-grow  0">
-      <section className="w-full h-fit flex flex-col md:flex-row gap-8 rounded-md py-4 px-6">
+    <section className=" w-full  flex gap-2 ">
+      <section className="w-full   mx-auto flex flex-col md:flex-row gap-4 rounded-md py-4 px-6 ">
         <Sidebar setJobs={setJobs} setLoading={setLoading} />
-        <div>
-          <div className="flex flex-col gap-1 mb-4">
+        <div className="md:w-3/4">
+          <div className=" flex flex-col gap-1 mb-4">
             <h3 className="lg:text-5xl text-neutral-700 dark:text-neutral-400  tracking-tight font-semibold">
               All Developer Jobs
             </h3>
@@ -41,7 +41,7 @@ const JobsPage = () => {
           </div>
           <div
             className={cn(
-              "jobs flex flex-col max-h-[420px] gap-3 overflow-y-scroll",
+              "jobs flex flex-col h-[600px] md:h-screen gap-3 overflow-y-scroll",
               {
                 "h-[420px] flex justify-center items-center":
                   jobs.length === 0 && !loading,

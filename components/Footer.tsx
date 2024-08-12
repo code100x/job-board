@@ -13,7 +13,6 @@ export function Footer() {
             © 2024 100xJobs All Rights Reserved.
           </span>
           <div className="flex mt-4 sm:justify-center sm:mt-0">
-            
             <Link
               href="https://www.youtube.com/@100xDevs-n1w"
               className="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5"
@@ -67,7 +66,6 @@ export function Footer() {
               </svg>
               <span className="sr-only">GitHub account</span>
             </Link>
-           
           </div>
         </div>
       </div>

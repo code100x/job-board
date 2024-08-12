@@ -7,10 +7,10 @@ type MainLayoutProps = {
 
 const MainLayout = ({ children }: MainLayoutProps) => {
   return (
-    <div className="">
+    <>
       <SiteHeader />
-      {children}
-    </div>
+      <div className="flex justify-center">{children}</div>
+    </>
   );
 };
 

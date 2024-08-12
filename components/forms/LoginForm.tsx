@@ -35,7 +35,6 @@ const LoginForm = () => {
   const handleFormSubmit = async (values: LoginUser) => {
     setIsLoading(true);
     const loadId = toast.loading("Signing in...");
-    
 
     try {
       const response = await signIn("credentials", {
@@ -45,11 +44,10 @@ const LoginForm = () => {
       });
 
       if (!response?.error) {
-        router.push('/');
-        toast.success('Signed In',{id:loadId});
+        router.push("/");
+        toast.success("Signed In", { id: loadId });
       } else {
-        toast.error('invalid credentials!',{id:loadId});
-        
+        toast.error("invalid credentials!", { id: loadId });
       }
     } catch (error) {
       console.error(error);
