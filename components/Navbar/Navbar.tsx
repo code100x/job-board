@@ -100,7 +100,7 @@ const Navbar = ({ session }: NavbarProps) => {
                 "cursor-pointer hover:text-foreground hover:underline",
                 {
                   "text-foreground": pathName === "/jobs/manage",
-                }
+                },
               )}
             >
               Manage
