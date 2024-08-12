@@ -30,7 +30,7 @@ const formatSalary = (value: number, currency: string) => {
   let unit = "k";
 
   if (currency === "INR" || currency === "") {
-    return `${formattedValue} ${unit}`;
+    return `₹${formattedValue} ${unit}`;
   } else if (currency === "USD") {
     return `$${formattedValue} ${unit}`;
   }
