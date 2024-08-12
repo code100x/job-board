@@ -1,8 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
 import { toast } from "sonner";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -21,6 +21,8 @@ import { signIn } from "next-auth/react";
 const LoginForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const form = useForm<LoginUser>({
     resolver: zodResolver(userLoginSchema),
@@ -56,6 +58,10 @@ const LoginForm = () => {
     }
   };
 
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
   return (
     <Form {...form}>
       <div className=" p-8  flex flex-col items-start gap-8 rounded-xl shadow-lg border-t dark:bg-[#0f0f10] ">
@@ -88,6 +94,7 @@ const LoginForm = () => {
                     {...field}
                     className="border-neutral-700"
                     placeholder="Enter your email here"
+                    ref={inputRef}
                   />
                 </FormControl>
                 <FormMessage className="text-sm" />
