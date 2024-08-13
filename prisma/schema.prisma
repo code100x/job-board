@@ -78,6 +78,7 @@ model Job {
   location    String
   state       String?
   country     String?
+  jobType     String?
 
   user User @relation(fields: [userId], references: [id])
 }
