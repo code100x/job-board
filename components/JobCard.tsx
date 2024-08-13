@@ -1,13 +1,13 @@
 import { Job } from "@prisma/client";
 import { Banknote, MapPin, SquareArrowOutUpRight } from "lucide-react";
-import {Slider} from "@/components/ui/slider";
+import { Slider } from "@/components/ui/slider";
 
 type JobCardProps = {
   job: Job;
 };
 
 const JobCard = ({ job }: JobCardProps) => {
-  const { title, description, companyName, salary, currency, location } = job;
+  const { title, description, companyName, salary, currency, location, jobType } = job;
 
   const currencySign = currency === "USD" ? "$" : "₹";
 
@@ -29,7 +29,11 @@ const JobCard = ({ job }: JobCardProps) => {
             <span className="font-semibold">{currencySign}</span> {salary}
           </h4>
         </span>
-
+        <span className="flex items-end gap-2 text-gray-500">
+          <h4 className="text-sm sm:text-base tracking-tight font-medium uppercase">
+            {jobType}
+          </h4>
+        </span>
         <div className="w-full flex flex-col sm:flex-row justify-between">
           <span className="flex items-end gap-2 text-gray-500">
             <MapPin className="text-gray-700" />
@@ -37,13 +41,13 @@ const JobCard = ({ job }: JobCardProps) => {
               {location}
             </h4>
           </span>
+
           <p className="flex gap-2 items-center cursor-pointer hover:underline mt-2 sm:mt-0">
             view details{" "}
             <span>
               <SquareArrowOutUpRight size={14} />
             </span>
           </p>
-
         </div>
       </div>
     </div>
