@@ -6,6 +6,7 @@ const config = {
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
+    "./layout/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
   ],
@@ -13,13 +14,18 @@ const config = {
   theme: {
     container: {
       center: true,
-      padding: "2rem",
+      padding: "1rem",
       screens: {
-        "2xl": "1400px",
+        "2xl": "1200px",
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["var(--font-sans)", ...fontFamily.sans],
+      },
       colors: {
+        "stroke-primary": "hsl(var(--stroke-primary))",
+        "stroke-secondary": "hsl(var(--stroke-secondary))",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -36,46 +42,6 @@ const config = {
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
-        },
-        blue: {
-          DEFAULT: "hsl(var(--blue))",
-          foreground: "hsl(var(--blue-foreground))",
-        },
-        blueBackground: {
-          DEFAULT: "hsl(var(--blueBackground))",
-          foreground: "hsl(var(--blueBackground-foreground))",
-        },
-        red: {
-          DEFAULT: "hsl(var(--red))",
-          foreground: "hsl(var(--red-foreground))",
-        },
-        redBackground: {
-          DEFAULT: "hsl(var(--redBackground))",
-          foreground: "hsl(var(--redBackground-foreground))",
-        },
-        green: {
-          DEFAULT: "hsl(var(--green))",
-          foreground: "hsl(var(--green-foreground))",
-        },
-        greenBackground: {
-          DEFAULT: "hsl(var(--greenBackground))",
-          foreground: "hsl(var(--greenBackground-foreground))",
-        },
-        purple: {
-          DEFAULT: "hsl(var(--purple))",
-          foreground: "hsl(var(--purple-foreground))",
-        },
-        purpleBackground: {
-          DEFAULT: "hsl(var(--purpleBackground))",
-          foreground: "hsl(var(--purpleBackground-foreground))",
-        },
-        orange: {
-          DEFAULT: "hsl(var(--orange))",
-          foreground: "hsl(var(--orange-foreground))",
-        },
-        orangeBackground: {
-          DEFAULT: "hsl(var(--orangeBackground))",
-          foreground: "hsl(var(--orangeBackground-foreground))",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
@@ -94,8 +60,10 @@ const config = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
-      fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans],
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
         "accordion-down": {
