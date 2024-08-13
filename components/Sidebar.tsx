@@ -72,8 +72,12 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
   };
 
   useEffect(() => {
-    fetchJobs();
-  }, []);
+    const handler = setTimeout(() => {
+      fetchJobs();
+    }, 400);
+
+    return () => clearTimeout(handler)
+  }, [filters]);
 
   return (
     <aside className="p-4 min-w-48 border border-gray-200 rounded">
@@ -147,7 +151,6 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
           </div>
         </div>
       </div>
-      <Button className="mt-2 w-full" onClick={() => fetchJobs()}>Submit</Button>
     </aside>
   );
 };
