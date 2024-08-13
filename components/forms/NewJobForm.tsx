@@ -38,6 +38,7 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
       salary: "",
       currency: "",
       location: "",
+      jobType: undefined,
     },
   });
 
@@ -59,6 +60,18 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
     ) {
       toast({
         title: "Please select the location",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (
+      values.jobType !== "internship" &&
+      values.jobType !== "full-time" &&
+      values.jobType !== "part-time"
+    ) {
+      toast({
+        title: "Please select the job type",
         variant: "destructive",
       });
       return;
@@ -233,6 +246,37 @@ const NewJobForm = ({ setOpen }: NewJobFormProps) => {
             )}
           />
         </div>
+
+        <div className="flex flex-col gap-1">
+          <FormField
+            control={form.control}
+            name="jobType"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm font-semibold text-gray-800">
+                  Job Type *
+                </FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select job type" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="internship">Internship</SelectItem>
+                    <SelectItem value="full-time">Full-time</SelectItem>
+                    <SelectItem value="part-time">Part-time</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
         <div className="w-full flex justify-end items-center mt-4">
           <Button type="submit">Create Job</Button>
         </div>

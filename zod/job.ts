@@ -19,8 +19,9 @@ export const newJobSchema = z.object({
   location: z.string({
     required_error: "Please select one location type",
   }),
+  jobType: z.enum(["full-time", "part-time", "internship"], {
+    required_error: "Please select one job type",
+  }),
 });
-
-
 
 export type NewJob = z.infer<typeof newJobSchema>;
