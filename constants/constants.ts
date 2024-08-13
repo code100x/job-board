@@ -1,0 +1,1 @@
+export const DEFAULT_SALARY_RANGE: [number, number] = [0, 1000000];

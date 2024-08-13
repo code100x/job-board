@@ -1,5 +1,4 @@
-import { useState, useEffect, ChangeEvent } from "react";
-import { getJobs } from "@/actions/job";
+import { useState, ChangeEvent, useCallback } from "react";
 import { Slider } from "@/components/ui/slider";
 import {
   Select,
@@ -9,19 +8,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Job } from "@prisma/client";
+import { Filters } from "@/app/(protected)/jobs/page";
+import { debounce } from "@/lib/utils";
+import { DEFAULT_SALARY_RANGE } from "@/constants/constants";
 
 interface SidebarProps {
-  setJobs: (jobs: Job[]) => void;
-  setLoading: (value: boolean) => void;
-}
-
-interface Filters {
-  title: string;
-  companyName: string;
-  location: string;
-  currency: string;
-  salRange: [number, number];
+  filters: Filters;
+  setFilters: (value: Filters) => void;
 }
 
 const formatSalary = (value: number, currency: string) => {
@@ -36,43 +29,25 @@ const formatSalary = (value: number, currency: string) => {
   return `${formattedValue} ${unit}`;
 };
 
-const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
-  const [filters, setFilters] = useState<Filters>({
-    title: "",
-    companyName: "",
-    location: "",
-    currency: "",
-    salRange: [0, 1000000],
-  });
-
-  const handleFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
+const Sidebar = ({ filters, setFilters }: SidebarProps) => {
+  const [salaryRange, setSalaryRange] = useState([...DEFAULT_SALARY_RANGE]);
+  const handleFilterChange = useCallback(debounce((e: ChangeEvent<HTMLInputElement>) => {
     setFilters({
       ...filters,
       [e.target.name]: e.target.value,
     });
-  };
+  }), [filters]);
+
+  const updateSalaryRange = useCallback(debounce((value) => {setFilters({
+    ...filters,
+    salRange: value,
+  })}), [filters]);
+  
 
   const handleSliderChange = (value: [number, number]) => {
-    setFilters({
-      ...filters,
-      salRange: value,
-    });
+    setSalaryRange(value);
+    updateSalaryRange(value);
   };
-
-  const fetchJobs = async () => {
-    setLoading(true);
-    //@ts-ignore
-    const response = await getJobs(filters);
-    if (response.status === "success") {
-      //@ts-ignore
-      setJobs(response.data);
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchJobs();
-  }, [filters]);
 
   return (
     <aside className="p-4 min-w-48 border border-gray-200 rounded">
@@ -130,18 +105,17 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
 
         <div className="flex flex-col gap-2">
           <Slider
-            defaultValue={filters.salRange}
+            defaultValue={[0, 1000000]}
             max={1000000}
             step={1000}
             onValueChange={handleSliderChange}
-            value={filters.salRange}
           />
           <div className="flex justify-between text-sm">
             <span>
-              Min: {formatSalary(filters.salRange[0], filters.currency)}
+              Min: {formatSalary(salaryRange[0], filters.currency)}
             </span>
             <span>
-              Max: {formatSalary(filters.salRange[1], filters.currency)}
+              Max: {formatSalary(salaryRange[1], filters.currency)}
             </span>
           </div>
         </div>
