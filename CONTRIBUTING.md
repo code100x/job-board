@@ -3,6 +3,7 @@
 First off, thank you for considering contributing to job-board! It's people like you that make the job-board such a great tool.
 
 ## Table of Contents
+
 1. [Code of Conduct](#code-of-conduct)
 2. [Flow of Contribution](#flow-of-contribution)
 3. [Getting Started](#getting-started)
@@ -11,14 +12,12 @@ First off, thank you for considering contributing to job-board! It's people like
    - [Conventional Commits](#conventional-commits)
 4. [Setting Up the Development Environment](#setting-up-the-development-environment)
 
-
-
-
 ## Code of Conduct
 
 This project and everyone participating in it is governed by the 100x. By participating, you are expected to uphold this code. Please report unacceptable behavior to maintainers.
 
 ## Flow of Contribution
+
 The following is a summary of the ideal contribution flow. Please, note that Pull Requests can also be rejected by the maintainers when appropriate.
 
     ┌───────────────────────┐
@@ -74,6 +73,7 @@ Pull requests should have a title that follows the specification, otherwise, mer
 - `chore: ` prefix in the title indicates that PR is only related to cleanup in the project and there is no need to trigger release.
 
 ## Setting Up the Development Environment
+
 We have discussed this in detail [here](README.md).
 
 Happy contributing :)
