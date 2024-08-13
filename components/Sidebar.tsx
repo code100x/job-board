@@ -22,6 +22,7 @@ interface Filters {
   location: string;
   currency: string;
   salRange: [number, number];
+  jobType: string;
 }
 
 const formatSalary = (value: number, currency: string) => {
@@ -43,6 +44,7 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
     location: "",
     currency: "",
     salRange: [0, 1000000],
+    jobType: "",
   });
 
   const handleFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -125,6 +127,24 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
             <SelectItem value="REMOTE">Remote</SelectItem>
             <SelectItem value="OFFICE">Office</SelectItem>
             <SelectItem value="HYBRID">Hybrid</SelectItem>
+          </SelectContent>
+        </Select>
+
+        <Select
+          onValueChange={(value) => {
+            setFilters({
+              ...filters,
+              jobType: value,
+            });
+          }}
+        >
+          <SelectTrigger className="max-w">
+            <SelectValue placeholder="Job Type" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="internship">Internship</SelectItem>
+            <SelectItem value="full-time">Full-time</SelectItem>
+            <SelectItem value="part-time">Part-time</SelectItem>
           </SelectContent>
         </Select>
 
