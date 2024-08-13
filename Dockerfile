@@ -10,13 +10,12 @@ COPY . .
 COPY --from=base /usr/src/app/node_modules ./node_modules
 CMD ["npm", "run", "dev:docker"]
 
-# WIP
 FROM node:20-alpine AS build
-ARG DATABASE_URL
 WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 COPY . .
+ARG DATABASE_URL
 RUN DATABASE_URL=$DATABASE_URL npx prisma generate
 RUN DATABASE_URL=$DATABASE_URL npm run build
 
@@ -26,6 +25,5 @@ COPY --from=build /usr/src/app/.next ./.next
 COPY --from=build /usr/src/app/node_modules ./node_modules
 COPY --from=build /usr/src/app/public ./public
 COPY --from=build /usr/src/app/package.json ./package.json
-CMD ["npm", "run", "start"]
-
 EXPOSE 3000
+CMD ["npm", "run", "start"]
