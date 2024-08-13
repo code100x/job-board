@@ -8,7 +8,10 @@
     "start": "next start",
     "lint": "next lint",
     "dev:docker": "npm run db:seed & next dev",
-    "db:seed": "npx prisma db push & npx prisma db seed"
+    "db:seed": "npx prisma db push & npx prisma db seed",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,md,mdx,css,yaml,yml}\"",
+    "check": "prettier --check \"**/*.{ts,tsx,js,jsx,md,mdx,css,yaml,yml}\"",
+    "prepare": "husky install"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
@@ -28,9 +31,11 @@
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "framer-motion": "^11.3.22",
     "lucide-react": "^0.419.0",
     "next": "14.2.5",
     "next-auth": "^5.0.0-beta.20",
+    "next-themes": "^0.3.0",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.52.2",
@@ -44,6 +49,8 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
+    "husky": "^8.0.0",
+    "prettier": "^3.3.3",
     "postcss": "^8",
     "prisma": "^5.17.0",
     "tailwindcss": "^3.4.1",

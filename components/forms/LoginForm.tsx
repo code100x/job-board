@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "../ui/use-toast";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { loginUser } from "@/actions/user";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
@@ -23,6 +23,8 @@ const LoginForm = () => {
 
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const form = useForm<LoginUser>({
     resolver: zodResolver(userLoginSchema),
@@ -50,6 +52,10 @@ const LoginForm = () => {
     router.push("/jobs");
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   return (
     <Form {...form}>
@@ -83,6 +89,7 @@ const LoginForm = () => {
                     {...field}
                     className="border-gray-400"
                     placeholder="Enter your email here"
+                    ref={inputRef}
                   />
                 </FormControl>
                 <FormMessage className="text-sm" />
