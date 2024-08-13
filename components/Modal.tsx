@@ -8,7 +8,7 @@ type ModalProps = {
     onApply: () => void;
 };
 
-// Job Detils Modal 
+// Job Details Modal 
 const Modal = ({ job, onClose, onApply }: ModalProps) => {
     const [isVisible, setIsVisible] = useState(false);
 
