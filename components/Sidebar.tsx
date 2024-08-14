@@ -63,7 +63,7 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
     setLoading(true);
     //@ts-ignore
     const response = await getJobs(filters);
-    if (response.status === "success") {
+    if (response?.status === "success") {
       //@ts-ignore
       setJobs(response.data);
     }

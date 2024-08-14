@@ -36,6 +36,7 @@ const LoginForm = () => {
 
   const handleFormSubmit = async (values: LoginUser) => {
     setIsLoading(true);
+    console.log(values)
     const response = await loginUser(values);
     if (response?.status !== "success") {
       toast({
@@ -52,6 +53,10 @@ const LoginForm = () => {
     router.push("/jobs");
     setIsLoading(false);
   };
+
+  const handleCreateNewAccount = () => {
+    router.push("/signup");
+  }
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -129,6 +134,13 @@ const LoginForm = () => {
             )}
           </Button>
         </form>
+          <div
+            className="w-full flex text-xs cursor-pointer underline justify-end items-end text-gray-400"
+            onClick={handleCreateNewAccount}
+          >
+            Create a new account?
+          </div>
+          
       </div>
     </Form>
   );
