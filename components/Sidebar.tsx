@@ -128,7 +128,7 @@ const Sidebar = ({ setJobs, setLoading }: SidebarProps) => {
           </SelectContent>
         </Select>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 pt-4">
           <Slider
             defaultValue={filters.salRange}
             max={1000000}
