@@ -1,9 +1,9 @@
-import APP_PATHS from "@/config/path.config";
-import { GITHUB_REPO } from "@/lib/constant/app.constant";
-import Link from "next/link";
-import { Button } from "./ui/button";
-import Icon from "./ui/icon";
-import { JobLanding } from "./job-landing";
+import APP_PATHS from '@/config/path.config';
+import { GITHUB_REPO } from '@/lib/constant/app.constant';
+import Link from 'next/link';
+import { Button } from './ui/button';
+import Icon from './ui/icon';
+import { JobLanding } from './job-landing';
 
 const HeroSection = () => {
   return (
@@ -20,7 +20,7 @@ const HeroSection = () => {
         <div className="flex items-center flex-col gap-3 max-w-[950px]">
           <div>
             <h1 className="text-5xl max-sm:text-3xl max-sm:leading-tight  font-extrabold leading-[70px]  text-center text-primary">
-              Find the Right{" "}
+              Find the Right{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-600">
                 Opportunity
               </span>

@@ -1,9 +1,9 @@
-import APP_PATHS from "@/config/path.config";
-import { getToken } from "next-auth/jwt";
-import { NextRequest, NextResponse } from "next/server";
+import APP_PATHS from '@/config/path.config';
+import { getToken } from 'next-auth/jwt';
+import { NextRequest, NextResponse } from 'next/server';
 
-const authRoutes = ["/signup", "/signin"];
-const privateRoutes = ["/create", "/setting"];
+const authRoutes = ['/signup', '/signin'];
+const privateRoutes = ['/create', '/setting'];
 export async function middleware(request: NextRequest) {
   const session = await getToken({
     req: request,
@@ -14,8 +14,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(
       new URL(
         `${APP_PATHS.SIGNIN}?next=${encodeURIComponent(currentPath)}`,
-        request.url,
-      ),
+        request.url
+      )
     );
   }
   if (authRoutes.includes(currentPath) && session) {
@@ -25,5 +25,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 };

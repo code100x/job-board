@@ -1,7 +1,7 @@
-import { JobType } from "@/types/jobs.types";
-import Icon from "./ui/icon";
-import { formatSalary } from "@/lib/utils";
-import { Button } from "./ui/button";
+import { JobType } from '@/types/jobs.types';
+import Icon from './ui/icon';
+import { formatSalary } from '@/lib/utils';
+import { Button } from './ui/button';
 
 export const Job = ({ job }: { job: JobType }) => {
   return (
@@ -18,7 +18,7 @@ export const Job = ({ job }: { job: JobType }) => {
             {job.minSalary && <Icon icon="currency" size={12} />}
             {job.minSalary && job.maxSalary
               ? `${formatSalary(job.minSalary)}-${formatSalary(job.maxSalary)}`
-              : "Not disclosed"}
+              : 'Not disclosed'}
           </span>
         </div>
       </div>

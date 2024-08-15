@@ -1,11 +1,11 @@
-import { RiTwitterXFill } from "react-icons/ri";
+import { RiTwitterXFill } from 'react-icons/ri';
 import {
   FaGithub,
   FaInstagram,
   FaLinkedin,
   FaTelegramPlane,
   FaYoutube,
-} from "react-icons/fa";
+} from 'react-icons/fa';
 import {
   ArrowRight,
   ChevronDown,
@@ -23,7 +23,7 @@ import {
   BookText,
   User,
   LogOut,
-} from "lucide-react";
+} from 'lucide-react';
 
 const icons = {
   sparcle: Sparkles,
@@ -40,8 +40,8 @@ const icons = {
   sun: Sun,
   moon: Moon,
   check: Check,
-  "chevron-right": ChevronRight,
-  "dot-filled": DotIcon,
+  'chevron-right': ChevronRight,
+  'dot-filled': DotIcon,
   location: MapPin,
   currency: DollarSign,
   description: BookText,

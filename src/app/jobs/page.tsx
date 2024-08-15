@@ -1,8 +1,8 @@
-import AllJobs from "@/components/all-jobs";
-import JobFilters from "@/layouts/job-filters";
-import JobsHeader from "@/layouts/jobs-header";
-import { JobQuerySchemaType } from "@/lib/validators/jobs.validator";
-import { Suspense } from "react";
+import AllJobs from '@/components/all-jobs';
+import JobFilters from '@/layouts/job-filters';
+import JobsHeader from '@/layouts/jobs-header';
+import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
+import { Suspense } from 'react';
 const page = async ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   return (
     <div className="container flex gap-5 pt-5">

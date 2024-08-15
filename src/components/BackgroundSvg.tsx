@@ -11,7 +11,7 @@ export default function BackgroundSvg() {
       <g clipPath="url(#clip0_1_364)">
         <mask
           id="mask0_1_364"
-          style={{ maskType: "luminance" }}
+          style={{ maskType: 'luminance' }}
           maskUnits="userSpaceOnUse"
           x="0"
           y="0"

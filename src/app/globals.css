@@ -71,7 +71,7 @@
     @apply bg-background text-foreground;
   }
   button,
-  [role="button"],
+  [role='button'],
   a {
     user-select: none;
   }

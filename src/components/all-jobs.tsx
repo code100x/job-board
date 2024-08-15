@@ -1,15 +1,15 @@
-import { getAllJobs } from "@/actions/job.action";
-import { JOBS_PER_PAGE } from "@/config/app.config";
-import { JobQuerySchemaType } from "@/lib/validators/jobs.validator";
+import { getAllJobs } from '@/actions/job.action';
+import { JOBS_PER_PAGE } from '@/config/app.config';
+import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
 import {
   PaginationNextButton,
   PaginationPreviousButton,
-} from "./pagination-client";
-import { Pagination, PaginationContent, PaginationItem } from "./ui/pagination";
-import { PaginationPages } from "./ui/paginator";
-import Icon from "./ui/icon";
-import { formatSalary } from "@/lib/utils";
-import Link from "next/link";
+} from './pagination-client';
+import { Pagination, PaginationContent, PaginationItem } from './ui/pagination';
+import { PaginationPages } from './ui/paginator';
+import Icon from './ui/icon';
+import { formatSalary } from '@/lib/utils';
+import Link from 'next/link';
 type PaginatorProps = {
   searchParams: JobQuerySchemaType;
 };
@@ -44,7 +44,7 @@ const AllJobs = async ({ searchParams }: PaginatorProps) => {
                   {job.minSalary && <Icon icon="currency" size={12} />}
                   {job.minSalary && job.maxSalary
                     ? `${formatSalary(job.minSalary)}-${formatSalary(job.maxSalary)}`
-                    : "Not disclosed"}
+                    : 'Not disclosed'}
                 </span>
               </div>
               <p className="flex gap-0.5 items-center text-muted-foreground text-xs">

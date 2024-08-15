@@ -1,6 +1,6 @@
-import Icon from "@/components/ui/icon";
-import { socials } from "@/lib/constant/app.constant";
-import Link from "next/link";
+import Icon from '@/components/ui/icon';
+import { socials } from '@/lib/constant/app.constant';
+import Link from 'next/link';
 
 const Footer = () => {
   return (

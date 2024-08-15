@@ -1,10 +1,10 @@
-import { JOBS_PER_PAGE } from "@/config/app.config";
-import { JobQuerySchemaType } from "@/lib/validators/jobs.validator";
-import { Prisma } from "@prisma/client";
+import { JOBS_PER_PAGE } from '@/config/app.config';
+import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
+import { Prisma } from '@prisma/client';
 
-function salaryRangeQuery(salaryrange: JobQuerySchemaType["salaryrange"]) {
+function salaryRangeQuery(salaryrange: JobQuerySchemaType['salaryrange']) {
   const query = salaryrange!.map((range: string) => {
-    const [minSalary, maxSalary] = range.split("-");
+    const [minSalary, maxSalary] = range.split('-');
     const isAbove = isNaN(Number(maxSalary));
     return {
       AND: [
@@ -41,13 +41,13 @@ export function getJobFilters({
         {
           title: {
             contains: search,
-            mode: "insensitive",
+            mode: 'insensitive',
           },
         },
         {
           companyName: {
             contains: search,
-            mode: "insensitive",
+            mode: 'insensitive',
           },
         },
       ],
@@ -55,13 +55,13 @@ export function getJobFilters({
   ];
   const filterQueries: Prisma.JobWhereInput = {
     AND: filters.filter(
-      (filter) => filter !== undefined && filter !== null && filter !== "",
+      (filter) => filter !== undefined && filter !== null && filter !== ''
     ) as Prisma.JobWhereInput[],
   };
   const sortFieldMapping: { [key: string]: string } = {
-    postedat: "postedAt",
+    postedat: 'postedAt',
   };
-  const [sort, sortOrder] = sortby.split("_");
+  const [sort, sortOrder] = sortby.split('_');
   const orderBy: Prisma.JobOrderByWithAggregationInput = {
     ...(sortby && { [sortFieldMapping[sort]]: sortOrder }),
   };

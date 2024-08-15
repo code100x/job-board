@@ -1,7 +1,7 @@
-"use client";
-import { jobFilterQuery } from "@/actions/job.action";
-import { PaginationNext, PaginationPrevious } from "./ui/pagination";
-import { JobQuerySchemaType } from "@/lib/validators/jobs.validator";
+'use client';
+import { jobFilterQuery } from '@/actions/job.action';
+import { PaginationNext, PaginationPrevious } from './ui/pagination';
+import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
 
 const PaginationPreviousButton = ({
   searchParams,

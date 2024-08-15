@@ -1,20 +1,20 @@
-"use client";
-import { jobFilterQuery } from "@/actions/job.action";
-import { filters, WorkModeEnums } from "@/lib/constant/jobs.constant";
+'use client';
+import { jobFilterQuery } from '@/actions/job.action';
+import { filters, WorkModeEnums } from '@/lib/constant/jobs.constant';
 import {
   JobQuerySchema,
   JobQuerySchemaType,
-} from "@/lib/validators/jobs.validator";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+} from '@/lib/validators/jobs.validator';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "../components/ui/accordion";
-import { Button } from "../components/ui/button";
-import { Checkbox } from "../components/ui/checkbox";
+} from '../components/ui/accordion';
+import { Button } from '../components/ui/button';
+import { Checkbox } from '../components/ui/checkbox';
 import {
   Form,
   FormControl,
@@ -22,9 +22,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../components/ui/form";
-import { Separator } from "../components/ui/separator";
-import { ScrollArea } from "@/components/ui/scroll-area";
+} from '../components/ui/form';
+import { Separator } from '../components/ui/separator';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   const form = useForm<JobQuerySchemaType>({
@@ -66,10 +66,10 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
               type="multiple"
               className="w-full"
               defaultValue={[
-                "work-mode",
-                "choose-currency",
-                "salary-range",
-                "location",
+                'work-mode',
+                'choose-currency',
+                'salary-range',
+                'location',
               ]}
             >
               <AccordionItem value="work-mode">
@@ -96,7 +96,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                   <FormControl>
                                     <Checkbox
                                       checked={field.value?.includes(
-                                        item.value as WorkModeEnums,
+                                        item.value as WorkModeEnums
                                       )}
                                       onCheckedChange={(checked) => {
                                         return checked
@@ -106,8 +106,8 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                             ])
                                           : field.onChange(
                                               field.value?.filter(
-                                                (value) => value !== item.value,
-                                              ),
+                                                (value) => value !== item.value
+                                              )
                                             );
                                       }}
                                     />
@@ -150,7 +150,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                   <FormControl>
                                     <Checkbox
                                       checked={field.value?.includes(
-                                        item.value,
+                                        item.value
                                       )}
                                       onCheckedChange={(checked) => {
                                         return checked
@@ -160,8 +160,8 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                             ])
                                           : field.onChange(
                                               field.value?.filter(
-                                                (value) => value !== item.value,
-                                              ),
+                                                (value) => value !== item.value
+                                              )
                                             );
                                       }}
                                     />
@@ -201,13 +201,13 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                   key={item.id}
                                   className="flex items-center space-y-0 group"
                                   aria-checked={field.value?.includes(
-                                    item.value,
+                                    item.value
                                   )}
                                 >
                                   <FormControl>
                                     <Checkbox
                                       checked={field.value?.includes(
-                                        item.value,
+                                        item.value
                                       )}
                                       onCheckedChange={(checked) => {
                                         return checked
@@ -217,8 +217,8 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                             ])
                                           : field.onChange(
                                               field.value?.filter(
-                                                (value) => value !== item.value,
-                                              ),
+                                                (value) => value !== item.value
+                                              )
                                             );
                                       }}
                                       hidden
