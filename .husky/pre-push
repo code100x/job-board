@@ -1,4 +1,23 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+echo '🏗️👷 Performing styling, testing, and building your project before committing...'
 
-npm run build
+npm run check-formatting ||
+(
+    echo '⚠️ Prettier check failed. Please run `npm run format`, address the issues, and try committing again.'
+    false
+)
+
+npm run check-linting||
+(
+    echo '⚠️ Linting check failed. Please address the listed issues, stage the changes, and try committing again.'
+    false
+)
+
+echo '🛠️ All checks passed. Proceeding with the build process...'
+
+npm run build ||
+(
+    echo '❌ Build failed. Please review the build errors above and resolve them before committing.'
+    false
+)
+
+echo '✅ All checks and build succeeded. Proceeding with the commit.'
