@@ -1,0 +1,5 @@
+*.d.ts
+.eslintrc
+.prettierrc
+.prettierignore
+.next
