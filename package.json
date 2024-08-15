@@ -9,8 +9,8 @@
     "lint": "next lint",
     "dev:docker": "npm run db:seed & next dev",
     "db:seed": "npx prisma db push & npx prisma db seed",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,md,mdx,css,yaml,yml}\"",
-    "check": "prettier --check \"**/*.{ts,tsx,js,jsx,md,mdx,css,yaml,yml}\"",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,md,mdx,css}\"",
+    "check": "prettier --check \"**/*.{ts,tsx,js,jsx,md,mdx,css}\"",
     "prepare": "husky"
   },
   "prisma": {
@@ -35,7 +35,6 @@
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "framer-motion": "^11.3.24",
     "lucide-react": "^0.426.0",
     "next": "14.2.5",
     "next-auth": "^4.24.7",
@@ -44,8 +43,6 @@
     "react-dom": "^18",
     "react-hook-form": "^7.52.2",
     "react-icons": "^5.2.1",
-    "slate": "^0.103.0",
-    "slate-react": "^0.108.0",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8",

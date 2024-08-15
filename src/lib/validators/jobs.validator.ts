@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { WorkModeEnums } from '../constant/jobs.constant';
 
 export const JobPostSchema = z
   .object({
@@ -47,12 +48,48 @@ export const JobPostSchema = z
   });
 
 export const JobQuerySchema = z.object({
-  workmode: z.array(z.enum(['remote', 'office', 'hybrid'])).optional(),
-  location: z.array(z.string()).optional(),
+  workmode: z
+    .union([
+      z.string(),
+      z.array(
+        z.enum([
+          WorkModeEnums.REMOTE,
+          WorkModeEnums.HYBRID,
+          WorkModeEnums.OFFICE,
+        ])
+      ),
+    ])
+    .optional()
+    .transform((val) => {
+      if (typeof val === 'string') {
+        return [val];
+      }
+      return val;
+    }),
+  location: z
+    .union([z.string(), z.array(z.string())])
+    .optional()
+    .transform((val) => {
+      if (typeof val === 'string') {
+        return [val];
+      }
+      return val;
+    }),
   search: z.string().optional(),
-  salaryrange: z.array(z.string()).optional(),
+  salaryrange: z
+    .union([z.string(), z.array(z.string())])
+    .optional()
+    .transform((val) => {
+      if (typeof val === 'string') {
+        return [val];
+      }
+      return val;
+    }),
   sortby: z.enum(['postedat_asc', 'postedat_desc']).default('postedat_desc'),
-  page: z.string().optional().default('1'),
+  page: z.coerce
+    .number({ message: 'page must be a number' })
+    .optional()
+    .default(1),
   isFeatured: z.boolean().optional(),
   limit: z.number().optional(),
 });

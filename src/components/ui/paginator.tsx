@@ -17,7 +17,7 @@ export const PaginationPages = ({
   searchParams: JobQuerySchemaType;
 }) => {
   function paginationHandler(page: number) {
-    jobFilterQuery({ ...searchParams, page: String(page) });
+    jobFilterQuery({ ...searchParams, page: page });
   }
   const pages: JSX.Element[] = [];
   if (totalPages <= 5) {

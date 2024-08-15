@@ -69,8 +69,8 @@ export function getJobFilters({
     skip: 0,
     take: limit || JOBS_PER_PAGE,
   };
-  if (parseInt(page)) {
-    pagination.skip = (parseInt(page) - 1) * JOBS_PER_PAGE;
+  if (page) {
+    pagination.skip = (page - 1) * JOBS_PER_PAGE;
   }
   return { filterQueries, orderBy, pagination };
 }

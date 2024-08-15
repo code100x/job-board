@@ -32,10 +32,10 @@ const JobsHeader = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
     },
   });
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    jobFilterQuery({ ...searchParams, search: data.search });
+    jobFilterQuery({ ...searchParams, search: data.search, page: 1 });
   }
   function sortChangeHandler(value: SortByEnums) {
-    jobFilterQuery({ ...searchParams, sortby: value });
+    jobFilterQuery({ ...searchParams, sortby: value, page: 1 });
   }
   return (
     <div className="flex gap-5">

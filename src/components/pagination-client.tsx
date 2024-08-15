@@ -3,6 +3,7 @@ import { jobFilterQuery } from '@/actions/job.action';
 import { PaginationNext, PaginationPrevious } from './ui/pagination';
 import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
 
+const PAGE_INCREMENT = 1;
 const PaginationPreviousButton = ({
   searchParams,
   currentPage,
@@ -15,10 +16,10 @@ const PaginationPreviousButton = ({
       onClick={() =>
         jobFilterQuery({
           ...searchParams,
-          page: String(currentPage - 1),
+          page: currentPage - PAGE_INCREMENT,
         })
       }
-      aria-disabled={currentPage - 1 < 1}
+      aria-disabled={currentPage - PAGE_INCREMENT < PAGE_INCREMENT}
       role="button"
       className="aria-disabled:pointer-events-none"
     />
@@ -39,10 +40,10 @@ const PaginationNextButton = ({
       onClick={() =>
         jobFilterQuery({
           ...searchParams,
-          page: String(currentPage + 1),
+          page: currentPage + PAGE_INCREMENT,
         })
       }
-      aria-disabled={currentPage > totalPages - 1}
+      aria-disabled={currentPage > totalPages - PAGE_INCREMENT}
       className="aria-disabled:pointer-events-none"
     />
   );

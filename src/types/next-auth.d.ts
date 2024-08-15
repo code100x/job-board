@@ -9,6 +9,7 @@ declare module 'next-auth' {
     user: {
       id: string;
       role: string;
+      isVerified: boolean;
     };
   }
 }

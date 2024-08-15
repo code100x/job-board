@@ -46,6 +46,7 @@ const PostJobForm = () => {
   const handleFormSubmit = async (data: JobPostSchemaType) => {
     try {
       const response = await createJob(data);
+
       if (!response.status) {
         return toast({
           title: response.name || 'Something went wrong',

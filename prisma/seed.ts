@@ -453,7 +453,7 @@ async function seedUsers() {
           })
       )
     );
-    console.log(dbUsers, 'USER created');
+    console.log('✅ user seed successfully');
     await prisma.$disconnect();
   } catch (error) {
     console.log(error);
@@ -486,7 +486,7 @@ async function seedJobs() {
         })
       )
     );
-    console.log(dbJobs, 'Jobs created');
+    console.log('✅ job seed successfully');
   } catch (error) {
     console.error(error);
     process.exit(1);

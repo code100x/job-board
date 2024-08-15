@@ -1,5 +1,5 @@
 import { getAllJobs } from '@/actions/job.action';
-import { JOBS_PER_PAGE } from '@/config/app.config';
+import { DEFAULT_PAGE, JOBS_PER_PAGE } from '@/config/app.config';
 import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
 import {
   PaginationNextButton,
@@ -20,8 +20,9 @@ const AllJobs = async ({ searchParams }: PaginatorProps) => {
     return <div>Error {jobs.message}</div>;
   }
   const totalPages =
-    Math.ceil((jobs.additional?.totalJobs || 0) / JOBS_PER_PAGE) || 1;
-  const currentPage = parseInt(searchParams.page) || 1;
+    Math.ceil((jobs.additional?.totalJobs || 0) / JOBS_PER_PAGE) ||
+    DEFAULT_PAGE;
+  const currentPage = searchParams.page || DEFAULT_PAGE;
   return (
     <div className="bg-background py-4 grid gap-3">
       {jobs.additional?.jobs.map((job) => {

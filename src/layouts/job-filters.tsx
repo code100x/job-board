@@ -25,30 +25,29 @@ import {
 } from '../components/ui/form';
 import { Separator } from '../components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { formatFilterSearchParams } from '@/lib/utils';
 
 const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   const form = useForm<JobQuerySchemaType>({
     resolver: zodResolver(JobQuerySchema),
     defaultValues: {
-      workmode: searchParams.workmode
-        ? Array.isArray(searchParams.workmode)
-          ? searchParams.workmode
-          : [searchParams.workmode]
-        : undefined,
-      salaryrange: searchParams.salaryrange
-        ? Array.isArray(searchParams.salaryrange)
-          ? searchParams.salaryrange
-          : [searchParams.salaryrange]
-        : undefined,
-      location: searchParams.location
-        ? Array.isArray(searchParams.location)
-          ? searchParams.location
-          : [searchParams.location]
-        : undefined,
+      workmode:
+        searchParams.workmode &&
+        (formatFilterSearchParams(searchParams.workmode) as WorkModeEnums[]),
+      salaryrange:
+        searchParams.salaryrange &&
+        formatFilterSearchParams(searchParams.salaryrange),
+      location:
+        searchParams.location &&
+        formatFilterSearchParams(searchParams.location),
     },
   });
   async function handleFormSubmit(data: JobQuerySchemaType) {
-    await jobFilterQuery(data);
+    await jobFilterQuery({
+      ...data,
+      search: searchParams.search,
+      sortby: searchParams.sortby,
+    });
   }
   return (
     <aside className="rounded-lg border bg-background  max-w-[320px] w-full p-6 h-fit sticky top-20">
@@ -224,7 +223,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                       hidden
                                     />
                                   </FormControl>
-                                  <FormLabel className="text-primary-text font-normal text-xs cursor-pointer group-aria-checked:bg-primary group-aria-checked:text-white flex items-center justify-start py-2 px-4 rounded-full border">
+                                  <FormLabel className="text-primary-text font-normal text-xs cursor-pointer group-aria-checked:bg-primary group-aria-checked:text-primary-foreground flex items-center justify-start py-2 px-4 rounded-full border">
                                     {item.label}
                                   </FormLabel>
                                 </FormItem>
@@ -240,7 +239,9 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
               </AccordionItem>
             </Accordion>
           </ScrollArea>
-          <Button type="submit">Apply Filters</Button>
+          <Button type="submit" disabled={form.formState.isSubmitting}>
+            Apply Filters
+          </Button>
         </form>
       </Form>
     </aside>

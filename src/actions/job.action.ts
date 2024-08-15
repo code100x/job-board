@@ -1,7 +1,7 @@
 'use server';
 import { ADMIN_ROLE } from '@/config/app.config';
 import prisma from '@/config/prisma.config';
-import { withSession } from '@/lib/api';
+import { withSession } from '@/lib/session';
 import { withServerActionAsyncCatcher } from '@/lib/async-catch';
 import { SuccessResponse } from '@/lib/success';
 import {
@@ -137,7 +137,7 @@ export const jobFilterQuery = async (queries: JobQuerySchemaType) => {
   const { page, sortby, location, salaryrange, search, workmode } =
     JobQuerySchema.parse(queries);
   const searchParams = new URLSearchParams({
-    page,
+    page: page.toString(),
     sortby,
     ...(search && { search: search.trim() }),
   });

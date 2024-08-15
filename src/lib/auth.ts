@@ -143,8 +143,8 @@ export const options = {
     session({ session, token }) {
       if (token && session && session.user) {
         session.user.id = token.id;
-        token.isVerified = token.isVerified;
-        token.role = token.role;
+        session.user.isVerified = token.isVerified;
+        session.user.role = token.role;
       }
       return session;
     },

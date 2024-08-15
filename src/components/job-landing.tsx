@@ -3,11 +3,12 @@ import { formatSalary } from '@/lib/utils';
 import Link from 'next/link';
 import Icon from './ui/icon';
 import { JobType } from '@/types/jobs.types';
+import { DEFAULT_PAGE } from '@/config/app.config';
 
 export const JobLanding = async () => {
   const jobs = await getAllJobs({
     sortby: 'postedat_desc',
-    page: '1',
+    page: DEFAULT_PAGE,
     limit: 9,
   });
   if (!jobs.status) {
