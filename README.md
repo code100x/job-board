@@ -1,13 +1,11 @@
 # Project Name: Job Board
 
-
 ## Table of Contents
 
 - [Description](#description)
 - [Features](#features)
 - [Technologies](#technologies)
 - [Getting Started](#getting-started)
-
 
 ## Description
 
@@ -46,11 +44,12 @@ Follow these steps to set up the repository locally and run it.
 1. Create a `.env` file in the root folder of your project. Update it following the convention of the `.env.example` file. Here's an example:
 
    ```bash
-   AUTH_SECRET="MY_SECRET_KEY"
-   DATABASE_URL=postgres://********
+   DATABASE_URL="postgres://postgres:password@localhost:5432/postgres"
+   NEXTAUTH_SECRET="koXrQGB5TFD4KALDX4kAvnQ5RHHvAOIzB"
+   NEXTAUTH_URL="http://localhost:3000"
    ```
 
-2. To generate AUTH_SECRET, 
+2. To generate AUTH_SECRET,
 
    Run this command in your terminal:
 
@@ -71,6 +70,7 @@ docker compose up --build
 ### Running the Project without Docker
 
 1. Install the necessary dependencies:
+
    ```bash
    npm install
    ```
@@ -78,8 +78,7 @@ docker compose up --build
 2. Sync & Seed your database:
 
    ```bash
-   npx prisma db push
-   npx prisma db seed
+   npm run db:seed
    ```
 
 3. Start the development server:
@@ -93,6 +92,6 @@ Now, you can run the project and make changes as needed.
 ### Test User Credentials
 
 ```js
-Emails: "user1@gmail.com, user2@gmail.com, admin@gmail.com"
-Password: "123456" 
+Emails: 'user@gmail.com, admin@gmail.com';
+Password: '123456';
 ```
