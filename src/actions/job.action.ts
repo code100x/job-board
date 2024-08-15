@@ -1,9 +1,10 @@
-"use server";
-import { ADMIN_ROLE } from "@/config/app.config";
-import prisma from "@/config/prisma.config";
-import { withSession } from "@/lib/api";
-import { withServerActionAsyncCatcher } from "@/lib/async-catch";
-import { SuccessResponse } from "@/lib/success";
+'use server';
+import { ADMIN_ROLE } from '@/config/app.config';
+import prisma from '@/config/prisma.config';
+import { withSession } from '@/lib/api';
+import { withServerActionAsyncCatcher } from '@/lib/async-catch';
+import { ErrorResponseType } from '@/lib/error';
+import { SuccessResponse } from '@/lib/success';
 import {
   JobByIdSchema,
   JobByIdSchemaType,
@@ -11,12 +12,12 @@ import {
   JobPostSchemaType,
   JobQuerySchema,
   JobQuerySchemaType,
-} from "@/lib/validators/jobs.validator";
-import { getJobFilters } from "@/services/jobs.services";
-import { ServerActionReturnType } from "@/types/api.types";
-import { getAllJobsAdditonalType, getJobType } from "@/types/jobs.types";
-import { redirect } from "next/navigation";
-import { string } from "zod";
+} from '@/lib/validators/jobs.validator';
+import { getJobFilters } from '@/services/jobs.services';
+import { ServerActionReturnType } from '@/types/api.types';
+import { getAllJobsAdditonalType, getJobType } from '@/types/jobs.types';
+import { redirect } from 'next/navigation';
+import { string } from 'zod';
 
 type additional = {
   isVerifiedJob: boolean;
@@ -52,8 +53,8 @@ export const createJob = withSession<
     },
   });
   const message = isVerifiedJob
-    ? "Job created successfully"
-    : "Job created successfully, waiting for admin approval";
+    ? 'Job created successfully'
+    : 'Job created successfully, waiting for admin approval';
   const additonal = { isVerifiedJob };
   return new SuccessResponse(message, 201, additonal).serialize();
 });
@@ -103,7 +104,7 @@ export const getAllJobs = withServerActionAsyncCatcher<
     queryJobsPromise,
     totalJobsPromise,
   ]);
-  return new SuccessResponse("All jobs fetched successfully", 200, {
+  return new SuccessResponse('All jobs fetched successfully', 200, {
     jobs,
     totalJobs,
   }).serialize();
@@ -138,12 +139,12 @@ export const jobFilterQuery = async (queries: JobQuerySchemaType) => {
   const { page, sortby, location, salaryrange, search, workmode } =
     JobQuerySchema.parse(queries);
   const searchParams = new URLSearchParams({
-    page,
+    page: page.toString(),
     sortby,
     ...(search && { search: search.trim() }),
   });
-  location?.map((location) => searchParams.append("location", location));
-  salaryrange?.map((range) => searchParams.append("salaryrange", range));
-  workmode?.map((mode) => searchParams.append("workmode", mode));
+  location?.map((location) => searchParams.append('location', location));
+  salaryrange?.map((range) => searchParams.append('salaryrange', range));
+  workmode?.map((mode) => searchParams.append('workmode', mode));
   redirect(`/jobs?${searchParams.toString()}`);
 };

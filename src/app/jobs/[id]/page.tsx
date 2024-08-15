@@ -1,7 +1,7 @@
-import { getJobById } from "@/actions/job.action";
-import { Job } from "@/components/job";
-import { JobByIdSchemaType } from "@/lib/validators/jobs.validator";
-import { redirect } from "next/navigation";
+import { getJobById } from '@/actions/job.action';
+import { Job } from '@/components/job';
+import { JobByIdSchemaType } from '@/lib/validators/jobs.validator';
+import { redirect } from 'next/navigation';
 
 const page = async ({ params }: { params: JobByIdSchemaType }) => {
   const job = await getJobById(params);
@@ -12,7 +12,7 @@ const page = async ({ params }: { params: JobByIdSchemaType }) => {
 
   const jobDetail = job.additional?.job;
   if (!jobDetail) {
-    return redirect("/jobs");
+    return redirect('/jobs');
   }
 
   return (

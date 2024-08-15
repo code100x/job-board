@@ -1,5 +1,5 @@
-"use client";
-import { createJob } from "@/actions/job.action";
+'use client';
+import { createJob } from '@/actions/job.action';
 import {
   Form,
   FormControl,
@@ -7,39 +7,39 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from '@/components/ui/form';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import React from "react";
-import { useForm } from "react-hook-form";
+} from '@/components/ui/select';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import React from 'react';
+import { useForm } from 'react-hook-form';
 import {
   JobPostSchema,
   JobPostSchemaType,
-} from "../lib/validators/jobs.validator";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
-import { Label } from "./ui/label";
-import { Switch } from "./ui/switch";
-import { useToast } from "./ui/use-toast";
-import { filters } from "@/lib/constant/jobs.constant";
+} from '../lib/validators/jobs.validator';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Textarea } from './ui/textarea';
+import { Label } from './ui/label';
+import { Switch } from './ui/switch';
+import { useToast } from './ui/use-toast';
+import { filters } from '@/lib/constant/jobs.constant';
 const PostJobForm = () => {
   const { toast } = useToast();
   const router = useRouter();
   const form = useForm<JobPostSchemaType>({
     resolver: zodResolver(JobPostSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      companyName: "",
-      location: "",
+      title: '',
+      description: '',
+      companyName: '',
+      location: '',
       hasSalaryRange: false,
       minSalary: 0,
       maxSalary: 0,
@@ -48,33 +48,34 @@ const PostJobForm = () => {
   const handleFormSubmit = async (data: JobPostSchemaType) => {
     try {
       const response = await createJob(data);
+
       if (!response.status) {
         return toast({
-          title: response.name || "Something went wrong",
-          description: response.message || "Internal server error",
-          variant: "destructive",
+          title: response.name || 'Something went wrong',
+          description: response.message || 'Internal server error',
+          variant: 'destructive',
         });
       }
       toast({
         title: response.message,
-        variant: "success",
+        variant: 'success',
       });
       form.reset(form.formState.defaultValues);
     } catch (error) {
       toast({
-        title: "Something went wrong will creating job",
-        description: "Internal server error",
-        variant: "destructive",
+        title: 'Something went wrong will creating job',
+        description: 'Internal server error',
+        variant: 'destructive',
       });
     }
   };
-  const watchHasSalaryRange = form.watch("hasSalaryRange");
+  const watchHasSalaryRange = form.watch('hasSalaryRange');
 
   React.useEffect(() => {
     if (!watchHasSalaryRange) {
-      form.clearErrors(["minSalary", "maxSalary"]);
-      form.setValue("minSalary", 0);
-      form.setValue("maxSalary", 0);
+      form.clearErrors(['minSalary', 'maxSalary']);
+      form.setValue('minSalary', 0);
+      form.setValue('maxSalary', 0);
     }
   }, [watchHasSalaryRange, form]);
   return (
@@ -236,7 +237,7 @@ const PostJobForm = () => {
                       className="w-full border-gray-400"
                       placeholder="Enter comapany name here"
                     />
-                  </FormControl>{" "}
+                  </FormControl>{' '}
                   <FormMessage />
                 </FormItem>
               )}
@@ -256,7 +257,7 @@ const PostJobForm = () => {
                       className="w-full border-gray-400"
                       placeholder="Enter comapany name here"
                     />
-                  </FormControl>{" "}
+                  </FormControl>{' '}
                   <FormMessage />
                 </FormItem>
               )}
@@ -266,7 +267,7 @@ const PostJobForm = () => {
 
         <div className="w-full flex justify-end items-center mt-4">
           <Button type="submit" disabled={form.formState.isSubmitting}>
-            {form.formState.isSubmitting ? "Please wait..." : "Create Job"}
+            {form.formState.isSubmitting ? 'Please wait...' : 'Create Job'}
           </Button>
         </div>
       </form>

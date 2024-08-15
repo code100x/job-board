@@ -1,13 +1,14 @@
-import { getAllJobs } from "@/actions/job.action";
-import { formatSalary } from "@/lib/utils";
-import Link from "next/link";
-import Icon from "./ui/icon";
-import { JobType } from "@/types/jobs.types";
+import { getAllJobs } from '@/actions/job.action';
+import { formatSalary } from '@/lib/utils';
+import Link from 'next/link';
+import Icon from './ui/icon';
+import { JobType } from '@/types/jobs.types';
+import { DEFAULT_PAGE } from '@/config/app.config';
 
 export const JobLanding = async () => {
   const jobs = await getAllJobs({
-    sortby: "postedat_desc",
-    page: "1",
+    sortby: 'postedat_desc',
+    page: DEFAULT_PAGE,
     limit: 9,
   });
   if (!jobs.status) {
@@ -41,7 +42,7 @@ const JobCard = ({ job }: { job: JobType }) => {
             {job.minSalary && <Icon icon="currency" size={12} />}
             {job.minSalary && job.maxSalary
               ? `${formatSalary(job.minSalary)}-${formatSalary(job.maxSalary)}`
-              : "Not disclosed"}
+              : 'Not disclosed'}
           </span>
         </div>
         <p className="flex gap-0.5 items-center text-muted-foreground text-xs">

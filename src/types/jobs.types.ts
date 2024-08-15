@@ -1,5 +1,5 @@
 export type JobType = {
-  workMode: "remote" | "office" | "hybrid";
+  workMode: 'remote' | 'office' | 'hybrid';
   location: string;
   minSalary: number | null;
   maxSalary: number | null;

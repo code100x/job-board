@@ -1,15 +1,15 @@
-import { getAllJobs } from "@/actions/job.action";
-import { JOBS_PER_PAGE } from "@/config/app.config";
-import { JobQuerySchemaType } from "@/lib/validators/jobs.validator";
+import { getAllJobs } from '@/actions/job.action';
+import { DEFAULT_PAGE, JOBS_PER_PAGE } from '@/config/app.config';
+import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
 import {
   PaginationNextButton,
   PaginationPreviousButton,
-} from "./pagination-client";
-import { Pagination, PaginationContent, PaginationItem } from "./ui/pagination";
-import { PaginationPages } from "./ui/paginator";
-import Icon from "./ui/icon";
-import { formatSalary } from "@/lib/utils";
-import Link from "next/link";
+} from './pagination-client';
+import { Pagination, PaginationContent, PaginationItem } from './ui/pagination';
+import { PaginationPages } from './ui/paginator';
+import Icon from './ui/icon';
+import { formatSalary } from '@/lib/utils';
+import Link from 'next/link';
 type PaginatorProps = {
   searchParams: JobQuerySchemaType;
 };
@@ -20,8 +20,9 @@ const AllJobs = async ({ searchParams }: PaginatorProps) => {
     return <div>Error {jobs.message}</div>;
   }
   const totalPages =
-    Math.ceil((jobs.additional?.totalJobs || 0) / JOBS_PER_PAGE) || 1;
-  const currentPage = parseInt(searchParams.page) || 1;
+    Math.ceil((jobs.additional?.totalJobs || 0) / JOBS_PER_PAGE) ||
+    DEFAULT_PAGE;
+  const currentPage = searchParams.page || DEFAULT_PAGE;
   return (
     <div className="bg-background py-4 grid gap-3">
       {jobs.additional?.jobs.map((job) => {
@@ -44,7 +45,7 @@ const AllJobs = async ({ searchParams }: PaginatorProps) => {
                   {job.minSalary && <Icon icon="currency" size={12} />}
                   {job.minSalary && job.maxSalary
                     ? `${formatSalary(job.minSalary)}-${formatSalary(job.maxSalary)}`
-                    : "Not disclosed"}
+                    : 'Not disclosed'}
                 </span>
               </div>
               <p className="flex gap-0.5 items-center text-muted-foreground text-xs">

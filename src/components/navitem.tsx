@@ -1,6 +1,7 @@
-import { useSession } from "next-auth/react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+'use client';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export const NavItem = ({
   path,
@@ -15,7 +16,7 @@ export const NavItem = ({
 }) => {
   const session = useSession();
   const pathname = usePathname();
-  if (session.status === "loading") {
+  if (session.status === 'loading') {
     return;
   }
   if (!session.data?.user && isPrivate) {

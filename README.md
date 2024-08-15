@@ -92,6 +92,6 @@ Now, you can run the project and make changes as needed.
 ### Test User Credentials
 
 ```js
-Emails: "user@gmail.com, admin@gmail.com";
-Password: "123456";
+Emails: 'user@gmail.com, admin@gmail.com';
+Password: '123456';
 ```

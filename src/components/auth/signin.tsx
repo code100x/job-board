@@ -1,16 +1,16 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import APP_PATHS from "@/config/path.config";
+'use client';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import APP_PATHS from '@/config/path.config';
 import {
   SigninSchema,
   SigninSchemaType,
-} from "@/lib/validators/auth.validator";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn, useSession } from "next-auth/react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+} from '@/lib/validators/auth.validator';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { signIn, useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
 import {
   Form,
   FormControl,
@@ -18,44 +18,42 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { useToast } from "../ui/use-toast";
+} from '../ui/form';
+import { useToast } from '../ui/use-toast';
 
 const Signin = () => {
-  const { update } = useSession();
   const { toast } = useToast();
-  // const searchParams = useSearchParams();
   const router = useRouter();
   const form = useForm<SigninSchemaType>({
     resolver: zodResolver(SigninSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
   });
 
   async function signinHandler(data: SigninSchemaType) {
     try {
-      const response = await signIn("signin", { ...data, redirect: false });
+      const response = await signIn('signin', { ...data, redirect: false });
       if (!response?.ok) {
         return toast({
-          title: response?.error || "Internal server error",
-          variant: "destructive",
+          title: response?.error || 'Internal server error',
+          variant: 'destructive',
         });
       }
       toast({
-        title: "Login successful! Welcome back!",
-        variant: "success",
+        title: 'Login successful! Welcome back!',
+        variant: 'success',
       });
       // const redirect = searchParams.get('next') || APP_PATHS.HOME;
       const searchParams = new URLSearchParams(window.location.search);
-      const redirect = searchParams.get("next") || APP_PATHS.HOME;
+      const redirect = searchParams.get('next') || APP_PATHS.HOME;
       router.push(redirect);
     } catch (error) {
       console.log(error);
       return toast({
-        title: "Internal server error",
-        variant: "destructive",
+        title: 'Internal server error',
+        variant: 'destructive',
       });
     }
   }
@@ -106,13 +104,13 @@ const Signin = () => {
             disabled={form.formState.isSubmitting}
             className="w-full h-10"
           >
-            {form.formState.isSubmitting ? "Please wait..." : "Sign In"}
+            {form.formState.isSubmitting ? 'Please wait...' : 'Sign In'}
           </Button>
         </form>
       </Form>
       <div className="flex items-center justify-center mt-6">
         <span className="text-muted-foreground">
-          Don&apos;t have an account yet?{" "}
+          Don&apos;t have an account yet?{' '}
           <Link
             href={APP_PATHS.SIGNUP}
             className="text-muted-foreground font-semibold hover:underline"

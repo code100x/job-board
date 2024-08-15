@@ -1,5 +1,5 @@
-import BackgroundSvg from "@/components/BackgroundSvg";
-import HeroSection from "@/components/hero-section";
+import BackgroundSvg from '@/components/BackgroundSvg';
+import HeroSection from '@/components/hero-section';
 
 const HomePage = async () => {
   return (

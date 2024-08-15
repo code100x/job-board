@@ -1,26 +1,26 @@
-"use client";
-import { jobFilterQuery } from "@/actions/job.action";
+'use client';
+import { jobFilterQuery } from '@/actions/job.action';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { jobSorting, SortByEnums } from "@/lib/constant/jobs.constant";
-import { JobQuerySchemaType } from "@/lib/validators/jobs.validator";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/select';
+import { jobSorting, SortByEnums } from '@/lib/constant/jobs.constant';
+import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 const FormSchema = z.object({
   search: z.string().optional(),
 });
@@ -28,14 +28,14 @@ const JobsHeader = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      search: "",
+      search: '',
     },
   });
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    jobFilterQuery({ ...searchParams, search: data.search });
+    jobFilterQuery({ ...searchParams, search: data.search, page: 1 });
   }
   function sortChangeHandler(value: SortByEnums) {
-    jobFilterQuery({ ...searchParams, sortby: value });
+    jobFilterQuery({ ...searchParams, sortby: value, page: 1 });
   }
   return (
     <div className="flex gap-5">

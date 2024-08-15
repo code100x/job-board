@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { signOut } from "next-auth/react";
-import Link from "next/link";
-import Icon from "./ui/icon";
-import { toast } from "./ui/use-toast";
-import APP_PATHS from "@/config/path.config";
-import { useRouter } from "next/navigation";
+} from '@/components/ui/dropdown-menu';
+import { signOut } from 'next-auth/react';
+import Link from 'next/link';
+import Icon from './ui/icon';
+import { toast } from './ui/use-toast';
+import APP_PATHS from '@/config/path.config';
+import { useRouter } from 'next/navigation';
 
 export function ProfileMenu() {
   const router = useRouter();
@@ -25,20 +25,20 @@ export function ProfileMenu() {
       });
       if (res) {
         return toast({
-          title: "Something went wrong",
-          variant: "destructive",
+          title: 'Something went wrong',
+          variant: 'destructive',
         });
       }
       toast({
-        title: "Logout successful!",
-        variant: "success",
+        title: 'Logout successful!',
+        variant: 'success',
       });
       const redirect = APP_PATHS.HOME;
       router.push(redirect);
     } catch (error) {
       return toast({
-        title: "Internal server error",
-        variant: "destructive",
+        title: 'Internal server error',
+        variant: 'destructive',
       });
     }
   };
@@ -56,10 +56,10 @@ export function ProfileMenu() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem asChild>
-          <Link href={"/create"}>Create Job</Link>
+          <Link href={'/create'}>Create Job</Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href={"/setting"}>Setting</Link>
+          <Link href={'/setting'}>Setting</Link>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={handleSignout}>
           <div className="flex gap-2 items-center">

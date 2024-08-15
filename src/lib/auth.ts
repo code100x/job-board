@@ -1,33 +1,33 @@
 import {
   AUTH_TOKEN_EXPIRATION_TIME,
   PASSWORD_HASH_SALT_ROUNDS,
-} from "@/config/auth.config";
-import prisma from "@/config/prisma.config";
-import bcrypt from "bcryptjs";
-import { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { ErrorHandler } from "./error";
-import { SigninSchema, SignupSchema } from "./validators/auth.validator";
+} from '@/config/auth.config';
+import prisma from '@/config/prisma.config';
+import bcrypt from 'bcryptjs';
+import { NextAuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { ErrorHandler } from './error';
+import { SigninSchema, SignupSchema } from './validators/auth.validator';
 
 export const options = {
   providers: [
     CredentialsProvider({
-      name: "signin",
-      id: "signin",
+      name: 'signin',
+      id: 'signin',
       credentials: {
-        email: { label: "Email", type: "email", placeholder: "email" },
-        password: { label: "password", type: "password" },
+        email: { label: 'Email', type: 'email', placeholder: 'email' },
+        password: { label: 'password', type: 'password' },
       },
       async authorize(credentials): Promise<any> {
         const result = SigninSchema.safeParse(credentials);
 
         if (!result.success) {
           throw new ErrorHandler(
-            "Input Validation failed",
-            "VALIDATION_ERROR",
+            'Input Validation failed',
+            'VALIDATION_ERROR',
             {
               fieldErrors: result.error.flatten().fieldErrors,
-            },
+            }
           );
         }
         const { email, password } = result.data;
@@ -44,15 +44,15 @@ export const options = {
 
         if (!user)
           throw new ErrorHandler(
-            "Email or password is incorrect",
-            "AUTHENTICATION_FAILED",
+            'Email or password is incorrect',
+            'AUTHENTICATION_FAILED'
           );
 
         const isPasswordMatched = await bcrypt.compare(password, user.password);
         if (!isPasswordMatched) {
           throw new ErrorHandler(
-            "Email or password is incorrect",
-            "AUTHENTICATION_FAILED",
+            'Email or password is incorrect',
+            'AUTHENTICATION_FAILED'
           );
         }
         return {
@@ -65,23 +65,23 @@ export const options = {
       },
     }),
     CredentialsProvider({
-      name: "signup",
-      id: "signup",
+      name: 'signup',
+      id: 'signup',
       credentials: {
-        name: { label: "Name", type: "text" },
-        email: { label: "Email", type: "email", placeholder: "email" },
-        password: { label: "password", type: "password" },
+        name: { label: 'Name', type: 'text' },
+        email: { label: 'Email', type: 'email', placeholder: 'email' },
+        password: { label: 'password', type: 'password' },
       },
       async authorize(credentials): Promise<any> {
         const result = SignupSchema.safeParse(credentials);
 
         if (!result.success) {
           throw new ErrorHandler(
-            "Input Validation failed",
-            "VALIDATION_ERROR",
+            'Input Validation failed',
+            'VALIDATION_ERROR',
             {
               fieldErrors: result.error.flatten().fieldErrors,
-            },
+            }
           );
         }
         const { email, password, name } = result.data;
@@ -92,13 +92,13 @@ export const options = {
 
         if (userExist)
           throw new ErrorHandler(
-            "User with this email already exist",
-            "CONFLICT",
+            'User with this email already exist',
+            'CONFLICT'
           );
 
         const hashedPassword = await bcrypt.hash(
           password,
-          PASSWORD_HASH_SALT_ROUNDS,
+          PASSWORD_HASH_SALT_ROUNDS
         );
         const user = await prisma.user.create({
           data: {
@@ -126,7 +126,7 @@ export const options = {
   ],
   callbacks: {
     jwt({ token, user, trigger, session }) {
-      if (trigger === "update") {
+      if (trigger === 'update') {
         return {
           ...token,
           ...session.user,
@@ -143,20 +143,20 @@ export const options = {
     session({ session, token }) {
       if (token && session && session.user) {
         session.user.id = token.id;
-        token.isVerified = token.isVerified;
-        token.role = token.role;
+        session.user.isVerified = token.isVerified;
+        session.user.role = token.role;
       }
       return session;
     },
   },
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
     maxAge: AUTH_TOKEN_EXPIRATION_TIME,
   },
   jwt: {
     maxAge: AUTH_TOKEN_EXPIRATION_TIME,
   },
   pages: {
-    signIn: "/signin",
+    signIn: '/signin',
   },
 } satisfies NextAuthOptions;

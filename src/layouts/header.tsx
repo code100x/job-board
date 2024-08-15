@@ -1,14 +1,14 @@
-"use client";
-import { MobileNav } from "@/layouts/mobile-nav";
-import { Button } from "@/components/ui/button";
-import { ModeToggle } from "@/components/ui/theme-toggle";
-import APP_PATHS from "@/config/path.config";
-import { navbar } from "@/lib/constant/app.constant";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { ProfileMenu } from "@/components/profile-menu";
-import { NavItem } from "@/components/navitem";
+'use client';
+import { MobileNav } from '@/layouts/mobile-nav';
+import { Button } from '@/components/ui/button';
+import { ModeToggle } from '@/components/ui/theme-toggle';
+import APP_PATHS from '@/config/path.config';
+import { navbar } from '@/lib/constant/app.constant';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { ProfileMenu } from '@/components/profile-menu';
+import { NavItem } from '@/components/navitem';
 
 const CompanyLogo = () => {
   return (
@@ -38,7 +38,7 @@ const Header = () => {
           </nav>
 
           <div className="max-sm:hidden flex text-sm items-center gap-3 ">
-            {session.status !== "loading" && !session.data?.user && (
+            {session.status !== 'loading' && !session.data?.user && (
               <>
                 <Link
                   href={APP_PATHS.SIGNIN}
@@ -46,12 +46,12 @@ const Header = () => {
                 >
                   Login
                 </Link>
-                <Button className="text-xs" size={"sm"}>
+                <Button className="text-xs" size={'sm'}>
                   <Link href={APP_PATHS.SIGNUP}>Start Free</Link>
                 </Button>
               </>
             )}
-            {session.status !== "loading" && session.data?.user && (
+            {session.status !== 'loading' && session.data?.user && (
               <ProfileMenu />
             )}
             <ModeToggle />

@@ -9,8 +9,8 @@
     "lint": "next lint",
     "dev:docker": "npm run db:seed & next dev",
     "db:seed": "npx prisma db push & npx prisma db seed",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,md,mdx,css,yaml,yml}\"",
-    "check": "prettier --check \"**/*.{ts,tsx,js,jsx,md,mdx,css,yaml,yml}\"",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,md,mdx,css}\"",
+    "check": "prettier --check \"**/*.{ts,tsx,js,jsx,md,mdx,css}\"",
     "prepare": "husky"
   },
   "prisma": {

@@ -1,6 +1,6 @@
-import { ERROR_CODE, ERROR_NAME } from "@/config/error.config";
-import { ZodError } from "zod";
-import { generateErrorMessage } from "zod-error";
+import { ERROR_CODE, ERROR_NAME } from '@/config/error.config';
+import { ZodError } from 'zod';
+import { generateErrorMessage } from 'zod-error';
 export type ErrorResponseType = {
   name: string;
   message: string;
@@ -35,11 +35,11 @@ function standardizeApiError(error: unknown): ErrorResponseType {
       message: generateErrorMessage(error.issues, {
         maxErrors: 2,
         delimiter: {
-          component: ": ",
+          component: ': ',
         },
         message: {
           enabled: true,
-          label: "",
+          label: '',
         },
         path: {
           enabled: false,

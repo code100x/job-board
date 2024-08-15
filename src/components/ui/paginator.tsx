@@ -1,11 +1,11 @@
-"use client";
-import { jobFilterQuery } from "@/actions/job.action";
-import { JobQuerySchemaType } from "@/lib/validators/jobs.validator";
+'use client';
+import { jobFilterQuery } from '@/actions/job.action';
+import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
 import {
   PaginationEllipsis,
   PaginationItem,
   PaginationLink,
-} from "./pagination";
+} from './pagination';
 
 export const PaginationPages = ({
   currentPage,
@@ -17,7 +17,7 @@ export const PaginationPages = ({
   searchParams: JobQuerySchemaType;
 }) => {
   function paginationHandler(page: number) {
-    jobFilterQuery({ ...searchParams, page: String(page) });
+    jobFilterQuery({ ...searchParams, page: page });
   }
   const pages: JSX.Element[] = [];
   if (totalPages <= 5) {
@@ -31,7 +31,7 @@ export const PaginationPages = ({
           >
             {i}
           </PaginationLink>
-        </PaginationItem>,
+        </PaginationItem>
       );
     }
   } else {
@@ -45,7 +45,7 @@ export const PaginationPages = ({
           >
             {i}
           </PaginationLink>
-        </PaginationItem>,
+        </PaginationItem>
       );
     }
     if (2 < currentPage && currentPage < totalPages - 1) {
@@ -53,7 +53,7 @@ export const PaginationPages = ({
       pages.push(
         <PaginationItem key={currentPage}>
           <PaginationLink isActive={true}>{currentPage}</PaginationLink>
-        </PaginationItem>,
+        </PaginationItem>
       );
     }
     pages.push(<PaginationEllipsis />);
@@ -67,7 +67,7 @@ export const PaginationPages = ({
           >
             {i}
           </PaginationLink>
-        </PaginationItem>,
+        </PaginationItem>
       );
     }
   }

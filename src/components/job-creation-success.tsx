@@ -1,10 +1,10 @@
-import React from "react";
-import { Button } from "./ui/button";
+import React from 'react';
+import { Button } from './ui/button';
 
 const JobCreateSuccess = ({ isVerifiedJob }: { isVerifiedJob: boolean }) => {
   const message = isVerifiedJob
-    ? "Thank you for posting a job with us."
-    : " Your job will be visible to the public after admin approval.";
+    ? 'Thank you for posting a job with us.'
+    : ' Your job will be visible to the public after admin approval.';
   return (
     <div>
       <h1>Job created successfully!</h1>

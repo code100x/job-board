@@ -1,16 +1,16 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import APP_PATHS from "@/config/path.config";
+'use client';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import APP_PATHS from '@/config/path.config';
 import {
   SignupSchema,
   SignupSchemaType,
-} from "@/lib/validators/auth.validator";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "next-auth/react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+} from '@/lib/validators/auth.validator';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { signIn } from 'next-auth/react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
 import {
   Form,
   FormControl,
@@ -18,8 +18,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { useToast } from "../ui/use-toast";
+} from '../ui/form';
+import { useToast } from '../ui/use-toast';
 
 const Signup = () => {
   // const searchParams = useSearchParams();
@@ -28,32 +28,32 @@ const Signup = () => {
   const form = useForm<SignupSchemaType>({
     resolver: zodResolver(SignupSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      password: "",
+      name: '',
+      email: '',
+      password: '',
     },
   });
 
   async function signupHandler(data: SignupSchemaType) {
     try {
-      const response = await signIn("signup", { ...data, redirect: false });
+      const response = await signIn('signup', { ...data, redirect: false });
       if (!response?.ok) {
         return toast({
-          title: response?.error || "Internal server error",
-          variant: "destructive",
+          title: response?.error || 'Internal server error',
+          variant: 'destructive',
         });
       }
       toast({
-        title: "Signup successful! Welcome to 100xJobs!",
-        variant: "success",
+        title: 'Signup successful! Welcome to 100xJobs!',
+        variant: 'success',
       });
       const searchParams = new URLSearchParams(window.location.search);
-      const redirect = searchParams.get("next") || APP_PATHS.HOME;
+      const redirect = searchParams.get('next') || APP_PATHS.HOME;
       router.push(redirect);
     } catch (error) {
       toast({
-        title: "something went wrong",
-        variant: "destructive",
+        title: 'something went wrong',
+        variant: 'destructive',
       });
     }
   }
@@ -117,13 +117,13 @@ const Signup = () => {
             disabled={form.formState.isSubmitting}
             className="w-full h-10"
           >
-            {form.formState.isSubmitting ? "Please wait..." : "Create Account"}
+            {form.formState.isSubmitting ? 'Please wait...' : 'Create Account'}
           </Button>
         </form>
       </Form>
       <div className="flex items-center justify-center mt-6">
         <span className="text-muted-foreground">
-          Already have an account?{" "}
+          Already have an account?{' '}
           <Link
             href={APP_PATHS.SIGNIN}
             className="text-muted-foreground font-semibold hover:underline"
