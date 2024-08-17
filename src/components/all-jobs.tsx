@@ -19,6 +19,13 @@ const AllJobs = async ({ searchParams }: PaginatorProps) => {
   if (!jobs.status) {
     return <div>Error {jobs.message}</div>;
   }
+  if (jobs.additional?.jobs.length === 0) {
+    return (
+      <div className="bg-background py-4 text-center flex justify-center items-center h-full">
+        No jobs found!
+      </div>
+    );
+  }
   const totalPages =
     Math.ceil((jobs.additional?.totalJobs || 0) / JOBS_PER_PAGE) ||
     DEFAULT_PAGE;
