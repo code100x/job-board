@@ -12,7 +12,7 @@ const HeroSection = () => {
         <Link
           href={GITHUB_REPO}
           target="_blank"
-          className="flex border border-neutral-200 dark:border-neutral-600 bg-gradient-to-b from-transparent dark:via-white/5 to-purple-400 backdrop-blur-md py-2 gap-2 items-center px-4 rounded-full"
+          className="flex border border-neutral-200 dark:border-neutral-600 bg-gradient-to-b from-transparent dark:via-white/5  backdrop-blur-md py-2 gap-2 items-center px-4 rounded-full"
         >
           <Icon icon="sparcle" className="text-yellow-500" size="18" />
           <p className=" text-primary-text text-sm">Star us on Github</p>
