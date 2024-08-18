@@ -1,5 +1,4 @@
 'use client';
-import { jobFilterQuery } from '@/actions/job.action';
 import { filters, WorkModeEnums } from '@/lib/constant/jobs.constant';
 import {
   JobQuerySchema,
@@ -13,7 +12,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '../components/ui/accordion';
-import { Button } from '../components/ui/button';
 import { Checkbox } from '../components/ui/checkbox';
 import {
   Form,
@@ -25,42 +23,37 @@ import {
 } from '../components/ui/form';
 import { Separator } from '../components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { formatFilterSearchParams } from '@/lib/utils';
+import { useEffect } from 'react';
+import useSetQueryParams from '@/hooks/useSetQueryParams';
 
 const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
+  const setQueryParams = useSetQueryParams();
   const form = useForm<JobQuerySchemaType>({
     resolver: zodResolver(JobQuerySchema),
     defaultValues: {
-      workmode:
-        searchParams.workmode &&
-        (formatFilterSearchParams(searchParams.workmode) as WorkModeEnums[]),
-      salaryrange:
-        searchParams.salaryrange &&
-        formatFilterSearchParams(searchParams.salaryrange),
-      location:
-        searchParams.location &&
-        formatFilterSearchParams(searchParams.location),
+      workmode: searchParams.workmode,
+      salaryrange: searchParams.salaryrange,
+      location: searchParams.location,
     },
   });
-  async function handleFormSubmit(data: JobQuerySchemaType) {
-    await jobFilterQuery({
-      ...data,
-      search: searchParams.search,
-      sortby: searchParams.sortby,
-    });
-  }
+
+  const formValues = form.watch();
+
+  useEffect(() => {
+    if (formValues) {
+      setQueryParams(formValues);
+    }
+  }, [formValues, setQueryParams, searchParams]);
+
   return (
-    <aside className="rounded-lg border bg-background  max-w-[320px] w-full p-6 h-fit sticky top-20">
+    <aside className="rounded-lg border bg-background  max-w-[320px] w-full p-6 h-fit  top-20">
       <div className="flex items-center justify-between">
         <h3 className="font-medium text-base text-primary-text">All Filters</h3>
       </div>
       <Separator className="my-6" />
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(handleFormSubmit)}
-          className=" flex flex-col gap-3"
-        >
-          <ScrollArea className="h-96 pr-4">
+        <form className=" flex flex-col gap-3">
+          <ScrollArea className="h-fit pr-4">
             <Accordion
               type="multiple"
               className="w-full"
@@ -239,9 +232,6 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
               </AccordionItem>
             </Accordion>
           </ScrollArea>
-          <Button type="submit" disabled={form.formState.isSubmitting}>
-            Apply Filters
-          </Button>
         </form>
       </Form>
     </aside>

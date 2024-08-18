@@ -15,7 +15,7 @@ import {
 import { getJobFilters } from '@/services/jobs.services';
 import { ServerActionReturnType } from '@/types/api.types';
 import { getAllJobsAdditonalType, getJobType } from '@/types/jobs.types';
-import { redirect } from 'next/navigation';
+//import { redirect } from 'next/navigation';
 
 type additional = {
   isVerifiedJob: boolean;
@@ -133,16 +133,16 @@ export const getJobById = withServerActionAsyncCatcher<
   }).serialize();
 });
 
-export const jobFilterQuery = async (queries: JobQuerySchemaType) => {
-  const { page, sortby, location, salaryrange, search, workmode } =
-    JobQuerySchema.parse(queries);
-  const searchParams = new URLSearchParams({
-    page: page.toString(),
-    sortby,
-    ...(search && { search: search.trim() }),
-  });
-  location?.map((location) => searchParams.append('location', location));
-  salaryrange?.map((range) => searchParams.append('salaryrange', range));
-  workmode?.map((mode) => searchParams.append('workmode', mode));
-  redirect(`/jobs?${searchParams.toString()}`);
-};
+//export const jobFilterQuery = async (queries: JobQuerySchemaType) => {
+//  const { page, sortby, location, salaryrange, search, workmode } =
+//    JobQuerySchema.parse(queries);
+//  const searchParams = new URLSearchParams({
+//    page: page.toString(),
+//    sortby,
+//    ...(search && { search: search.trim() }),
+//  });
+//  location?.map((location) => searchParams.append('location', location));
+//  salaryrange?.map((range) => searchParams.append('salaryrange', range));
+//  workmode?.map((mode) => searchParams.append('workmode', mode));
+//  redirect(`/jobs?${searchParams.toString()}`);
+//};

@@ -1,5 +1,4 @@
 'use client';
-import { jobFilterQuery } from '@/actions/job.action';
 import {
   Select,
   SelectContent,
@@ -12,7 +11,6 @@ import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -21,29 +19,37 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import useSetQueryParams from '@/hooks/useSetQueryParams';
+import { useEffect } from 'react';
+
 const FormSchema = z.object({
   search: z.string().optional(),
 });
+
 const JobsHeader = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
+  const setQueryParams = useSetQueryParams();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       search: '',
     },
   });
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    jobFilterQuery({ ...searchParams, search: data.search, page: 1 });
-  }
+  const formValues = form.watch();
+
   function sortChangeHandler(value: SortByEnums) {
-    jobFilterQuery({ ...searchParams, sortby: value, page: 1 });
+    setQueryParams({ sortby: value, page: 1 });
   }
+
+  useEffect(() => {
+    setQueryParams({
+      search: formValues.search,
+    });
+  }, [formValues, searchParams, setQueryParams]);
+
   return (
     <div className="flex gap-5">
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full grid grid-cols-[1fr_auto] gap-2"
-        >
+        <form className="w-full grid grid-cols-[1fr_auto] gap-2">
           <FormField
             control={form.control}
             name="search"
@@ -59,7 +65,6 @@ const JobsHeader = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
         </form>
       </Form>
       <Select

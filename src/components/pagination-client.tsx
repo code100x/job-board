@@ -1,22 +1,21 @@
 'use client';
-import { jobFilterQuery } from '@/actions/job.action';
 import { PaginationNext, PaginationPrevious } from './ui/pagination';
 import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
+import useSetQueryParams from '@/hooks/useSetQueryParams';
 
 const PAGE_INCREMENT = 1;
 const PaginationPreviousButton = ({
-  searchParams,
   currentPage,
 }: {
   searchParams: JobQuerySchemaType;
   currentPage: number;
 }) => {
+  const setQueryParams = useSetQueryParams();
   return (
     <PaginationPrevious
       onClick={() =>
-        jobFilterQuery({
-          ...searchParams,
-          page: currentPage - PAGE_INCREMENT,
+        setQueryParams({
+          page: (currentPage - PAGE_INCREMENT).toString(),
         })
       }
       aria-disabled={currentPage - PAGE_INCREMENT < PAGE_INCREMENT}
@@ -26,7 +25,6 @@ const PaginationPreviousButton = ({
   );
 };
 const PaginationNextButton = ({
-  searchParams,
   currentPage,
   totalPages,
 }: {
@@ -34,13 +32,13 @@ const PaginationNextButton = ({
   currentPage: number;
   totalPages: number;
 }) => {
+  const setQueryParams = useSetQueryParams();
   return (
     <PaginationNext
       role="button"
       onClick={() =>
-        jobFilterQuery({
-          ...searchParams,
-          page: currentPage + PAGE_INCREMENT,
+        setQueryParams({
+          page: (currentPage + PAGE_INCREMENT).toString(),
         })
       }
       aria-disabled={currentPage > totalPages - PAGE_INCREMENT}
