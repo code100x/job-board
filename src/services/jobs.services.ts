@@ -60,6 +60,7 @@ export function getJobFilters({
   };
   const sortFieldMapping: { [key: string]: string } = {
     postedat: 'postedAt',
+    salary: 'minSalary',
   };
   const [sort, sortOrder] = sortby.split('_');
   const orderBy: Prisma.JobOrderByWithAggregationInput = {

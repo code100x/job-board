@@ -85,7 +85,9 @@ export const JobQuerySchema = z.object({
       }
       return val;
     }),
-  sortby: z.enum(['postedat_asc', 'postedat_desc']).default('postedat_desc'),
+  sortby: z
+    .enum(['postedat_asc', 'postedat_desc', 'salary_desc'])
+    .default('postedat_desc'),
   page: z.coerce
     .number({ message: 'page must be a number' })
     .optional()

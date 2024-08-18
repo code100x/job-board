@@ -11,6 +11,7 @@ export enum WorkModeEnums {
 export enum SortByEnums {
   POSTEDAT_ASC = 'postedat_asc',
   POSTEDAT_DESC = 'postedat_desc',
+  SALARY_DESC = 'salary_desc',
 }
 export const filters = {
   workMode: [
@@ -93,5 +94,10 @@ export const jobSorting = [
     id: 2,
     label: 'Oldest Jobs',
     value: 'postedat_asc',
+  },
+  {
+    id: 3,
+    label: 'Highest Pay',
+    value: 'salary_desc',
   },
 ];

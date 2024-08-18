@@ -74,7 +74,12 @@ export const getAllJobs = withServerActionAsyncCatcher<
   const { filterQueries, orderBy, pagination } = getJobFilters(result);
   const queryJobsPromise = prisma.job.findMany({
     ...pagination,
-    orderBy: [orderBy],
+    orderBy: [
+      {
+        hasSalaryRange: 'desc', //puts jobs with undisclosed salary at last
+      },
+      orderBy,
+    ],
     where: {
       isVerifiedJob: true,
       ...filterQueries,
