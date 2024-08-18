@@ -3,50 +3,66 @@ import { WorkModeEnums } from '../constant/jobs.constant';
 
 export const JobPostSchema = z
   .object({
-    title: z.string().min(1, 'Title is required'),
-    description: z.string().min(1, 'Description is required'),
-    companyName: z.string().min(1, 'Company Name is required'),
+    title: z.string().min(1, 'Job title is required'),
+    description: z
+      .string()
+      .min(10, 'Job description must be at least 10 characters'),
+    companyName: z.string().min(1, 'Company name is required'),
     location: z.string().min(1, 'Location is required'),
-    hasSalaryRange: z.boolean(),
-    minSalary: z.coerce
-      .number({ message: 'Min salary must be a number' })
-      .nonnegative()
-      .optional(),
-    maxSalary: z.coerce
-      .number({ message: 'Max salary must be a number' })
-      .nonnegative()
-      .optional(),
     workMode: z.enum(['remote', 'office', 'hybrid'], {
       message: 'Work mode is required',
     }),
+    jobType: z.enum([
+      'Full-time',
+      'Part-time',
+      'Contract',
+      'Temporary',
+      'Internship',
+    ]),
+    experienceLevel: z.enum(['Entry', 'Mid-level', 'Senior', 'Executive']),
+    requiredSkills: z
+      .array(z.string())
+      .min(1, 'At least one skill is required'),
+    educationLevel: z.string().min(1, 'Education level is required'),
+    yearsOfExperience: z
+      .number()
+      .min(0, 'Years of experience must be 0 or greater'),
+    hasSalaryRange: z.boolean(),
+    minSalary: z.number().min(0, 'Minimum salary must be 0 or greater'),
+    maxSalary: z.number().min(0, 'Maximum salary must be 0 or greater'),
+    benefits: z.array(z.string()),
+    applicationDeadline: z.string().optional(),
+    numberOfOpenings: z
+      .number()
+      .min(1, 'Number of openings must be at least 1'),
+    travelRequirements: z.string().optional(),
+    remoteWorkOption: z.boolean(),
   })
   .superRefine((data, ctx) => {
     if (data.hasSalaryRange) {
       if (!data.minSalary) {
-        return ctx.addIssue({
-          message: 'minSalary is required when hasSalaryRange is true',
-          path: ['minSalary'],
+        ctx.addIssue({
           code: z.ZodIssueCode.custom,
+          message: 'Minimum salary is required when salary range is enabled',
+          path: ['minSalary'],
         });
       }
       if (!data.maxSalary) {
-        return ctx.addIssue({
-          message: 'maxSalary is required when hasSalaryRange is true',
-          path: ['maxSalary'],
+        ctx.addIssue({
           code: z.ZodIssueCode.custom,
+          message: 'Maximum salary is required when salary range is enabled',
+          path: ['maxSalary'],
         });
       }
       if (data.maxSalary <= data.minSalary) {
-        return ctx.addIssue({
-          message: 'minSalary cannot be greater than or equal to maxSalary',
-          path: ['minSalary'],
+        ctx.addIssue({
           code: z.ZodIssueCode.custom,
+          message: 'Maximum salary must be greater than minimum salary',
+          path: ['maxSalary'],
         });
       }
     }
-    return true;
   });
-
 export const JobQuerySchema = z.object({
   workmode: z
     .union([
