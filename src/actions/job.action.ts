@@ -35,6 +35,16 @@ export const createJob = withSession<
     hasSalaryRange,
     maxSalary,
     minSalary,
+    jobType,
+    experienceLevel,
+    yearsOfExperience,
+    requiredSkills,
+    educationLevel,
+    benefits,
+    numberOfOpenings,
+    remoteWorkOption,
+    applicationDeadline,
+    travelRequirements,
   } = result;
   await prisma.job.create({
     data: {
@@ -48,6 +58,16 @@ export const createJob = withSession<
       isVerifiedJob,
       location,
       workMode,
+      jobType,
+      experienceLevel,
+      yearsOfExperience,
+      requiredSkills,
+      educationLevel,
+      benefits,
+      numberOfOpenings,
+      remoteWorkOption,
+      applicationDeadline,
+      travelRequirements,
     },
   });
   const message = isVerifiedJob

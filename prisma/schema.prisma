@@ -71,7 +71,6 @@ enum ExperienceLevel {
   SENIOR
   EXECUTIVE
 }
-
 enum Role {
   USER
   ADMIN

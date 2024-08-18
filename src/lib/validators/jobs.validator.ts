@@ -13,13 +13,13 @@ export const JobPostSchema = z
       message: 'Work mode is required',
     }),
     jobType: z.enum([
-      'Full-time',
-      'Part-time',
-      'Contract',
-      'Temporary',
-      'Internship',
+      'FULL_TIME',
+      'PART_TIME',
+      'CONTRACT',
+      'TEMPORARY',
+      'INTERNSHIP',
     ]),
-    experienceLevel: z.enum(['Entry', 'Mid-level', 'Senior', 'Executive']),
+    experienceLevel: z.enum(['ENTRY', 'MID_LEVEL', 'SENIOR', 'EXECUTIVE']),
     requiredSkills: z
       .array(z.string())
       .min(1, 'At least one skill is required'),
