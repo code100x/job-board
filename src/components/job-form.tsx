@@ -233,7 +233,7 @@ const PostJobForm = () => {
                     <Input
                       {...field}
                       className="w-full border-gray-400"
-                      placeholder="Enter comapany name here"
+                      placeholder="Expected Minimum Salary"
                     />
                   </FormControl>{' '}
                   <FormMessage />
@@ -253,7 +253,7 @@ const PostJobForm = () => {
                     <Input
                       {...field}
                       className="w-full border-gray-400"
-                      placeholder="Enter comapany name here"
+                      placeholder="Expected Maximum Salary"
                     />
                   </FormControl>{' '}
                   <FormMessage />
