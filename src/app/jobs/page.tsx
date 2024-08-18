@@ -21,6 +21,7 @@ const page = async ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
       <div className="grow">
         <JobsHeader searchParams={parsedSearchParams} />
         <Suspense
+          key={JSON.stringify(parsedSearchParams)}
           fallback={
             <div className="flex justify-center items-center h-full gap-5 ">
               <Loader />
