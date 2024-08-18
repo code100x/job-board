@@ -19,6 +19,7 @@ export const JobPostSchema = z
     workMode: z.enum(['remote', 'office', 'hybrid'], {
       message: 'Work mode is required',
     }),
+    currency: z.enum(['USD', 'INR']).default('INR'),
   })
   .superRefine((data, ctx) => {
     if (data.hasSalaryRange) {

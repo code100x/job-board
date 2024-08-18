@@ -4,6 +4,6 @@ const APP_PATHS = {
   SIGNUP: '/signup',
   RESET_PASSWORD: '/reset-password',
   JOBS: '/jobs',
-  MANAGE_JOBS: '/jobs/manage',
+  MANAGE_JOBS: '/admin/jobs/',
 };
 export default APP_PATHS;

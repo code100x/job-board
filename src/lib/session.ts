@@ -3,7 +3,11 @@ import { options } from './auth';
 import { ErrorHandler } from './error';
 import { withServerActionAsyncCatcher } from './async-catch';
 
-type withSessionType<T, R> = (session: Session, args?: T) => Promise<R>;
+type withSessionType<T, R> = (
+  session: Session,
+  args?: T,
+  id?: string
+) => Promise<R>;
 
 export function withSession<T, R>(
   serverAction: withSessionType<T, R>

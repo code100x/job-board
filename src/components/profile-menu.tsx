@@ -56,9 +56,6 @@ export function ProfileMenu() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem asChild>
-          <Link href={'/create'}>Create Job</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
           <Link href={'/setting'}>Setting</Link>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={handleSignout}>

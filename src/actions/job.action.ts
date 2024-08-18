@@ -35,6 +35,7 @@ export const createJob = withSession<
     hasSalaryRange,
     maxSalary,
     minSalary,
+    currency,
   } = result;
   await prisma.job.create({
     data: {
@@ -48,6 +49,7 @@ export const createJob = withSession<
       isVerifiedJob,
       location,
       workMode,
+      currency,
     },
   });
   const message = isVerifiedJob
@@ -145,4 +147,74 @@ export const jobFilterQuery = async (queries: JobQuerySchemaType) => {
   salaryrange?.map((range) => searchParams.append('salaryrange', range));
   workmode?.map((mode) => searchParams.append('workmode', mode));
   redirect(`/jobs?${searchParams.toString()}`);
+};
+
+export const updateJob = async (data: JobPostSchemaType, id: string) => {
+  const result = JobPostSchema.parse(data);
+  const {
+    companyName,
+    location,
+    title,
+    workMode,
+    description,
+    hasSalaryRange,
+    maxSalary,
+    minSalary,
+    currency,
+  } = result;
+
+  try {
+    await prisma.job.update({
+      where: {
+        id: id,
+      },
+      data: {
+        title,
+        description,
+        companyName,
+        hasSalaryRange,
+        minSalary,
+        maxSalary,
+        location,
+        workMode,
+        currency,
+      },
+    });
+
+    return {
+      message: 'succeffuly updated',
+      status: 200,
+      name: 'success',
+    };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error: any) {
+    return {
+      message: 'Error updated',
+      status: 500,
+      name: 'Error',
+    };
+  }
+};
+
+export const deleteJob = async (id: string) => {
+  try {
+    await prisma.job.delete({
+      where: {
+        id: id,
+      },
+    });
+
+    return {
+      message: 'succeffuly deleted ',
+      status: 200,
+      name: 'success',
+    };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error: any) {
+    return {
+      message: 'Error deleting Job',
+      status: 500,
+      name: 'Error',
+    };
+  }
 };
