@@ -36,9 +36,7 @@ const AlertDailog = ({ id }: { id: string }) => {
       setLoading(false);
 
       router.push('/admin/jobs');
-
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error: any) {
+    } catch {
       setLoading(false);
 
       toast({ title: "Something Won't happen", variant: 'destructive' });

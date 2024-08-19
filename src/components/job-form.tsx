@@ -31,9 +31,10 @@ import { Label } from './ui/label';
 import { Switch } from './ui/switch';
 import { useToast } from './ui/use-toast';
 import { filters } from '@/lib/constant/jobs.constant';
-import { Job } from '@prisma/client';
 import { useQueryClient } from '@tanstack/react-query';
-const PostJobForm = ({ job }: { job?: Job }) => {
+import { getJobType } from '@/types/jobs.types';
+
+const PostJobForm = ({ job }: getJobType) => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const router = useRouter();

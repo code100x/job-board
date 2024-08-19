@@ -1,24 +1,24 @@
 import React from 'react';
-import prisma from '@/config/prisma.config';
 
-import { notFound } from 'next/navigation';
 import PostJobForm from '@/components/job-form';
+import { getJobById } from '@/actions/job.action';
+import { JobByIdSchemaType } from '@/lib/validators/jobs.validator';
+import { redirect } from 'next/navigation';
 
-const UpdateJoPage = async ({ params }: { params: { id: string } }) => {
-  let job;
+const UpdateJoPage = async ({ params }: { params: JobByIdSchemaType }) => {
+  const job = await getJobById(params);
 
-  try {
-    job = await prisma?.job.findUnique({ where: { id: params.id } });
-
-    if (!job) notFound();
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (err) {
-    notFound();
+  if (!job.status) {
+    return;
   }
 
+  const jobDetail = job.additional?.job;
+  if (!jobDetail) {
+    return redirect('/jobs');
+  }
   return (
     <div>
-      <PostJobForm job={job} />
+      <PostJobForm job={jobDetail} />
     </div>
   );
 };

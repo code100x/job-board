@@ -17,24 +17,25 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useRouter } from 'next/navigation';
 import AlertDailog from '@/components/AlertDailog';
+import { JobType } from '@/types/jobs.types';
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Job = {
   id: string;
   userId: string;
   title: string;
-  description: string;
-  companyName: 'Tech Corp';
-  workMode: typeof WorkMode.remote;
-  currency: typeof Currency.USD;
+  description: string | null;
+  companyName: string;
+  workMode: WorkMode;
+  currency: Currency;
   location: string;
   hasSalaryRange: boolean;
-  minSalary: number;
-  maxSalary: number;
+  minSalary: number | null;
+  maxSalary: number | null;
   isVerifiedJob: Boolean;
 };
 
-export const columns: ColumnDef<Job>[] = [
+export const columns: ColumnDef<JobType>[] = [
   {
     accessorKey: 'id',
     header: ({ column }) => {
@@ -134,27 +135,6 @@ export const columns: ColumnDef<Job>[] = [
     },
   },
 
-  // {
-  //   id: 'actions',
-  //   header: 'Actions',
-  //   cell: ({ row }) => {
-  //     const jobInfo = row.original;
-
-  //     const router = useRouter();
-
-  //     return (
-  //       <div className="space-x-2">
-  //         <Button
-  //           variant={'outline'}
-  //           onClick={() => router.push(`admin/job/${jobInfo.id}`)}
-  //         >
-  //           Update
-  //         </Button>
-  //         {/* <AlertDailog id={productInfo.id} schema="product" /> */}
-  //       </div>
-  //     );
-  //   },
-  // },
   {
     id: 'actions',
     cell: ({ row }) => {

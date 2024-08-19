@@ -3,7 +3,7 @@ import { getToken } from 'next-auth/jwt';
 import { NextRequest, NextResponse } from 'next/server';
 
 const authRoutes = ['/signup', '/signin'];
-const privateRoutes = ['/create', '/setting'];
+const privateRoutes = ['/create', '/setting', '/admin/jobs'];
 export async function middleware(request: NextRequest) {
   const session = await getToken({
     req: request,

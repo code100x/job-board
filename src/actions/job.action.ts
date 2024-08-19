@@ -91,6 +91,8 @@ export const getAllJobs = withServerActionAsyncCatcher<
       minSalary: true,
       maxSalary: true,
       postedAt: true,
+      hasSalaryRange: true,
+      currency: true,
     },
   });
   const totalJobsPromise = prisma.job.count({
@@ -104,11 +106,18 @@ export const getAllJobs = withServerActionAsyncCatcher<
     queryJobsPromise,
     totalJobsPromise,
   ]);
+
   return new SuccessResponse('All jobs fetched successfully', 200, {
     jobs,
     totalJobs,
   }).serialize();
 });
+
+export const getJobListWithoutPagination = async () => {
+  const jobs = await prisma.job.findMany({});
+
+  return jobs;
+};
 
 export const getJobById = withServerActionAsyncCatcher<
   JobByIdSchemaType,
@@ -128,8 +137,11 @@ export const getJobById = withServerActionAsyncCatcher<
       minSalary: true,
       maxSalary: true,
       postedAt: true,
+      hasSalaryRange: true,
+      currency: true,
     },
   });
+
   return new SuccessResponse(`${id} Job fetched successfully`, 200, {
     job,
   }).serialize();
@@ -186,8 +198,7 @@ export const updateJob = async (data: JobPostSchemaType, id: string) => {
       status: 200,
       name: 'success',
     };
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (error: any) {
+  } catch {
     return {
       message: 'Error updated',
       status: 500,
@@ -209,8 +220,7 @@ export const deleteJob = async (id: string) => {
       status: 200,
       name: 'success',
     };
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (error: any) {
+  } catch {
     return {
       message: 'Error deleting Job',
       status: 500,
