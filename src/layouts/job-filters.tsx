@@ -42,6 +42,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
         formatFilterSearchParams(searchParams.location),
     },
   });
+
   async function handleFormSubmit(data: JobQuerySchemaType) {
     await jobFilterQuery({
       ...data,
@@ -49,8 +50,18 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
       sortby: searchParams.sortby,
     });
   }
+
+  // Reset all filters to default values
+  function handleResetFilters() {
+    form.reset({
+      workmode: [],
+      salaryrange: [],
+      location: [],
+    });
+  }
+
   return (
-    <aside className="rounded-lg border bg-background  max-w-[320px] w-full p-6 h-fit sticky top-20">
+    <aside className="rounded-lg border bg-background max-w-[320px] w-full p-6 h-fit sticky top-20">
       <div className="flex items-center justify-between">
         <h3 className="font-medium text-base text-primary-text">All Filters</h3>
       </div>
@@ -58,7 +69,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleFormSubmit)}
-          className=" flex flex-col gap-3"
+          className="flex flex-col gap-3"
         >
           <ScrollArea className="h-96 pr-4">
             <Accordion
@@ -241,6 +252,14 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
           </ScrollArea>
           <Button type="submit" disabled={form.formState.isSubmitting}>
             Apply Filters
+          </Button>
+          <Button
+            type="button"
+            variant="destructive"
+            onClick={handleResetFilters}
+            disabled={form.formState.isSubmitting}
+          >
+            Reset All Filters
           </Button>
         </form>
       </Form>
