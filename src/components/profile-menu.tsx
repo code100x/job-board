@@ -13,10 +13,20 @@ import Icon from './ui/icon';
 import { toast } from './ui/use-toast';
 import APP_PATHS from '@/config/path.config';
 import { useRouter } from 'next/navigation';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { useState } from 'react';
 
 export function ProfileMenu() {
   const router = useRouter();
-
+  const [open, isOpen] = useState(false);
   const handleSignout = async () => {
     try {
       const res = await signOut({
@@ -61,16 +71,45 @@ export function ProfileMenu() {
         <DropdownMenuItem asChild>
           <Link href={'/setting'}>Setting</Link>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleSignout}>
+        <DropdownMenuItem onClick={() => isOpen(true)}>
           <div className="flex gap-2 items-center">
             Logout
-            <Icon
+            {/* <Icon
               icon="logout"
               className="h-[1rem] w-[1rem] text-accent-foreground/80"
-            />
+            /> */}
           </div>
         </DropdownMenuItem>
       </DropdownMenuContent>
+
+      <Dialog open={open} onOpenChange={isOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <div className="flex justify-center flex-col items-center gap-0">
+              <Icon
+                icon="logout"
+                className="h-[4rem] w-[4rem] text-accent-foreground/80 "
+              />
+              <DialogTitle className="mb-0 text-[1.7rem]">
+                Confirm logout
+              </DialogTitle>
+            </div>
+            <DialogDescription className="text-center">
+              Are you sure you want to log out?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="mt-2">
+            <Button type="button" variant="destructive" onClick={handleSignout}>
+              Logout
+            </Button>
+            <DialogClose asChild>
+              <Button type="button" variant="secondary">
+                Cancel
+              </Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </DropdownMenu>
   );
 }
