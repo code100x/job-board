@@ -1,5 +1,7 @@
 import AllJobs from '@/components/all-jobs';
+import { FilterSheet } from '@/components/FilterSheet';
 import Loader from '@/components/loader';
+import { Button } from '@/components/ui/button';
 import JobFilters from '@/layouts/job-filters';
 import JobsHeader from '@/layouts/jobs-header';
 import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
@@ -7,9 +9,20 @@ import { Suspense } from 'react';
 const page = async ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   return (
     <div className="container flex gap-5 pt-5">
-      <JobFilters searchParams={searchParams} />
+      <div className="max-md:hidden">
+        <JobFilters searchParams={searchParams} />
+      </div>
       <div className="grow">
-        <JobsHeader searchParams={searchParams} />
+        <div className="flex space-x-2">
+          <div className="md:hidden">
+            <FilterSheet searchParams={searchParams}>
+              <Button>Filters</Button>
+            </FilterSheet>
+          </div>
+          <div className="flex-grow">
+            <JobsHeader searchParams={searchParams} />
+          </div>
+        </div>
         <Suspense
           fallback={
             <div className="flex justify-center items-center h-full gap-5 ">
