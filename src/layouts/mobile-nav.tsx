@@ -14,10 +14,22 @@ import { navbar } from '@/lib/constant/app.constant';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 
 export function MobileNav() {
   const router = useRouter();
   const session = useSession();
+  const [open, isOpen] = useState(false);
 
   const handleSignout = async () => {
     try {
@@ -93,13 +105,9 @@ export function MobileNav() {
                     <SheetClose>Setting</SheetClose>
                   </Link>
                 </li>
-                <li onClick={handleSignout}>
+                <li onClick={() => isOpen(true)}>
                   <SheetClose className="flex gap-2 items-center transition-colors hover:text-foreground/80 text-foreground/60">
                     Logout
-                    <Icon
-                      icon="logout"
-                      className="h-[1rem] w-[1rem] text-accent-foreground/80"
-                    />
                   </SheetClose>
                 </li>
               </>
@@ -107,6 +115,38 @@ export function MobileNav() {
           </ul>
         </SheetHeader>
       </SheetContent>
+      <Dialog open={open} onOpenChange={isOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <div className="flex justify-center flex-col items-center gap-4">
+              <Icon
+                icon="logout"
+                className="h-[4rem] w-[4rem] text-accent-foreground/80 "
+              />
+              <DialogTitle className="mb-4 text-[1.7rem]">
+                Confirm logout
+              </DialogTitle>
+            </div>
+            <DialogDescription>
+              Are you sure you want to log out?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button type="button" variant="destructive" onClick={handleSignout}>
+              Logout
+            </Button>
+            <DialogClose asChild>
+              <Button
+                type="button"
+                variant="secondary"
+                className="mb-2 md:mb-0"
+              >
+                Cancel
+              </Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Sheet>
   );
 }
