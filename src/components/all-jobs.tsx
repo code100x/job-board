@@ -22,7 +22,7 @@ const AllJobs = async ({ searchParams }: PaginatorProps) => {
   const totalPages =
     Math.ceil((jobs.additional?.totalJobs || 0) / JOBS_PER_PAGE) ||
     DEFAULT_PAGE;
-  const currentPage = searchParams.page || DEFAULT_PAGE;
+  const currentPage = parseInt(searchParams.page || DEFAULT_PAGE);
   return (
     <div className="bg-background py-4 grid gap-3">
       {jobs.additional?.jobs.map((job) => {
