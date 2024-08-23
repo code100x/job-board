@@ -19,3 +19,10 @@ export const formatSalary = (salary: number) => {
   }
   return salary;
 };
+
+export const calculateTimeElapsed = (postedAt: Date) => {
+  const currentDate = new Date();
+  const diffInMs = currentDate.getTime() - postedAt.getTime();
+  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+  return `${diffInDays} day${diffInDays !== 1 ? 's' : ''} ago`;
+};

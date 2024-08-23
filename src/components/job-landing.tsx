@@ -1,5 +1,5 @@
 import { getAllJobs } from '@/actions/job.action';
-import { formatSalary } from '@/lib/utils';
+import { calculateTimeElapsed, formatSalary } from '@/lib/utils';
 import Link from 'next/link';
 import Icon from './ui/icon';
 import { JobType } from '@/types/jobs.types';
@@ -15,7 +15,7 @@ export const JobLanding = async () => {
     return;
   }
   const allJobs = jobs.additional?.jobs || [];
-
+  console.log("ALl Jobs: ", allJobs);
   return (
     <div className="max-w-screen-lg mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 py-8 pt-10">
       {allJobs.map((job) => (
@@ -26,6 +26,7 @@ export const JobLanding = async () => {
 };
 
 const JobCard = ({ job }: { job: JobType }) => {
+  const timeElapsed = calculateTimeElapsed(job.postedAt);
   return (
     <Link href={`/jobs/${job.id}`}>
       <div className="flex flex-col items-start gap-4 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent bg-background">
@@ -44,6 +45,7 @@ const JobCard = ({ job }: { job: JobType }) => {
               ? `${formatSalary(job.minSalary)}-${formatSalary(job.maxSalary)}`
               : 'Not disclosed'}
           </span>
+          <p className="text-xs text-muted-foreground">{timeElapsed}</p> 
         </div>
         <p className="flex gap-0.5 items-center text-muted-foreground text-xs">
           <Icon icon="description" size={12} />

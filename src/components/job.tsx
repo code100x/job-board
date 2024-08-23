@@ -1,9 +1,10 @@
 import { JobType } from '@/types/jobs.types';
 import Icon from './ui/icon';
-import { formatSalary } from '@/lib/utils';
+import { calculateTimeElapsed, formatSalary } from '@/lib/utils';
 import { Button } from './ui/button';
 
 export const Job = ({ job }: { job: JobType }) => {
+  const timeElapsed = calculateTimeElapsed(job.postedAt);
   return (
     <section className="grid gap-5 border p-3 rounded-lg">
       <div className="grid gap-2">
@@ -20,6 +21,7 @@ export const Job = ({ job }: { job: JobType }) => {
               ? `${formatSalary(job.minSalary)}-${formatSalary(job.maxSalary)}`
               : 'Not disclosed'}
           </span>
+          <p>{timeElapsed}</p>
         </div>
       </div>
       <Button className="justify-self-start">Apply</Button>
