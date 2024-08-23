@@ -26,6 +26,13 @@ export const JobLanding = async () => {
 };
 
 const JobCard = ({ job }: { job: JobType }) => {
+  const daysAgo = (jobDate:Date)=>{
+    const postDate = new Date(jobDate);
+    const now = new Date();
+    const differenceInMilles = now.getTime() - postDate.getTime();
+    const differenceInDays = Math.floor(differenceInMilles / (1000 * 60 * 60 * 24))
+    return differenceInDays === 0 ? 'Today': `${differenceInDays} day${differenceInDays > 1 ? 's' : ''} ago`;
+  }
   return (
     <Link href={`/jobs/${job.id}`}>
       <div className="flex flex-col items-start gap-4 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent bg-background">
@@ -43,6 +50,9 @@ const JobCard = ({ job }: { job: JobType }) => {
             {job.minSalary && job.maxSalary
               ? `${formatSalary(job.minSalary)}-${formatSalary(job.maxSalary)}`
               : 'Not disclosed'}
+          </span>
+          <span className="flex items-center gap-0.5">
+            {daysAgo(job.postedAt)}
           </span>
         </div>
         <p className="flex gap-0.5 items-center text-muted-foreground text-xs">
