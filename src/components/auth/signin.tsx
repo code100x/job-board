@@ -1,4 +1,7 @@
 'use client';
+import * as React from 'react';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import APP_PATHS from '@/config/path.config';
@@ -24,6 +27,7 @@ import { useToast } from '../ui/use-toast';
 const Signin = () => {
   const { toast } = useToast();
   const router = useRouter();
+  const [showPassword, setShowPassword] = React.useState<boolean>(false);
   const form = useForm<SigninSchemaType>({
     resolver: zodResolver(SigninSchema),
     defaultValues: {
@@ -84,7 +88,20 @@ const Signin = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type="password" {...field} placeholder="••••••••" />
+                <div className="relative">
+                    <Input
+                      type={showPassword ? 'text' : 'password'}
+                      {...field}
+                      placeholder="••••••••"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+                    >
+                      {showPassword ? <FiEyeOff /> : <FiEye />}
+                    </button>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
