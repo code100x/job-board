@@ -8,17 +8,22 @@ const Footer = () => {
       <div className="w-full max-w-screen-xl flex items-center flex-row-reverse gap-3 mx-auto">
         <div className="flex items-center gap-2">
           {socials.map((social) => (
-            <Link
-              target="_blank"
-              key={social.href}
-              href={social.href}
-              aria-label={social.label}
-            >
-              <Icon
-                icon={social.icon}
-                className="text-foreground/60 hover:text-foreground/80"
-              />
-            </Link>
+           <div className="relative group" key={social.href}>
+           <Link
+             target="_blank"
+             href={social.href}
+             aria-label={social.label}
+           >
+             <Icon
+               icon={social.icon}
+               className="text-foreground/60 hover:text-foreground/80"
+             />
+           </Link>
+           <span className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-1 hidden group-hover:block bg-gray-700 text-white text-xs rounded py-1 px-2">
+             {social.label}
+           </span>
+        </div>
+            
           ))}
         </div>
         <span className="flex text-xs font-normal text-foreground/60 items-center gap-1">
