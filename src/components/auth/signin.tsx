@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import APP_PATHS from '@/config/path.config';
@@ -20,10 +21,13 @@ import {
   FormMessage,
 } from '../ui/form';
 import { useToast } from '../ui/use-toast';
+import { EyeOpenIcon, EyeNoneIcon } from '@radix-ui/react-icons';
 
 const Signin = () => {
   const { toast } = useToast();
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+
   const form = useForm<SigninSchemaType>({
     resolver: zodResolver(SigninSchema),
     defaultValues: {
@@ -84,7 +88,24 @@ const Signin = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type="password" {...field} placeholder="••••••••" />
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? 'text' : 'password'}
+                      {...field}
+                      placeholder="••••••••"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((prev: boolean) => !prev)}
+                      className="absolute inset-y-0 right-0 flex items-center pr-4"
+                    >
+                      {showPassword ? (
+                        <EyeNoneIcon className="h-4 w-4" />
+                      ) : (
+                        <EyeOpenIcon className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
