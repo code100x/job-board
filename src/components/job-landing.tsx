@@ -15,7 +15,6 @@ export const JobLanding = async () => {
     return;
   }
   const allJobs = jobs.additional?.jobs || [];
-  console.log("ALl Jobs: ", allJobs);
   return (
     <div className="max-w-screen-lg mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 py-8 pt-10">
       {allJobs.map((job) => (
