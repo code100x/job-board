@@ -51,13 +51,14 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
     });
   }
 
-  // Reset all filters to default values
   function handleResetFilters() {
     form.reset({
       workmode: [],
       salaryrange: [],
       location: [],
     });
+
+    handleFormSubmit(form.getValues());
   }
 
   return (
