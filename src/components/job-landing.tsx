@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Icon from './ui/icon';
 import { JobType } from '@/types/jobs.types';
 import { DEFAULT_PAGE } from '@/config/app.config';
+import daysAgo from '@/lib/show-time';
 
 export const JobLanding = async () => {
   const jobs = await getAllJobs({
@@ -26,13 +27,7 @@ export const JobLanding = async () => {
 };
 
 const JobCard = ({ job }: { job: JobType }) => {
-    const daysAgo = (jobDate:Date)=>{
-      const postDate = new Date(jobDate);
-      const now = new Date();
-      const differenceInMilles = now.getTime() - postDate.getTime();
-      const differenceInDays = Math.floor(differenceInMilles / (1000 * 60 * 60 * 24))
-      return differenceInDays === 0 ? 'Today': `${differenceInDays} day${differenceInDays > 1 ? 's' : ''} ago`;
-    }
+
   return (
     <Link href={`/jobs/${job.id}`}>
       <div className="flex flex-col items-start gap-4 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent bg-background">

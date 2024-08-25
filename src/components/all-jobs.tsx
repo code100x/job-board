@@ -10,6 +10,7 @@ import { PaginationPages } from './ui/paginator';
 import Icon from './ui/icon';
 import { formatSalary } from '@/lib/utils';
 import Link from 'next/link';
+import daysAgo from '@/lib/show-time';
 type PaginatorProps = {
   searchParams: JobQuerySchemaType;
 };
@@ -46,6 +47,9 @@ const AllJobs = async ({ searchParams }: PaginatorProps) => {
                   {job.minSalary && job.maxSalary
                     ? `${formatSalary(job.minSalary)}-${formatSalary(job.maxSalary)}`
                     : 'Not disclosed'}
+                </span>
+                <span className="flex items-center gap-0.5">
+                  {daysAgo(job.postedAt)}
                 </span>
               </div>
               <p className="flex gap-0.5 items-center text-muted-foreground text-xs">

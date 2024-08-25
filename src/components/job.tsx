@@ -2,6 +2,7 @@ import { JobType } from '@/types/jobs.types';
 import Icon from './ui/icon';
 import { formatSalary } from '@/lib/utils';
 import { Button } from './ui/button';
+import daysAgo from '@/lib/show-time';
 
 export const Job = ({ job }: { job: JobType }) => {
   return (
@@ -19,6 +20,9 @@ export const Job = ({ job }: { job: JobType }) => {
             {job.minSalary && job.maxSalary
               ? `${formatSalary(job.minSalary)}-${formatSalary(job.maxSalary)}`
               : 'Not disclosed'}
+          </span>
+          <span className="flex items-center gap-0.5">
+            {daysAgo(job.postedAt)}
           </span>
         </div>
       </div>
