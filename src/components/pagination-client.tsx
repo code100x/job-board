@@ -3,7 +3,7 @@ import { jobFilterQuery } from '@/actions/job.action';
 import { PaginationNext, PaginationPrevious } from './ui/pagination';
 import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
 
-const PAGE_INCREMENT = 1;
+const PAGE_INCREMENT: number = 1;
 const PaginationPreviousButton = ({
   searchParams,
   currentPage,
@@ -40,7 +40,7 @@ const PaginationNextButton = ({
       onClick={() =>
         jobFilterQuery({
           ...searchParams,
-          page: currentPage + PAGE_INCREMENT,
+          page: Number(currentPage) + PAGE_INCREMENT,
         })
       }
       aria-disabled={currentPage > totalPages - PAGE_INCREMENT}
