@@ -1,4 +1,4 @@
-'use client'; // Add this line at the top
+'use client';
 
 import Icon from '@/components/ui/icon';
 import { socials } from '@/lib/constant/app.constant';
@@ -31,9 +31,9 @@ const Footer = () => {
               </Link>
               {hoveredSocial === social.label && (
                 <div className="absolute bottom-full mb-2 flex flex-col items-center">
-                  <div className="relative text-xs font-normal text-foreground/60 bg-white p-2 rounded-lg shadow-md">
+                  <div className="relative text-xs font-normal text-white bg-black p-2 rounded-lg shadow-md">
                     {social.label}
-                    <div className="absolute left-1/2 transform -translate-x-1/2 top-full w-0 h-0 border-x-[6px] border-x-transparent border-t-[6px] border-t-white"></div>
+                    <div className="absolute left-1/2 transform -translate-x-1/2 top-full w-0 h-0 border-x-[6px] border-x-transparent border-t-[6px] border-t-black"></div>
                   </div>
                 </div>
               )}
