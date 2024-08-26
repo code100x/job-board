@@ -6,16 +6,21 @@ import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
 export function FilterSheet({
   children,
   searchParams,
+  baseUrl,
 }: {
   children: React.ReactNode;
   searchParams: JobQuerySchemaType;
+  baseUrl: string;
 }) {
   return (
     <Sheet>
       <SheetTrigger>{children}</SheetTrigger>
       <SheetContent side={'left'} className="h-full w-80">
         <SheetHeader className="mt-2 h-full w-full">
-          <JobFilters searchParams={searchParams}></JobFilters>
+          <JobFilters
+            searchParams={searchParams}
+            baseUrl={baseUrl}
+          ></JobFilters>
         </SheetHeader>
       </SheetContent>
     </Sheet>
