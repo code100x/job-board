@@ -3,13 +3,17 @@ import APP_PATHS from '@/config/path.config';
 
 export const GITHUB_REPO = 'https://github.com/code100x/job-board';
 export const navbar = [
-  { id: 1, label: 'Explore', path: APP_PATHS.JOBS },
+  { id: 1, label: 'Jobs', path: APP_PATHS.JOBS },
   {
     id: 2,
     label: 'Manage',
     path: APP_PATHS.MANAGE_JOBS,
     roleRequired: 'ADMIN',
   },
+  // todo: add actual path
+  { id: 3, label: 'Internship', path: '/' },
+  { id: 4, label: 'Testimonials', path: '/' },
+  { id: 5, label: 'FAQs', path: '/' },
 ];
 
 export const socials: {
@@ -40,3 +44,16 @@ export const socials: {
     href: 'https://t.me/kirat_internal_group',
   },
 ];
+
+export const footerLinks = {
+  '100xlinks': [
+    { label: 'App', href: 'https://app.100xdevs.com' },
+    { label: 'Projects', href: '' },
+    { label: 'Reports', href: '' },
+  ],
+  '100xlegal': [
+    { label: 'Privacy Policy', href: '' },
+    { label: 'Terms of Service', href: '' },
+    { label: 'Desclaimer', href: '' },
+  ],
+};
