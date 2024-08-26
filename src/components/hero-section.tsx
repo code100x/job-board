@@ -1,7 +1,7 @@
 import { GITHUB_REPO } from '@/lib/constant/app.constant';
 import Link from 'next/link';
 import Icon from './ui/icon';
-import Image from 'next/image';
+import { Companies } from './Companies';
 
 const HeroSection = () => {
   return (
@@ -36,12 +36,7 @@ const HeroSection = () => {
           </div>
         </div>
         <div className="flex items-center justify-center my-10 invert dark:invert-0">
-          <Image
-            src={'/companies.png'}
-            alt="companies"
-            width={900}
-            height={100}
-          />
+          <Companies />
         </div>
       </section>
     </>

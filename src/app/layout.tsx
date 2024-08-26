@@ -25,7 +25,7 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning={true}>
       <body
         className={cn(
-          'font-sans antialiased bg-gradient-light dark:bg-gradient min-h-screen relative flex flex-col',
+          'font-sans antialiased dark bg-gradient-light dark:bg-gradient min-h-screen relative flex flex-col',
           fontSans.variable
         )}
       >

@@ -1,6 +1,5 @@
 'use client';
 import { MobileNav } from '@/layouts/mobile-nav';
-import { ModeToggle } from '@/components/ui/theme-toggle';
 import APP_PATHS from '@/config/path.config';
 import { navbar } from '@/lib/constant/app.constant';
 import { useSession } from 'next-auth/react';
@@ -35,7 +34,6 @@ const Header = () => {
         <Link href="/" className="p-2.5 mr-4">
           <CompanyLogo />
         </Link>
-
         <div className="grow flex justify-end sm:justify-between items-center gap-3">
           <nav className="py-1 rounded-full max-sm:hidden">
             <ul className="flex items-center gap-4 text-sm lg:gap-6">
@@ -59,7 +57,6 @@ const Header = () => {
             {session.status !== 'loading' && session.data?.user && (
               <ProfileMenu />
             )}
-            <ModeToggle />
           </div>
           <div className="sm:hidden flex justify-center">
             <MobileNav />
