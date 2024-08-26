@@ -14,9 +14,15 @@ const page = async ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
 
   return (
     <div className="container flex gap-5 pt-5">
-      <JobFilters searchParams={validatedSearchParams} baseUrl={APP_PATHS.JOBS} />
+      <JobFilters
+        searchParams={validatedSearchParams}
+        baseUrl={APP_PATHS.JOBS}
+      />
       <div className="grow">
-        <JobsHeader searchParams={validatedSearchParams} baseUrl={APP_PATHS.JOBS} />
+        <JobsHeader
+          searchParams={validatedSearchParams}
+          baseUrl={APP_PATHS.JOBS}
+        />
         <Suspense
           fallback={
             <div className="flex justify-center items-center h-full gap-5 ">
