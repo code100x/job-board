@@ -10,7 +10,9 @@ import { PaginationPages } from './ui/paginator';
 import Icon from './ui/icon';
 import { formatSalary } from '@/lib/utils';
 import Link from 'next/link';
-import daysAgo from '@/lib/show-time';
+import daysAgo from '@/lib/show-time'; // from add/time-fun
+import APP_PATHS from '@/config/path.config'; // from main
+
 type PaginatorProps = {
   searchParams: JobQuerySchemaType;
 };
@@ -23,7 +25,7 @@ const AllJobs = async ({ searchParams }: PaginatorProps) => {
   const totalPages =
     Math.ceil((jobs.additional?.totalJobs || 0) / JOBS_PER_PAGE) ||
     DEFAULT_PAGE;
-  const currentPage = searchParams.page || DEFAULT_PAGE;
+  const currentPage = parseInt(searchParams.page?.toString()) || DEFAULT_PAGE;
   return (
     <div className="bg-background py-4 grid gap-3">
       {jobs.additional?.jobs.map((job) => {
@@ -40,7 +42,8 @@ const AllJobs = async ({ searchParams }: PaginatorProps) => {
               <div className="flex gap-2 text-xs text-muted-foreground">
                 <span className="flex items-center gap-0.5">
                   <Icon icon="location" size={12} />
-                  {job.workMode}
+                  {job.location}{' '}
+                  <span className="capitalize">({job.workMode})</span>
                 </span>
                 <span className="flex items-center gap-0.5">
                   {job.minSalary && <Icon icon="currency" size={12} />}
@@ -67,6 +70,7 @@ const AllJobs = async ({ searchParams }: PaginatorProps) => {
               <PaginationPreviousButton
                 searchParams={searchParams}
                 currentPage={currentPage}
+                baseUrl={APP_PATHS.JOBS}
               />
             </PaginationItem>
           ) : null}
@@ -74,6 +78,7 @@ const AllJobs = async ({ searchParams }: PaginatorProps) => {
             searchParams={searchParams}
             currentPage={currentPage}
             totalPages={totalPages}
+            baseUrl={APP_PATHS.JOBS}
           />
           {totalPages ? (
             <PaginationItem>
@@ -81,6 +86,7 @@ const AllJobs = async ({ searchParams }: PaginatorProps) => {
                 searchParams={searchParams}
                 currentPage={currentPage}
                 totalPages={totalPages}
+                baseUrl={APP_PATHS.JOBS}
               />
             </PaginationItem>
           ) : null}
