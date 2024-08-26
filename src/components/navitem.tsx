@@ -1,9 +1,8 @@
-'use client';
-import { useSession } from 'next-auth/react';
+import { options } from '@/lib/auth';
+import { getServerSession } from 'next-auth';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 
-export const NavItem = ({
+export const NavItem = async ({
   path,
   label,
   roleRequired,
@@ -14,21 +13,16 @@ export const NavItem = ({
   roleRequired?: string;
   isPrivate?: boolean;
 }) => {
-  const session = useSession();
-  const pathname = usePathname();
-  if (session.status === 'loading') {
+  const session = await getServerSession(options);
+
+  if (!session?.user.role.length && isPrivate) {
     return;
   }
-  if (!session.data?.user && isPrivate) {
-    return;
-  }
-  if (session && roleRequired && session.data?.user.role !== roleRequired)
-    return;
+  if (session && roleRequired && session?.user.role !== roleRequired) return;
   return (
     <li>
       <Link
         href={path}
-        aria-selected={pathname === path}
         className="transition-colors hover:text-foreground/80 text-foreground/60"
       >
         {label}

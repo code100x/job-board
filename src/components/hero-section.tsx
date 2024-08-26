@@ -1,7 +1,7 @@
+'use client';
 import { GITHUB_REPO } from '@/lib/constant/app.constant';
 import Link from 'next/link';
 import Icon from './ui/icon';
-import Image from 'next/image';
 
 const HeroSection = () => {
   return (
@@ -35,14 +35,53 @@ const HeroSection = () => {
             </div>
           </div>
         </div>
-        <div className="flex items-center justify-center my-10 invert dark:invert-0">
-          <Image
-            src={'/companies.png'}
-            alt="companies"
-            width={900}
-            height={100}
-          />
-        </div>
+        <section className="py-8 w-[300px] mx-auto sm:container">
+          <div className="flex overflow-hidden space-x-8 sm:space-x-12 lg:space-x-16 opacity-50">
+            <div className="flex space-x-8 sm:space-x-12 lg:space-x-16 animate-loop-scroll justify-center items-center">
+              <img
+                loading="lazy"
+                src="./solana.svg"
+                className="max-w-none h-8 sm:h-10 lg:h-12 grayscale"
+                alt="Solana"
+              />
+              <img
+                loading="lazy"
+                src="./microsoft.svg"
+                className="max-w-none h-8 sm:h-10 lg:h-12 grayscale"
+                alt="Microsoft"
+              />
+              <img
+                loading="lazy"
+                src="./google.svg"
+                className="max-w-none h-8 sm:h-10 lg:h-12 grayscale"
+                alt="Google"
+              />
+            </div>
+            <div
+              className="flex space-x-8 sm:space-x-12 lg:space-x-16 animate-loop-scroll justify-center items-center"
+              aria-hidden="true"
+            >
+              <img
+                loading="lazy"
+                src="./solana.svg"
+                className="max-w-none h-8 sm:h-10 lg:h-12 grayscale"
+                alt="Solana"
+              />
+              <img
+                loading="lazy"
+                src="./microsoft.svg"
+                className="max-w-none h-8 sm:h-10 lg:h-12 grayscale"
+                alt="Microsoft"
+              />
+              <img
+                loading="lazy"
+                src="./google.svg"
+                className="max-w-none h-8 sm:h-10 lg:h-12 grayscale"
+                alt="Google"
+              />
+            </div>
+          </div>
+        </section>
       </section>
     </>
   );

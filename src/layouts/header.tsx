@@ -1,13 +1,12 @@
-'use client';
 import { MobileNav } from '@/layouts/mobile-nav';
-import { ModeToggle } from '@/components/ui/theme-toggle';
 import APP_PATHS from '@/config/path.config';
 import { navbar } from '@/lib/constant/app.constant';
-import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { ProfileMenu } from '@/components/profile-menu';
 import { NavItem } from '@/components/navitem';
 import Image from 'next/image';
+import { getServerSession } from 'next-auth';
+import { options } from '@/lib/auth';
 
 const CompanyLogo = () => {
   return (
@@ -26,8 +25,8 @@ const CompanyLogo = () => {
   );
 };
 
-const Header = () => {
-  const session = useSession();
+const Header = async () => {
+  const session = await getServerSession(options);
 
   return (
     <header className="sticky top-6 z-50 md:w-auto mx-auto w-full px-5">
@@ -46,7 +45,7 @@ const Header = () => {
           </nav>
 
           <div className="max-sm:hidden flex text-sm items-center gap-3 ml-3">
-            {session.status !== 'loading' && !session.data?.user && (
+            {!session?.user.id && (
               <>
                 <Link
                   href={APP_PATHS.SIGNIN}
@@ -56,10 +55,7 @@ const Header = () => {
                 </Link>
               </>
             )}
-            {session.status !== 'loading' && session.data?.user && (
-              <ProfileMenu />
-            )}
-            <ModeToggle />
+            {session && session.user && <ProfileMenu />}
           </div>
           <div className="sm:hidden flex justify-center">
             <MobileNav />

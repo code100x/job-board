@@ -63,6 +63,12 @@
   }
 }
 
+@layer utilities {
+  .paused {
+    animation-play-state: paused;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
