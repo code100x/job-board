@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { DEFAULT_PAGE, JOBS_PER_PAGE } from '@/config/app.config';
 import JobsHeader from '@/layouts/jobs-header';
 import { Suspense } from 'react';
-import { Loader } from 'lucide-react';
 import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
 import { Pagination, PaginationContent, PaginationItem } from './ui/pagination';
 import {
@@ -17,6 +16,7 @@ import APP_PATHS from '@/config/path.config';
 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import Loader from './loader';
 dayjs.extend(relativeTime);
 
 export const calculateTimeSincePosted = (postedAt: Date): string => {
@@ -32,6 +32,7 @@ export const JobLanding = async ({
     <div className="max-w-screen-lg mx-auto grid grid-cols-1  gap-6 py-8 pt-10">
       <div className="grow  px-5">
         <JobsHeader searchParams={searchParams} baseUrl="/" />
+
         <Suspense
           fallback={
             <div className="flex justify-center items-center h-full gap-5 ">

@@ -17,7 +17,6 @@ import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -30,6 +29,8 @@ import { usePathname } from 'next/navigation';
 import JobFilters from './job-filters';
 import Icon from '@/components/ui/icon';
 import APP_PATHS from '@/config/path.config';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 const FormSchema = z.object({
   search: z.string().optional(),
@@ -42,6 +43,7 @@ const JobsHeader = ({
   baseUrl: string;
 }) => {
   const pathname = usePathname();
+  const router = useRouter();
   const isHome = pathname === APP_PATHS.HOME;
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -50,6 +52,19 @@ const JobsHeader = ({
       search: '',
     },
   });
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (form.watch('search')?.length) {
+        onSubmit({ search: form.watch('search') });
+      } else {
+        router.push(baseUrl);
+      }
+    }, 500);
+
+    return () => clearTimeout(timeoutId); // Cleanup function to clear timeout on unmount
+  }, [form.watch('search')]);
+
   function onSubmit(data: z.infer<typeof FormSchema>) {
     jobFilterQuery({ ...searchParams, search: data.search, page: 1 }, baseUrl);
   }
@@ -79,13 +94,6 @@ const JobsHeader = ({
               </FormItem>
             )}
           />
-          <Button
-            type="submit"
-            className="rounded-full absolute right-3 top-2"
-            size="sm"
-          >
-            Search
-          </Button>
         </form>
       </Form>
 
