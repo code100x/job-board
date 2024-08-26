@@ -17,7 +17,6 @@ import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -30,10 +29,12 @@ import { usePathname } from 'next/navigation';
 import JobFilters from './job-filters';
 import Icon from '@/components/ui/icon';
 import APP_PATHS from '@/config/path.config';
+import { Button } from '@/components/ui/button';
 
 const FormSchema = z.object({
   search: z.string().optional(),
 });
+
 const JobsHeader = ({
   searchParams,
   baseUrl,
@@ -43,6 +44,8 @@ const JobsHeader = ({
 }) => {
   const pathname = usePathname();
   const isHome = pathname === APP_PATHS.HOME;
+
+  let debounceTimeout: NodeJS.Timeout;
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -56,6 +59,7 @@ const JobsHeader = ({
   function sortChangeHandler(value: SortByEnums) {
     jobFilterQuery({ ...searchParams, sortby: value, page: 1 }, baseUrl);
   }
+
   return (
     <div className="flex flex-col  gap-5 ">
       <Form {...form}>
@@ -73,19 +77,21 @@ const JobsHeader = ({
                     placeholder="Search by title or company name"
                     {...field}
                     className="rounded-full p-5 py-6 dark:bg-neutral-900 truncate"
+                    onChange={(e) => {
+                      field.onChange(e);
+                      if (debounceTimeout) {
+                        clearTimeout(debounceTimeout);
+                      }
+                      debounceTimeout = setTimeout(() => {
+                        form.handleSubmit(onSubmit)();
+                      }, 300);
+                    }}
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button
-            type="submit"
-            className="rounded-full absolute right-3 top-2"
-            size="sm"
-          >
-            Search
-          </Button>
         </form>
       </Form>
 
@@ -93,7 +99,7 @@ const JobsHeader = ({
         {isHome && (
           <Popover>
             <PopoverTrigger className="bg-neutral-100 dark:bg-neutral-900 rounded-full p-3 cursor-pointer">
-              <Icon icon="filter" className="cursor-pointe" size="20" />
+              <Icon icon="filter" className="cursor-pointer" size="20" />
             </PopoverTrigger>
             <PopoverContent className="bg-transparent border-none">
               <JobFilters searchParams={searchParams} baseUrl={baseUrl} />

@@ -13,7 +13,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '../components/ui/accordion';
-import { Button } from '../components/ui/button';
 import { Checkbox } from '../components/ui/checkbox';
 import {
   Form,
@@ -63,7 +62,7 @@ const JobFilters = ({
     );
   }
   return (
-    <aside className="rounded-lg border bg-background  max-w-[320px] w-full p-6 h-fit sticky top-20">
+    <aside className="rounded-lg border bg-background  max-w-[320px] w-full h-fit p-6 sticky top-20">
       <div className="flex items-center justify-between">
         <h3 className="font-medium text-base text-primary-text">All Filters</h3>
       </div>
@@ -111,7 +110,7 @@ const JobFilters = ({
                                         item.value as WorkModeEnums
                                       )}
                                       onCheckedChange={(checked) => {
-                                        return checked
+                                        checked
                                           ? field.onChange([
                                               ...(field.value || []),
                                               item.value,
@@ -121,6 +120,7 @@ const JobFilters = ({
                                                 (value) => value !== item.value
                                               )
                                             );
+                                        form.handleSubmit(handleFormSubmit)();
                                       }}
                                     />
                                   </FormControl>
@@ -165,7 +165,7 @@ const JobFilters = ({
                                         item.value
                                       )}
                                       onCheckedChange={(checked) => {
-                                        return checked
+                                        checked
                                           ? field.onChange([
                                               ...(field.value || []),
                                               item.value,
@@ -175,6 +175,7 @@ const JobFilters = ({
                                                 (value) => value !== item.value
                                               )
                                             );
+                                        form.handleSubmit(handleFormSubmit)();
                                       }}
                                     />
                                   </FormControl>
@@ -222,7 +223,7 @@ const JobFilters = ({
                                         item.value
                                       )}
                                       onCheckedChange={(checked) => {
-                                        return checked
+                                        checked
                                           ? field.onChange([
                                               ...(field.value || []),
                                               item.value,
@@ -232,6 +233,7 @@ const JobFilters = ({
                                                 (value) => value !== item.value
                                               )
                                             );
+                                        form.handleSubmit(handleFormSubmit)();
                                       }}
                                       hidden
                                     />
@@ -252,9 +254,6 @@ const JobFilters = ({
               </AccordionItem>
             </Accordion>
           </ScrollArea>
-          <Button type="submit" disabled={form.formState.isSubmitting}>
-            Apply Filters
-          </Button>
         </form>
       </Form>
     </aside>
