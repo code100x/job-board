@@ -188,7 +188,7 @@ const PostJobForm = () => {
                   <Input
                     {...field}
                     className="w-full border-gray-400"
-                    placeholder="Job Title"
+                    placeholder="Job Location"
                   />
                 </FormControl>
                 <FormMessage />
@@ -233,7 +233,7 @@ const PostJobForm = () => {
                     <Input
                       {...field}
                       className="w-full border-gray-400"
-                      placeholder="Enter comapany name here"
+                      placeholder="0"
                     />
                   </FormControl>{' '}
                   <FormMessage />
@@ -253,7 +253,7 @@ const PostJobForm = () => {
                     <Input
                       {...field}
                       className="w-full border-gray-400"
-                      placeholder="Enter comapany name here"
+                      placeholder="0"
                     />
                   </FormControl>{' '}
                   <FormMessage />
