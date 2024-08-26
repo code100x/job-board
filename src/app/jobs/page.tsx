@@ -1,5 +1,6 @@
 import AllJobs from '@/components/all-jobs';
 import Loader from '@/components/loader';
+import APP_PATHS from '@/config/path.config';
 import JobFilters from '@/layouts/job-filters';
 import JobsHeader from '@/layouts/jobs-header';
 import {
@@ -13,9 +14,9 @@ const page = async ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
 
   return (
     <div className="container flex gap-5 pt-5">
-      <JobFilters searchParams={validatedSearchParams} />
+      <JobFilters searchParams={validatedSearchParams} baseUrl={APP_PATHS.JOBS} />
       <div className="grow">
-        <JobsHeader searchParams={validatedSearchParams} />
+        <JobsHeader searchParams={validatedSearchParams} baseUrl={APP_PATHS.JOBS} />
         <Suspense
           fallback={
             <div className="flex justify-center items-center h-full gap-5 ">
