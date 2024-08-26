@@ -6,18 +6,21 @@ import {
   PaginationItem,
   PaginationLink,
 } from './pagination';
+import { cn } from '@/lib/utils';
 
 export const PaginationPages = ({
   currentPage,
   totalPages,
   searchParams,
+  baseUrl,
 }: {
   currentPage: number;
   totalPages: number;
   searchParams: JobQuerySchemaType;
+  baseUrl: string;
 }) => {
   function paginationHandler(page: number) {
-    jobFilterQuery({ ...searchParams, page: page });
+    jobFilterQuery({ ...searchParams, page: page }, baseUrl);
   }
   const pages: JSX.Element[] = [];
   if (totalPages <= 5) {
@@ -26,8 +29,11 @@ export const PaginationPages = ({
         <PaginationItem key={i}>
           <PaginationLink
             onClick={() => paginationHandler(i)}
-            isActive={i === currentPage}
             role="button"
+            className={cn('rounded-full dark:bg-neutral-900 bg-neutral-100', {
+              'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-black ':
+                i === currentPage,
+            })}
           >
             {i}
           </PaginationLink>
@@ -40,8 +46,12 @@ export const PaginationPages = ({
         <PaginationItem key={i}>
           <PaginationLink
             onClick={() => paginationHandler(i)}
-            isActive={i === currentPage}
+            // isActive={i === currentPage}
             role="button"
+            className={cn('rounded-full dark:bg-neutral-900 bg-neutral-100', {
+              'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-black ':
+                i === currentPage,
+            })}
           >
             {i}
           </PaginationLink>
@@ -63,7 +73,11 @@ export const PaginationPages = ({
           <PaginationLink
             role="button"
             onClick={() => paginationHandler(i)}
-            isActive={i === currentPage}
+            // isActive={i === currentPage}
+            className={cn('rounded-full dark:bg-neutral-900 bg-neutral-100', {
+              'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-black ':
+                i === currentPage,
+            })}
           >
             {i}
           </PaginationLink>

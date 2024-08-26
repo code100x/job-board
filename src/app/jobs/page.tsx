@@ -1,8 +1,8 @@
 import AllJobs from '@/components/all-jobs';
 import { FilterSheet } from '@/components/FilterSheet';
 import Loader from '@/components/loader';
-import APP_PATHS from '@/config/path.config';
 import { Button } from '@/components/ui/button';
+import APP_PATHS from '@/config/path.config';
 import JobFilters from '@/layouts/job-filters';
 import JobsHeader from '@/layouts/jobs-header';
 import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';

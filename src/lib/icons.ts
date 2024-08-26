@@ -23,6 +23,7 @@ import {
   BookText,
   User,
   LogOut,
+  SlidersHorizontal,
 } from 'lucide-react';
 
 const icons = {
@@ -47,6 +48,7 @@ const icons = {
   description: BookText,
   profile: User,
   logout: LogOut,
+  filter: SlidersHorizontal,
 };
 export type IconType = typeof LucideIconType;
 export default icons;
