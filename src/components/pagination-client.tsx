@@ -9,6 +9,7 @@ const PaginationPreviousButton = ({
 }: {
   searchParams: JobQuerySchemaType;
   currentPage: number;
+  baseUrl: string;
 }) => {
   const setQueryParams = useSetQueryParams();
   return (
@@ -20,7 +21,7 @@ const PaginationPreviousButton = ({
       }
       aria-disabled={currentPage - PAGE_INCREMENT < PAGE_INCREMENT}
       role="button"
-      className="aria-disabled:pointer-events-none"
+      className="aria-disabled:pointer-events-none dark:bg-neutral-900 rounded-full bg-neutral-100"
     />
   );
 };
@@ -31,6 +32,7 @@ const PaginationNextButton = ({
   searchParams: JobQuerySchemaType;
   currentPage: number;
   totalPages: number;
+  baseUrl: string;
 }) => {
   const setQueryParams = useSetQueryParams();
   return (
@@ -42,7 +44,7 @@ const PaginationNextButton = ({
         })
       }
       aria-disabled={currentPage > totalPages - PAGE_INCREMENT}
-      className="aria-disabled:pointer-events-none"
+      className="aria-disabled:pointer-events-none dark:bg-neutral-900 rounded-full bg-neutral-100"
     />
   );
 };

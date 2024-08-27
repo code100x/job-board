@@ -6,6 +6,7 @@ import {
   PaginationLink,
 } from './pagination';
 import useSetQueryParams from '@/hooks/useSetQueryParams';
+import { cn } from '@/lib/utils';
 
 export const PaginationPages = ({
   currentPage,
@@ -14,6 +15,7 @@ export const PaginationPages = ({
   currentPage: number;
   totalPages: number;
   searchParams: JobQuerySchemaType;
+  baseUrl: string;
 }) => {
   const setQueryParams = useSetQueryParams();
   function paginationHandler(page: number) {
@@ -26,8 +28,11 @@ export const PaginationPages = ({
         <PaginationItem key={i}>
           <PaginationLink
             onClick={() => paginationHandler(i)}
-            isActive={i === currentPage}
             role="button"
+            className={cn('rounded-full dark:bg-neutral-900 bg-neutral-100', {
+              'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-black ':
+                i === currentPage,
+            })}
           >
             {i}
           </PaginationLink>
@@ -40,8 +45,12 @@ export const PaginationPages = ({
         <PaginationItem key={i}>
           <PaginationLink
             onClick={() => paginationHandler(i)}
-            isActive={i === currentPage}
+            // isActive={i === currentPage}
             role="button"
+            className={cn('rounded-full dark:bg-neutral-900 bg-neutral-100', {
+              'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-black ':
+                i === currentPage,
+            })}
           >
             {i}
           </PaginationLink>
@@ -63,7 +72,11 @@ export const PaginationPages = ({
           <PaginationLink
             role="button"
             onClick={() => paginationHandler(i)}
-            isActive={i === currentPage}
+            // isActive={i === currentPage}
+            className={cn('rounded-full dark:bg-neutral-900 bg-neutral-100', {
+              'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-black ':
+                i === currentPage,
+            })}
           >
             {i}
           </PaginationLink>

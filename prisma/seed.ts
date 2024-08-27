@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Currency, Role, WorkMode } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import prisma from '../src/config/prisma.config';
@@ -437,7 +438,7 @@ const jobs = [
 async function seedUsers() {
   try {
     const hashedPassword = await bcrypt.hash('123456', 10);
-    const dbUsers = await Promise.all(
+    await Promise.all(
       users.map(
         async (u) =>
           await prisma.user.upsert({
@@ -464,7 +465,7 @@ async function seedUsers() {
 
 async function seedJobs() {
   try {
-    const dbJobs = await Promise.all(
+    await Promise.all(
       jobs.map(async (j) =>
         prisma.job.upsert({
           where: { id: j.id },

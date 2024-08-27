@@ -8,6 +8,7 @@ import {
 } from '@/lib/validators/jobs.validator';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
+
 const page = async ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   const parsedData = JobQuerySchema.safeParse(searchParams);
   if (!(parsedData.success && parsedData.data)) {

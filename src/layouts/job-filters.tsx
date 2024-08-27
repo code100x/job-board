@@ -23,8 +23,9 @@ import {
 } from '../components/ui/form';
 import { Separator } from '../components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useEffect } from 'react';
+import { cn } from '@/lib/utils';
 import useSetQueryParams from '@/hooks/useSetQueryParams';
+import { useEffect } from 'react';
 
 const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   const setQueryParams = useSetQueryParams();
@@ -53,7 +54,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
       <Separator className="my-6" />
       <Form {...form}>
         <form className=" flex flex-col gap-3">
-          <ScrollArea className="h-fit pr-4">
+          <ScrollArea className={cn('h-fit pr-4')}>
             <Accordion
               type="multiple"
               className="w-full"
