@@ -5,9 +5,15 @@ import { Button } from '@/components/ui/button';
 import APP_PATHS from '@/config/path.config';
 import JobFilters from '@/layouts/job-filters';
 import JobsHeader from '@/layouts/jobs-header';
-import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
+import {
+  JobQuerySchema,
+  JobQuerySchemaType,
+} from '@/lib/validators/jobs.validator';
 import { Suspense } from 'react';
+
 const page = async ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
+  const validatedSearchParams = JobQuerySchema.parse(searchParams);
+
   return (
     <div className="container flex gap-5 pt-10">
       <div className="container flex gap-5 pt-5">
@@ -38,6 +44,7 @@ const page = async ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
             <AllJobs searchParams={searchParams} />
           </Suspense>
         </div>
+
       </div>
     </div>
   );
