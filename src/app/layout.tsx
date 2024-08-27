@@ -5,6 +5,7 @@ import Providers from '@/providers/providers';
 import type { Metadata } from 'next';
 import { Inter as FontSans } from 'next/font/google';
 import './globals.css';
+import NextTopLoader from 'nextjs-toploader';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -30,6 +31,7 @@ export default async function RootLayout({
         )}
       >
         <Providers>
+          <NextTopLoader />
           <Header />
           <main className="grow grid">{children}</main>
           <Footer />
