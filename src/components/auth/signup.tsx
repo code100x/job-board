@@ -98,7 +98,7 @@ const Signup = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type="password" {...field} placeholder="••••••••" />
+                  <Input type="password" {...field} placeholder="Password" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -109,7 +109,7 @@ const Signup = () => {
               href={APP_PATHS.RESET_PASSWORD}
               className="text-xs text-muted-foreground font-medium hover:underline"
             >
-              Forget your password?
+              Forgot password?
             </Link>
           </div>
           <Button
