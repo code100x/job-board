@@ -29,7 +29,6 @@ import { usePathname } from 'next/navigation';
 import JobFilters from './job-filters';
 import Icon from '@/components/ui/icon';
 import APP_PATHS from '@/config/path.config';
-import { Button } from '@/components/ui/button';
 
 const FormSchema = z.object({
   search: z.string().optional(),
