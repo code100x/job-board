@@ -17,7 +17,7 @@ import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 import {
   Form,
   FormControl,
@@ -25,12 +25,13 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form';
+import { useDebounce } from '@uidotdev/usehooks';
 import { Input } from '@/components/ui/input';
 import { usePathname } from 'next/navigation';
 import JobFilters from './job-filters';
 import Icon from '@/components/ui/icon';
 import APP_PATHS from '@/config/path.config';
-
+import { useEffect } from 'react';
 const FormSchema = z.object({
   search: z.string().optional(),
 });
@@ -43,6 +44,11 @@ const JobsHeader = ({
 }) => {
   const pathname = usePathname();
   const isHome = pathname === APP_PATHS.HOME;
+  const router = useRouter();
+
+  function sortChangeHandler(value: SortByEnums) {
+    jobFilterQuery({ ...searchParams, sortby: value, page: 1 }, baseUrl);
+  }
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -50,12 +56,37 @@ const JobsHeader = ({
       search: '',
     },
   });
+
+  const searchValue = form.watch('search');
+  const debouncedSearchValue = useDebounce(searchValue, 100);
+
+  useEffect(() => {
+    const fetch = async () => {
+      if (debouncedSearchValue !== 'undefined') {
+        if (debouncedSearchValue?.length) {
+          await onSubmit({ search: debouncedSearchValue });
+        } else {
+          router.push(baseUrl);
+        }
+      } else {
+        router.push(baseUrl);
+      }
+    };
+
+    fetch();
+  }, [debouncedSearchValue]);
+
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    jobFilterQuery({ ...searchParams, search: data.search, page: 1 }, baseUrl);
+    jobFilterQuery(
+      {
+        ...searchParams,
+        search: data.search,
+        page: 1,
+      },
+      baseUrl
+    );
   }
-  function sortChangeHandler(value: SortByEnums) {
-    jobFilterQuery({ ...searchParams, sortby: value, page: 1 }, baseUrl);
-  }
+
   return (
     <div className="flex flex-col  gap-5 ">
       <Form {...form}>
@@ -79,13 +110,6 @@ const JobsHeader = ({
               </FormItem>
             )}
           />
-          <Button
-            type="submit"
-            className="rounded-full absolute right-3 top-2"
-            size="sm"
-          >
-            Search
-          </Button>
         </form>
       </Form>
 
