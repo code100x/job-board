@@ -22,8 +22,10 @@ export const NavItem = ({
   if (!session.data?.user && isPrivate) {
     return;
   }
-  if (session && roleRequired && session.data?.user.role !== roleRequired)
+  if (session && roleRequired && session.data?.user.role !== roleRequired) {
     return;
+  }
+
   return (
     <li>
       <Link
