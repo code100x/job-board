@@ -281,28 +281,6 @@ const PostJobForm = ({ job }: getJobType) => {
                 )}
               />
             </div>
-
-            <div className="flex flex-col gap-1">
-              <FormField
-                control={form.control}
-                name="companyName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm font-semibold">
-                      Company Name
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        className="w-full border-gray-400"
-                        placeholder="Enter comapany name here"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
             <div className="flex flex-col gap-1">
               <FormField
                 control={form.control}
@@ -324,19 +302,17 @@ const PostJobForm = ({ job }: getJobType) => {
                 )}
               />
             </div>
+            <div className="w-full flex justify-end items-center mt-4">
+              <Button type="submit" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting
+                  ? 'Please wait...'
+                  : `${job ? 'Update Job' : 'Create Job'}`}
+              </Button>
+            </div>
           </div>
-        </div>
-
-        <div className="w-full flex justify-end items-center mt-4">
-          <Button type="submit" disabled={form.formState.isSubmitting}>
-            {form.formState.isSubmitting
-              ? 'Please wait...'
-              : `${job ? 'Update Job' : 'Create Job'}`}
-          </Button>
         </div>
       </form>
     </Form>
   );
 };
-
 export default PostJobForm;

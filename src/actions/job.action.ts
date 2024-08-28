@@ -147,7 +147,10 @@ export const getJobById = withServerActionAsyncCatcher<
   }).serialize();
 });
 
-export const jobFilterQuery = async (queries: JobQuerySchemaType) => {
+export const jobFilterQuery = async (
+  queries: JobQuerySchemaType,
+  baseUrl: string
+) => {
   const { page, sortby, location, salaryrange, search, workmode } =
     JobQuerySchema.parse(queries);
   const searchParams = new URLSearchParams({
@@ -158,7 +161,7 @@ export const jobFilterQuery = async (queries: JobQuerySchemaType) => {
   location?.map((location) => searchParams.append('location', location));
   salaryrange?.map((range) => searchParams.append('salaryrange', range));
   workmode?.map((mode) => searchParams.append('workmode', mode));
-  redirect(`/jobs?${searchParams.toString()}`);
+  redirect(`${baseUrl}?${searchParams.toString()}`);
 };
 
 export const updateJob = async (data: JobPostSchemaType, id: string) => {

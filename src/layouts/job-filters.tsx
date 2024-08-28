@@ -25,9 +25,19 @@ import {
 } from '../components/ui/form';
 import { Separator } from '../components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { formatFilterSearchParams } from '@/lib/utils';
+import { cn, formatFilterSearchParams } from '@/lib/utils';
+import { usePathname } from 'next/navigation';
+import APP_PATHS from '@/config/path.config';
 
-const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
+const JobFilters = ({
+  searchParams,
+  baseUrl,
+}: {
+  searchParams: JobQuerySchemaType;
+  baseUrl: string;
+}) => {
+  const pathname = usePathname();
+  const isHome = pathname === APP_PATHS.HOME;
   const form = useForm<JobQuerySchemaType>({
     resolver: zodResolver(JobQuerySchema),
     defaultValues: {
@@ -43,11 +53,14 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
     },
   });
   async function handleFormSubmit(data: JobQuerySchemaType) {
-    await jobFilterQuery({
-      ...data,
-      search: searchParams.search,
-      sortby: searchParams.sortby,
-    });
+    await jobFilterQuery(
+      {
+        ...data,
+        search: searchParams.search,
+        sortby: searchParams.sortby,
+      },
+      baseUrl
+    );
   }
   return (
     <aside className="rounded-lg border bg-background  max-w-[320px] w-full p-6 h-fit sticky top-20">
@@ -60,7 +73,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
           onSubmit={form.handleSubmit(handleFormSubmit)}
           className=" flex flex-col gap-3"
         >
-          <ScrollArea className="h-96 pr-4">
+          <ScrollArea className={cn('h-96 pr-4', { 'h-64 ': isHome })}>
             <Accordion
               type="multiple"
               className="w-full"
