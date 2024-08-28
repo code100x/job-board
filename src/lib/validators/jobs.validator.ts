@@ -7,7 +7,7 @@ export const JobPostSchema = z
     description: z.string().min(1, 'Description is required'),
     companyName: z.string().min(1, 'Company Name is required'),
     location: z.string().min(1, 'Location is required'),
-    hasSalaryRange: z.boolean(),
+    hasSalaryRange: z.boolean().default(false),
     minSalary: z.coerce
       .number({ message: 'Min salary must be a number' })
       .nonnegative()
@@ -16,9 +16,11 @@ export const JobPostSchema = z
       .number({ message: 'Max salary must be a number' })
       .nonnegative()
       .optional(),
-    workMode: z.enum(['remote', 'office', 'hybrid'], {
-      message: 'Work mode is required',
-    }),
+    workMode: z
+      .enum(['remote', 'office', 'hybrid'], {
+        message: 'Work mode is required',
+      })
+      .default('remote'),
     currency: z.enum(['USD', 'INR']).default('INR'),
   })
   .superRefine((data, ctx) => {

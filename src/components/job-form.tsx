@@ -174,17 +174,17 @@ const PostJobForm = ({ job }: getJobType) => {
             <div className="flex flex-col gap-1">
               <FormField
                 control={form.control}
-                name="location"
+                name="companyName"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-sm font-semibold">
-                      Location
+                      Company Name
                     </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         className="w-full border-gray-400"
-                        placeholder="Job Title"
+                        placeholder="Company Name"
                       />
                     </FormControl>
                     <FormMessage />
@@ -274,6 +274,27 @@ const PostJobForm = ({ job }: getJobType) => {
                         {...field}
                         className="w-full border-gray-400"
                         placeholder="Enter description here"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <FormField
+                control={form.control}
+                name="location"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-semibold">
+                      Location
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        className="w-full border-gray-400"
+                        placeholder="location"
                       />
                     </FormControl>
                     <FormMessage />
