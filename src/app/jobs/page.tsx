@@ -13,7 +13,7 @@ const page = async ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   const validatedSearchParams = JobQuerySchema.parse(searchParams);
 
   return (
-    <div className="container flex gap-5 pt-5">
+    <div className="container flex gap-5 pt-5 mt-5">
       <JobFilters
         searchParams={validatedSearchParams}
         baseUrl={APP_PATHS.JOBS}

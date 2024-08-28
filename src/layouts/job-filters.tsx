@@ -63,7 +63,7 @@ const JobFilters = ({
     );
   }
   return (
-    <aside className="rounded-lg border bg-background  max-w-[320px] w-full p-6 h-fit sticky top-20">
+    <aside className="rounded-lg border bg-background max-w-[320px] w-full p-6 h-fit sticky top-24">
       <div className="flex items-center justify-between">
         <h3 className="font-medium text-base text-primary-text">All Filters</h3>
       </div>
