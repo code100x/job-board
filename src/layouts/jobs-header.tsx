@@ -18,6 +18,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useRouter } from 'next/navigation';
+
 import {
   Form,
   FormControl,
@@ -35,6 +36,7 @@ import { useEffect } from 'react';
 const FormSchema = z.object({
   search: z.string().optional(),
 });
+
 const JobsHeader = ({
   searchParams,
   baseUrl,
@@ -49,6 +51,8 @@ const JobsHeader = ({
   function sortChangeHandler(value: SortByEnums) {
     jobFilterQuery({ ...searchParams, sortby: value, page: 1 }, baseUrl);
   }
+
+  let debounceTimeout: NodeJS.Timeout;
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -104,6 +108,15 @@ const JobsHeader = ({
                     placeholder="Search by title or company name"
                     {...field}
                     className="rounded-full p-5 py-6 dark:bg-neutral-900 truncate"
+                    onChange={(e) => {
+                      field.onChange(e);
+                      if (debounceTimeout) {
+                        clearTimeout(debounceTimeout);
+                      }
+                      debounceTimeout = setTimeout(() => {
+                        form.handleSubmit(onSubmit)();
+                      }, 300);
+                    }}
                   />
                 </FormControl>
                 <FormMessage />
@@ -117,7 +130,7 @@ const JobsHeader = ({
         {isHome && (
           <Popover>
             <PopoverTrigger className="bg-neutral-100 dark:bg-neutral-900 rounded-full p-3 cursor-pointer">
-              <Icon icon="filter" className="cursor-pointe" size="20" />
+              <Icon icon="filter" className="cursor-pointer" size="20" />
             </PopoverTrigger>
             <PopoverContent className="bg-transparent border-none">
               <JobFilters searchParams={searchParams} baseUrl={baseUrl} />
