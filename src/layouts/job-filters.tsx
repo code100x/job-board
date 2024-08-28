@@ -13,7 +13,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '../components/ui/accordion';
-import { Button } from '../components/ui/button';
 import { Checkbox } from '../components/ui/checkbox';
 import {
   Form,
@@ -25,9 +24,19 @@ import {
 } from '../components/ui/form';
 import { Separator } from '../components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { formatFilterSearchParams } from '@/lib/utils';
+import { cn, formatFilterSearchParams } from '@/lib/utils';
+import { usePathname } from 'next/navigation';
+import APP_PATHS from '@/config/path.config';
 
-const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
+const JobFilters = ({
+  searchParams,
+  baseUrl,
+}: {
+  searchParams: JobQuerySchemaType;
+  baseUrl: string;
+}) => {
+  const pathname = usePathname();
+  const isHome = pathname === APP_PATHS.HOME;
   const form = useForm<JobQuerySchemaType>({
     resolver: zodResolver(JobQuerySchema),
     defaultValues: {
@@ -44,11 +53,14 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   });
 
   async function handleFormSubmit(data: JobQuerySchemaType) {
-    await jobFilterQuery({
-      ...data,
-      search: searchParams.search,
-      sortby: searchParams.sortby,
-    });
+    await jobFilterQuery(
+      {
+        ...data,
+        search: searchParams.search,
+        sortby: searchParams.sortby,
+      },
+      baseUrl
+    );
   }
 
   function handleResetFilters() {
@@ -72,7 +84,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
           onSubmit={form.handleSubmit(handleFormSubmit)}
           className="flex flex-col gap-3"
         >
-          <ScrollArea className="h-96 pr-4">
+          <ScrollArea className={cn('h-96 pr-4', { 'h-64 ': isHome })}>
             <Accordion
               type="multiple"
               className="w-full"
@@ -110,7 +122,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                         item.value as WorkModeEnums
                                       )}
                                       onCheckedChange={(checked) => {
-                                        return checked
+                                        checked
                                           ? field.onChange([
                                               ...(field.value || []),
                                               item.value,
@@ -120,6 +132,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                                 (value) => value !== item.value
                                               )
                                             );
+                                        form.handleSubmit(handleFormSubmit)();
                                       }}
                                     />
                                   </FormControl>
@@ -164,7 +177,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                         item.value
                                       )}
                                       onCheckedChange={(checked) => {
-                                        return checked
+                                        checked
                                           ? field.onChange([
                                               ...(field.value || []),
                                               item.value,
@@ -174,6 +187,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                                 (value) => value !== item.value
                                               )
                                             );
+                                        form.handleSubmit(handleFormSubmit)();
                                       }}
                                     />
                                   </FormControl>
@@ -221,7 +235,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                         item.value
                                       )}
                                       onCheckedChange={(checked) => {
-                                        return checked
+                                        checked
                                           ? field.onChange([
                                               ...(field.value || []),
                                               item.value,
@@ -231,6 +245,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                                 (value) => value !== item.value
                                               )
                                             );
+                                        form.handleSubmit(handleFormSubmit)();
                                       }}
                                       hidden
                                     />
