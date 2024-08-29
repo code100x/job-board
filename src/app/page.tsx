@@ -3,7 +3,7 @@ import HalfCircleGradient from '@/components/HalfCircleGradient';
 import HeroSection from '@/components/hero-section';
 import { JobLanding } from '@/components/job-landing';
 import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
-
+import { Testimonials } from '@/components/job-Testimonials';
 const HomePage = async ({
   searchParams,
 }: {
@@ -18,6 +18,9 @@ const HomePage = async ({
       </div>
       <div>
         <JobLanding searchParams={searchParams} />
+      </div>
+      <div>
+        <Testimonials />
       </div>
       <HalfCircleGradient position="bottom" />
     </div>
