@@ -14,7 +14,7 @@ import {
 } from './pagination-client';
 import { PaginationPages } from './ui/paginator';
 import APP_PATHS from '@/config/path.config';
-
+import { JobTestimonials } from './job-Testimonials';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime);
@@ -42,6 +42,7 @@ export const JobLanding = async ({
           <JobCard searchParams={searchParams} />
         </Suspense>
       </div>
+      <JobTestimonials />
     </div>
   );
 };

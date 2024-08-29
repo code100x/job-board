@@ -1,40 +1,42 @@
 import { cn } from '@/lib/utils';
 import Marquee from '@/components/ui/marquee';
-
+import HyperText from '@/components/ui/hypertext';
 const reviews = [
   {
-    name: 'Jack',
-    username: '@jack',
+    name: 'Aditya',
+    username: '@Aditya ',
     body: "I've never seen anything like this before. It's amazing. I love it.",
     img: 'https://avatar.vercel.sh/jack',
   },
   {
-    name: 'Jill',
-    username: '@jill',
+    name: 'Anurag',
+    username: '@Anurag ',
     body: "I don't know what to say. I'm speechless. This is amazing.",
     img: 'https://avatar.vercel.sh/jill',
   },
   {
-    name: 'John',
-    username: '@john',
+    name: 'Rahul',
+    username: '@Rahul ',
+
     body: "I'm at a loss for words. This is amazing. I love it.",
     img: 'https://avatar.vercel.sh/john',
   },
   {
-    name: 'Jane',
-    username: '@jane',
+    name: 'Vinit',
+    username: '@Vinit',
     body: "I'm at a loss for words. This is amazing. I love it.",
     img: 'https://avatar.vercel.sh/jane',
   },
   {
-    name: 'Jenny',
-    username: '@jenny',
+    name: 'Kaushik',
+    username: '@Kaushik',
+
     body: "I'm at a loss for words. This is amazing. I love it.",
     img: 'https://avatar.vercel.sh/jenny',
   },
   {
-    name: 'James',
-    username: '@james',
+    name: 'Calc',
+    username: '@Calc',
     body: "I'm at a loss for words. This is amazing. I love it.",
     img: 'https://avatar.vercel.sh/james',
   },
@@ -78,9 +80,14 @@ const ReviewCard = ({
   );
 };
 
-export function Testimonials() {
+export function JobTestimonials() {
   return (
-    <div className="relative flex  flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl">
+    <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden">
+      <HyperText
+        text="Testimonials "
+        duration={1000}
+        className="text-2xl text-align  text-center font-bold  dark:text-white/40"
+      />
       <Marquee pauseOnHover className="[--duration:20s]">
         {firstRow.map((review) => (
           <ReviewCard key={review.username} {...review} />
@@ -91,8 +98,6 @@ export function Testimonials() {
           <ReviewCard key={review.username} {...review} />
         ))}
       </Marquee>
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-white dark:from-background"></div>
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-white dark:from-background"></div>
     </div>
   );
 }
