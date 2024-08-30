@@ -1,13 +1,11 @@
 'use client';
 import { MobileNav } from '@/layouts/mobile-nav';
-import { ModeToggle } from '@/components/ui/theme-toggle';
-import APP_PATHS from '@/config/path.config';
 import { navbar } from '@/lib/constant/app.constant';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { ProfileMenu } from '@/components/profile-menu';
 import { NavItem } from '@/components/navitem';
 import Image from 'next/image';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const CompanyLogo = () => {
   return (
@@ -39,28 +37,15 @@ const Header = () => {
         <div className="grow flex justify-end sm:justify-between items-center gap-3">
           <nav className="py-1 rounded-full max-sm:hidden">
             <ul className="flex items-center gap-4 text-sm lg:gap-6">
-              {navbar.map((item) => (
-                <NavItem {...item} key={item.id} />
-              ))}
+              {navbar.map((item, index) => {
+                if (session.status === 'loading') {
+                  return <Skeleton className="h-4 w-[60px]" key={index} />;
+                } else {
+                  return <NavItem {...item} key={item.id} />;
+                }
+              })}
             </ul>
           </nav>
-
-          <div className="max-sm:hidden flex text-sm items-center gap-3 ml-3">
-            {session.status !== 'loading' && !session.data?.user && (
-              <>
-                <Link
-                  href={APP_PATHS.SIGNIN}
-                  className="transition-colors hover:text-foreground/80 text-foreground/60"
-                >
-                  Login
-                </Link>
-              </>
-            )}
-            {session.status !== 'loading' && session.data?.user && (
-              <ProfileMenu />
-            )}
-            <ModeToggle />
-          </div>
           <div className="sm:hidden flex justify-center">
             <MobileNav />
           </div>
