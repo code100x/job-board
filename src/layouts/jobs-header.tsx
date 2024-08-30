@@ -25,12 +25,11 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import useSetQueryParams from '@/hooks/useSetQueryParams';
-import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import JobFilters from './job-filters';
 import Icon from '@/components/ui/icon';
 import APP_PATHS from '@/config/path.config';
-
+import { useEffect } from 'react';
+import JobFilters from './job-filters';
 const FormSchema = z.object({
   search: z.string().optional(),
 });
@@ -84,7 +83,7 @@ const JobsHeader = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
         {isHome && (
           <Popover>
             <PopoverTrigger className="bg-neutral-100 dark:bg-neutral-900 rounded-full p-3 cursor-pointer">
-              <Icon icon="filter" className="cursor-pointe" size="20" />
+              <Icon icon="filter" className="cursor-pointer" size="20" />
             </PopoverTrigger>
             <PopoverContent className="bg-transparent border-none">
               <JobFilters searchParams={searchParams} />

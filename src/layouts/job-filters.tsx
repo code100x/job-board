@@ -92,7 +92,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                         item.value as WorkModeEnums
                                       )}
                                       onCheckedChange={(checked) => {
-                                        return checked
+                                        checked
                                           ? field.onChange([
                                               ...(field.value || []),
                                               item.value,
@@ -146,7 +146,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                         item.value
                                       )}
                                       onCheckedChange={(checked) => {
-                                        return checked
+                                        checked
                                           ? field.onChange([
                                               ...(field.value || []),
                                               item.value,
@@ -203,7 +203,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                         item.value
                                       )}
                                       onCheckedChange={(checked) => {
-                                        return checked
+                                        checked
                                           ? field.onChange([
                                               ...(field.value || []),
                                               item.value,
