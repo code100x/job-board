@@ -11,6 +11,7 @@ import {
 import {
   Select,
   SelectContent,
+  SelectItem,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
@@ -38,9 +39,13 @@ const PostJobForm = () => {
       description: '',
       companyName: '',
       location: '',
-      hasSalaryRange: false,
+      workMode: 'remote',
+      type: 'full-time',
+      category: 'design',
+      hasSalaryRange: true,
       minSalary: 0,
       maxSalary: 0,
+      application: '',
     },
   });
 
@@ -147,7 +152,7 @@ const PostJobForm = () => {
           <div className="grid grid-cols-2 gap-4">
             <FormField
               control={form.control}
-              name="title"
+              name="category"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-medium">Category*</FormLabel>
@@ -161,7 +166,12 @@ const PostJobForm = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {/* Add category options here */}
+                      <SelectItem value="design">Design</SelectItem>
+                      <SelectItem value="development">Development</SelectItem>
+                      <SelectItem value="marketing">Marketing</SelectItem>
+                      <SelectItem value="management">Management</SelectItem>
+                      <SelectItem value="finance">Finance</SelectItem>
+                      <SelectItem value="support">Support</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormItem>
@@ -170,21 +180,23 @@ const PostJobForm = () => {
 
             <FormField
               control={form.control}
-              name="title"
+              name="workMode"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-medium">Timezone*</FormLabel>
+                  <FormLabel className="font-medium">Work mode*</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <FormControl>
                       <SelectTrigger className="bg-gray-800 border-none text-white">
-                        <SelectValue placeholder="Select a timezone" />
+                        <SelectValue placeholder="Select a workmode" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {/* Add timezone options here */}
+                      <SelectItem value="remote">Remote</SelectItem>
+                      <SelectItem value="office">Office</SelectItem>
+                      <SelectItem value="hybrid">Hybrid</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormItem>
@@ -195,14 +207,11 @@ const PostJobForm = () => {
           <div className="grid grid-cols-2 gap-4">
             <FormField
               control={form.control}
-              name="title"
+              name="hasSalaryRange"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-medium">Salary*</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange}>
                     <FormControl>
                       <SelectTrigger className="bg-gray-800 border-none text-white">
                         <SelectValue placeholder="Select a salary range" />
@@ -210,6 +219,13 @@ const PostJobForm = () => {
                     </FormControl>
                     <SelectContent>
                       {/* Add salary range options here */}
+                      <SelectItem value="$0-10k">$0-10k</SelectItem>
+                      <SelectItem value="$10k-25k">$10k-25k</SelectItem>
+                      <SelectItem value="$25k-50k">$25k-50k</SelectItem>
+                      <SelectItem value="$50k-75k">$50k-75k</SelectItem>
+                      <SelectItem value="$75k-100k">$75k-100k</SelectItem>
+                      <SelectItem value="$100k+">$100k+</SelectItem>
+                      <SelectItem value="commision">Commision</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormItem>
@@ -218,7 +234,7 @@ const PostJobForm = () => {
 
             <FormField
               control={form.control}
-              name="title"
+              name="type"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-medium">Type*</FormLabel>
@@ -232,7 +248,10 @@ const PostJobForm = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {/* Add job type options here */}
+                      <SelectItem value="full-time">Full-time</SelectItem>
+                      <SelectItem value="part-time">Part-time</SelectItem>
+                      <SelectItem value="contract">Contract</SelectItem>
+                      <SelectItem value="internship">Internship</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormItem>
@@ -242,15 +261,15 @@ const PostJobForm = () => {
 
           <FormField
             control={form.control}
-            name="title"
+            name="location"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="font-medium">Tags</FormLabel>
+                <FormLabel className="font-medium">Location</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
                     className="w-full bg-gray-800 border-none text-white"
-                    placeholder="Search for tags"
+                    placeholder="Where is the job located?"
                   />
                 </FormControl>
               </FormItem>
@@ -259,7 +278,7 @@ const PostJobForm = () => {
 
           <FormField
             control={form.control}
-            name="title"
+            name="application"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="font-medium">Application*</FormLabel>
@@ -333,7 +352,7 @@ const PostJobForm = () => {
               modules={modules}
               formats={formats}
               placeholder="Tell us about your company"
-              className="text-white bg-gray-800 overflow-hidden job-description-editor"
+              className="text-white bg-gray-800 rounded-lg overflow-hidden job-description-editor"
             />
           </div>
         </div>

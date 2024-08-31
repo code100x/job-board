@@ -12,6 +12,37 @@ export enum SortByEnums {
   POSTEDAT_ASC = 'postedat_asc',
   POSTEDAT_DESC = 'postedat_desc',
 }
+export const jobType = {
+  fullTime: 'full-time',
+  partTime: 'part-time',
+  contract: 'contract',
+  internship: 'internship',
+};
+
+export enum JobTypeEnums {
+  FULLTIME = 'full-time',
+  PARTTIME = 'part-time',
+  CONTRACT = 'contract',
+  INTERNSHIP = 'internship',
+}
+
+export const category = {
+  design: 'design',
+  development: 'development',
+  marketing: 'marketing',
+  management: 'management',
+  finance: 'finance',
+  support: 'support',
+};
+
+export enum CategoryEnums {
+  DESIGN = 'design',
+  DEVELOPMENT = 'development',
+  MARKETING = 'marketing',
+  MANAGEMENT = 'management',
+  FINANCE = 'finance',
+  SUPPORT = 'support',
+}
 export const filters = {
   workMode: [
     {

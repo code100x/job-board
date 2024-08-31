@@ -1,11 +1,18 @@
 import { z } from 'zod';
-import { WorkModeEnums } from '../constant/jobs.constant';
+import {
+  CategoryEnums,
+  JobTypeEnums,
+  WorkModeEnums,
+} from '../constant/jobs.constant';
 
 export const JobPostSchema = z
   .object({
     title: z.string().min(1, 'Title is required'),
+    application: z.string().min(1, 'Application is required'),
     description: z.string().min(1, 'Description is required'),
     companyName: z.string().min(1, 'Company Name is required'),
+    companyEmail: z.string().email('Invalid email').min(1, 'Email is required'),
+    companyBio: z.string().min(1, 'Company Bio is required'),
     location: z.string().min(1, 'Location is required'),
     hasSalaryRange: z.boolean(),
     minSalary: z.coerce
@@ -18,6 +25,22 @@ export const JobPostSchema = z
       .optional(),
     workMode: z.enum(['remote', 'office', 'hybrid'], {
       message: 'Work mode is required',
+    }),
+    category: z.enum(
+      [
+        'design',
+        'development',
+        'marketing',
+        'management',
+        'finance',
+        'support',
+      ],
+      {
+        message: 'Category is required',
+      }
+    ),
+    type: z.enum(['full-time', 'part-time', 'contract'], {
+      message: 'Type is required',
     }),
   })
   .superRefine((data, ctx) => {
@@ -56,6 +79,47 @@ export const JobQuerySchema = z.object({
           WorkModeEnums.REMOTE,
           WorkModeEnums.HYBRID,
           WorkModeEnums.OFFICE,
+        ])
+      ),
+    ])
+    .optional()
+    .transform((val) => {
+      if (typeof val === 'string') {
+        return [val];
+      }
+      return val;
+    }),
+  category: z
+    .union([
+      z.string(),
+      z.array(
+        z.enum([
+          CategoryEnums.DESIGN,
+          CategoryEnums.DEVELOPMENT,
+          CategoryEnums.MARKETING,
+          CategoryEnums.FINANCE,
+          CategoryEnums.SUPPORT,
+          CategoryEnums.MANAGEMENT,
+        ])
+      ),
+    ])
+    .optional()
+    .transform((val) => {
+      if (typeof val === 'string') {
+        return [val];
+      }
+      return val;
+    }),
+
+  type: z
+    .union([
+      z.string(),
+      z.array(
+        z.enum([
+          JobTypeEnums.FULLTIME,
+          JobTypeEnums.PARTTIME,
+          JobTypeEnums.CONTRACT,
+          JobTypeEnums.INTERNSHIP,
         ])
       ),
     ])
