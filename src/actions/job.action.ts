@@ -15,7 +15,6 @@ import {
 import { getJobFilters } from '@/services/jobs.services';
 import { ServerActionReturnType } from '@/types/api.types';
 import { getAllJobsAdditonalType, getJobType } from '@/types/jobs.types';
-//import { redirect } from 'next/navigation';
 
 type additional = {
   isVerifiedJob: boolean;
