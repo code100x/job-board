@@ -1,26 +1,25 @@
 'use client';
-import { jobFilterQuery } from '@/actions/job.action';
 import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
 import {
   PaginationEllipsis,
   PaginationItem,
   PaginationLink,
 } from './pagination';
+import useSetQueryParams from '@/hooks/useSetQueryParams';
 import { cn } from '@/lib/utils';
 
 export const PaginationPages = ({
   currentPage,
   totalPages,
-  searchParams,
-  baseUrl,
 }: {
   currentPage: number;
   totalPages: number;
   searchParams: JobQuerySchemaType;
   baseUrl: string;
 }) => {
+  const setQueryParams = useSetQueryParams();
   function paginationHandler(page: number) {
-    jobFilterQuery({ ...searchParams, page: page }, baseUrl);
+    setQueryParams({ page: page.toString() });
   }
   const pages: JSX.Element[] = [];
   if (totalPages <= 5) {

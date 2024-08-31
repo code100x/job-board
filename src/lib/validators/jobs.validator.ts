@@ -85,7 +85,7 @@ export const JobQuerySchema = z.object({
     .optional()
     .transform((val) => {
       if (typeof val === 'string') {
-        return [val];
+        return val.split(',');
       }
       return val;
     }),
@@ -135,7 +135,7 @@ export const JobQuerySchema = z.object({
     .optional()
     .transform((val) => {
       if (typeof val === 'string') {
-        return [val];
+        return val.split(',');
       }
       return val;
     }),
@@ -145,7 +145,7 @@ export const JobQuerySchema = z.object({
     .optional()
     .transform((val) => {
       if (typeof val === 'string') {
-        return [val];
+        return val.split(',');
       }
       return val;
     }),
