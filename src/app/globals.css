@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer base {
+  .paused {
+    animation-play-state: paused;
+  }
   :root {
     --stroke-primary: 0 0% 90%;
     --stroke-secondary: 0 0% 92.44%;
@@ -86,5 +89,211 @@
 @keyframes dash {
   to {
     stroke-dashoffset: 0;
+  }
+}
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.wrapper {
+  margin-top: 2rem;
+  width: 90%;
+  max-width: 1536px;
+  margin-inline: auto;
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+  mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 1) 5%,
+    rgba(0, 0, 0, 1) 95%,
+    rgba(0, 0, 0, 0)
+  );
+}
+.itemLeft img {
+  height: 100%;
+  width: 100%;
+  border-radius: 10px;
+}
+.itemRight img {
+  height: 100%;
+  width: 100%;
+  border-radius: 10px;
+}
+
+@keyframes scrollLeft {
+  to {
+    left: -200px;
+  }
+}
+
+@keyframes scrollRight {
+  to {
+    right: -200px;
+  }
+}
+
+.itemLeft,
+.itemRight {
+  width: 200px;
+  height: 180px;
+  /* background-color: #e11d48; */
+  border-radius: 10px;
+  position: absolute;
+  animation-timing-function: linear;
+  animation-duration: 30s;
+  animation-iteration-count: infinite;
+}
+
+.itemLeft {
+  left: max(calc(200px * 8), 100%);
+  animation-name: scrollLeft;
+}
+
+.itemRight {
+  right: max(calc(200px * 8), calc(100% + 200px));
+  animation-name: scrollRight;
+}
+
+.item1 {
+  animation-delay: calc(30s / 8 * (8 - 1) * -1);
+}
+
+.item2 {
+  animation-delay: calc(30s / 8 * (8 - 2) * -1);
+}
+
+.item3 {
+  animation-delay: calc(30s / 8 * (8 - 3) * -1);
+}
+
+.item4 {
+  animation-delay: calc(30s / 8 * (8 - 4) * -1);
+}
+
+.item5 {
+  animation-delay: calc(30s / 8 * (8 - 5) * -1);
+}
+
+.item6 {
+  animation-delay: calc(30s / 8 * (8 - 6) * -1);
+}
+
+.item7 {
+  animation-delay: calc(30s / 8 * (8 - 7) * -1);
+}
+
+.item8 {
+  animation-delay: calc(30s / 8 * (8 - 8) * -1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .wrapper {
+    height: 150px;
+  }
+
+  .itemLeft,
+  .itemRight {
+    width: 150px;
+    height: 130px;
+  }
+
+  .itemLeft {
+    left: max(calc(150px * 8), 100%);
+  }
+
+  .itemRight {
+    right: max(calc(150px * 8), calc(100% + 150px));
+  }
+}
+
+@media (max-width: 480px) {
+  .wrapper {
+    height: 100px;
+  }
+
+  .itemLeft,
+  .itemRight {
+    width: 100px;
+    height: 80px;
+  }
+
+  .itemLeft {
+    left: max(calc(100px * 8), 100%);
+  }
+
+  .itemRight {
+    right: max(calc(100px * 8), calc(100% + 100px));
+  }
+}
+.scroll-container {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  position: relative;
+}
+
+.scroll-content {
+  display: flex;
+  animation: scroll 30s linear infinite;
+}
+
+.scroll-content::after {
+  content: '';
+  display: flex;
+  animation: scroll 30s linear infinite;
+}
+
+.scroll-content a {
+  flex: 0 0 auto;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* For small devices */
+@media (max-width: 600px) {
+  .scroll-content,
+  .scroll-content::after {
+    animation: scroll-small 1s linear infinite;
+  }
+
+  @keyframes scroll-small {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+}
+.loader {
+  border: 8px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 8px solid #3498db;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }

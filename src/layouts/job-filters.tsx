@@ -1,5 +1,4 @@
 'use client';
-import { jobFilterQuery } from '@/actions/job.action';
 import { filters, WorkModeEnums } from '@/lib/constant/jobs.constant';
 import {
   JobQuerySchema,
@@ -24,31 +23,18 @@ import {
 } from '../components/ui/form';
 import { Separator } from '../components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { cn, formatFilterSearchParams } from '@/lib/utils';
-import { usePathname } from 'next/navigation';
-import APP_PATHS from '@/config/path.config';
+import { cn } from '@/lib/utils';
+import useSetQueryParams from '@/hooks/useSetQueryParams';
+import { useEffect } from 'react';
 
-const JobFilters = ({
-  searchParams,
-  baseUrl,
-}: {
-  searchParams: JobQuerySchemaType;
-  baseUrl: string;
-}) => {
-  const pathname = usePathname();
-  const isHome = pathname === APP_PATHS.HOME;
+const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
+  const setQueryParams = useSetQueryParams();
   const form = useForm<JobQuerySchemaType>({
     resolver: zodResolver(JobQuerySchema),
     defaultValues: {
-      workmode:
-        searchParams.workmode &&
-        (formatFilterSearchParams(searchParams.workmode) as WorkModeEnums[]),
-      salaryrange:
-        searchParams.salaryrange &&
-        formatFilterSearchParams(searchParams.salaryrange),
-      location:
-        searchParams.location &&
-        formatFilterSearchParams(searchParams.location),
+      workmode: searchParams.workmode,
+      salaryrange: searchParams.salaryrange,
+      location: searchParams.location,
     },
   });
 
@@ -132,7 +118,6 @@ const JobFilters = ({
                                                 (value) => value !== item.value
                                               )
                                             );
-                                        form.handleSubmit(handleFormSubmit)();
                                       }}
                                     />
                                   </FormControl>
@@ -187,7 +172,6 @@ const JobFilters = ({
                                                 (value) => value !== item.value
                                               )
                                             );
-                                        form.handleSubmit(handleFormSubmit)();
                                       }}
                                     />
                                   </FormControl>
@@ -245,7 +229,6 @@ const JobFilters = ({
                                                 (value) => value !== item.value
                                               )
                                             );
-                                        form.handleSubmit(handleFormSubmit)();
                                       }}
                                       hidden
                                     />

@@ -1,5 +1,4 @@
 'use client';
-import { jobFilterQuery } from '@/actions/job.action';
 import {
   Select,
   SelectContent,
@@ -25,47 +24,42 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import useSetQueryParams from '@/hooks/useSetQueryParams';
 import { usePathname } from 'next/navigation';
-import JobFilters from './job-filters';
 import Icon from '@/components/ui/icon';
 import APP_PATHS from '@/config/path.config';
-
+import { useEffect } from 'react';
+import JobFilters from './job-filters';
 const FormSchema = z.object({
   search: z.string().optional(),
 });
 
-const JobsHeader = ({
-  searchParams,
-  baseUrl,
-}: {
-  searchParams: JobQuerySchemaType;
-  baseUrl: string;
-}) => {
+const JobsHeader = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   const pathname = usePathname();
   const isHome = pathname === APP_PATHS.HOME;
-
-  let debounceTimeout: NodeJS.Timeout;
-
+  const setQueryParams = useSetQueryParams();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       search: '',
     },
   });
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    jobFilterQuery({ ...searchParams, search: data.search, page: 1 }, baseUrl);
-  }
+  const formValues = form.watch();
+
   function sortChangeHandler(value: SortByEnums) {
-    jobFilterQuery({ ...searchParams, sortby: value, page: 1 }, baseUrl);
+    setQueryParams({ sortby: value, page: 1 });
   }
+
+  useEffect(() => {
+    setQueryParams({
+      search: formValues.search,
+    });
+  }, [formValues, searchParams, setQueryParams]);
 
   return (
     <div className="flex flex-col  gap-5 ">
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className=" relative w-full grid grid-cols-[1fr_auto]  "
-        >
+        <form className="w-full grid grid-cols-[1fr_auto] gap-2">
           <FormField
             control={form.control}
             name="search"
@@ -76,15 +70,6 @@ const JobsHeader = ({
                     placeholder="Search by title or company name"
                     {...field}
                     className="rounded-full p-5 py-6 dark:bg-neutral-900 truncate"
-                    onChange={(e) => {
-                      field.onChange(e);
-                      if (debounceTimeout) {
-                        clearTimeout(debounceTimeout);
-                      }
-                      debounceTimeout = setTimeout(() => {
-                        form.handleSubmit(onSubmit)();
-                      }, 300);
-                    }}
                   />
                 </FormControl>
                 <FormMessage />
@@ -101,7 +86,7 @@ const JobsHeader = ({
               <Icon icon="filter" className="cursor-pointer" size="20" />
             </PopoverTrigger>
             <PopoverContent className="bg-transparent border-none">
-              <JobFilters searchParams={searchParams} baseUrl={baseUrl} />
+              <JobFilters searchParams={searchParams} />
             </PopoverContent>
           </Popover>
         )}
