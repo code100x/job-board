@@ -31,7 +31,7 @@ export const JobLanding = async ({
   return (
     <div className="max-w-screen-lg mx-auto grid grid-cols-1  gap-6 py-8 pt-10">
       <div className="grow  px-5">
-        <JobsHeader searchParams={searchParams} baseUrl="/" />
+        <JobsHeader searchParams={searchParams} />
         <Suspense fallback={<JobCardLoader />}>
           <JobCard searchParams={searchParams} />
         </Suspense>
