@@ -47,7 +47,11 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   }, [formValues, setQueryParams, searchParams]);
 
   return (
-    <aside className="rounded-lg border bg-background  max-w-[320px] w-full p-6 h-fit  top-20">
+    <aside
+      className={cn(
+        'rounded-lg  bg-background  min-w-[290px]  p-6 h-fit  top-20'
+      )}
+    >
       <div className="flex items-center justify-between">
         <h3 className="font-medium text-base text-primary-text">All Filters</h3>
       </div>

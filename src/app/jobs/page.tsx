@@ -17,8 +17,10 @@ const page = async ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   }
   const parsedSearchParams = parsedData.data;
   return (
-    <div className="container flex gap-5 pt-5">
-      <JobFilters searchParams={parsedSearchParams} />
+    <div className="container flex gap-5 pt-5 mt-10">
+      <div className="hidden sm:block border  h-fit rounded-lg w-[310px] ">
+        <JobFilters searchParams={parsedSearchParams} />
+      </div>
       <div className="grow">
         <JobsHeader searchParams={parsedSearchParams} />
         <Suspense
