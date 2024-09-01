@@ -17,7 +17,7 @@ const page = async ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   }
   const parsedSearchParams = parsedData.data;
   return (
-    <div className="container flex gap-5 pt-5">
+    <div className="container mt-4 flex gap-5 pt-5">
       <JobFilters searchParams={parsedSearchParams} />
       <div className="grow">
         <JobsHeader searchParams={parsedSearchParams} />
