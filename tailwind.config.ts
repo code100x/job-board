@@ -23,9 +23,7 @@ const config = {
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],
       },
-      backgroundImage: {
-        'blue-gradient': 'radial-gradient(circle, #3b82f6, #1e3a8a)',
-      },
+    
       colors: {
         'stroke-primary': 'hsl(var(--stroke-primary))',
         'stroke-secondary': 'hsl(var(--stroke-secondary))',
