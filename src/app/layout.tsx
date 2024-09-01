@@ -32,9 +32,11 @@ export default async function RootLayout({
       >
         <TopLoader />
         <Providers>
-          <Header />
-          <main className="grow grid">{children}</main>
-          <Footer />
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-1 mt-4">{children}</main>
+            <Footer />
+          </div>
         </Providers>
       </body>
     </html>
