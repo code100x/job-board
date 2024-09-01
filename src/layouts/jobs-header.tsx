@@ -1,5 +1,4 @@
 'use client';
-import { jobFilterQuery } from '@/actions/job.action';
 import {
   Select,
   SelectContent,
@@ -17,8 +16,6 @@ import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { useRouter } from 'next/navigation';
-
 import {
   Form,
   FormControl,
@@ -26,78 +23,43 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form';
-import { useDebounce } from '@uidotdev/usehooks';
 import { Input } from '@/components/ui/input';
+import useSetQueryParams from '@/hooks/useSetQueryParams';
 import { usePathname } from 'next/navigation';
-import JobFilters from './job-filters';
 import Icon from '@/components/ui/icon';
 import APP_PATHS from '@/config/path.config';
 import { useEffect } from 'react';
+import JobFilters from './job-filters';
 const FormSchema = z.object({
   search: z.string().optional(),
 });
 
-const JobsHeader = ({
-  searchParams,
-  baseUrl,
-}: {
-  searchParams: JobQuerySchemaType;
-  baseUrl: string;
-}) => {
+const JobsHeader = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   const pathname = usePathname();
   const isHome = pathname === APP_PATHS.HOME;
-  const router = useRouter();
-
-  function sortChangeHandler(value: SortByEnums) {
-    jobFilterQuery({ ...searchParams, sortby: value, page: 1 }, baseUrl);
-  }
-
-  let debounceTimeout: NodeJS.Timeout;
-
+  const setQueryParams = useSetQueryParams();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       search: '',
     },
   });
+  const formValues = form.watch();
 
-  const searchValue = form.watch('search');
-  const debouncedSearchValue = useDebounce(searchValue, 100);
+  function sortChangeHandler(value: SortByEnums) {
+    setQueryParams({ sortby: value, page: 1 });
+  }
 
   useEffect(() => {
-    const fetch = async () => {
-      if (debouncedSearchValue !== 'undefined') {
-        if (debouncedSearchValue?.length) {
-          await onSubmit({ search: debouncedSearchValue });
-        } else {
-          router.push(baseUrl);
-        }
-      } else {
-        router.push(baseUrl);
-      }
-    };
-
-    fetch();
-  }, [debouncedSearchValue]);
-
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    jobFilterQuery(
-      {
-        ...searchParams,
-        search: data.search,
-        page: 1,
-      },
-      baseUrl
-    );
-  }
+    setQueryParams({
+      search: formValues.search,
+    });
+  }, [formValues, searchParams, setQueryParams]);
 
   return (
     <div className="flex flex-col  gap-5 ">
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className=" relative w-full grid grid-cols-[1fr_auto]  "
-        >
+        <form className="w-full grid grid-cols-[1fr_auto] gap-2">
           <FormField
             control={form.control}
             name="search"
@@ -108,15 +70,6 @@ const JobsHeader = ({
                     placeholder="Search by title or company name"
                     {...field}
                     className="rounded-full p-5 py-6 dark:bg-neutral-900 truncate"
-                    onChange={(e) => {
-                      field.onChange(e);
-                      if (debounceTimeout) {
-                        clearTimeout(debounceTimeout);
-                      }
-                      debounceTimeout = setTimeout(() => {
-                        form.handleSubmit(onSubmit)();
-                      }, 300);
-                    }}
                   />
                 </FormControl>
                 <FormMessage />
@@ -133,7 +86,7 @@ const JobsHeader = ({
               <Icon icon="filter" className="cursor-pointer" size="20" />
             </PopoverTrigger>
             <PopoverContent className="bg-transparent border-none">
-              <JobFilters searchParams={searchParams} baseUrl={baseUrl} />
+              <JobFilters searchParams={searchParams} />
             </PopoverContent>
           </Popover>
         )}
