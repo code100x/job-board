@@ -21,6 +21,7 @@ import APP_PATHS from '@/config/path.config';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { redirect } from 'next/navigation';
+
 dayjs.extend(relativeTime);
 
 export const calculateTimeSincePosted = (postedAt: Date): string => {
