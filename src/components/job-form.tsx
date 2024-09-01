@@ -27,8 +27,10 @@ import { Input } from './ui/input';
 import { useToast } from './ui/use-toast';
 import { Calendar, LucideRocket, MailOpenIcon } from 'lucide-react';
 import JobDescriptionEditor from './JobDescriptionEditor';
-import ReactQuill from 'react-quill';
+import dynamic from 'next/dynamic';
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 import Image from 'next/image';
+import { FaFileUpload } from 'react-icons/fa';
 
 const PostJobForm = () => {
   const { toast } = useToast();
@@ -48,6 +50,11 @@ const PostJobForm = () => {
       application: '',
     },
   });
+
+  const handleClick = () => {
+    //@ts-ignore
+    document.getElementById('fileInput').click();
+  };
 
   const modules = {
     toolbar: [
@@ -311,9 +318,18 @@ const PostJobForm = () => {
 
         {/* Logo Upload Section */}
         <div className="flex flex-col items-center mb-6">
-          <div className="w-20 h-20 bg-gray-700 border border-dashed border-gray-500 rounded-md flex items-center justify-center cursor-pointer mb-2">
-            {/* Placeholder for Avatar */}
+          <div
+            className="w-20 h-20 bg-gray-700 border border-dashed border-gray-500 rounded-md flex items-center justify-center cursor-pointer mb-2"
+            onClick={handleClick}
+          >
+            <FaFileUpload className="text-white text-2xl" />
           </div>
+          <input
+            id="fileInput"
+            type="file"
+            accept="image/*"
+            className="hidden"
+          />
           <p className="text-sm text-gray-500 text-center">
             Click the avatar to change or upload your company logo
           </p>
