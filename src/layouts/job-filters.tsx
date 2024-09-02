@@ -1,5 +1,5 @@
 'use client';
-import { filters, WorkModeEnums } from '@/lib/constant/jobs.constant';
+import { filters } from '@/lib/constant/jobs.constant';
 import {
   JobQuerySchema,
   JobQuerySchemaType,
@@ -26,6 +26,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import useSetQueryParams from '@/hooks/useSetQueryParams';
 import { useEffect } from 'react';
+import { WorkMode } from '@prisma/client';
 
 const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   const setQueryParams = useSetQueryParams();
@@ -75,38 +76,36 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                     name="workmode"
                     render={() => (
                       <FormItem>
-                        {filters.workMode.map((item) => (
+                        {Object.entries(WorkMode).map(([item, index]) => (
                           <FormField
-                            key={item.id}
+                            key={index}
                             control={form.control}
                             name="workmode"
                             render={({ field }) => {
                               return (
                                 <FormItem
-                                  key={item.id}
+                                  key={index}
                                   className="flex items-center space-x-3 space-y-0"
                                 >
                                   <FormControl>
                                     <Checkbox
-                                      checked={field.value?.includes(
-                                        item.value as WorkModeEnums
-                                      )}
+                                      checked={field.value?.includes(item)}
                                       onCheckedChange={(checked) => {
                                         checked
                                           ? field.onChange([
                                               ...(field.value || []),
-                                              item.value,
+                                              item,
                                             ])
                                           : field.onChange(
                                               field.value?.filter(
-                                                (value) => value !== item.value
+                                                (value) => value !== item
                                               )
                                             );
                                       }}
                                     />
                                   </FormControl>
                                   <FormLabel className="text-sm font-normal">
-                                    {item.label}
+                                    {item}
                                   </FormLabel>
                                 </FormItem>
                               );
@@ -183,34 +182,30 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                     name="location"
                     render={() => (
                       <FormItem className="flex flex-wrap gap-2 space-y-0">
-                        {filters.location.map((item) => (
+                        {Object.entries(Location).map(([item, index]) => (
                           <FormField
-                            key={item.id}
+                            key={index}
                             control={form.control}
                             name="location"
                             render={({ field }) => {
                               return (
                                 <FormItem
-                                  key={item.id}
+                                  key={index}
                                   className="flex items-center space-y-0 group"
-                                  aria-checked={field.value?.includes(
-                                    item.value
-                                  )}
+                                  aria-checked={field.value?.includes(item)}
                                 >
                                   <FormControl>
                                     <Checkbox
-                                      checked={field.value?.includes(
-                                        item.value
-                                      )}
+                                      checked={field.value?.includes(item)}
                                       onCheckedChange={(checked) => {
                                         checked
                                           ? field.onChange([
                                               ...(field.value || []),
-                                              item.value,
+                                              item,
                                             ])
                                           : field.onChange(
                                               field.value?.filter(
-                                                (value) => value !== item.value
+                                                (value) => value !== item
                                               )
                                             );
                                       }}
@@ -218,7 +213,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                     />
                                   </FormControl>
                                   <FormLabel className="text-primary-text font-normal text-xs cursor-pointer group-aria-checked:bg-primary group-aria-checked:text-primary-foreground flex items-center justify-start py-2 px-4 rounded-full border">
-                                    {item.label}
+                                    {item}
                                   </FormLabel>
                                 </FormItem>
                               );
