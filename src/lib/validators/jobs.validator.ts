@@ -98,6 +98,11 @@ export const JobByIdSchema = z.object({
   id: z.string().min(1, 'Job id is required'),
 });
 
+export const JobByUserIdSchema = z.object({
+  id: z.string(),
+});
+
 export type JobByIdSchemaType = z.infer<typeof JobByIdSchema>;
 export type JobPostSchemaType = z.infer<typeof JobPostSchema>;
 export type JobQuerySchemaType = z.infer<typeof JobQuerySchema>;
+export type JobByUserIdSchemaType = z.infer<typeof JobByUserIdSchema>;

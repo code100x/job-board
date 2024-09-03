@@ -7,6 +7,8 @@ import { SuccessResponse } from '@/lib/success';
 import {
   JobByIdSchema,
   JobByIdSchemaType,
+  JobByUserIdSchema,
+  JobByUserIdSchemaType,
   JobPostSchema,
   JobPostSchemaType,
   JobQuerySchema,
@@ -14,7 +16,11 @@ import {
 } from '@/lib/validators/jobs.validator';
 import { getJobFilters } from '@/services/jobs.services';
 import { ServerActionReturnType } from '@/types/api.types';
-import { getAllJobsAdditonalType, getJobType } from '@/types/jobs.types';
+import {
+  getAllJobsAdditonalType,
+  getJobType,
+  JobType,
+} from '@/types/jobs.types';
 
 type additional = {
   isVerifiedJob: boolean;
@@ -129,5 +135,36 @@ export const getJobById = withServerActionAsyncCatcher<
   });
   return new SuccessResponse(`${id} Job fetched successfully`, 200, {
     job,
+  }).serialize();
+});
+
+export const getUserCreatedJob = withServerActionAsyncCatcher<
+  JobByUserIdSchemaType,
+  ServerActionReturnType<getAllJobsAdditonalType>
+>(async (data) => {
+  const result = JobByUserIdSchema.parse(data);
+  const { id } = result;
+
+  const jobs: JobType[] = await prisma.job.findMany({
+    where: {
+      userId: id,
+    },
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      companyName: true,
+      location: true,
+      workMode: true,
+      minSalary: true,
+      maxSalary: true,
+      postedAt: true,
+    },
+  });
+  const totalJobs = jobs.length;
+
+  return new SuccessResponse(`Jobs fetched successfully`, 200, {
+    jobs,
+    totalJobs,
   }).serialize();
 });
