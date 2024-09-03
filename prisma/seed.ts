@@ -2,14 +2,14 @@
 import { Currency, Role, WorkMode } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import prisma from '../src/config/prisma.config';
-import { Location } from '@prisma/client';
+import { JobLocations } from '@prisma/client';
 
 const users = [
   { id: '1', name: 'Jack', email: 'user@gmail.com' },
   { id: '2', name: 'Admin', email: 'admin@gmail.com', role: Role.ADMIN },
 ];
 
-const locationArr = Object.keys(Location);
+const locationArr = Object.keys(JobLocations);
 
 let jobs = [
   {
@@ -444,9 +444,6 @@ async function seedJobs() {
         locationArr[index] !== undefined ? locationArr[index] : locationArr[3],
     };
   });
-  console.log({ locationArr });
-  console.log({ jobs });
-
   try {
     await Promise.all(
       jobs.map(async (j) =>

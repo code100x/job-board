@@ -1,13 +1,3 @@
-export const workMode = {
-  remote: 'remote',
-  office: 'office',
-  hybrid: 'hybrid',
-};
-export enum WorkModeEnums {
-  REMOTE = 'remote',
-  OFFICE = 'office',
-  HYBRID = 'hybrid',
-}
 export enum SortByEnums {
   POSTEDAT_ASC = 'postedat_asc',
   POSTEDAT_DESC = 'postedat_desc',

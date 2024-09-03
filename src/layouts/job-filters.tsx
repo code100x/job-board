@@ -6,6 +6,7 @@ import {
 } from '@/lib/validators/jobs.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { JobLocations } from '@prisma/client';
 import {
   Accordion,
   AccordionContent,
@@ -27,6 +28,7 @@ import { cn } from '@/lib/utils';
 import useSetQueryParams from '@/hooks/useSetQueryParams';
 import { useEffect } from 'react';
 import { WorkMode } from '@prisma/client';
+import _ from 'lodash';
 
 const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   const setQueryParams = useSetQueryParams();
@@ -105,7 +107,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                     />
                                   </FormControl>
                                   <FormLabel className="text-sm font-normal">
-                                    {item}
+                                    {_.startCase(item)}
                                   </FormLabel>
                                 </FormItem>
                               );
@@ -182,7 +184,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                     name="location"
                     render={() => (
                       <FormItem className="flex flex-wrap gap-2 space-y-0">
-                        {Object.entries(Location).map(([item, index]) => (
+                        {Object.entries(JobLocations).map(([item, index]) => (
                           <FormField
                             key={index}
                             control={form.control}
@@ -213,7 +215,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                     />
                                   </FormControl>
                                   <FormLabel className="text-primary-text font-normal text-xs cursor-pointer group-aria-checked:bg-primary group-aria-checked:text-primary-foreground flex items-center justify-start py-2 px-4 rounded-full border">
-                                    {item}
+                                    {_.startCase(item.toLowerCase())}
                                   </FormLabel>
                                 </FormItem>
                               );

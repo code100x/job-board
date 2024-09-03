@@ -38,7 +38,7 @@ const PostJobForm = () => {
       title: '',
       description: '',
       companyName: '',
-      location: '',
+      location: undefined,
       hasSalaryRange: false,
       minSalary: 0,
       maxSalary: 0,
