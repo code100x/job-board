@@ -82,7 +82,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                     name="workmode"
                     render={() => (
                       <FormItem>
-                        {Object.entries(WorkMode).map(([item, index]) => (
+                        {Object.keys(WorkMode).map((item, index) => (
                           <FormField
                             key={index}
                             control={form.control}
@@ -188,7 +188,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                     name="location"
                     render={() => (
                       <FormItem className="flex flex-wrap gap-2 space-y-0">
-                        {Object.entries(JobLocations).map(([item, index]) => (
+                        {Object.keys(JobLocations).map((item, index) => (
                           <FormField
                             key={index}
                             control={form.control}
