@@ -164,7 +164,7 @@ const PostJobForm = () => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {Object.entries(WorkMode).map(([item, key]) => (
+                    {Object.keys(WorkMode).map((item, key) => (
                       <SelectItem key={key} value={item}>
                         {item}
                       </SelectItem>
