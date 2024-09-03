@@ -1,7 +1,5 @@
 'use server';
-import { ADMIN_ROLE } from '@/config/app.config';
 import prisma from '@/config/prisma.config';
-import { withSession } from '@/lib/session';
 import { withServerActionAsyncCatcher } from '@/lib/async-catch';
 import { SuccessResponse } from '@/lib/success';
 import {
@@ -19,12 +17,11 @@ import { getAllJobsAdditonalType, getJobType } from '@/types/jobs.types';
 type additional = {
   isVerifiedJob: boolean;
 };
-export const createJob = withSession<
+export const createJob = withServerActionAsyncCatcher<
   JobPostSchemaType,
   ServerActionReturnType<additional>
->(async (session, data) => {
+>(async (data) => {
   const result = JobPostSchema.parse(data);
-  const isVerifiedJob = session.user.role === ADMIN_ROLE;
   const {
     companyName,
     location,
@@ -37,22 +34,20 @@ export const createJob = withSession<
   } = result;
   await prisma.job.create({
     data: {
-      userId: session.user.id,
+      userId: '1', // Default to 1 since there's no session to check for user id
       title,
       description,
       companyName,
       hasSalaryRange,
       minSalary,
       maxSalary,
-      isVerifiedJob,
       location,
       workMode,
+      isVerifiedJob: false, // Default to false since there's no session to check for admin role
     },
   });
-  const message = isVerifiedJob
-    ? 'Job created successfully'
-    : 'Job created successfully, waiting for admin approval';
-  const additonal = { isVerifiedJob };
+  const message = 'Job created successfully, waiting for admin approval';
+  const additonal = { isVerifiedJob: false };
   return new SuccessResponse(message, 201, additonal).serialize();
 });
 
