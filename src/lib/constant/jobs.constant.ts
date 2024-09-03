@@ -1,104 +1,54 @@
-export const workMode = {
-  remote: 'remote',
-  office: 'office',
-  hybrid: 'hybrid',
-};
-export enum WorkModeEnums {
-  REMOTE = 'remote',
-  OFFICE = 'office',
-  HYBRID = 'hybrid',
-}
-export enum SortByEnums {
-  POSTEDAT_ASC = 'postedat_asc',
-  POSTEDAT_DESC = 'postedat_desc',
-}
-export const jobType = {
-  fullTime: 'full-time',
-  partTime: 'part-time',
-  contract: 'contract',
-  internship: 'internship',
-};
+export const WorkMode = {
+  REMOTE: 'remote',
+  OFFICE: 'office',
+  HYBRID: 'hybrid',
+} as const;
 
-export enum JobTypeEnums {
-  FULLTIME = 'full-time',
-  PARTTIME = 'part-time',
-  CONTRACT = 'contract',
-  INTERNSHIP = 'internship',
-}
+export type WorkMode = (typeof WorkMode)[keyof typeof WorkMode];
 
-export const category = {
-  design: 'design',
-  development: 'development',
-  marketing: 'marketing',
-  management: 'management',
-  finance: 'finance',
-  support: 'support',
-};
+export const JobType = {
+  FULLTIME: 'full-time',
+  PARTTIME: 'part-time',
+  CONTRACT: 'contract',
+  INTERNSHIP: 'internship',
+} as const;
 
-export enum CategoryEnums {
-  DESIGN = 'design',
-  DEVELOPMENT = 'development',
-  MARKETING = 'marketing',
-  MANAGEMENT = 'management',
-  FINANCE = 'finance',
-  SUPPORT = 'support',
-}
+export type JobType = (typeof JobType)[keyof typeof JobType];
+
+export const Category = {
+  DESIGN: 'design',
+  DEVELOPMENT: 'development',
+  MARKETING: 'marketing',
+  MANAGEMENT: 'management',
+  FINANCE: 'finance',
+  SUPPORT: 'support',
+} as const;
+
+export type Category = (typeof Category)[keyof typeof Category];
+
+export const SortBy = {
+  POSTEDAT_ASC: 'postedat_asc',
+  POSTEDAT_DESC: 'postedat_desc',
+} as const;
+
+export type SortBy = (typeof SortBy)[keyof typeof SortBy];
+
 export const filters = {
   workMode: [
-    {
-      id: 1,
-      label: 'Remote',
-      value: workMode.remote,
-    },
-    {
-      id: 2,
-      label: 'Office',
-      value: workMode.office,
-    },
-    {
-      id: 3,
-      label: 'Hybrid',
-      value: workMode.hybrid,
-    },
+    { id: 1, label: 'Remote', value: WorkMode.REMOTE },
+    { id: 2, label: 'Office', value: WorkMode.OFFICE },
+    { id: 3, label: 'Hybrid', value: WorkMode.HYBRID },
   ],
   chooseCurrency: [
-    {
-      id: 1,
-      label: 'INR',
-      value: 'INR',
-    },
-    {
-      id: 2,
-      label: 'USD',
-      value: 'USD',
-    },
+    { id: 1, label: 'INR', value: 'INR' },
+    { id: 2, label: 'USD', value: 'USD' },
   ],
   salaryRange: [
-    {
-      id: 1,
-      label: '$0-$5k',
-      value: '0-5000',
-    },
-    {
-      id: 2,
-      label: '$5-$10k',
-      value: '5000-10000',
-    },
-    {
-      id: 3,
-      label: '$10-$30k',
-      value: '10000-30000',
-    },
-    {
-      id: 4,
-      label: '$30-$50k',
-      value: '30000-50000',
-    },
-    {
-      id: 5,
-      label: '$50k or above',
-      value: '50000-above',
-    },
+    { id: 1, label: '$0-$5k', value: '0-5000' },
+    { id: 2, label: '$5-$10k', value: '5000-10000' },
+    { id: 3, label: '$10-$30k', value: '10000-30000' },
+    { id: 4, label: '$30-$50k', value: '30000-50000' },
+    { id: 5, label: '$50k or above', value: '50000-above' },
   ],
   location: [
     { id: 1, label: 'Bangalore', value: 'bangalore' },
@@ -115,14 +65,6 @@ export const filters = {
 };
 
 export const jobSorting = [
-  {
-    id: 1,
-    label: 'Latest Jobs',
-    value: 'postedat_desc',
-  },
-  {
-    id: 2,
-    label: 'Oldest Jobs',
-    value: 'postedat_asc',
-  },
+  { id: 1, label: 'Latest Jobs', value: SortBy.POSTEDAT_DESC },
+  { id: 2, label: 'Oldest Jobs', value: SortBy.POSTEDAT_ASC },
 ];

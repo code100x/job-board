@@ -1,9 +1,5 @@
 import { z } from 'zod';
-import {
-  CategoryEnums,
-  JobTypeEnums,
-  WorkModeEnums,
-} from '../constant/jobs.constant';
+import { Category, JobType, WorkMode, SortBy } from '../constant/jobs.constant';
 
 export const JobPostSchema = z
   .object({
@@ -23,25 +19,23 @@ export const JobPostSchema = z
       .number({ message: 'Max salary must be a number' })
       .nonnegative()
       .optional(),
-    workMode: z.enum(['remote', 'office', 'hybrid'], {
+    workMode: z.enum([WorkMode.REMOTE, WorkMode.OFFICE, WorkMode.HYBRID], {
       message: 'Work mode is required',
     }),
-    category: z.enum(
+    category: z.enum(Object.values(Category) as [string, ...string[]], {
+      message: 'Category is required',
+    }),
+    type: z.enum(
       [
-        'design',
-        'development',
-        'marketing',
-        'management',
-        'finance',
-        'support',
+        JobType.FULLTIME,
+        JobType.PARTTIME,
+        JobType.CONTRACT,
+        JobType.INTERNSHIP,
       ],
       {
-        message: 'Category is required',
+        message: 'Type is required',
       }
     ),
-    type: z.enum(['full-time', 'part-time', 'contract'], {
-      message: 'Type is required',
-    }),
   })
   .superRefine((data, ctx) => {
     if (data.hasSalaryRange) {
@@ -74,13 +68,7 @@ export const JobQuerySchema = z.object({
   workmode: z
     .union([
       z.string(),
-      z.array(
-        z.enum([
-          WorkModeEnums.REMOTE,
-          WorkModeEnums.HYBRID,
-          WorkModeEnums.OFFICE,
-        ])
-      ),
+      z.array(z.enum(Object.values(WorkMode) as [string, ...string[]])),
     ])
     .optional()
     .transform((val) => {
@@ -92,16 +80,7 @@ export const JobQuerySchema = z.object({
   category: z
     .union([
       z.string(),
-      z.array(
-        z.enum([
-          CategoryEnums.DESIGN,
-          CategoryEnums.DEVELOPMENT,
-          CategoryEnums.MARKETING,
-          CategoryEnums.FINANCE,
-          CategoryEnums.SUPPORT,
-          CategoryEnums.MANAGEMENT,
-        ])
-      ),
+      z.array(z.enum(Object.values(Category) as [string, ...string[]])),
     ])
     .optional()
     .transform((val) => {
@@ -114,14 +93,7 @@ export const JobQuerySchema = z.object({
   type: z
     .union([
       z.string(),
-      z.array(
-        z.enum([
-          JobTypeEnums.FULLTIME,
-          JobTypeEnums.PARTTIME,
-          JobTypeEnums.CONTRACT,
-          JobTypeEnums.INTERNSHIP,
-        ])
-      ),
+      z.array(z.enum(Object.values(JobType) as [string, ...string[]])),
     ])
     .optional()
     .transform((val) => {
@@ -149,7 +121,9 @@ export const JobQuerySchema = z.object({
       }
       return val;
     }),
-  sortby: z.enum(['postedat_asc', 'postedat_desc']).default('postedat_desc'),
+  sortby: z
+    .enum(Object.values(SortBy) as [string, ...string[]])
+    .default(SortBy.POSTEDAT_DESC),
   page: z.coerce
     .number({ message: 'page must be a number' })
     .optional()
