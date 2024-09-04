@@ -5,6 +5,8 @@ import { withSession } from '@/lib/session';
 import { withServerActionAsyncCatcher } from '@/lib/async-catch';
 import { SuccessResponse } from '@/lib/success';
 import {
+  deleteJobByIdSchema,
+  DeleteJobByIdSchemaType,
   JobByIdSchema,
   JobByIdSchemaType,
   JobByUserIdSchema,
@@ -16,14 +18,14 @@ import {
 } from '@/lib/validators/jobs.validator';
 import { getJobFilters } from '@/services/jobs.services';
 import { ServerActionReturnType } from '@/types/api.types';
-import {
-  getAllJobsAdditonalType,
-  getJobType,
-  JobType,
-} from '@/types/jobs.types';
+import { getAllJobsAdditonalType, getJobType } from '@/types/jobs.types';
 
 type additional = {
   isVerifiedJob: boolean;
+};
+
+type deletedJob = {
+  deletedJobID: string;
 };
 export const createJob = withSession<
   JobPostSchemaType,
@@ -145,7 +147,7 @@ export const getUserCreatedJob = withServerActionAsyncCatcher<
   const result = JobByUserIdSchema.parse(data);
   const { id } = result;
 
-  const jobs: JobType[] = await prisma.job.findMany({
+  const jobs = await prisma.job.findMany({
     where: {
       userId: id,
     },
@@ -166,5 +168,22 @@ export const getUserCreatedJob = withServerActionAsyncCatcher<
   return new SuccessResponse(`Jobs fetched successfully`, 200, {
     jobs,
     totalJobs,
+  }).serialize();
+});
+
+export const deleteJobById = withServerActionAsyncCatcher<
+  DeleteJobByIdSchemaType,
+  ServerActionReturnType<deletedJob>
+>(async (data) => {
+  const result = deleteJobByIdSchema.parse(data);
+  const { id } = result;
+  const deletedJob = await prisma.job.delete({
+    where: {
+      id: id,
+    },
+  });
+  const deletedJobID = deletedJob.id;
+  return new SuccessResponse('Job Deleted Success', 200, {
+    deletedJobID,
   }).serialize();
 });
