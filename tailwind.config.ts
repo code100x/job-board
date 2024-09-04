@@ -23,7 +23,7 @@ const config = {
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],
       },
-    
+
       colors: {
         'stroke-primary': 'hsl(var(--stroke-primary))',
         'stroke-secondary': 'hsl(var(--stroke-secondary))',
