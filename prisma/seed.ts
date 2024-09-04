@@ -2,13 +2,16 @@
 import { Currency, Role, WorkMode } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import prisma from '../src/config/prisma.config';
+import { JobLocations } from '@prisma/client';
 
 const users = [
   { id: '1', name: 'Jack', email: 'user@gmail.com' },
   { id: '2', name: 'Admin', email: 'admin@gmail.com', role: Role.ADMIN },
 ];
 
-const jobs = [
+const locationArr = Object.keys(JobLocations);
+
+let jobs = [
   {
     id: '1',
     userId: '1',
@@ -17,7 +20,6 @@ const jobs = [
     companyName: 'Tech Corp',
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    location: 'New York',
     hasSalaryRange: true,
     minSalary: 60000,
     maxSalary: 80000,
@@ -31,7 +33,6 @@ const jobs = [
     companyName: 'Innovatech',
     workMode: WorkMode.office,
     currency: Currency.INR,
-    location: 'Bangalore',
     hasSalaryRange: false,
     minSalary: null,
     maxSalary: null,
@@ -45,7 +46,6 @@ const jobs = [
     companyName: 'Global Solutions',
     workMode: WorkMode.hybrid,
     currency: Currency.USD,
-    location: 'San Francisco',
     hasSalaryRange: true,
     minSalary: 90000,
     maxSalary: 120000,
@@ -60,7 +60,6 @@ const jobs = [
     companyName: 'DevOps Ltd.',
     workMode: WorkMode.remote,
     currency: Currency.INR,
-    location: 'Mumbai',
     hasSalaryRange: true,
     minSalary: 50000,
     maxSalary: 70000,
@@ -75,7 +74,6 @@ const jobs = [
     companyName: 'Productive Minds',
     workMode: WorkMode.hybrid,
     currency: Currency.USD,
-    location: 'Chicago',
     hasSalaryRange: true,
     minSalary: 110000,
     maxSalary: 150000,
@@ -90,7 +88,6 @@ const jobs = [
     companyName: 'Data Insights',
     workMode: WorkMode.office,
     currency: Currency.INR,
-    location: 'Hyderabad',
     hasSalaryRange: true,
     minSalary: 80000,
     maxSalary: 100000,
@@ -105,7 +102,6 @@ const jobs = [
     companyName: 'Creative Designs',
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    location: 'Seattle',
     hasSalaryRange: true,
     minSalary: 70000,
     maxSalary: 90000,
@@ -119,7 +115,6 @@ const jobs = [
     companyName: 'App Innovators',
     workMode: WorkMode.hybrid,
     currency: Currency.INR,
-    location: 'Delhi',
     hasSalaryRange: false,
     minSalary: null,
     maxSalary: null,
@@ -133,7 +128,6 @@ const jobs = [
     companyName: 'Cloud Works',
     workMode: WorkMode.office,
     currency: Currency.USD,
-    location: 'Austin',
     hasSalaryRange: true,
     minSalary: 100000,
     maxSalary: 130000,
@@ -147,7 +141,6 @@ const jobs = [
     companyName: 'SecureTech',
     workMode: WorkMode.remote,
     currency: Currency.INR,
-    location: 'Pune',
     hasSalaryRange: true,
     minSalary: 75000,
     maxSalary: 95000,
@@ -161,7 +154,6 @@ const jobs = [
     companyName: 'QA Solutions',
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    location: 'Boston',
     hasSalaryRange: true,
     minSalary: 45000,
     maxSalary: 50000,
@@ -175,7 +167,6 @@ const jobs = [
     companyName: 'Tech Docs',
     workMode: WorkMode.hybrid,
     currency: Currency.USD,
-    location: 'San Diego',
     hasSalaryRange: true,
     minSalary: 30000,
     maxSalary: 35000,
@@ -189,7 +180,6 @@ const jobs = [
     companyName: 'Support Corp',
     workMode: WorkMode.office,
     currency: Currency.USD,
-    location: 'Dallas',
     hasSalaryRange: true,
     minSalary: 20000,
     maxSalary: 25000,
@@ -203,7 +193,6 @@ const jobs = [
     companyName: 'Net Admins',
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    location: 'Houston',
     hasSalaryRange: true,
     minSalary: 35000,
     maxSalary: 40000,
@@ -217,7 +206,6 @@ const jobs = [
     companyName: 'Sys Solutions',
     workMode: WorkMode.hybrid,
     currency: Currency.USD,
-    location: 'Miami',
     hasSalaryRange: true,
     minSalary: 27000,
     maxSalary: 32000,
@@ -231,7 +219,6 @@ const jobs = [
     companyName: 'Sales Tech',
     workMode: WorkMode.office,
     currency: Currency.USD,
-    location: 'Chicago',
     hasSalaryRange: true,
     minSalary: 30000,
     maxSalary: 35000,
@@ -245,7 +232,6 @@ const jobs = [
     companyName: 'Market Pro',
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    location: 'Los Angeles',
     hasSalaryRange: true,
     minSalary: 20000,
     maxSalary: 25000,
@@ -259,7 +245,6 @@ const jobs = [
     companyName: 'Content Creators',
     workMode: WorkMode.hybrid,
     currency: Currency.USD,
-    location: 'New York',
     hasSalaryRange: true,
     minSalary: 25000,
     maxSalary: 30000,
@@ -273,7 +258,6 @@ const jobs = [
     companyName: 'Design Pros',
     workMode: WorkMode.office,
     currency: Currency.USD,
-    location: 'San Francisco',
     hasSalaryRange: true,
     minSalary: 22000,
     maxSalary: 27000,
@@ -287,7 +271,6 @@ const jobs = [
     companyName: 'Business Solutions',
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    location: 'Seattle',
     hasSalaryRange: true,
     minSalary: 38000,
     maxSalary: 43000,
@@ -301,7 +284,6 @@ const jobs = [
     companyName: 'SEO Experts',
     workMode: WorkMode.hybrid,
     currency: Currency.USD,
-    location: 'Denver',
     hasSalaryRange: true,
     minSalary: 15000,
     maxSalary: 20000,
@@ -315,7 +297,6 @@ const jobs = [
     companyName: 'DataPro',
     workMode: WorkMode.office,
     currency: Currency.USD,
-    location: 'Atlanta',
     hasSalaryRange: true,
     minSalary: 23000,
     maxSalary: 28000,
@@ -329,7 +310,6 @@ const jobs = [
     companyName: 'OpsCorp',
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    location: 'Phoenix',
     hasSalaryRange: true,
     minSalary: 29000,
     maxSalary: 34000,
@@ -343,7 +323,6 @@ const jobs = [
     companyName: 'Customer Care Inc.',
     workMode: WorkMode.hybrid,
     currency: Currency.USD,
-    location: 'Orlando',
     hasSalaryRange: true,
     minSalary: 26000,
     maxSalary: 31000,
@@ -357,7 +336,6 @@ const jobs = [
     companyName: 'Product Innovators',
     workMode: WorkMode.office,
     currency: Currency.USD,
-    location: 'Portland',
     hasSalaryRange: true,
     minSalary: 32000,
     maxSalary: 37000,
@@ -371,7 +349,6 @@ const jobs = [
     companyName: 'Social Media Pros',
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    location: 'Las Vegas',
     hasSalaryRange: true,
     minSalary: 18000,
     maxSalary: 23000,
@@ -385,7 +362,6 @@ const jobs = [
     companyName: 'HR Hub',
     workMode: WorkMode.hybrid,
     currency: Currency.USD,
-    location: 'Charlotte',
     hasSalaryRange: true,
     minSalary: 24000,
     maxSalary: 29000,
@@ -399,7 +375,6 @@ const jobs = [
     companyName: 'Supply Chain Solutions',
     workMode: WorkMode.office,
     currency: Currency.USD,
-    location: 'Detroit',
     hasSalaryRange: true,
     minSalary: 30000,
     maxSalary: 35000,
@@ -413,7 +388,6 @@ const jobs = [
     companyName: 'E-commerce Pros',
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    location: 'Philadelphia',
     hasSalaryRange: true,
     minSalary: 27000,
     maxSalary: 32000,
@@ -427,7 +401,6 @@ const jobs = [
     companyName: 'Project Managers Inc.',
     workMode: WorkMode.hybrid,
     currency: Currency.USD,
-    location: 'Nashville',
     hasSalaryRange: true,
     minSalary: 12000,
     maxSalary: 17000,
@@ -464,6 +437,13 @@ async function seedUsers() {
 }
 
 async function seedJobs() {
+  jobs = jobs.map((j, index) => {
+    return {
+      ...j,
+      location:
+        locationArr[index] !== undefined ? locationArr[index] : locationArr[3],
+    };
+  });
   try {
     await Promise.all(
       jobs.map(async (j) =>
@@ -477,6 +457,7 @@ async function seedJobs() {
             companyName: j.companyName,
             workMode: j.workMode,
             currency: j.currency,
+            //@ts-ignore
             location: j.location,
             hasSalaryRange: j.hasSalaryRange,
             minSalary: j.minSalary,

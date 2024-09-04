@@ -25,12 +25,12 @@ const AllJobs = async ({ searchParams }: PaginatorProps) => {
     DEFAULT_PAGE;
   const currentPage = parseInt(searchParams.page?.toString()) || DEFAULT_PAGE;
   return (
-    <div className="bg-background py-4 grid gap-3">
+    <div className="bg-background py-4 grid gap-3 w-full">
       {jobs.additional?.jobs.map((job) => {
         return (
           <Link key={job.id} href={`/jobs/${job.id}`}>
             <div
-              className="w-full flex flex-col items-start gap-4 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent"
+              className="w-[94%] mx-auto flex flex-col items-start gap-4 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent"
               key={job.id}
             >
               <div className="flex w-full flex-col gap-2">

@@ -44,11 +44,31 @@ export const filters = {
     { id: 2, label: 'USD', value: 'USD' },
   ],
   salaryRange: [
-    { id: 1, label: '$0-$5k', value: '0-5000' },
-    { id: 2, label: '$5-$10k', value: '5000-10000' },
-    { id: 3, label: '$10-$30k', value: '10000-30000' },
-    { id: 4, label: '$30-$50k', value: '30000-50000' },
-    { id: 5, label: '$50k or above', value: '50000-above' },
+    {
+      id: 1,
+      label: '$0-$5k',
+      value: '0-5000',
+    },
+    {
+      id: 2,
+      label: '$5-$10k',
+      value: '5000-10000',
+    },
+    {
+      id: 3,
+      label: '$10-$30k',
+      value: '10000-30000',
+    },
+    {
+      id: 4,
+      label: '$30-$50k',
+      value: '30000-50000',
+    },
+    {
+      id: 5,
+      label: '$50k or above',
+      value: '50000-above',
+    },
   ],
   location: [
     { id: 1, label: 'Bangalore', value: 'bangalore' },
