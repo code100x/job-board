@@ -1,14 +1,13 @@
 'use server';
 import prisma from '@/config/prisma.config';
 import { withServerActionAsyncCatcher } from '@/lib/async-catch';
+import { withSession } from '@/lib/session';
 import { SuccessResponse } from '@/lib/success';
 import {
   deleteJobByIdSchema,
   DeleteJobByIdSchemaType,
   JobByIdSchema,
   JobByIdSchemaType,
-  JobByUserIdSchema,
-  JobByUserIdSchemaType,
   JobPostSchema,
   JobPostSchemaType,
   JobQuerySchema,
@@ -132,37 +131,6 @@ export const getJobById = withServerActionAsyncCatcher<
   });
   return new SuccessResponse(`${id} Job fetched successfully`, 200, {
     job,
-  }).serialize();
-});
-
-export const getUserCreatedJob = withServerActionAsyncCatcher<
-  JobByUserIdSchemaType,
-  ServerActionReturnType<getAllJobsAdditonalType>
->(async (data) => {
-  const result = JobByUserIdSchema.parse(data);
-  const { id } = result;
-
-  const jobs = await prisma.job.findMany({
-    where: {
-      userId: id,
-    },
-    select: {
-      id: true,
-      title: true,
-      description: true,
-      companyName: true,
-      location: true,
-      workMode: true,
-      minSalary: true,
-      maxSalary: true,
-      postedAt: true,
-    },
-  });
-  const totalJobs = jobs.length;
-
-  return new SuccessResponse(`Jobs fetched successfully`, 200, {
-    jobs,
-    totalJobs,
   }).serialize();
 });
 

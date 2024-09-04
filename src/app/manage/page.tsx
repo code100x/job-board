@@ -12,9 +12,10 @@ const ManageJob = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
     console.error(parsedData.error);
     redirect('/jobs');
   }
+  const searchParamssd = parsedData.data;
   return (
     <div className="container">
-      <JobManagement />
+      <JobManagement searchParams={searchParamssd} />
     </div>
   );
 };

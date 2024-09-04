@@ -98,10 +98,6 @@ export const JobByIdSchema = z.object({
   id: z.string().min(1, 'Job id is required'),
 });
 
-export const JobByUserIdSchema = z.object({
-  id: z.string(),
-});
-
 export const deleteJobByIdSchema = z.object({
   id: z.string().min(1, 'Jon id is required'),
 });
@@ -109,5 +105,4 @@ export const deleteJobByIdSchema = z.object({
 export type JobByIdSchemaType = z.infer<typeof JobByIdSchema>;
 export type JobPostSchemaType = z.infer<typeof JobPostSchema>;
 export type JobQuerySchemaType = z.infer<typeof JobQuerySchema>;
-export type JobByUserIdSchemaType = z.infer<typeof JobByUserIdSchema>;
 export type DeleteJobByIdSchemaType = z.infer<typeof deleteJobByIdSchema>;
