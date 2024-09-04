@@ -28,7 +28,8 @@ import { Textarea } from './ui/textarea';
 import { Label } from './ui/label';
 import { Switch } from './ui/switch';
 import { useToast } from './ui/use-toast';
-import { filters } from '@/lib/constant/jobs.constant';
+import { WorkMode } from '@prisma/client';
+
 const PostJobForm = () => {
   const { toast } = useToast();
   const form = useForm<JobPostSchemaType>({
@@ -37,7 +38,7 @@ const PostJobForm = () => {
       title: '',
       description: '',
       companyName: '',
-      location: '',
+      location: undefined,
       hasSalaryRange: false,
       minSalary: 0,
       maxSalary: 0,
@@ -163,9 +164,9 @@ const PostJobForm = () => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {filters.workMode.map((item) => (
-                      <SelectItem key={item.id} value={item.value}>
-                        {item.label}
+                    {Object.keys(WorkMode).map((item, key) => (
+                      <SelectItem key={key} value={item}>
+                        {item}
                       </SelectItem>
                     ))}
                   </SelectContent>
