@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { NavItem } from '@/components/navitem';
 import Image from 'next/image';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useState, useEffect } from 'react';
 
 const CompanyLogo = () => {
   return (
@@ -26,9 +27,34 @@ const CompanyLogo = () => {
 
 const Header = () => {
   const session = useSession();
+  const [opacity, setOpacity] = useState(1);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const windowHeight = window.innerHeight;
+
+      const fadeStart = 0;
+      const fadeEnd = windowHeight * 0.3;
+
+      if (scrollPosition <= fadeStart) {
+        setOpacity(1);
+      } else if (scrollPosition >= fadeEnd) {
+        setOpacity(0);
+      } else {
+        setOpacity(1 - (scrollPosition - fadeStart) / (fadeEnd - fadeStart));
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <header className="sticky top-6 z-50 md:w-auto mx-auto w-full px-5">
+    <header
+      className="sticky top-6 z-50 md:w-auto mx-auto w-full px-6 transition-opacity duration-300"
+      style={{ opacity }}
+    >
       <div className="container flex h-14 max-w-screen-xl items-center md:border-2 rounded-full border-border/40 sm:bg-none sm:bg-background/60 ">
         <Link href="/" className="p-2.5 mr-4">
           <CompanyLogo />

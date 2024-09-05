@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { WorkModeEnums } from '../constant/jobs.constant';
+import { WorkMode } from '@prisma/client';
 
 export const JobPostSchema = z
   .object({
@@ -7,7 +7,7 @@ export const JobPostSchema = z
     description: z.string().min(1, 'Description is required'),
     companyName: z.string().min(1, 'Company Name is required'),
     location: z.string().min(1, 'Location is required'),
-    hasSalaryRange: z.boolean().default(false),
+    hasSalaryRange: z.boolean(),
     minSalary: z.coerce
       .number({ message: 'Min salary must be a number' })
       .nonnegative()
@@ -52,16 +52,7 @@ export const JobPostSchema = z
 
 export const JobQuerySchema = z.object({
   workmode: z
-    .union([
-      z.string(),
-      z.array(
-        z.enum([
-          WorkModeEnums.REMOTE,
-          WorkModeEnums.HYBRID,
-          WorkModeEnums.OFFICE,
-        ])
-      ),
-    ])
+    .union([z.string(), z.array(z.nativeEnum(WorkMode))])
     .optional()
     .transform((val) => {
       if (typeof val === 'string') {
