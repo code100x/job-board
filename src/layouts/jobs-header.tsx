@@ -11,7 +11,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { jobSorting, SortByEnums } from '@/lib/constant/jobs.constant';
+import { jobSorting, SortBy } from '@/lib/constant/jobs.constant';
 import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -49,7 +49,7 @@ const JobsHeader = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   });
   const formValues = form.watch();
 
-  function sortChangeHandler(value: SortByEnums) {
+  function sortChangeHandler(value: SortBy) {
     setQueryParams({ sortby: value, page: 1 });
   }
 

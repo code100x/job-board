@@ -1,14 +1,15 @@
 import { z } from 'zod';
-import { JobLocations, WorkMode } from '@prisma/client';
+import { Category, JobType, WorkMode, SortBy } from '../constant/jobs.constant';
 
 export const JobPostSchema = z
   .object({
     title: z.string().min(1, 'Title is required'),
+    application: z.string().min(1, 'Application is required'),
     description: z.string().min(1, 'Description is required'),
     companyName: z.string().min(1, 'Company Name is required'),
-    location: z.nativeEnum(JobLocations, {
-      message: 'Location is Required',
-    }),
+    companyEmail: z.string().email('Invalid email').min(1, 'Email is required'),
+    companyBio: z.string().min(1, 'Company Bio is required'),
+    location: z.string().min(1, 'Location is required'),
     hasSalaryRange: z.boolean(),
     minSalary: z.coerce
       .number({ message: 'Min salary must be a number' })
@@ -18,9 +19,23 @@ export const JobPostSchema = z
       .number({ message: 'Max salary must be a number' })
       .nonnegative()
       .optional(),
-    workMode: z.nativeEnum(WorkMode, {
+    workMode: z.enum([WorkMode.REMOTE, WorkMode.OFFICE, WorkMode.HYBRID], {
       message: 'Work mode is required',
     }),
+    category: z.enum(Object.values(Category) as [string, ...string[]], {
+      message: 'Category is required',
+    }),
+    type: z.enum(
+      [
+        JobType.FULLTIME,
+        JobType.PARTTIME,
+        JobType.CONTRACT,
+        JobType.INTERNSHIP,
+      ],
+      {
+        message: 'Type is required',
+      }
+    ),
   })
   .superRefine((data, ctx) => {
     if (data.hasSalaryRange) {
@@ -51,11 +66,39 @@ export const JobPostSchema = z
 
 export const JobQuerySchema = z.object({
   workmode: z
-    .union([z.string(), z.array(z.nativeEnum(WorkMode))])
+    .union([
+      z.string(),
+      z.array(z.enum(Object.values(WorkMode) as [string, ...string[]])),
+    ])
     .optional()
     .transform((val) => {
       if (typeof val === 'string') {
         return val.split(',');
+      }
+      return val;
+    }),
+  category: z
+    .union([
+      z.string(),
+      z.array(z.enum(Object.values(Category) as [string, ...string[]])),
+    ])
+    .optional()
+    .transform((val) => {
+      if (typeof val === 'string') {
+        return [val];
+      }
+      return val;
+    }),
+
+  type: z
+    .union([
+      z.string(),
+      z.array(z.enum(Object.values(JobType) as [string, ...string[]])),
+    ])
+    .optional()
+    .transform((val) => {
+      if (typeof val === 'string') {
+        return [val];
       }
       return val;
     }),
@@ -78,7 +121,9 @@ export const JobQuerySchema = z.object({
       }
       return val;
     }),
-  sortby: z.enum(['postedat_asc', 'postedat_desc']).default('postedat_desc'),
+  sortby: z
+    .enum(Object.values(SortBy) as [string, ...string[]])
+    .default(SortBy.POSTEDAT_DESC),
   page: z.coerce
     .number({ message: 'page must be a number' })
     .optional()

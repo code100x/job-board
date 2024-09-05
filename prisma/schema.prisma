@@ -26,7 +26,7 @@ model Job {
   companyName    String   @map("company_name")
   workMode       WorkMode @map("work_mode")
   currency       Currency @default(INR)
-  location       JobLocations
+  location       String
   hasSalaryRange Boolean  @default(false) @map("has_salary_range")
   minSalary      Int?
   maxSalary      Int?
@@ -52,15 +52,4 @@ enum Role {
   ADMIN
 }
 
-enum JobLocations {
-  BANGLORE
-  DELHI
-  MUMBAI
-  PUNE
-  CHENNAI
-  HYDERABAD
-  KOLKATA
-  AHMEDABAD
-  JAIPUR
-  SURAT
-}
+
