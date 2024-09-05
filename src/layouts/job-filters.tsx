@@ -26,12 +26,14 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import useSetQueryParams from '@/hooks/useSetQueryParams';
 import { useEffect } from 'react';
+import { DEFAULT_PAGE } from '@/config/app.config';
 
 const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   const setQueryParams = useSetQueryParams();
   const form = useForm<JobQuerySchemaType>({
     resolver: zodResolver(JobQuerySchema),
     defaultValues: {
+      page: DEFAULT_PAGE,
       workmode: searchParams.workmode,
       salaryrange: searchParams.salaryrange,
       location: searchParams.location,
