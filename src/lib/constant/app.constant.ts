@@ -54,6 +54,6 @@ export const footerLinks = {
   '100xlegal': [
     { label: 'Privacy Policy', href: '' },
     { label: 'Terms of Service', href: '' },
-    { label: 'Desclaimer', href: '' },
+    { label: 'Disclaimer', href: '' },
   ],
 };

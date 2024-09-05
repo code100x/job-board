@@ -9,7 +9,7 @@ import {
   TableRow,
 } from './ui/table';
 import { DeleteIcon, Edit } from 'lucide-react';
-import { deleteJobById } from '@/actions/job.action';
+// import { deleteJobById } from '@/actions/job.action';
 import { getAllJobsAdditonalType } from '@/types/jobs.types';
 import { ServerActionReturnType } from '@/types/api.types';
 import { useToast } from './ui/use-toast';
@@ -41,11 +41,9 @@ type props = {
 const JobManagementTable = ({ jobs, searchParams }: props) => {
   const { toast } = useToast();
 
-  const handleDelete = async (jobId: string) => {
-    const res = await deleteJobById({ id: jobId });
-    const msg = await res.message;
+  const handleDelete = async () => {
     toast({
-      title: msg,
+      title: 'This feature is not live yet.',
     });
   };
 
@@ -95,7 +93,7 @@ const JobManagementTable = ({ jobs, searchParams }: props) => {
                           <Button
                             className="mt-2"
                             variant={'destructive'}
-                            onClick={() => handleDelete(job.id)}
+                            onClick={() => handleDelete()}
                           >
                             Delete
                           </Button>

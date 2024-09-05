@@ -146,7 +146,7 @@ export const deleteJobById = withServerActionAsyncCatcher<
     },
   });
   const deletedJobID = deletedJob.id;
-  return new SuccessResponse('Job Deleted Success', 200, {
+  return new SuccessResponse('Job Deleted successfully', 200, {
     deletedJobID,
   }).serialize();
 });
