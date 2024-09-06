@@ -16,7 +16,7 @@ const page = async ({ params }: { params: JobByIdSchemaType }) => {
   }
 
   return (
-    <div className="container my-8">
+    <div className="flex justify-center p-7 m-10">
       <Job job={jobDetail} />
     </div>
   );
