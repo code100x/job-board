@@ -89,6 +89,10 @@ docker compose up --build
 
 Now, you can run the project and make changes as needed.
 
+### Repo Activity
+
+![Alt](https://repobeats.axiom.co/api/embed/c5d9b766e0f1602a1085794e344bd0ed8c38e22a.svg "Repobeats analytics image")
+
 ### Test User Credentials
 
 ```js
