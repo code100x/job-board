@@ -12,16 +12,23 @@ const PaginationPreviousButton = ({
   baseUrl: string;
 }) => {
   const setQueryParams = useSetQueryParams();
+
+  const isPreviousDisabled = currentPage <= PAGE_INCREMENT;
+
   return (
     <PaginationPrevious
-      onClick={() =>
-        setQueryParams({
-          page: (currentPage - PAGE_INCREMENT).toString(),
-        })
-      }
-      aria-disabled={currentPage - PAGE_INCREMENT < PAGE_INCREMENT}
+      onClick={() => {
+        if (!isPreviousDisabled) {
+          setQueryParams({
+            page: (currentPage - PAGE_INCREMENT).toString(),
+          });
+        }
+      }}
+      aria-disabled={isPreviousDisabled}
       role="button"
-      className="aria-disabled:pointer-events-none dark:bg-neutral-900 rounded-full bg-neutral-100"
+      className={`dark:bg-neutral-900 rounded-full bg-neutral-100 ${
+        isPreviousDisabled ? 'opacity-50 cursor-not-allowed' : ''
+      }`}
     />
   );
 };
@@ -35,16 +42,21 @@ const PaginationNextButton = ({
   baseUrl: string;
 }) => {
   const setQueryParams = useSetQueryParams();
+  const isNextDisabled = currentPage >= totalPages;
   return (
     <PaginationNext
       role="button"
-      onClick={() =>
-        setQueryParams({
-          page: (currentPage + PAGE_INCREMENT).toString(),
-        })
-      }
-      aria-disabled={currentPage > totalPages - PAGE_INCREMENT}
-      className="aria-disabled:pointer-events-none dark:bg-neutral-900 rounded-full bg-neutral-100"
+      onClick={() => {
+        if (!isNextDisabled) {
+          setQueryParams({
+            page: (currentPage + PAGE_INCREMENT).toString(),
+          });
+        }
+      }}
+      aria-disabled={isNextDisabled}
+      className={`dark:bg-neutral-900 rounded-full bg-neutral-100 ${
+        isNextDisabled ? 'opacity-50 cursor-not-allowed' : ''
+      }`}
     />
   );
 };
