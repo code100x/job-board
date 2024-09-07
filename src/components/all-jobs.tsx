@@ -17,8 +17,12 @@ type PaginatorProps = {
 
 const AllJobs = async ({ searchParams }: PaginatorProps) => {
   const jobs = await getAllJobs(searchParams);
+
   if (!jobs.status) {
     return <div>Error {jobs.message}</div>;
+  }
+  if (jobs.additional?.totalJobs === 0) {
+    return <div>No jobs found, try changing your filters or search query.</div>;
   }
   const totalPages =
     Math.ceil((jobs.additional?.totalJobs || 0) / JOBS_PER_PAGE) ||

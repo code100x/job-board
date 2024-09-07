@@ -60,6 +60,9 @@ const JobCard = async ({ searchParams }: PaginatorProps) => {
   if (!jobs.status) {
     return <div>Error {jobs.message}</div>;
   }
+  if (jobs.additional?.totalJobs === 0) {
+    return <div>No jobs found, try changing your filters or search query.</div>;
+  }
 
   const totalPages =
     Math.ceil((jobs.additional?.totalJobs || 0) / JOBS_PER_PAGE) ||
