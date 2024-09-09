@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   JobPostSchema,
@@ -29,15 +29,21 @@ import { Label } from './ui/label';
 import { Switch } from './ui/switch';
 import { useToast } from './ui/use-toast';
 import { WorkMode } from '@prisma/client';
+import { Loader2 } from 'lucide-react';
+import { useRazorpay } from '@/hooks/useRazorPay';
+import { useRouter } from 'next/navigation';
+
 
 const PostJobForm = () => {
-  const { toast } = useToast();
+  const router = useRouter();
+  const processPayment = useRazorpay();
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<JobPostSchemaType>({
     resolver: zodResolver(JobPostSchema),
     defaultValues: {
       title: '',
       description: '',
-      companyName: '',
+      companyName: '',  
       location: undefined,
       hasSalaryRange: false,
       minSalary: 0,
@@ -45,28 +51,15 @@ const PostJobForm = () => {
     },
   });
   const handleFormSubmit = async (data: JobPostSchemaType) => {
-    try {
-      const response = await createJob(data);
-
-      if (!response.status) {
-        return toast({
-          title: response.name || 'Something went wrong',
-          description: response.message || 'Internal server error',
-          variant: 'destructive',
-        });
-      }
-      toast({
-        title: response.message,
-        variant: 'success',
-      });
-      form.reset(form.formState.defaultValues);
-    } catch (_error) {
-      toast({
-        title: 'Something went wrong will creating job',
-        description: 'Internal server error',
-        variant: 'destructive',
-      });
-    }
+    setIsLoading(true);
+    await processPayment({
+      amount: 1000,
+      data,
+      successCallback: () => {
+        router.push('/'); //Note: Check where to redirect after payment
+      },
+    });
+    setIsLoading(false);
   };
   const watchHasSalaryRange = form.watch('hasSalaryRange');
 
@@ -265,7 +258,7 @@ const PostJobForm = () => {
         )}
 
         <div className="w-full flex justify-end items-center mt-4">
-          <Button type="submit" disabled={form.formState.isSubmitting}>
+          <Button  onClick={form.handleSubmit(handleFormSubmit)} type="submit" disabled={form.formState.isSubmitting}>
             {form.formState.isSubmitting ? 'Please wait...' : 'Create Job'}
           </Button>
         </div>

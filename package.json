@@ -45,6 +45,7 @@
     "next-auth": "^4.24.7",
     "next-themes": "^0.3.0",
     "nextjs-toploader": "^1.6.12",
+    "razorpay": "^2.9.4",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.52.2",

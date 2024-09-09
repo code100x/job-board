@@ -16,7 +16,9 @@ import { getAllJobsAdditonalType, getJobType } from '@/types/jobs.types';
 
 type additional = {
   isVerifiedJob: boolean;
+  jobId: string;
 };
+
 export const createJob = withServerActionAsyncCatcher<
   JobPostSchemaType,
   ServerActionReturnType<additional>
@@ -32,7 +34,8 @@ export const createJob = withServerActionAsyncCatcher<
     maxSalary,
     minSalary,
   } = result;
-  await prisma.job.create({
+
+  const createdJob = await prisma.job.create({
     data: {
       userId: '1', // Default to 1 since there's no session to check for user id
       title,
@@ -47,8 +50,8 @@ export const createJob = withServerActionAsyncCatcher<
     },
   });
   const message = 'Job created successfully, waiting for admin approval';
-  const additonal = { isVerifiedJob: false };
-  return new SuccessResponse(message, 201, additonal).serialize();
+  const additional = { isVerifiedJob: false, jobId: createdJob.id };
+  return new SuccessResponse(message, 201, additional).serialize();
 });
 
 export const getAllJobs = withServerActionAsyncCatcher<
@@ -126,3 +129,23 @@ export const getJobById = withServerActionAsyncCatcher<
     job,
   }).serialize();
 });
+
+export const createTransactions = async (response: any) => {
+  try {
+    await prisma.razorpayTransactions.create({
+      data: {
+        razorpayOrderId: response.razorpayOrderId,
+        razorpayPaymentId: response.razorpayPaymentId,
+        razorpaySignature: response.razorpaySignature,
+        status: response.status,
+        job: { connect: { id: response.jobId } },
+      },
+    });
+    return new SuccessResponse(
+      'Transaction successfully, waiting for admin approval',
+      201
+    ).serialize();
+  } catch (error) {
+    console.error('Verification error createTransactions:', error);
+  }
+};
