@@ -8,7 +8,7 @@ CREATE TYPE "WorkMode" AS ENUM ('remote', 'hybrid', 'office');
 CREATE TYPE "Role" AS ENUM ('USER', 'ADMIN');
 
 -- CreateEnum
-CREATE TYPE "JobLocations" AS ENUM ('BANGLORE', 'DELHI', 'MUMBAI', 'PUNE', 'HYDERABAD', 'KOLKATA', 'AHMEDABAD', 'JAIPUR', 'SURAT');
+CREATE TYPE "JobLocations" AS ENUM ('BANGLORE', 'DELHI', 'MUMBAI', 'CHENNAI', 'PUNE', 'HYDERABAD', 'KOLKATA', 'AHMEDABAD', 'JAIPUR', 'SURAT');
 
 -- CreateTable
 CREATE TABLE "User" (
