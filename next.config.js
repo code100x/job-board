@@ -11,7 +11,7 @@ const nextConfig = {
       {
         protocol: 'https',
         //Add aws s3 bucket hostname
-        hostname: 'myaws-dev-storage.s3.ap-south-1.amazonaws.com',
+        hostname: '<bucket_url/hostname>', //example - youraws.s3.ap-south-2.amazonaws.com
       },
     ],
   },
