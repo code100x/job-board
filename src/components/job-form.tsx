@@ -85,7 +85,6 @@ const PostJobForm = () => {
       }
 
       const { url: presignedUrl } = await res.json();
-
       const upload = await fetch(presignedUrl, {
         method: 'PUT',
         body: file,
@@ -96,7 +95,7 @@ const PostJobForm = () => {
         throw new Error('Upload failed');
       }
 
-      const pubUrl = `https://${process.env.NEXT_PUBLIC_AWS_S3_BUCKET_NAME}.s3.${process.env.NEXT_PUBLIC_AWS_S3_REGION}.amazonaws.com/${uniqueFileName}`;
+      const pubUrl = presignedUrl.split('?')[0];
       return pubUrl;
     } catch (error) {
       console.error('Image upload failed:', error);
@@ -411,11 +410,13 @@ const PostJobForm = () => {
                 onClick={handleClick}
               >
                 {previewImg ? (
-                  <img
+                  <Image
                     src={previewImg}
                     ref={companyLogoImg}
-                    className="h-20 w-20 object-cover"
+                    className="object-cover"
                     alt="Company Logo"
+                    width={80}
+                    height={80}
                   />
                 ) : (
                   <FaFileUpload className="text-white text-2xl" />

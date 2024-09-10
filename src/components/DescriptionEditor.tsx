@@ -4,11 +4,18 @@ import dynamic from 'next/dynamic';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 import 'react-quill/dist/quill.snow.css';
 
-const DescriptionEditor = ({
+interface DescriptionEditorProps {
+  fieldName: string;
+  initialValue?: string;
+  onDescriptionChange: (fieldName: string, content: string) => void;
+  placeholder?: string;
+}
+
+const DescriptionEditor: React.FC<DescriptionEditorProps> = ({
   fieldName,
-  initialValue,
+  initialValue = '',
   onDescriptionChange,
-  placeholder,
+  placeholder = '',
 }) => {
   const [description, setDescription] = useState(initialValue || '');
 
@@ -16,7 +23,7 @@ const DescriptionEditor = ({
     setDescription(initialValue || '');
   }, [initialValue]);
 
-  const handleChange = (content) => {
+  const handleChange = (content: string) => {
     setDescription(content);
     onDescriptionChange(fieldName, content); // Pass the content back to the parent form
   };
