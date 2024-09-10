@@ -18,6 +18,11 @@ export const PaginationPages = ({
   baseUrl: string;
 }) => {
   const setQueryParams = useSetQueryParams();
+
+  if (currentPage > totalPages) {
+    setQueryParams({ page: '1' });
+  }
+
   function paginationHandler(page: number) {
     setQueryParams({ page: page.toString() });
   }
