@@ -1,5 +1,4 @@
 'use client';
-import { jobFilterQuery } from '@/actions/job.action';
 import {
   Select,
   SelectContent,
@@ -17,8 +16,6 @@ import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { useRouter } from 'next/navigation';
-
 import {
   Form,
   FormControl,
@@ -26,78 +23,46 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form';
-import { useDebounce } from '@uidotdev/usehooks';
+import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import { Input } from '@/components/ui/input';
+import useSetQueryParams from '@/hooks/useSetQueryParams';
 import { usePathname } from 'next/navigation';
-import JobFilters from './job-filters';
 import Icon from '@/components/ui/icon';
 import APP_PATHS from '@/config/path.config';
 import { useEffect } from 'react';
+import JobFilters from './job-filters';
+import { cn } from '@/lib/utils';
 const FormSchema = z.object({
   search: z.string().optional(),
 });
 
-const JobsHeader = ({
-  searchParams,
-  baseUrl,
-}: {
-  searchParams: JobQuerySchemaType;
-  baseUrl: string;
-}) => {
+const JobsHeader = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   const pathname = usePathname();
   const isHome = pathname === APP_PATHS.HOME;
-  const router = useRouter();
-
-  function sortChangeHandler(value: SortByEnums) {
-    jobFilterQuery({ ...searchParams, sortby: value, page: 1 }, baseUrl);
-  }
-
-  let debounceTimeout: NodeJS.Timeout;
-
+  const isJobs = pathname === APP_PATHS.JOBS;
+  const setQueryParams = useSetQueryParams();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       search: '',
     },
   });
+  const formValues = form.watch();
 
-  const searchValue = form.watch('search');
-  const debouncedSearchValue = useDebounce(searchValue, 100);
-
-  useEffect(() => {
-    const fetch = async () => {
-      if (debouncedSearchValue !== 'undefined') {
-        if (debouncedSearchValue?.length) {
-          await onSubmit({ search: debouncedSearchValue });
-        } else {
-          router.push(baseUrl);
-        }
-      } else {
-        router.push(baseUrl);
-      }
-    };
-
-    fetch();
-  }, [debouncedSearchValue]);
-
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    jobFilterQuery(
-      {
-        ...searchParams,
-        search: data.search,
-        page: 1,
-      },
-      baseUrl
-    );
+  function sortChangeHandler(value: SortByEnums) {
+    setQueryParams({ sortby: value, page: 1 });
   }
 
+  useEffect(() => {
+    setQueryParams({
+      search: formValues.search,
+    });
+  }, [formValues, searchParams, setQueryParams]);
+
   return (
-    <div className="flex flex-col  gap-5 ">
+    <div className="flex flex-col  gap-5 px-5">
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className=" relative w-full grid grid-cols-[1fr_auto]  "
-        >
+        <form className="w-full grid grid-cols-[1fr_auto] ">
           <FormField
             control={form.control}
             name="search"
@@ -107,16 +72,7 @@ const JobsHeader = ({
                   <Input
                     placeholder="Search by title or company name"
                     {...field}
-                    className="rounded-full p-5 py-6 dark:bg-neutral-900 truncate"
-                    onChange={(e) => {
-                      field.onChange(e);
-                      if (debounceTimeout) {
-                        clearTimeout(debounceTimeout);
-                      }
-                      debounceTimeout = setTimeout(() => {
-                        form.handleSubmit(onSubmit)();
-                      }, 300);
-                    }}
+                    className="rounded-full p-5 py-6  dark:bg-neutral-900 truncate"
                   />
                 </FormControl>
                 <FormMessage />
@@ -126,16 +82,33 @@ const JobsHeader = ({
         </form>
       </Form>
 
-      <div className="flex gap-5 justify-end items-center">
+      <div className="flex gap-5 max-sm:justify-between justify-end">
         {isHome && (
-          <Popover>
-            <PopoverTrigger className="bg-neutral-100 dark:bg-neutral-900 rounded-full p-3 cursor-pointer">
+          <div className={cn('flex items-center px-1 max-sm:hidden ', {})}>
+            <Popover>
+              <PopoverTrigger className="bg-neutral-100 dark:bg-neutral-900 rounded-full p-3 cursor-pointer">
+                <Icon icon="filter" className="cursor-pointer" size="20" />
+              </PopoverTrigger>
+              <PopoverContent className="bg-transparent border-none shadow-none">
+                <JobFilters searchParams={searchParams} />
+              </PopoverContent>
+            </Popover>
+          </div>
+        )}
+
+        {(isJobs || isHome) && (
+          <Drawer>
+            <DrawerTrigger className="max-sm:block hidden bg-neutral-100 dark:bg-neutral-900 rounded-full p-3 cursor-pointer">
+              {' '}
               <Icon icon="filter" className="cursor-pointer" size="20" />
-            </PopoverTrigger>
-            <PopoverContent className="bg-transparent border-none">
-              <JobFilters searchParams={searchParams} baseUrl={baseUrl} />
-            </PopoverContent>
-          </Popover>
+            </DrawerTrigger>
+            <DrawerContent
+              className="flex justify-center items-center gap-5"
+              aria-describedby={undefined}
+            >
+              <JobFilters searchParams={searchParams} />
+            </DrawerContent>
+          </Drawer>
         )}
 
         <Select

@@ -1,12 +1,12 @@
 'use client';
-import { jobFilterQuery } from '@/actions/job.action';
-import { filters, WorkModeEnums } from '@/lib/constant/jobs.constant';
+import { filters } from '@/lib/constant/jobs.constant';
 import {
   JobQuerySchema,
   JobQuerySchemaType,
 } from '@/lib/validators/jobs.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { JobLocations } from '@prisma/client';
 import {
   Accordion,
   AccordionContent,
@@ -24,55 +24,44 @@ import {
 } from '../components/ui/form';
 import { Separator } from '../components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { cn, formatFilterSearchParams } from '@/lib/utils';
-import { usePathname } from 'next/navigation';
-import APP_PATHS from '@/config/path.config';
+import { cn } from '@/lib/utils';
+import useSetQueryParams from '@/hooks/useSetQueryParams';
+import { useEffect } from 'react';
+import { WorkMode } from '@prisma/client';
+import _ from 'lodash';
 
-const JobFilters = ({
-  searchParams,
-  baseUrl,
-}: {
-  searchParams: JobQuerySchemaType;
-  baseUrl: string;
-}) => {
-  const pathname = usePathname();
-  const isHome = pathname === APP_PATHS.HOME;
+const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
+  const setQueryParams = useSetQueryParams();
   const form = useForm<JobQuerySchemaType>({
     resolver: zodResolver(JobQuerySchema),
     defaultValues: {
-      workmode:
-        searchParams.workmode &&
-        (formatFilterSearchParams(searchParams.workmode) as WorkModeEnums[]),
-      salaryrange:
-        searchParams.salaryrange &&
-        formatFilterSearchParams(searchParams.salaryrange),
-      location:
-        searchParams.location &&
-        formatFilterSearchParams(searchParams.location),
+      workmode: searchParams.workmode,
+      salaryrange: searchParams.salaryrange,
+      location: searchParams.location,
     },
   });
-  async function handleFormSubmit(data: JobQuerySchemaType) {
-    await jobFilterQuery(
-      {
-        ...data,
-        search: searchParams.search,
-        sortby: searchParams.sortby,
-      },
-      baseUrl
-    );
-  }
+
+  const formValues = form.watch();
+
+  useEffect(() => {
+    if (formValues) {
+      setQueryParams(formValues);
+    }
+  }, [formValues, setQueryParams, searchParams]);
+
   return (
-    <aside className="rounded-lg border bg-background  max-w-[320px] w-full h-fit p-6 sticky top-20">
+    <aside
+      className={cn(
+        'rounded-lg  bg-background  min-w-[290px]  p-6 h-fit  top-20'
+      )}
+    >
       <div className="flex items-center justify-between">
         <h3 className="font-medium text-base text-primary-text">All Filters</h3>
       </div>
       <Separator className="my-6" />
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(handleFormSubmit)}
-          className=" flex flex-col gap-3"
-        >
-          <ScrollArea className={cn('h-96 pr-4', { 'h-64 ': isHome })}>
+        <form className=" flex flex-col gap-3">
+          <ScrollArea className={cn('h-fit pr-4')}>
             <Accordion
               type="multiple"
               className="w-full"
@@ -93,39 +82,36 @@ const JobFilters = ({
                     name="workmode"
                     render={() => (
                       <FormItem>
-                        {filters.workMode.map((item) => (
+                        {Object.keys(WorkMode).map((item, index) => (
                           <FormField
-                            key={item.id}
+                            key={index}
                             control={form.control}
                             name="workmode"
                             render={({ field }) => {
                               return (
                                 <FormItem
-                                  key={item.id}
+                                  key={index}
                                   className="flex items-center space-x-3 space-y-0"
                                 >
                                   <FormControl>
                                     <Checkbox
-                                      checked={field.value?.includes(
-                                        item.value as WorkModeEnums
-                                      )}
+                                      checked={field.value?.includes(item)}
                                       onCheckedChange={(checked) => {
                                         checked
                                           ? field.onChange([
                                               ...(field.value || []),
-                                              item.value,
+                                              item,
                                             ])
                                           : field.onChange(
                                               field.value?.filter(
-                                                (value) => value !== item.value
+                                                (value) => value !== item
                                               )
                                             );
-                                        form.handleSubmit(handleFormSubmit)();
                                       }}
                                     />
                                   </FormControl>
                                   <FormLabel className="text-sm font-normal">
-                                    {item.label}
+                                    {_.startCase(item)}
                                   </FormLabel>
                                 </FormItem>
                               );
@@ -175,7 +161,6 @@ const JobFilters = ({
                                                 (value) => value !== item.value
                                               )
                                             );
-                                        form.handleSubmit(handleFormSubmit)();
                                       }}
                                     />
                                   </FormControl>
@@ -203,43 +188,38 @@ const JobFilters = ({
                     name="location"
                     render={() => (
                       <FormItem className="flex flex-wrap gap-2 space-y-0">
-                        {filters.location.map((item) => (
+                        {Object.keys(JobLocations).map((item, index) => (
                           <FormField
-                            key={item.id}
+                            key={index}
                             control={form.control}
                             name="location"
                             render={({ field }) => {
                               return (
                                 <FormItem
-                                  key={item.id}
+                                  key={index}
                                   className="flex items-center space-y-0 group"
-                                  aria-checked={field.value?.includes(
-                                    item.value
-                                  )}
+                                  aria-checked={field.value?.includes(item)}
                                 >
                                   <FormControl>
                                     <Checkbox
-                                      checked={field.value?.includes(
-                                        item.value
-                                      )}
+                                      checked={field.value?.includes(item)}
                                       onCheckedChange={(checked) => {
                                         checked
                                           ? field.onChange([
                                               ...(field.value || []),
-                                              item.value,
+                                              item,
                                             ])
                                           : field.onChange(
                                               field.value?.filter(
-                                                (value) => value !== item.value
+                                                (value) => value !== item
                                               )
                                             );
-                                        form.handleSubmit(handleFormSubmit)();
                                       }}
                                       hidden
                                     />
                                   </FormControl>
                                   <FormLabel className="text-primary-text font-normal text-xs cursor-pointer group-aria-checked:bg-primary group-aria-checked:text-primary-foreground flex items-center justify-start py-2 px-4 rounded-full border">
-                                    {item.label}
+                                    {_.startCase(item.toLowerCase())}
                                   </FormLabel>
                                 </FormItem>
                               );

@@ -1,7 +1,5 @@
 'use server';
-import { ADMIN_ROLE } from '@/config/app.config';
 import prisma from '@/config/prisma.config';
-import { withSession } from '@/lib/session';
 import { withServerActionAsyncCatcher } from '@/lib/async-catch';
 import { SuccessResponse } from '@/lib/success';
 import {
@@ -15,20 +13,24 @@ import {
 import { getJobFilters } from '@/services/jobs.services';
 import { ServerActionReturnType } from '@/types/api.types';
 import { getAllJobsAdditonalType, getJobType } from '@/types/jobs.types';
-import { redirect } from 'next/navigation';
 
 type additional = {
   isVerifiedJob: boolean;
 };
-export const createJob = withSession<
+export const createJob = withServerActionAsyncCatcher<
   JobPostSchemaType,
   ServerActionReturnType<additional>
->(async (session, data) => {
+>(async (data) => {
   const result = JobPostSchema.parse(data);
-  const isVerifiedJob = session.user.role === ADMIN_ROLE;
   const {
     companyName,
+    companyBio,
+    companyEmail,
+    type,
+    category,
+    application,
     location,
+    companyLogo,
     title,
     workMode,
     description,
@@ -38,22 +40,26 @@ export const createJob = withSession<
   } = result;
   await prisma.job.create({
     data: {
-      userId: session.user.id,
+      userId: '1', // Default to 1 since there's no session to check for user id
       title,
       description,
       companyName,
+      companyBio,
+      companyEmail,
+      type,
+      category,
+      application,
       hasSalaryRange,
       minSalary,
       maxSalary,
-      isVerifiedJob,
       location,
+      companyLogo,
       workMode,
+      isVerifiedJob: false, // Default to false since there's no session to check for admin role
     },
   });
-  const message = isVerifiedJob
-    ? 'Job created successfully'
-    : 'Job created successfully, waiting for admin approval';
-  const additonal = { isVerifiedJob };
+  const message = 'Job created successfully, waiting for admin approval';
+  const additonal = { isVerifiedJob: false };
   return new SuccessResponse(message, 201, additonal).serialize();
 });
 
@@ -89,6 +95,7 @@ export const getAllJobs = withServerActionAsyncCatcher<
       minSalary: true,
       maxSalary: true,
       postedAt: true,
+      companyLogo: true,
     },
   });
   const totalJobsPromise = prisma.job.count({
@@ -121,6 +128,9 @@ export const getJobById = withServerActionAsyncCatcher<
       title: true,
       description: true,
       companyName: true,
+      companyBio: true,
+      companyEmail: true,
+      companyLogo: true,
       location: true,
       workMode: true,
       minSalary: true,
@@ -132,20 +142,3 @@ export const getJobById = withServerActionAsyncCatcher<
     job,
   }).serialize();
 });
-
-export const jobFilterQuery = async (
-  queries: JobQuerySchemaType,
-  baseUrl: string
-) => {
-  const { page, sortby, location, salaryrange, search, workmode } =
-    JobQuerySchema.parse(queries);
-  const searchParams = new URLSearchParams({
-    page: page.toString(),
-    sortby,
-    ...(search && { search: search.trim() }),
-  });
-  location?.map((location) => searchParams.append('location', location));
-  salaryrange?.map((range) => searchParams.append('salaryrange', range));
-  workmode?.map((mode) => searchParams.append('workmode', mode));
-  redirect(`${baseUrl}?${searchParams.toString()}`);
-};

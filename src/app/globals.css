@@ -297,3 +297,51 @@
     transform: rotate(360deg);
   }
 }
+
+/* Custom styles for Quill editor */
+.ql-toolbar.ql-snow {
+  border: none !important;
+  background-color: #1f2937 !important;
+  border-bottom: 1px solid #374151 !important;
+}
+
+.ql-container.ql-snow {
+  border: none !important;
+  max-height: 56rem; /* Set a fixed height */
+  overflow-y: hidden; /* Hide vertical overflow */
+  overflow-x: auto; /* Allow horizontal scrolling */
+}
+
+.ql-editor {
+  min-height: 10px;
+  overflow-y: hidden; /* Prevent height increase */
+  white-space: nowrap; /* Ensure long lines don't wrap */
+}
+
+.ql-editor.ql-blank::before {
+  color: #6b7280 !important;
+}
+
+.ql-snow .ql-stroke {
+  stroke: #9ca3af !important;
+}
+
+.ql-snow .ql-fill {
+  fill: #9ca3af !important;
+}
+
+.ql-snow .ql-picker {
+  color: #9ca3af !important;
+}
+
+/* Ensure the editor takes up full width of its container */
+.job-description-editor {
+  width: 100% !important;
+}
+
+/* Ensure long content does not wrap within the editor */
+.job-description-editor .ql-editor {
+  white-space: nowrap !important;
+  overflow-x: hidden !important; /* Allow horizontal scrolling */
+  overflow-y: hidden !important; /* Hide vertical overflow */
+}

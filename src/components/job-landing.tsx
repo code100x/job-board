@@ -6,7 +6,10 @@ import JobCardLoader from '@/components/job-card-loader';
 import { DEFAULT_PAGE, JOBS_PER_PAGE } from '@/config/app.config';
 import JobsHeader from '@/layouts/jobs-header';
 import { Suspense } from 'react';
-import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
+import {
+  JobQuerySchema,
+  JobQuerySchemaType,
+} from '@/lib/validators/jobs.validator';
 import { Pagination, PaginationContent, PaginationItem } from './ui/pagination';
 import {
   PaginationNextButton,
@@ -17,6 +20,9 @@ import APP_PATHS from '@/config/path.config';
 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { redirect } from 'next/navigation';
+import Image from 'next/image';
+
 dayjs.extend(relativeTime);
 
 export const calculateTimeSincePosted = (postedAt: Date): string => {
@@ -28,12 +34,18 @@ export const JobLanding = async ({
 }: {
   searchParams: JobQuerySchemaType;
 }) => {
+  const parsedData = JobQuerySchema.safeParse(searchParams);
+  if (!(parsedData.success && parsedData.data)) {
+    console.error(parsedData.error);
+    redirect('/');
+  }
+  const parsedSearchParams = parsedData.data;
   return (
-    <div className="max-w-screen-lg mx-auto grid grid-cols-1  gap-6 py-8 pt-10">
-      <div className="grow  px-5">
-        <JobsHeader searchParams={searchParams} baseUrl="/" />
+    <div className="max-w-screen-lg mx-auto grid grid-cols-1  gap-6 py-8 pt-10 ">
+      <div className="space-y-5">
+        <JobsHeader searchParams={parsedSearchParams} />
         <Suspense fallback={<JobCardLoader />}>
-          <JobCard searchParams={searchParams} />
+          <JobCard searchParams={parsedSearchParams} />
         </Suspense>
       </div>
     </div>
@@ -55,23 +67,25 @@ const JobCard = async ({ searchParams }: PaginatorProps) => {
     DEFAULT_PAGE;
   const currentPage = parseInt(searchParams.page?.toString()) || DEFAULT_PAGE;
   return (
-    <div className=" py-4 grid gap-3">
+    <div className="grid gap-3 sm:px-5 ">
       {jobs.additional?.jobs.map((job) => {
         return (
           <Link key={job.id} href={`/jobs/${job.id}`}>
             <div
-              className=" dark:bg-neutral-900  bg-background w-full flex flex-col md:flex-row md:items-center items-start gap-4 rounded-3xl border p-5 px-6 text-left text-sm transition-all hover:bg-accent"
+              className=" dark:bg-neutral-900  bg-background  mx-auto  w-[94%] sm:w-full  flex flex-col md:flex-row md:items-center items-start gap-4 rounded-3xl border p-5  overflow-hidden text-left text-sm transition-all hover:bg-accent"
               key={job.id}
             >
               <div>
-                {/* todo:replace with original jobImage */}
                 <div className="w-24 h-24 bg-neutral-200 dark:bg-neutral-800 rounded-2xl flex justify-center items-center">
-                  {/* <Image
-                  src={''}
-                  alt="job image"
-                  width={70}
-                  height={70}
-                  /> */}
+                  {job.companyLogo && (
+                    <Image
+                      src={job.companyLogo}
+                      alt="job image"
+                      width={96}
+                      height={96}
+                      className="rounded-2xl"
+                    />
+                  )}
                 </div>
               </div>
               <div className="flex w-full flex-col gap-6 ">
@@ -85,7 +99,6 @@ const JobCard = async ({ searchParams }: PaginatorProps) => {
 
               <div className="">
                 <span className="flex justify-between items-center gap-0.5  text-3xl overflow-hidden">
-                  {/* {job.minSalary && <Icon icon="currency" size={35} />} */}
                   {job.minSalary && job.maxSalary
                     ? `$${formatSalary(job.maxSalary)}`
                     : 'NotDisclosed'}
@@ -99,7 +112,7 @@ const JobCard = async ({ searchParams }: PaginatorProps) => {
         );
       })}
       <Pagination>
-        <PaginationContent>
+        <PaginationContent className="flex justify-center items-center w-[80%]">
           {totalPages ? (
             <PaginationItem>
               <PaginationPreviousButton
