@@ -1,12 +1,9 @@
-"use client"
 import { JobType } from '@/types/jobs.types';
 import Icon from './ui/icon';
 import { formatSalary } from '@/lib/utils';
 import { Button } from './ui/button';
 import {  formatDistanceToNow } from 'date-fns';
 export const Job = ({ job }: { job: JobType }) => {
-  
- 
   
   return (
     <section className="flex flex-col items-center gap-5 border p-3 rounded-lg">
