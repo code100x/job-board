@@ -297,3 +297,7 @@
     transform: rotate(360deg);
   }
 }
+
+.job-posted-time::first-letter {
+  text-transform: uppercase;
+}
