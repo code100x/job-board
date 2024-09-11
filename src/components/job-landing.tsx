@@ -21,6 +21,7 @@ import APP_PATHS from '@/config/path.config';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { redirect } from 'next/navigation';
+import Image from 'next/image';
 
 dayjs.extend(relativeTime);
 
@@ -75,14 +76,16 @@ const JobCard = async ({ searchParams }: PaginatorProps) => {
               key={job.id}
             >
               <div>
-                {/* todo:replace with original jobImage */}
                 <div className="w-24 h-24 bg-neutral-200 dark:bg-neutral-800 rounded-2xl flex justify-center items-center">
-                  {/* <Image
-                  src={''}
-                  alt="job image"
-                  width={70}
-                  height={70}
-                  /> */}
+                  {job.companyLogo && (
+                    <Image
+                      src={job.companyLogo}
+                      alt="job image"
+                      width={96}
+                      height={96}
+                      className="rounded-2xl"
+                    />
+                  )}
                 </div>
               </div>
               <div className="flex w-full flex-col gap-6 ">
