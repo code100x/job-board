@@ -13,7 +13,7 @@ export const navbar = [
   // todo: add actual path
   { id: 3, label: 'Internship', path: '/' },
   { id: 4, label: 'Testimonials', path: '/' },
-  { id: 5, label: 'FAQs', path: '/' },
+  { id: 5, label: 'FAQs', path: '/faqs' },
 ];
 
 export const socials: {
