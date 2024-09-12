@@ -1,12 +1,20 @@
 import { z } from 'zod';
-import { WorkMode } from '@prisma/client';
+import { WorkMode, JobLocations } from '@prisma/client';
 
 export const JobPostSchema = z
   .object({
     title: z.string().min(1, 'Title is required'),
     description: z.string().min(1, 'Description is required'),
     companyName: z.string().min(1, 'Company Name is required'),
-    location: z.string().min(1, 'Location is required'),
+    location: z.nativeEnum(JobLocations, {
+      message: 'Location is Required',
+    }),
+    application: z.string(),
+    type: z.string(),
+    category: z.string(),
+    companyEmail: z.string().email('Invalid email').min(1, 'Email is required'),
+    companyBio: z.string().min(1, 'Company Bio is required'),
+    companyLogo: z.string().url(),
     hasSalaryRange: z.boolean(),
     minSalary: z.coerce
       .number({ message: 'Min salary must be a number' })

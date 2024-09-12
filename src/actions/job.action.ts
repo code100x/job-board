@@ -24,7 +24,13 @@ export const createJob = withServerActionAsyncCatcher<
   const result = JobPostSchema.parse(data);
   const {
     companyName,
+    companyBio,
+    companyEmail,
+    type,
+    category,
+    application,
     location,
+    companyLogo,
     title,
     workMode,
     description,
@@ -39,10 +45,16 @@ export const createJob = withServerActionAsyncCatcher<
       title,
       description,
       companyName,
+      companyBio,
+      companyEmail,
+      type,
+      category,
+      application,
       hasSalaryRange,
       minSalary,
       maxSalary,
       location,
+      companyLogo,
       workMode,
       currency,
       isVerifiedJob: false, // Default to false since there's no session to check for admin role
@@ -87,6 +99,12 @@ export const getAllJobs = withServerActionAsyncCatcher<
       postedAt: true,
       hasSalaryRange: true,
       currency: true,
+      companyLogo: true,
+      application: true,
+      category: true,
+      type: true,
+      companyBio: true,
+      companyEmail: true,
     },
   });
   const totalJobsPromise = prisma.job.count({
@@ -126,6 +144,9 @@ export const getJobById = withServerActionAsyncCatcher<
       title: true,
       description: true,
       companyName: true,
+      companyBio: true,
+      companyEmail: true,
+      companyLogo: true,
       location: true,
       workMode: true,
       minSalary: true,
@@ -133,6 +154,9 @@ export const getJobById = withServerActionAsyncCatcher<
       postedAt: true,
       hasSalaryRange: true,
       currency: true,
+      application: true,
+      category: true,
+      type: true,
     },
   });
 
