@@ -8,7 +8,7 @@ export default function Page() {
         <h1 className="font-bold md:text-4xl text-2xl">
           Frequently Asked Questions
         </h1>
-        <p className="md:text-sm text-xs py-2 font-semibold text-gray-700">
+        <p className="md:text-sm text-xs py-2 font-semibold light:text-gray-700 dark:text-gray-200">
           Quick answers to your questions you may have.
         </p>
       </div>
