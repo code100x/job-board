@@ -29,12 +29,14 @@ import useSetQueryParams from '@/hooks/useSetQueryParams';
 import { useEffect } from 'react';
 import { WorkMode } from '@prisma/client';
 import _ from 'lodash';
+import { DEFAULT_PAGE } from '@/config/app.config';
 
 const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   const setQueryParams = useSetQueryParams();
   const form = useForm<JobQuerySchemaType>({
     resolver: zodResolver(JobQuerySchema),
     defaultValues: {
+      page: DEFAULT_PAGE,
       workmode: searchParams.workmode,
       salaryrange: searchParams.salaryrange,
       location: searchParams.location,
