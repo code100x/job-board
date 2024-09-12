@@ -61,9 +61,9 @@ export const useRazorpay = () => {
       name: data.title,
       description: data.description,
       order_id: orderDetails.id,
-      // prefill: {
-      //   email: data.email, // Note: Add email field after commit
-      // },
+      prefill: {
+        email: data.companyEmail,
+      },
       notes: data,
       modal: {
         ondismiss: () => {

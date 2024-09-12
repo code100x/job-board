@@ -1,8 +1,12 @@
+'use client';
 import React from 'react';
 import Link from 'next/link';
 import { Poppins } from 'next/font/google';
+import { Home, AlertTriangle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { motion } from 'framer-motion';
 
-//applying font from google
+// Applying font from Google
 const fontOptions = Poppins({
   subsets: ['latin'],
   variable: '--font-poppins',
@@ -11,29 +15,44 @@ const fontOptions = Poppins({
 
 const Custom404Page = () => {
   return (
-    <>
-      <div
-        className={`min-h-screen flex flex-col justify-center items-center px-2 py-2 lg:px-2 bg-white dark:bg-black ${fontOptions.className}`}
+    <div
+      className={`min-h-screen flex flex-col justify-center items-center px-4 py-8 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 ${fontOptions.className}`}
+    >
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="text-center"
       >
-        <h1 className="text-3xl font-bold tracking-tight text-center text-gray-900 dark:text-white sm:text-7xl mb-4">
-          Oops!
-        </h1>
-        <p className="text-red-800 dark:text-orange-400 font-bold text-4x mb-2 text-center">
-          We couldn’t find the page you’re looking for. <br />
-          404 - PAGE NOT FOUND
-        </p>
-        <p className="text-base text-gray-600 dark:text-gray-00 mb-8 text-center">
-          The page you are looking for was moved, removed, renamed, or might
-          never have existed.
-        </p>
-        <Link
-          href="/"
-          className="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-black dark:bg-white dark:text-black rounded-full hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-200"
+        <motion.div
+          animate={{ rotate: [0, 5, -5, 0] }}
+          transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 5 }}
         >
-          Visit the homepage
-        </Link>
-      </div>
-    </>
+          <AlertTriangle className="w-24 h-24 text-yellow-500 mb-6 mx-auto" />
+        </motion.div>
+        <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-6xl mb-4">
+          404 - Page Not Found
+        </h1>
+        <p className="text-xl text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
+          We are sorry, but we could not find the page you are looking for.
+        </p>
+        <p className="text-base text-gray-500 dark:text-gray-400 mb-8 max-w-lg mx-auto">
+          The page may have been moved, removed, renamed, or might never have
+          existed.
+        </p>
+        <Button
+          asChild
+          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-full transition-colors duration-300"
+        >
+          <Link href="/">
+            <a className="flex items-center">
+              <Home className="mr-2 h-5 w-5" />
+              Return to Homepage
+            </a>
+          </Link>
+        </Button>
+      </motion.div>
+    </div>
   );
 };
 
