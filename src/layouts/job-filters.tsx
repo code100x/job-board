@@ -1,5 +1,5 @@
 'use client';
-import { filters, WorkMode } from '@/lib/constant/jobs.constant';
+import { filters } from '@/lib/constant/jobs.constant';
 import {
   JobQuerySchema,
   JobQuerySchemaType,
@@ -27,11 +27,15 @@ import { cn } from '@/lib/utils';
 import useSetQueryParams from '@/hooks/useSetQueryParams';
 import { useEffect } from 'react';
 
+import { WorkMode } from '@prisma/client';
+import { DEFAULT_PAGE } from '@/config/app.config';
+
 const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   const setQueryParams = useSetQueryParams();
   const form = useForm<JobQuerySchemaType>({
     resolver: zodResolver(JobQuerySchema),
     defaultValues: {
+      page: DEFAULT_PAGE,
       workmode: searchParams.workmode,
       salaryrange: searchParams.salaryrange,
       location: searchParams.location,
