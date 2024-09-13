@@ -24,8 +24,6 @@ import {
 } from '../lib/validators/jobs.validator';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
-import { useToast } from './ui/use-toast';
-import { Loader2 } from 'lucide-react';
 import { useRazorpay } from '@/hooks/useRazorPay';
 import { useRouter } from 'next/navigation';
 import { Calendar, LucideRocket, MailOpenIcon } from 'lucide-react';
@@ -36,11 +34,8 @@ import { Switch } from './ui/switch';
 import { Label } from './ui/label';
 
 const PostJobForm = () => {
-  const { toast } = useToast();
   const router = useRouter();
   const processPayment = useRazorpay();
-
-  const [isLoading, setIsLoading] = useState(false);
 
   const companyLogoImg = useRef<HTMLImageElement>(null);
   const form = useForm<JobPostSchemaType>({
@@ -126,7 +121,6 @@ const PostJobForm = () => {
   };
 
   const handleFormSubmit = async (data: JobPostSchemaType) => {
-    setIsLoading(true);
     data.companyLogo = (await submitImage(file)) ?? '';
     await processPayment({
       amount: 1000,
@@ -137,7 +131,6 @@ const PostJobForm = () => {
     });
     setPreviewImg(null);
     form.reset(form.formState.defaultValues);
-    setIsLoading(false);
   };
   const watchHasSalaryRange = form.watch('hasSalaryRange');
 
@@ -487,18 +480,21 @@ const PostJobForm = () => {
               </div>
             </div>
           </div>
-          <div className="w-full flex justify-end items-center mt-4">
-            <Button type="submit" disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting ? 'Please wait...' : 'Create Job'}
-            </Button>
-          </div>
         </form>
       </Form>
 
       <div className="bg-gray-900 p-6 rounded-lg w-[37rem] mx-auto text-gray-300">
         <h2 className="text-lg font-semibold mb-4 text-gray-300">Payment</h2>
-        <Button className="w-full rounded-full mt-4">
-          Continue to Payment
+
+        <Button
+          className="w-full rounded-full mt-4"
+          type="submit"
+          onClick={form.handleSubmit(handleFormSubmit)}
+          disabled={form.formState.isSubmitting}
+        >
+          {form.formState.isSubmitting
+            ? 'Please wait...'
+            : 'Continue to Payment'}
         </Button>
 
         <div className="flex mt-4 gap-2 flex-col items-center">
