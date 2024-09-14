@@ -121,7 +121,8 @@ const PostJobForm = () => {
 
   const handleFormSubmit = async (data: JobPostSchemaType) => {
     try {
-      data.companyLogo = (await submitImage(file)) ?? '';
+      data.companyLogo =
+        (await submitImage(file)) ?? 'https://wwww.example.com';
       ``;
       const response = await createJob(data);
       if (!response.status) {
