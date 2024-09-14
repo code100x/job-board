@@ -9,9 +9,14 @@
     "lint": "next lint",
     "dev:docker": "npm run db:seed & next dev",
     "db:seed": "npx prisma db push & npx prisma db seed",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,md,mdx,css}\"",
     "check": "prettier --check \"**/*.{ts,tsx,js,jsx,md,mdx,css}\"",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,md,mdx,css}\"",
     "prepare": "husky"
+  },
+  "lint-staged": {
+    "**/*.{ts,tsx,js,jsx,md,mdx,css}": [
+      "prettier --write"
+    ]
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
