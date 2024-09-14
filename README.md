@@ -1,5 +1,5 @@
 # Project Name: Job Board
-
+[All about job board](https://marmalade-height-05f.notion.site/100xDevs-Job-board-ab8ca399180d49e4bc0c2ff5c81dfb08?pvs=25)
 ## Table of Contents
 
 - [Description](#description)
@@ -10,14 +10,6 @@
 ## Description
 
 Job Board is a platform designed to connect employers with potential employees. Employers can post job listings, and job seekers can apply for these positions. The application ensures a seamless and efficient job search and hiring process.
-
-## Features
-
-- **User Registration and Authentication**: Secure and easy registration and login for both employers and job seekers.
-- **Job Listings Management**: Employers can create, update, and manage job listings.
-- **Job Applications**: Job seekers can browse listings and apply directly through the platform.
-- **Profile Management**: Users can create and update their profiles with relevant information.
-- **Search and Filter**: Advanced search and filtering options to find the perfect job or candidate.
 
 ## Technologies
 
@@ -44,9 +36,23 @@ Follow these steps to set up the repository locally and run it.
 1. Create a `.env` file in the root folder of your project. Update it following the convention of the `.env.example` file. Here's an example:
 
    ```bash
+   #
+   # Database 
+   #
    DATABASE_URL="postgres://postgres:password@localhost:5432/postgres"
+
+   #
+   # AUTH 
+   #
    NEXTAUTH_SECRET="koXrQGB5TFD4KALDX4kAvnQ5RHHvAOIzB"
    NEXTAUTH_URL="http://localhost:3000"
+
+   #
+   # Bunny CDN
+   #
+   CDN_SZ_NAME=
+   CDN_BASE_PATH=
+   CDN_API_KEY=
    ```
 
 2. To generate AUTH_SECRET,
@@ -60,6 +66,7 @@ Follow these steps to set up the repository locally and run it.
    or
 
    [Run in browser](https://www.cryptool.org/en/cto/openssl/)
+
 
 ### Running the Project with Docker
 
