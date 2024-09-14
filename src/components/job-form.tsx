@@ -74,29 +74,20 @@ const PostJobForm = () => {
     formData.append('file', file);
 
     try {
-      const uniqueFileName = `${file.name}-${Date.now()}`;
-      const fileType = file.type;
+      const uniqueFileName = `${Date.now()}-${file.name}`;
+      formData.append('uniqueFileName', uniqueFileName);
 
-      const res = await fetch(
-        `/api/s3-upload?file=${encodeURIComponent(file.name)}&fileType=${encodeURIComponent(fileType)}&uniqueKey=${encodeURIComponent(uniqueFileName)}`
-      );
-      if (!res.ok) {
-        throw new Error('Failed to fetch presigned URL');
-      }
-
-      const { url: presignedUrl } = await res.json();
-      const upload = await fetch(presignedUrl, {
-        method: 'PUT',
-        body: file,
-        headers: { 'Content-Type': fileType },
+      const res = await fetch(`/api/upload-to-cdn`, {
+        method: 'POST',
+        body: formData,
       });
 
-      if (!upload.ok) {
-        throw new Error('Upload failed');
+      if (!res.ok) {
+        throw new Error('Failed to upload image');
       }
 
-      const pubUrl = presignedUrl.split('?')[0];
-      return pubUrl;
+      const uploadRes = await res.json();
+      return uploadRes.url;
     } catch (error) {
       console.error('Image upload failed:', error);
     }

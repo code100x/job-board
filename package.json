@@ -20,7 +20,6 @@
     "@aws-sdk/client-s3": "^3.645.0",
     "@aws-sdk/s3-request-presigner": "^3.645.0",
     "@hookform/resolvers": "^3.9.0",
-    "@prisma/client": "5.18.0",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-checkbox": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.1",
@@ -36,6 +35,7 @@
     "@radix-ui/react-switch": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.1",
     "@types/lodash": "^4.17.7",
+    "@types/uuid": "^10.0.0",
     "@uidotdev/usehooks": "^2.4.1",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
@@ -55,6 +55,7 @@
     "react-quill": "^2.0.0",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
+    "uuid": "^10.0.0",
     "vaul": "^0.9.1",
     "zod": "^3.23.8",
     "zod-error": "^1.5.0"
