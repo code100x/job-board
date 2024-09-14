@@ -1,5 +1,7 @@
 # Project Name: Job Board
+
 [All about job board](https://marmalade-height-05f.notion.site/100xDevs-Job-board-ab8ca399180d49e4bc0c2ff5c81dfb08?pvs=25)
+
 ## Table of Contents
 
 - [Description](#description)
@@ -37,12 +39,12 @@ Follow these steps to set up the repository locally and run it.
 
    ```bash
    #
-   # Database 
+   # Database
    #
    DATABASE_URL="postgres://postgres:password@localhost:5432/postgres"
 
    #
-   # AUTH 
+   # AUTH
    #
    NEXTAUTH_SECRET="koXrQGB5TFD4KALDX4kAvnQ5RHHvAOIzB"
    NEXTAUTH_URL="http://localhost:3000"
@@ -66,7 +68,6 @@ Follow these steps to set up the repository locally and run it.
    or
 
    [Run in browser](https://www.cryptool.org/en/cto/openssl/)
-
 
 ### Running the Project with Docker
 
