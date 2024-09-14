@@ -26,6 +26,11 @@ const AllJobs = async ({ searchParams }: PaginatorProps) => {
   const currentPage = parseInt(searchParams.page?.toString()) || DEFAULT_PAGE;
   return (
     <div className="bg-background py-4 grid gap-3 w-full">
+      {jobs.additional?.jobs.length === 0 && (
+        <p className="w-[94%] mx-auto font-bold text-gray-500 rounded-lg  p-3 text-center text-sm ">
+          No jobs availble right now.
+        </p>
+      )}
       {jobs.additional?.jobs.map((job) => {
         return (
           <Link key={job.id} href={`/jobs/${job.id}`}>

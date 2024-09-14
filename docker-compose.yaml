@@ -1,8 +1,10 @@
 services:
+  
   app:
     build:
+      context: .
       dockerfile: Dockerfile
-      target: development # Change this to production for prod builds (WIP)
+      target: development 
     container_name: job-board-app
     environment:
       - DATABASE_URL=$DATABASE_URL
