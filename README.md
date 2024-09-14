@@ -56,7 +56,9 @@ Follow these steps to set up the repository locally and run it.
    CDN_BASE_ACCESS_URL=https://job-board.b-cdn.net/assets
    ```
 
-2. To generate AUTH_SECRET,
+2. Change the hostname in `next.config.js` with your CDN access hostname by Ref of provided example.
+
+3. To generate AUTH_SECRET,
 
    Run this command in your terminal:
 
