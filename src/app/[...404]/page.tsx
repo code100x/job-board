@@ -45,10 +45,10 @@ const Custom404Page = () => {
           className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-full transition-colors duration-300"
         >
           <Link href="/">
-            <a className="flex items-center">
+            <div className="flex items-center">
               <Home className="mr-2 h-5 w-5" />
               Return to Homepage
-            </a>
+            </div>
           </Link>
         </Button>
       </motion.div>
