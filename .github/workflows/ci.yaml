@@ -29,7 +29,7 @@ jobs:
         run: npm run check
 
       - name: Run format fix if check fails
-        if: failure()
+        if: ${{ failure() }}
         run: npm run format
       
       - name: Run build
