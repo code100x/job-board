@@ -51,9 +51,9 @@ Follow these steps to set up the repository locally and run it.
    #
    # Bunny CDN
    #
-   CDN_SZ_NAME=
-   CDN_BASE_PATH=
-   CDN_API_KEY=
+   CDN_API_KEY=api-key
+   CDN_BASE_UPLOAD_URL=https://sg.storage.bunnycdn.com/job-board/assets
+   CDN_BASE_ACCESS_URL=https://job-board.b-cdn.net/assets
    ```
 
 2. To generate AUTH_SECRET,

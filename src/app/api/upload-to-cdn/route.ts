@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 
-const CDN_BASE_URL = `https://sg.storage.bunnycdn.com/${process.env.CDN_SZ_NAME}${process.env.CDN_BASE_PATH}`;
+const CDN_BASE_UPLOAD_URL = process.env.CDN_BASE_UPLOAD_URL;
+const CDN_BASE_ACCESS_URL = process.env.CDN_BASE_ACCESS_URL;
 const CDN_API_KEY = process.env.CDN_API_KEY!;
 
 export async function POST(req: Request): Promise<NextResponse> {
@@ -14,7 +15,7 @@ export async function POST(req: Request): Promise<NextResponse> {
       return NextResponse.json({ error: 'File is required' }, { status: 400 });
     }
 
-    const uploadUrl = `${CDN_BASE_URL}/${uniqueFileName}`;
+    const uploadUrl = `${CDN_BASE_UPLOAD_URL}/${uniqueFileName}`;
 
     const fileBuffer = Buffer.from(await file.arrayBuffer());
 
@@ -30,7 +31,7 @@ export async function POST(req: Request): Promise<NextResponse> {
     if (response.ok) {
       return NextResponse.json({
         message: 'File uploaded successfully',
-        url: uploadUrl,
+        url: `${CDN_BASE_ACCESS_URL}/${uniqueFileName}`,
       });
     } else {
       return NextResponse.json(
