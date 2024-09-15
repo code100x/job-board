@@ -9,6 +9,7 @@
     "lint": "next lint",
     "dev:docker": "npm run db:seed & next dev",
     "db:seed": "npx prisma db push & npx prisma db seed",
+    "db:studio": "npx prisma studio",
     "check": "prettier --check \"**/*.{ts,tsx,js,jsx,md,mdx,css}\"",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,md,mdx,css}\"",
     "prepare": "husky"
