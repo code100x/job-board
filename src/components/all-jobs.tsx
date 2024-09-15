@@ -31,7 +31,7 @@ const AllJobs = async ({ searchParams }: PaginatorProps) => {
             id={job.id}
             title={job.title}
             companyName={job.companyName}
-            location={job.location}
+            address={job.address}
             workMode={job.workMode}
             minSalary={job.minSalary}
             maxSalary={job.maxSalary}

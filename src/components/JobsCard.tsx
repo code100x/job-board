@@ -7,7 +7,7 @@ interface JobsData {
   id: string;
   title: string;
   companyName: string;
-  location: string;
+  address: string;
   workMode: string;
   minSalary: number | null;
   maxSalary: number | null;
@@ -18,7 +18,7 @@ const JobsCard = ({
   id,
   title,
   companyName,
-  location,
+  address,
   workMode,
   minSalary,
   maxSalary,
@@ -37,7 +37,7 @@ const JobsCard = ({
         <div className="flex gap-2 text-xs text-muted-foreground">
           <span className="flex items-center gap-0.5">
             <Icon icon="location" size={12} />
-            {location} <span className="capitalize">({workMode})</span>
+            {address} <span className="capitalize">({workMode})</span>
           </span>
           <span className="flex items-center gap-0.5">
             {minSalary && <Icon icon="currency" size={12} />}
