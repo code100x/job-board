@@ -83,7 +83,7 @@ const Header = () => {
             <MobileNav />
           </div>
           <Link
-            href={session?.data?.user ? '#' : '/signin'} // Use '#' or omit href to prevent navigation on logout
+            href={session?.data?.user ? '#' : '/signin'}
             onClick={handleLogout}
             className="transition-colors hover:text-foreground/80 text-foreground/60 max-sm:hidden"
           >
