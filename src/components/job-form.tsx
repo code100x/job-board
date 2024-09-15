@@ -31,7 +31,6 @@ import Image from 'next/image';
 import { FaFileUpload } from 'react-icons/fa';
 import { Switch } from './ui/switch';
 import { Label } from './ui/label';
-import { GmapsAutocompleteAddress } from './gmaps-autosuggest';
 
 const PostJobForm = () => {
   const { toast } = useToast();
@@ -44,8 +43,7 @@ const PostJobForm = () => {
       companyName: '',
       companyBio: '',
       companyEmail: '',
-      city: '',
-      address: '',
+      location: undefined,
       companyLogo: '',
       workMode: 'remote',
       type: 'full-time',
@@ -112,8 +110,7 @@ const PostJobForm = () => {
 
   const handleFormSubmit = async (data: JobPostSchemaType) => {
     try {
-      data.companyLogo =
-        (await submitImage(file)) ?? 'https://wwww.example.com';
+      data.companyLogo = (await submitImage(file)) ?? '';
       ``;
       const response = await createJob(data);
       if (!response.status) {
@@ -345,7 +342,22 @@ const PostJobForm = () => {
               )}
             </div>
 
-            <GmapsAutocompleteAddress form={form}></GmapsAutocompleteAddress>
+            <FormField
+              control={form.control}
+              name="location"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-medium">Location</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className="w-full bg-gray-800 border-none text-white"
+                      placeholder="Where is the job located?"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
 
             <FormField
               control={form.control}

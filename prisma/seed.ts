@@ -1,13 +1,15 @@
 /* eslint-disable no-console */
 import { Currency, Role, WorkMode } from '@prisma/client';
-import { faker } from '@faker-js/faker';
 import bcrypt from 'bcryptjs';
 import prisma from '../src/config/prisma.config';
+import { JobLocations } from '@prisma/client';
 
 const users = [
   { id: '1', name: 'Jack', email: 'user@gmail.com' },
   { id: '2', name: 'Admin', email: 'admin@gmail.com', role: Role.ADMIN },
 ];
+
+const locationArr = Object.keys(JobLocations);
 
 let jobs = [
   {
@@ -284,6 +286,13 @@ async function seedUsers() {
 }
 
 async function seedJobs() {
+  jobs = jobs.map((j, index) => {
+    return {
+      ...j,
+      location:
+        locationArr[index] !== undefined ? locationArr[index] : locationArr[3],
+    };
+  });
   try {
     await Promise.all(
       jobs.map(async (j) =>
@@ -302,8 +311,8 @@ async function seedJobs() {
             workMode: j.workMode,
             currency: j.currency,
             application: j.application,
-            city: faker.location.city(),
-            address: faker.location.streetAddress(),
+            //@ts-ignore
+            location: j.location,
             companyLogo: j.companyLogo,
             hasSalaryRange: j.hasSalaryRange,
             minSalary: j.minSalary,

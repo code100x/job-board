@@ -1,13 +1,14 @@
 import { z } from 'zod';
-import { WorkMode } from '@prisma/client';
+import { JobLocations, WorkMode } from '@prisma/client';
 
 export const JobPostSchema = z
   .object({
     title: z.string().min(1, 'Title is required'),
     description: z.string().min(1, 'Description is required'),
     companyName: z.string().min(1, 'Company Name is required'),
-    city: z.string().min(1, 'City Name is required'),
-    address: z.string().min(1, 'Address is required'),
+    location: z.nativeEnum(JobLocations, {
+      message: 'Location is Required',
+    }),
     application: z.string(),
     type: z.string(),
     category: z.string(),
@@ -64,7 +65,7 @@ export const JobQuerySchema = z.object({
       }
       return val;
     }),
-  city: z
+  location: z
     .union([z.string(), z.array(z.string())])
     .optional()
     .transform((val) => {

@@ -6,6 +6,7 @@ import {
 } from '@/lib/validators/jobs.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { JobLocations } from '@prisma/client';
 import {
   Accordion,
   AccordionContent,
@@ -25,15 +26,12 @@ import { Separator } from '../components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import useSetQueryParams from '@/hooks/useSetQueryParams';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { WorkMode } from '@prisma/client';
 import _ from 'lodash';
 import { DEFAULT_PAGE } from '@/config/app.config';
-import { getCityFilters } from '@/actions/job.action';
 
 const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
-  const [cityFilters, setCityFilters] = useState<string[]>([]);
-
   const setQueryParams = useSetQueryParams();
   const form = useForm<JobQuerySchemaType>({
     resolver: zodResolver(JobQuerySchema),
@@ -41,21 +39,11 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
       page: DEFAULT_PAGE,
       workmode: searchParams.workmode,
       salaryrange: searchParams.salaryrange,
-      city: searchParams.city,
+      location: searchParams.location,
     },
   });
 
   const formValues = form.watch();
-
-  async function fetchCityFilters() {
-    const cities = await getCityFilters();
-    setCityFilters(cities.additional.cities);
-    return cities;
-  }
-
-  useEffect(() => {
-    fetchCityFilters();
-  }, []);
 
   useEffect(() => {
     if (formValues) {
@@ -83,7 +71,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                 'work-mode',
                 'choose-currency',
                 'salary-range',
-                'city',
+                'location',
               ]}
             >
               <AccordionItem value="work-mode">
@@ -192,21 +180,21 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                   />
                 </AccordionContent>
               </AccordionItem>
-              <AccordionItem value="city">
+              <AccordionItem value="location">
                 <AccordionTrigger className="text-primary-text hover:no-underline">
-                  City
+                  Location
                 </AccordionTrigger>
                 <AccordionContent>
                   <FormField
                     control={form.control}
-                    name="city"
+                    name="location"
                     render={() => (
                       <FormItem className="flex flex-wrap gap-2 space-y-0">
-                        {cityFilters.map((item, index) => (
+                        {Object.keys(JobLocations).map((item, index) => (
                           <FormField
                             key={index}
                             control={form.control}
-                            name="city"
+                            name="location"
                             render={({ field }) => {
                               return (
                                 <FormItem
