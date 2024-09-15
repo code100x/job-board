@@ -1,7 +1,7 @@
 'use client';
 import { MobileNav } from '@/layouts/mobile-nav';
 import { navbar } from '@/lib/constant/app.constant';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { NavItem } from '@/components/navitem';
 import Image from 'next/image';
@@ -28,6 +28,13 @@ const CompanyLogo = () => {
 const Header = () => {
   const session = useSession();
   const [opacity, setOpacity] = useState(1);
+
+  const handleLogout = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    if (session?.data?.user) {
+      signOut();
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -75,6 +82,13 @@ const Header = () => {
           <div className="sm:hidden flex justify-center">
             <MobileNav />
           </div>
+          <Link
+            href={session?.data?.user ? '#' : '/signin'} // Use '#' or omit href to prevent navigation on logout
+            onClick={handleLogout}
+            className="transition-colors hover:text-foreground/80 text-foreground/60 max-sm:hidden"
+          >
+            {session?.data?.user ? 'Logout' : 'Login'}
+          </Link>
         </div>
       </div>
     </header>
