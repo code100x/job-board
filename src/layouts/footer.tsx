@@ -28,10 +28,10 @@ const Footer = () => {
           <div className="flex flex-col gap-2">
             <p className="font-bold text-base md:text-lg">Follow us on</p>
             <div className="flex gap-3">
-              {socials.map((social) => (
+              {socials.map((social, index) => (
                 <Link
                   target="_blank"
-                  key={social.href}
+                  key={social.href + index}
                   href={social.href}
                   aria-label={social.label}
                 >
@@ -48,9 +48,9 @@ const Footer = () => {
           <div className="flex flex-col gap-2 ">
             <p className="font-bold text-xl md:text-2xl">100xLinks</p>
 
-            {footerLinks['100xlinks'].map((link) => (
+            {footerLinks['100xlinks'].map((link, index) => (
               <Link
-                key={link.href}
+                key={link.href + index}
                 href={link.href}
                 className="text-foreground/60 hover:text-foreground/80 sm:text-lg font-light"
               >
@@ -61,9 +61,9 @@ const Footer = () => {
           <div className="flex flex-col gap-2 ">
             <p className="font-bold text-xl md:text-2xl">100xLegal</p>
 
-            {footerLinks['100xlegal'].map((link) => (
+            {footerLinks['100xlegal'].map((link, index) => (
               <Link
-                key={link.href}
+                key={link.href + index}
                 href={link.href}
                 className="text-foreground/60 hover:text-foreground/80 sm:text-lg font-light"
               >
