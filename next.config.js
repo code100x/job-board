@@ -11,7 +11,7 @@ const nextConfig = {
       {
         protocol: 'https',
         //Change it with your cdn access domain here
-        hostname: "job-board.b-cdn.net",
+        hostname: 'job-board.b-cdn.net',
       },
     ],
   },
