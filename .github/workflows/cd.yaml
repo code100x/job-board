@@ -33,9 +33,9 @@ jobs:
         run: |
           git clone https://github.com/code100x/staging-ops.git
           cd staging-ops
-          sed -i 's|image: 100xdevs/job-board-staging:.*|image: 100xdevs/job-board-staging:${{ github.sha }}|' job-board/deployment.yaml
+          sed -i 's|image: 100xdevs/job-board-staging:.*|image: 100xdevs/job-board-staging:${{ github.sha }}|' job-board/deployment.yml
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
-          git add job-board/deployment.yaml
+          git add job-board/deployment.yml
           git commit -m "Update job-board-staging image to ${{ github.sha }}"
           git push https://${PAT}@github.com/code100x/staging-ops.git main
