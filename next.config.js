@@ -10,8 +10,8 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        //Add aws s3 bucket hostname
-        hostname: '<bucket_url/hostname>', //example - youraws.s3.ap-south-2.amazonaws.com
+        //Change it with your cdn access domain here
+        hostname: 'job-board.b-cdn.net',
       },
     ],
   },
