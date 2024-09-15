@@ -29,7 +29,7 @@ jobs:
       
       - name: Clone staging-ops repo, update, and push
         env:
-          PAT: ${{ secrets.STAGING_OPS_PAT }}
+          PAT: ${{ secrets.PAT }}
         run: |
           git clone https://github.com/code100x/staging-ops.git
           cd staging-ops
