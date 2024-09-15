@@ -9,9 +9,19 @@
     "lint": "next lint",
     "dev:docker": "npm run db:seed & next dev",
     "db:seed": "npx prisma db push & npx prisma db seed",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,md,mdx,css}\"",
     "check": "prettier --check \"**/*.{ts,tsx,js,jsx,md,mdx,css}\"",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,md,mdx,css}\"",
     "prepare": "husky"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.{ts,tsx,js,jsx,md,mdx,css}": [
+      "prettier --write"
+    ]
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
@@ -19,6 +29,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.645.0",
     "@aws-sdk/s3-request-presigner": "^3.645.0",
+    "@faker-js/faker": "^9.0.0",
     "@hookform/resolvers": "^3.9.0",
     "@prisma/client": "5.18.0",
     "@radix-ui/react-accordion": "^1.2.0",
