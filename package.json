@@ -13,6 +13,11 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,md,mdx,css}\"",
     "prepare": "husky"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "lint-staged": {
     "**/*.{ts,tsx,js,jsx,md,mdx,css}": [
       "prettier --write"
