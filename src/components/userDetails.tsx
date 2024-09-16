@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
-import { toast, useToast } from './ui/use-toast';
+import { useToast } from './ui/use-toast';
 import axios from "axios"
 
 const UserDetails = () => {
@@ -12,13 +12,13 @@ const UserDetails = () => {
   const [github, setGithub] = useState("https://github.com/code100x/job-board")
   const [linkedIn, setLinkedIn] = useState("https://www.linkedin.com/in/kirat-li/")
   const [twitter, setTwitter] = useState("https://x.com/kirat_tw")
-  const [Lpa, setLpa] = useState(12)
+  const [Lpa, setLpa] = useState<any>(12)
 
   const { toast } = useToast()
   const [resumeFile, setResumeFile] = useState<any>(null)
   const [isResumeUploading, setisResumeUploading] = useState(false)
   const uploadResume = async () => {
-    if (resumeFile == null) {
+    if (resumeFile === null) {
       return toast({
         description: "Please add file first",
         variant: "destructive"
@@ -38,7 +38,6 @@ const UserDetails = () => {
           'Content-Type': 'multipart/form-data'
         }
       });
-      console.log(response)
       setisResumeUploading(false)
       toast({
         description: "File uploaded successfully!",
@@ -54,15 +53,6 @@ const UserDetails = () => {
     }
   }
 
-  // const handleFileChange = async (e: any) => {
-  //   const selectedFile = e.target.files[0];
-  //   const reader = new FileReader();
-
-  //   reader.readAsDataURL(selectedFile);
-  //   if (selectedFile) {
-  //     setResumeFile(selectedFile);
-  //   }
-  // };
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setResumeFile(e.target.files[0]);
@@ -82,17 +72,17 @@ const UserDetails = () => {
       <div>
         <div className="flex flex-col  max-w-[600px] gap-3 mx-8">
           <div className="flex gap-3 justify-between">
-            <Input value={firstName} placeholder="First name" />
-            <Input value={lastName} placeholder="Last name" />
+            <Input value={firstName} placeholder="First name" onChange={(e) => { setFirstName(e.target.value) }} />
+            <Input value={lastName} placeholder="Last name" onChange={(e) => { setLastName(e.target.value) }} />
           </div>
           <div>
-            <Input placeholder="Github" value={github} />
+            <Input placeholder="Github" value={github} onChange={(e) => { setGithub(e.target.value) }} />
           </div>
           <div>
-            <Input placeholder="LinkedIn" value={linkedIn} />
+            <Input placeholder="LinkedIn" value={linkedIn} onChange={(e) => { setLinkedIn(e.target.value) }} />
           </div>
           <div>
-            <Input placeholder="Twitter" value={twitter} />
+            <Input placeholder="Twitter" value={twitter} onChange={(e) => { setTwitter(e.target.value) }} />
           </div>
           <div className='flex'>
             <Input type='file' onChange={handleFileChange} />
@@ -108,7 +98,7 @@ const UserDetails = () => {
 
           <div className="flex justify-between">
             <div className='flex flex-col justify-center  gap-2'>
-              <Input placeholder="LPA " value={Lpa} className="max-w-[135px]" />
+              <Input placeholder="LPA " type='number' value={Lpa} onChange={(e) => { setLpa(e.target.value) }} className="max-w-[135px]" />
               <div className='text-sm pl-1'>Expected LPA</div>
             </div>
             <div>
