@@ -2,7 +2,6 @@ import AllJobs from '@/components/all-jobs';
 import { FilterSheet } from '@/components/FilterSheet';
 import Loader from '@/components/loader';
 import { Button } from '@/components/ui/button';
-import APP_PATHS from '@/config/path.config';
 import JobFilters from '@/layouts/job-filters';
 import JobsHeader from '@/layouts/jobs-header';
 import {
@@ -23,20 +22,17 @@ const page = async ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
     <div className="container flex gap-5 pt-10">
       <div className="container flex gap-5 pt-5">
         <div className="max-md:hidden">
-          <JobFilters searchParams={searchParams} baseUrl={APP_PATHS.JOBS} />
+          <JobFilters searchParams={parsedSearchParams} />
         </div>
         <div className="grow">
           <div className="flex space-x-2">
             <div className="md:hidden">
-              <FilterSheet searchParams={searchParams} baseUrl={APP_PATHS.JOBS}>
+              <FilterSheet searchParams={parsedSearchParams}>
                 <Button>Filters</Button>
               </FilterSheet>
             </div>
             <div className="flex-grow">
-              <JobsHeader
-                searchParams={searchParams}
-                baseUrl={APP_PATHS.JOBS}
-              />
+              <JobsHeader searchParams={searchParams} />
             </div>
           </div>
           <Suspense
