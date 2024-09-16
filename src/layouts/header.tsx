@@ -52,10 +52,10 @@ const Header = () => {
 
   return (
     <header
-      className="sticky top-6 z-50 md:w-auto mx-auto w-full px-6 transition-opacity duration-300"
+      className="sticky top-6 z-50 sm:w-auto mx-auto w-full px-6 transition-opacity duration-300"
       style={{ opacity }}
     >
-      <div className="container flex h-14 max-w-screen-xl items-center md:border-2 rounded-full border-border/40 sm:bg-none sm:bg-background/60 ">
+      <div className="container flex h-14 max-w-screen-xl items-center md:border-2 bg-background/60 rounded-full border border-border/40 sm:bg-none sm:bg-background/60 ">
         <Link href="/" className="p-2.5 mr-4">
           <CompanyLogo />
         </Link>

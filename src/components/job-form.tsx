@@ -32,6 +32,7 @@ import Image from 'next/image';
 import { FaFileUpload } from 'react-icons/fa';
 import { Switch } from './ui/switch';
 import { Label } from './ui/label';
+import { GmapsAutocompleteAddress } from './gmaps-autosuggest';
 
 const PostJobForm = () => {
   const router = useRouter();
@@ -46,7 +47,8 @@ const PostJobForm = () => {
       companyName: '',
       companyBio: '',
       companyEmail: '',
-      location: undefined,
+      city: '',
+      address: '',
       companyLogo: '',
       workMode: 'remote',
       type: 'full-time',
@@ -77,29 +79,20 @@ const PostJobForm = () => {
     formData.append('file', file);
 
     try {
-      const uniqueFileName = `${file.name}-${Date.now()}`;
-      const fileType = file.type;
+      const uniqueFileName = `${Date.now()}-${file.name}`;
+      formData.append('uniqueFileName', uniqueFileName);
 
-      const res = await fetch(
-        `/api/s3-upload?file=${encodeURIComponent(file.name)}&fileType=${encodeURIComponent(fileType)}&uniqueKey=${encodeURIComponent(uniqueFileName)}`
-      );
-      if (!res.ok) {
-        throw new Error('Failed to fetch presigned URL');
-      }
-
-      const { url: presignedUrl } = await res.json();
-      const upload = await fetch(presignedUrl, {
-        method: 'PUT',
-        body: file,
-        headers: { 'Content-Type': fileType },
+      const res = await fetch(`/api/upload-to-cdn`, {
+        method: 'POST',
+        body: formData,
       });
 
-      if (!upload.ok) {
-        throw new Error('Upload failed');
+      if (!res.ok) {
+        throw new Error('Failed to upload image');
       }
 
-      const pubUrl = presignedUrl.split('?')[0];
-      return pubUrl;
+      const uploadRes = await res.json();
+      return uploadRes.url;
     } catch (error) {
       console.error('Image upload failed:', error);
     }
@@ -340,22 +333,7 @@ const PostJobForm = () => {
               )}
             </div>
 
-            <FormField
-              control={form.control}
-              name="location"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-medium">Location</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className="w-full bg-gray-800 border-none text-white"
-                      placeholder="Where is the job located?"
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+            <GmapsAutocompleteAddress form={form}></GmapsAutocompleteAddress>
 
             <FormField
               control={form.control}
