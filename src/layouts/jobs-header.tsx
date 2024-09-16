@@ -37,6 +37,7 @@ import {
   SheetHeader,
   SheetTrigger,
 } from '@/components/ui/sheet';
+import { ScrollArea } from '@/components/ui/scroll-area';
 const FormSchema = z.object({
   search: z.string().optional(),
 });
@@ -108,7 +109,9 @@ const JobsHeader = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
             </SheetTrigger>
             <SheetContent side={'left'} className="h-full w-80">
               <SheetHeader className="mt-2 h-full w-full">
-                <JobFilters searchParams={searchParams}></JobFilters>
+                <ScrollArea>
+                  <JobFilters searchParams={searchParams}></JobFilters>
+                </ScrollArea>
               </SheetHeader>
             </SheetContent>
           </Sheet>
