@@ -141,6 +141,6 @@ Password: '123456';
    ```bash
    CDN_BASE_ACCESS_URL=<your-cdn-base-access-url>
    ```
-   Which is https://[your-pull-zone-hostname]/[any folder name you might have added otherwise empty]
+   Which is https://[your-pull-zone-hostname]/[any folder name you might have added otherwise empty] or get link from the dashboard as mentioned below 
    
    <img src="https://utfs.io/f/CUistsOk9f0IyM9047Pa7YvK8qbtnUAPO9jwxdskhzc2JNoR" alt=" CDN_BASE_ACCESS_URL"  width="600"  />
