@@ -2,7 +2,8 @@ import { WorkMode, Currency } from '@prisma/client';
 
 export type JobType = {
   companyLogo: string | undefined;
-  location: string;
+  city: string;
+  address: string;
   minSalary: number | null;
   maxSalary: number | null;
   id: string;

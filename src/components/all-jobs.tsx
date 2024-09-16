@@ -40,7 +40,7 @@ const AllJobs = async ({ searchParams }: PaginatorProps) => {
               <div className="flex gap-2 text-xs text-muted-foreground">
                 <span className="flex items-center gap-0.5">
                   <Icon icon="location" size={12} />
-                  {job.location}{' '}
+                  {job.address}{' '}
                   <span className="capitalize">({job.workMode})</span>
                 </span>
                 <span className="flex items-center gap-0.5">

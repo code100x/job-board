@@ -36,8 +36,8 @@ import Image from 'next/image';
 import { FaFileUpload } from 'react-icons/fa';
 import { Switch } from './ui/switch';
 import { Label } from './ui/label';
-import { JobLocations, WorkMode } from '@prisma/client';
-
+import { WorkMode } from '@prisma/client';
+import { GmapsAutocompleteAddress } from './gmaps-autosuggest';
 const PostJobForm = ({ job }: getJobType) => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -49,10 +49,11 @@ const PostJobForm = ({ job }: getJobType) => {
       title: job?.title || '',
       description: job?.description || '',
       companyName: job?.companyName || '',
+      city: job?.city || '',
       type: job?.type || '',
       companyBio: job?.companyBio || '',
       companyLogo: job?.companyLogo || '',
-      location: (job?.location as JobLocations) || undefined,
+      address: job?.address || '',
       hasSalaryRange: job?.hasSalaryRange || false,
       minSalary: job?.minSalary || 0,
       maxSalary: job?.maxSalary || 0,
@@ -83,29 +84,20 @@ const PostJobForm = ({ job }: getJobType) => {
     formData.append('file', file);
 
     try {
-      const uniqueFileName = `${file.name}-${Date.now()}`;
-      const fileType = file.type;
+      const uniqueFileName = `${Date.now()}-${file.name}`;
+      formData.append('uniqueFileName', uniqueFileName);
 
-      const res = await fetch(
-        `/api/s3-upload?file=${encodeURIComponent(file.name)}&fileType=${encodeURIComponent(fileType)}&uniqueKey=${encodeURIComponent(uniqueFileName)}`
-      );
-      if (!res.ok) {
-        throw new Error('Failed to fetch presigned URL');
-      }
-
-      const { url: presignedUrl } = await res.json();
-      const upload = await fetch(presignedUrl, {
-        method: 'PUT',
-        body: file,
-        headers: { 'Content-Type': fileType },
+      const res = await fetch(`/api/upload-to-cdn`, {
+        method: 'POST',
+        body: formData,
       });
 
-      if (!upload.ok) {
-        throw new Error('Upload failed');
+      if (!res.ok) {
+        throw new Error('Failed to upload image');
       }
 
-      const pubUrl = presignedUrl.split('?')[0];
-      return pubUrl;
+      const uploadRes = await res.json();
+      return uploadRes.url;
     } catch (error) {
       console.error('Image upload failed:', error);
     }
@@ -129,6 +121,9 @@ const PostJobForm = ({ job }: getJobType) => {
   const handleFormSubmit = async (data: JobPostSchemaType) => {
     if (!job) {
       try {
+        data.companyLogo =
+          (await submitImage(file)) ?? 'https://wwww.example.com';
+        ``;
         const response = await createJob(data);
 
         if (!response.status) {
@@ -154,6 +149,9 @@ const PostJobForm = ({ job }: getJobType) => {
       }
     } else {
       try {
+        data.companyLogo =
+          (await submitImage(file)) ?? 'https://wwww.example.com';
+        ``;
         const response = await updateJob(data, job.id);
 
         if (!response.status) {
@@ -170,30 +168,6 @@ const PostJobForm = ({ job }: getJobType) => {
         form.reset(form.formState.defaultValues);
         queryClient.invalidateQueries({ queryKey: ['jobs'] });
         router.push('/admin/jobs');
-      } catch (_error) {
-        toast({
-          title: 'Something went wrong will creating job',
-          description: 'Internal server error',
-          variant: 'destructive',
-        });
-      }
-      try {
-        data.companyLogo = (await submitImage(file)) ?? '';
-        ``;
-        const response = await createJob(data);
-        if (!response.status) {
-          return toast({
-            title: response.name || 'Something went wrong',
-            description: response.message || 'Internal server error',
-            variant: 'destructive',
-          });
-        }
-        toast({
-          title: response.message,
-          variant: 'success',
-        });
-        setPreviewImg(null);
-        form.reset(form.formState.defaultValues);
       } catch (_error) {
         toast({
           title: 'Something went wrong will creating job',
@@ -417,27 +391,6 @@ const PostJobForm = ({ job }: getJobType) => {
               <div className="flex flex-col gap-1">
                 <FormField
                   control={form.control}
-                  name="location"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-sm font-semibold">
-                        Location
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className="w-full border-gray-400"
-                          placeholder="location"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="flex flex-col gap-1">
-                <FormField
-                  control={form.control}
                   name="currency"
                   render={({ field }) => (
                     <FormItem>
@@ -457,6 +410,8 @@ const PostJobForm = ({ job }: getJobType) => {
                 />
               </div>
             </div>
+            <GmapsAutocompleteAddress form={form}></GmapsAutocompleteAddress>
+
             <FormField
               control={form.control}
               name="application"

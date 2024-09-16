@@ -29,7 +29,8 @@ export const createJob = withServerActionAsyncCatcher<
     type,
     category,
     application,
-    location,
+    city,
+    address,
     companyLogo,
     title,
     workMode,
@@ -53,7 +54,8 @@ export const createJob = withServerActionAsyncCatcher<
       hasSalaryRange,
       minSalary,
       maxSalary,
-      location,
+      city,
+      address,
       companyLogo,
       workMode,
       currency,
@@ -75,8 +77,8 @@ export const getAllJobs = withServerActionAsyncCatcher<
   if (data?.salaryrange && !Array.isArray(data?.salaryrange)) {
     data.salaryrange = Array.of(data?.salaryrange);
   }
-  if (data?.location && !Array.isArray(data?.location)) {
-    data.location = Array.of(data?.location);
+  if (data?.city && !Array.isArray(data?.city)) {
+    data.city = Array.of(data?.city);
   }
   const result = JobQuerySchema.parse(data);
   const { filterQueries, orderBy, pagination } = getJobFilters(result);
@@ -92,7 +94,8 @@ export const getAllJobs = withServerActionAsyncCatcher<
       title: true,
       description: true,
       companyName: true,
-      location: true,
+      city: true,
+      address: true,
       workMode: true,
       minSalary: true,
       maxSalary: true,
@@ -147,7 +150,8 @@ export const getJobById = withServerActionAsyncCatcher<
       companyBio: true,
       companyEmail: true,
       companyLogo: true,
-      location: true,
+      city: true,
+      address: true,
       workMode: true,
       minSalary: true,
       maxSalary: true,
@@ -169,7 +173,7 @@ export const updateJob = async (data: JobPostSchemaType, id: string) => {
   const result = JobPostSchema.parse(data);
   const {
     companyName,
-    location,
+    address,
     title,
     workMode,
     description,
@@ -191,9 +195,9 @@ export const updateJob = async (data: JobPostSchemaType, id: string) => {
         hasSalaryRange,
         minSalary,
         maxSalary,
-        location,
         workMode,
         currency,
+        address,
       },
     });
 
@@ -231,4 +235,15 @@ export const deleteJob = async (id: string) => {
       name: 'Error',
     };
   }
+};
+export const getCityFilters = async () => {
+  const response = await prisma.job.findMany({
+    select: {
+      city: true,
+    },
+  });
+  const cities = Array.from(new Set(response.map((res) => res.city)));
+  return new SuccessResponse(`Cities fetched successfully`, 200, {
+    cities,
+  }).serialize();
 };

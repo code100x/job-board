@@ -25,12 +25,15 @@ import { Separator } from '../components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import useSetQueryParams from '@/hooks/useSetQueryParams';
-import { useEffect } from 'react';
-
+import { useEffect, useState } from 'react';
 import { WorkMode } from '@prisma/client';
+import _ from 'lodash';
 import { DEFAULT_PAGE } from '@/config/app.config';
+import { getCityFilters } from '@/actions/job.action';
 
 const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
+  const [cityFilters, setCityFilters] = useState<string[]>([]);
+
   const setQueryParams = useSetQueryParams();
   const form = useForm<JobQuerySchemaType>({
     resolver: zodResolver(JobQuerySchema),
@@ -38,11 +41,21 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
       page: DEFAULT_PAGE,
       workmode: searchParams.workmode,
       salaryrange: searchParams.salaryrange,
-      location: searchParams.location,
+      city: searchParams.city,
     },
   });
 
   const formValues = form.watch();
+
+  async function fetchCityFilters() {
+    const cities = await getCityFilters();
+    setCityFilters(cities.additional.cities);
+    return cities;
+  }
+
+  useEffect(() => {
+    fetchCityFilters();
+  }, []);
 
   useEffect(() => {
     if (formValues) {
@@ -70,7 +83,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                 'work-mode',
                 'choose-currency',
                 'salary-range',
-                'location',
+                'city',
               ]}
             >
               <AccordionItem value="work-mode">
@@ -83,38 +96,36 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                     name="workmode"
                     render={() => (
                       <FormItem>
-                        {filters.workMode.map((item) => (
+                        {Object.keys(WorkMode).map((item, index) => (
                           <FormField
-                            key={item.id}
+                            key={index}
                             control={form.control}
                             name="workmode"
                             render={({ field }) => {
                               return (
                                 <FormItem
-                                  key={item.id}
+                                  key={index}
                                   className="flex items-center space-x-3 space-y-0"
                                 >
                                   <FormControl>
                                     <Checkbox
-                                      checked={field.value?.includes(
-                                        item.value as WorkMode
-                                      )}
+                                      checked={field.value?.includes(item)}
                                       onCheckedChange={(checked) => {
                                         checked
                                           ? field.onChange([
                                               ...(field.value || []),
-                                              item.value,
+                                              item,
                                             ])
                                           : field.onChange(
                                               field.value?.filter(
-                                                (value) => value !== item.value
+                                                (value) => value !== item
                                               )
                                             );
                                       }}
                                     />
                                   </FormControl>
                                   <FormLabel className="text-sm font-normal">
-                                    {item.label}
+                                    {_.startCase(item)}
                                   </FormLabel>
                                 </FormItem>
                               );
@@ -181,44 +192,40 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                   />
                 </AccordionContent>
               </AccordionItem>
-              <AccordionItem value="location">
+              <AccordionItem value="city">
                 <AccordionTrigger className="text-primary-text hover:no-underline">
-                  Location
+                  City
                 </AccordionTrigger>
                 <AccordionContent>
                   <FormField
                     control={form.control}
-                    name="location"
+                    name="city"
                     render={() => (
                       <FormItem className="flex flex-wrap gap-2 space-y-0">
-                        {filters.location.map((item) => (
+                        {cityFilters.map((item, index) => (
                           <FormField
-                            key={item.id}
+                            key={index}
                             control={form.control}
-                            name="location"
+                            name="city"
                             render={({ field }) => {
                               return (
                                 <FormItem
-                                  key={item.id}
+                                  key={index}
                                   className="flex items-center space-y-0 group"
-                                  aria-checked={field.value?.includes(
-                                    item.value
-                                  )}
+                                  aria-checked={field.value?.includes(item)}
                                 >
                                   <FormControl>
                                     <Checkbox
-                                      checked={field.value?.includes(
-                                        item.value
-                                      )}
+                                      checked={field.value?.includes(item)}
                                       onCheckedChange={(checked) => {
                                         checked
                                           ? field.onChange([
                                               ...(field.value || []),
-                                              item.value,
+                                              item,
                                             ])
                                           : field.onChange(
                                               field.value?.filter(
-                                                (value) => value !== item.value
+                                                (value) => value !== item
                                               )
                                             );
                                       }}
@@ -226,7 +233,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                     />
                                   </FormControl>
                                   <FormLabel className="text-primary-text font-normal text-xs cursor-pointer group-aria-checked:bg-primary group-aria-checked:text-primary-foreground flex items-center justify-start py-2 px-4 rounded-full border">
-                                    {item.label}
+                                    {_.startCase(item.toLowerCase())}
                                   </FormLabel>
                                 </FormItem>
                               );

@@ -345,3 +345,30 @@
   overflow-x: hidden !important; /* Allow horizontal scrolling */
   overflow-y: hidden !important; /* Hide vertical overflow */
 }
+
+.pac-container {
+  background-color: black !important;
+  color: #fff;
+  border-radius: 8px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-family: '__Inter_36bd41', '__Inter_Fallback', sans-serif !important;
+  font-size: 14px !important;
+}
+.pac-item {
+  color: #fff !important;
+  border: none;
+  font-size: 14px;
+}
+.pac-item:hover {
+  background-color: hsl(0, 0%, 14.9%) !important;
+  cursor: pointer;
+}
+.pac-item-query {
+  color: white;
+  font-weight: bold;
+}
+
+.pac-logo.hdpi::after {
+  content: none;
+}
