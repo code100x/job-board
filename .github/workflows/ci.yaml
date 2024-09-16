@@ -25,12 +25,11 @@ jobs:
       - name: Run lint
         run: npm run lint
 
+      - name: Run format
+        run: npm run format
+
       - name: Run format check
         run: npm run check
 
-      - name: Run format fix if check fails
-        if: ${{ failure() }}
-        run: npm run format
-      
       - name: Run build
         run: npm run build
