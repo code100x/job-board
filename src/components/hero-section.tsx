@@ -1,12 +1,12 @@
 import { GITHUB_REPO } from '@/lib/constant/app.constant';
 import Link from 'next/link';
 import Icon from './ui/icon';
-import Image from 'next/image';
+import { LogoMarquee } from './infinitescroll';
 
 const HeroSection = () => {
   return (
     <>
-      <section className="relative max-sm:pt-10 container">
+      <section className="relative sm:py-10 container">
         <div className="flex flex-col gap-4 items-center justify-center py-8 md:py-12 md:pb-8 lg:py-12 lg:pb-10">
           <Link
             href={GITHUB_REPO}
@@ -35,14 +35,7 @@ const HeroSection = () => {
             </div>
           </div>
         </div>
-        <div className="flex items-center justify-center my-10 invert dark:invert-0">
-          <Image
-            src={'/companies.png'}
-            alt="companies"
-            width={900}
-            height={100}
-          />
-        </div>
+        <LogoMarquee />
       </section>
     </>
   );

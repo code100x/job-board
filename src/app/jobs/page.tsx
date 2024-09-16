@@ -9,11 +9,16 @@ import {
   JobQuerySchema,
   JobQuerySchemaType,
 } from '@/lib/validators/jobs.validator';
+import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 
 const page = async ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
-  const validatedSearchParams = JobQuerySchema.parse(searchParams);
-
+  const parsedData = JobQuerySchema.safeParse(searchParams);
+  if (!(parsedData.success && parsedData.data)) {
+    console.error(parsedData.error);
+    redirect('/jobs');
+  }
+  const parsedSearchParams = parsedData.data;
   return (
     <div className="container flex gap-5 pt-10">
       <div className="container flex gap-5 pt-5">
@@ -44,7 +49,6 @@ const page = async ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
             <AllJobs searchParams={searchParams} />
           </Suspense>
         </div>
-
       </div>
     </div>
   );

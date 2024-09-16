@@ -9,14 +9,28 @@
     "lint": "next lint",
     "dev:docker": "npm run db:seed & next dev",
     "db:seed": "npx prisma db push & npx prisma db seed",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,md,mdx,css}\"",
+    "db:studio": "npx prisma studio",
     "check": "prettier --check \"**/*.{ts,tsx,js,jsx,md,mdx,css}\"",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,md,mdx,css}\"",
     "prepare": "husky"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.{ts,tsx,js,jsx,md,mdx,css}": [
+      "prettier --write"
+    ]
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.645.0",
+    "@aws-sdk/s3-request-presigner": "^3.645.0",
+    "@faker-js/faker": "^9.0.0",
     "@hookform/resolvers": "^3.9.0",
     "@prisma/client": "5.18.0",
     "@radix-ui/react-accordion": "^1.2.0",
@@ -33,20 +47,29 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-switch": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.1",
+    "@types/lodash": "^4.17.7",
+    "@types/uuid": "^10.0.0",
+    "@uidotdev/usehooks": "^2.4.1",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
+    "framer-motion": "^11.5.4",
+    "lodash": "^4.17.21",
     "lucide-react": "^0.426.0",
     "next": "14.2.5",
     "next-auth": "^4.24.7",
     "next-themes": "^0.3.0",
+    "nextjs-toploader": "^1.6.12",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.52.2",
     "react-icons": "^5.2.1",
+    "react-quill": "^2.0.0",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
+    "uuid": "^10.0.0",
+    "vaul": "^0.9.1",
     "zod": "^3.23.8",
     "zod-error": "^1.5.0"
   },

@@ -12,7 +12,7 @@ export default function BackgroundSvg() {
         left: 0,
         zIndex: -1,
         minHeight: '100vh',
-        minWidth: '100vw',
+        maxWidth: '100vw',
         objectFit: 'cover',
         overflow: 'hidden',
       }}

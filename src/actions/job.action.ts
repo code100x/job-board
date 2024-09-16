@@ -1,7 +1,5 @@
 'use server';
-import { ADMIN_ROLE } from '@/config/app.config';
 import prisma from '@/config/prisma.config';
-import { withSession } from '@/lib/session';
 import { withServerActionAsyncCatcher } from '@/lib/async-catch';
 import { SuccessResponse } from '@/lib/success';
 import {
@@ -15,20 +13,25 @@ import {
 import { getJobFilters } from '@/services/jobs.services';
 import { ServerActionReturnType } from '@/types/api.types';
 import { getAllJobsAdditonalType, getJobType } from '@/types/jobs.types';
-import { redirect } from 'next/navigation';
 
 type additional = {
   isVerifiedJob: boolean;
 };
-export const createJob = withSession<
+export const createJob = withServerActionAsyncCatcher<
   JobPostSchemaType,
   ServerActionReturnType<additional>
->(async (session, data) => {
+>(async (data) => {
   const result = JobPostSchema.parse(data);
-  const isVerifiedJob = session.user.role === ADMIN_ROLE;
   const {
     companyName,
-    location,
+    companyBio,
+    companyEmail,
+    type,
+    category,
+    application,
+    city,
+    address,
+    companyLogo,
     title,
     workMode,
     description,
@@ -38,22 +41,27 @@ export const createJob = withSession<
   } = result;
   await prisma.job.create({
     data: {
-      userId: session.user.id,
+      userId: '1', // Default to 1 since there's no session to check for user id
       title,
       description,
       companyName,
+      companyBio,
+      companyEmail,
+      type,
+      category,
+      application,
       hasSalaryRange,
       minSalary,
       maxSalary,
-      isVerifiedJob,
-      location,
+      city,
+      address,
+      companyLogo,
       workMode,
+      isVerifiedJob: false, // Default to false since there's no session to check for admin role
     },
   });
-  const message = isVerifiedJob
-    ? 'Job created successfully'
-    : 'Job created successfully, waiting for admin approval';
-  const additonal = { isVerifiedJob };
+  const message = 'Job created successfully, waiting for admin approval';
+  const additonal = { isVerifiedJob: false };
   return new SuccessResponse(message, 201, additonal).serialize();
 });
 
@@ -67,8 +75,8 @@ export const getAllJobs = withServerActionAsyncCatcher<
   if (data?.salaryrange && !Array.isArray(data?.salaryrange)) {
     data.salaryrange = Array.of(data?.salaryrange);
   }
-  if (data?.location && !Array.isArray(data?.location)) {
-    data.location = Array.of(data?.location);
+  if (data?.city && !Array.isArray(data?.city)) {
+    data.city = Array.of(data?.city);
   }
   const result = JobQuerySchema.parse(data);
   const { filterQueries, orderBy, pagination } = getJobFilters(result);
@@ -84,11 +92,13 @@ export const getAllJobs = withServerActionAsyncCatcher<
       title: true,
       description: true,
       companyName: true,
-      location: true,
+      city: true,
+      address: true,
       workMode: true,
       minSalary: true,
       maxSalary: true,
       postedAt: true,
+      companyLogo: true,
     },
   });
   const totalJobsPromise = prisma.job.count({
@@ -121,7 +131,11 @@ export const getJobById = withServerActionAsyncCatcher<
       title: true,
       description: true,
       companyName: true,
-      location: true,
+      companyBio: true,
+      companyEmail: true,
+      companyLogo: true,
+      city: true,
+      address: true,
       workMode: true,
       minSalary: true,
       maxSalary: true,
@@ -133,19 +147,14 @@ export const getJobById = withServerActionAsyncCatcher<
   }).serialize();
 });
 
-export const jobFilterQuery = async (
-  queries: JobQuerySchemaType,
-  baseUrl: string
-) => {
-  const { page, sortby, location, salaryrange, search, workmode } =
-    JobQuerySchema.parse(queries);
-  const searchParams = new URLSearchParams({
-    page: page.toString(),
-    sortby,
-    ...(search && { search: search.trim() }),
+export const getCityFilters = async () => {
+  const response = await prisma.job.findMany({
+    select: {
+      city: true,
+    },
   });
-  location?.map((location) => searchParams.append('location', location));
-  salaryrange?.map((range) => searchParams.append('salaryrange', range));
-  workmode?.map((mode) => searchParams.append('workmode', mode));
-  redirect(`${baseUrl}?${searchParams.toString()}`);
+  const cities = Array.from(new Set(response.map((res) => res.city)));
+  return new SuccessResponse(`Cities fetched successfully`, 200, {
+    cities,
+  }).serialize();
 };

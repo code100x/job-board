@@ -1,13 +1,12 @@
 'use client';
 import { MobileNav } from '@/layouts/mobile-nav';
-import { ModeToggle } from '@/components/ui/theme-toggle';
-import APP_PATHS from '@/config/path.config';
 import { navbar } from '@/lib/constant/app.constant';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { ProfileMenu } from '@/components/profile-menu';
 import { NavItem } from '@/components/navitem';
 import Image from 'next/image';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useState, useEffect } from 'react';
 
 const CompanyLogo = () => {
   return (
@@ -28,10 +27,35 @@ const CompanyLogo = () => {
 
 const Header = () => {
   const session = useSession();
+  const [opacity, setOpacity] = useState(1);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const windowHeight = window.innerHeight;
+
+      const fadeStart = 0;
+      const fadeEnd = windowHeight * 0.3;
+
+      if (scrollPosition <= fadeStart) {
+        setOpacity(1);
+      } else if (scrollPosition >= fadeEnd) {
+        setOpacity(0);
+      } else {
+        setOpacity(1 - (scrollPosition - fadeStart) / (fadeEnd - fadeStart));
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <header className="sticky top-6 z-50 md:w-auto mx-auto w-full px-5">
-      <div className="container flex h-14 max-w-screen-xl items-center md:border-2 rounded-full border-border/40 sm:bg-none sm:bg-background/60 ">
+    <header
+      className="sticky top-6 z-50 sm:w-auto mx-auto w-full px-6 transition-opacity duration-300"
+      style={{ opacity }}
+    >
+      <div className="container flex h-14 max-w-screen-xl items-center md:border-2 bg-background/60 rounded-full border border-border/40 sm:bg-none sm:bg-background/60 ">
         <Link href="/" className="p-2.5 mr-4">
           <CompanyLogo />
         </Link>
@@ -39,28 +63,15 @@ const Header = () => {
         <div className="grow flex justify-end sm:justify-between items-center gap-3">
           <nav className="py-1 rounded-full max-sm:hidden">
             <ul className="flex items-center gap-4 text-sm lg:gap-6">
-              {navbar.map((item) => (
-                <NavItem {...item} key={item.id} />
-              ))}
+              {navbar.map((item, index) => {
+                if (session.status === 'loading') {
+                  return <Skeleton className="h-4 w-[60px]" key={index} />;
+                } else {
+                  return <NavItem {...item} key={item.id} />;
+                }
+              })}
             </ul>
           </nav>
-
-          <div className="max-sm:hidden flex text-sm items-center gap-3 ml-3">
-            {session.status !== 'loading' && !session.data?.user && (
-              <>
-                <Link
-                  href={APP_PATHS.SIGNIN}
-                  className="transition-colors hover:text-foreground/80 text-foreground/60"
-                >
-                  Login
-                </Link>
-              </>
-            )}
-            {session.status !== 'loading' && session.data?.user && (
-              <ProfileMenu />
-            )}
-            <ModeToggle />
-          </div>
           <div className="sm:hidden flex justify-center">
             <MobileNav />
           </div>
