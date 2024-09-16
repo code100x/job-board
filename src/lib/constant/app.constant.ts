@@ -11,10 +11,12 @@ export const navbar = [
     path: APP_PATHS.MANAGE_JOBS,
     roleRequired: 'ADMIN',
   },
-  // todo: add actual path
-  { id: 4, label: 'Internship', path: '/' },
-  { id: 5, label: 'Testimonials', path: '/' },
-  { id: 6, label: 'FAQs', path: '/' },
+
+  { id: 3, label: 'Internship', path: '/' },
+  { id: 4, label: 'Testimonials', path: '/' },
+  { id: 5, label: 'FAQs', path: '/' },
+  { id: 6, label: 'Update Details', path: '/editDetails' },
+
 ];
 
 export const socials: {
