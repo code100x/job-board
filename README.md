@@ -1,6 +1,6 @@
 # Project Name: Job Board
 [All about job board](https://marmalade-height-05f.notion.site/100xDevs-Job-board-ab8ca399180d49e4bc0c2ff5c81dfb08?pvs=25) <br/>
-[Job board bugs](https://marmalade-height-05f.notion.site/100xDevs-JOB-BOARD-Bugs-10115651c69c80478fc8f673a139bc60)
+[Project Status](https://marmalade-height-05f.notion.site/Job-board-10315651c69c80b581b5f7b64667341c)
 ## Table of Contents
 
 - [Description](#description)
