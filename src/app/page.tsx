@@ -1,4 +1,5 @@
 import BackgroundSvg from '@/components/BackgroundSvg';
+import Faqs from '@/components/Faqs';
 import HalfCircleGradient from '@/components/HalfCircleGradient';
 import HeroSection from '@/components/hero-section';
 import { JobLanding } from '@/components/job-landing';
@@ -19,6 +20,7 @@ const HomePage = async ({
       <div>
         <JobLanding searchParams={searchParams} />
       </div>
+      <Faqs />
       <HalfCircleGradient position="bottom" />
     </div>
   );

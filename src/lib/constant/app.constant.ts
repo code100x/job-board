@@ -14,7 +14,7 @@ export const navbar = [
   { id: 3, label: 'Internship', path: '/' },
   { id: 4, label: 'Testimonials', path: '/' },
 
-  { id: 5, label: 'FAQs', path: '/faqs' },
+  { id: 5, label: 'FAQs', path: '#faq' },
 
   { id: 6, label: 'Post a Job', path: APP_PATHS.POST_JOB },
 
