@@ -107,7 +107,7 @@ function UserCard() {
           <div className="flex-grow">
             <div className="flex justify-between items-start mb-1">
               <div>
-                <div className="font-bold text-lg">
+                <div className="font-bold text-lg dark:text-gray-900 text-gray-100">
                   {profile.firstName} {profile.lastName}
                   {/* <span className={` mb-4 ml-2 select-none rounded-full text-[10px] font-medium px-2 py-0.5 ${
                 profile.status === "Actively looking" ? "bg-green-100 text-green-800" :
