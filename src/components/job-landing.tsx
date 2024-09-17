@@ -101,7 +101,7 @@ const JobCard = async ({ searchParams }: PaginatorProps) => {
                 <span className="flex justify-between items-center gap-0.5  text-3xl overflow-hidden">
                   {job.minSalary && job.maxSalary
                     ? `$${formatSalary(job.maxSalary)}`
-                    : 'NotDisclosed'}
+                    : 'Not Disclosed'}
                 </span>
                 <p className=" md:text-right text-xs text-muted-foreground mt-1">
                   per annum
