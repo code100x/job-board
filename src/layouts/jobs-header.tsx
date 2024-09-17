@@ -23,7 +23,6 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form';
-import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import { Input } from '@/components/ui/input';
 import useSetQueryParams from '@/hooks/useSetQueryParams';
 import { usePathname } from 'next/navigation';
@@ -32,6 +31,13 @@ import APP_PATHS from '@/config/path.config';
 import { useEffect } from 'react';
 import JobFilters from './job-filters';
 import { cn } from '@/lib/utils';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTrigger,
+} from '@/components/ui/sheet';
+import { ScrollArea } from '@/components/ui/scroll-area';
 const FormSchema = z.object({
   search: z.string().optional(),
 });
@@ -97,18 +103,18 @@ const JobsHeader = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
         )}
 
         {(isJobs || isHome) && (
-          <Drawer>
-            <DrawerTrigger className="max-sm:block hidden bg-neutral-100 dark:bg-neutral-900 rounded-full p-3 cursor-pointer">
-              {' '}
+          <Sheet>
+            <SheetTrigger className="sm:hidden">
               <Icon icon="filter" className="cursor-pointer" size="20" />
-            </DrawerTrigger>
-            <DrawerContent
-              className="flex justify-center items-center gap-5"
-              aria-describedby={undefined}
-            >
-              <JobFilters searchParams={searchParams} />
-            </DrawerContent>
-          </Drawer>
+            </SheetTrigger>
+            <SheetContent side={'left'} className="h-full w-80">
+              <SheetHeader className="mt-2 h-full w-full">
+                <ScrollArea>
+                  <JobFilters searchParams={searchParams}></JobFilters>
+                </ScrollArea>
+              </SheetHeader>
+            </SheetContent>
+          </Sheet>
         )}
 
         <Select
