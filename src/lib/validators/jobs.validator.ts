@@ -8,7 +8,7 @@ export const JobPostSchema = z
     companyName: z.string().min(1, 'Company Name is required'),
     city: z.string().min(1, 'City Name is required'),
     address: z.string().min(1, 'Address is required'),
-    application: z.string(),
+    application: z.string().min(1, 'Application link is required'),
     type: z.string(),
     category: z.string(),
     companyEmail: z.string().email('Invalid email').min(1, 'Email is required'),
