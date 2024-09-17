@@ -1,4 +1,6 @@
-export const faqData = [
+import { faqItem } from '@/types/faqs.types';
+
+export const faqData: faqItem[] = [
   {
     question: 'How do I apply for jobs?',
     answer:
