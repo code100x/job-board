@@ -118,8 +118,7 @@ const PostJobForm = () => {
       const response = await createJob(data);
       if (!response.status) {
         return toast({
-          title: response.name || 'Something went wrong',
-          description: response.message || 'Internal server error',
+          title: response.message || 'Error',
           variant: 'destructive',
         });
       }
@@ -185,7 +184,11 @@ const PostJobForm = () => {
                   <FormControl>
                     <Input
                       {...field}
-                      className="w-full bg-gray-800 border-none text-white"
+                      className={`w-full bg-gray-800 border-gray-400 ${
+                        form.formState.errors.title
+                          ? 'border-2 border-red-500'
+                          : ''
+                      }`}
                       placeholder="What's the job?"
                     />
                   </FormControl>
@@ -313,7 +316,11 @@ const PostJobForm = () => {
                         <FormControl>
                           <Input
                             {...field}
-                            className="w-full bg-gray-800 border-gray-400"
+                            className={`w-full bg-gray-800 border-gray-400 ${
+                              form.formState.errors.minSalary
+                                ? 'border-2 border-red-500'
+                                : ''
+                            }`}
                             placeholder="0"
                           />
                         </FormControl>
@@ -333,7 +340,11 @@ const PostJobForm = () => {
                         <FormControl>
                           <Input
                             {...field}
-                            className="w-full bg-gray-800 border-gray-400"
+                            className={`w-full bg-gray-800 border-gray-400 ${
+                              form.formState.errors.maxSalary
+                                ? 'border-2 border-red-500'
+                                : ''
+                            }`}
                             placeholder="0"
                           />
                         </FormControl>{' '}
@@ -358,7 +369,11 @@ const PostJobForm = () => {
                   <FormControl>
                     <Input
                       {...field}
-                      className="w-full bg-gray-800 border-none text-white"
+                      className={`w-full bg-gray-800 border-gray-400 ${
+                        form.formState.errors.application
+                          ? 'border-2 border-red-500'
+                          : ''
+                      }`}
                       placeholder="Please enter a URL or Link for application"
                     />
                   </FormControl>
@@ -427,7 +442,11 @@ const PostJobForm = () => {
                       <FormControl>
                         <Input
                           {...field}
-                          className="w-full bg-gray-800 border-none text-white"
+                          className={`w-full bg-gray-800 border-gray-400 ${
+                            form.formState.errors.companyName
+                              ? 'border-2 border-red-500'
+                              : ''
+                          }`}
                           placeholder="What's your company called?"
                         />
                       </FormControl>
@@ -447,7 +466,11 @@ const PostJobForm = () => {
                       <FormControl>
                         <Input
                           {...field}
-                          className="w-full bg-gray-800 border-none text-white"
+                          className={`w-full bg-gray-800 border-gray-400 ${
+                            form.formState.errors.companyEmail
+                              ? 'border-2 border-red-500'
+                              : ''
+                          }`}
                           placeholder="Enter your email address"
                         />
                       </FormControl>
@@ -470,8 +493,12 @@ const PostJobForm = () => {
               </div>
             </div>
           </div>
-          <div className="w-full flex justify-end items-center mt-4">
-            <Button type="submit" disabled={form.formState.isSubmitting}>
+          <div className="w-full flex justify-center items-center mt-4">
+            <Button
+              type="submit"
+              className="w-full p-7 rounded-full text-lg"
+              disabled={form.formState.isSubmitting}
+            >
               {form.formState.isSubmitting ? 'Please wait...' : 'Create Job'}
             </Button>
           </div>

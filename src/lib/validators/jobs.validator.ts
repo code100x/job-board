@@ -31,14 +31,14 @@ export const JobPostSchema = z
     if (data.hasSalaryRange) {
       if (!data.minSalary) {
         return ctx.addIssue({
-          message: 'minSalary is required when hasSalaryRange is true',
+          message: 'minSalary is required ',
           path: ['minSalary'],
           code: z.ZodIssueCode.custom,
         });
       }
       if (!data.maxSalary) {
         return ctx.addIssue({
-          message: 'maxSalary is required when hasSalaryRange is true',
+          message: 'maxSalary is required ',
           path: ['maxSalary'],
           code: z.ZodIssueCode.custom,
         });
