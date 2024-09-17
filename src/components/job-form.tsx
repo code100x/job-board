@@ -6,7 +6,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from '@/components/ui/form';
 import {
   Select,
@@ -347,7 +346,6 @@ const PostJobForm = () => {
                             placeholder="0"
                           />
                         </FormControl>{' '}
-                        <FormMessage />
                       </FormItem>
                     )}
                   />
