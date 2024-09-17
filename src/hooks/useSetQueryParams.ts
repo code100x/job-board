@@ -21,7 +21,7 @@ export default function useSetQueryParams() {
         }
       }
       router.push(`${pathName}?${newSearchParams}`, { scroll: false });
-    }, 300), // 300ms debounce
+    }, 500), // 300ms debounce
     [router, searchParams, pathName]
   );
 

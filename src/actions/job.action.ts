@@ -4,8 +4,6 @@ import { withServerActionAsyncCatcher } from '@/lib/async-catch';
 import { withSession } from '@/lib/session';
 import { SuccessResponse } from '@/lib/success';
 import {
-  deleteJobByIdSchema,
-  DeleteJobByIdSchemaType,
   JobByIdSchema,
   JobByIdSchemaType,
   JobPostSchema,
@@ -21,9 +19,6 @@ type additional = {
   isVerifiedJob: boolean;
 };
 
-type deletedJob = {
-  deletedJobID: string;
-};
 export const createJob = withSession<
   JobPostSchemaType,
   ServerActionReturnType<additional>
@@ -36,7 +31,8 @@ export const createJob = withSession<
     type,
     category,
     application,
-    location,
+    city,
+    address,
     companyLogo,
     title,
     workMode,
@@ -59,7 +55,8 @@ export const createJob = withSession<
       hasSalaryRange,
       minSalary,
       maxSalary,
-      location,
+      city,
+      address,
       companyLogo,
       workMode,
       isVerifiedJob: false, // Default to false since there's no session to check for admin role
@@ -80,8 +77,8 @@ export const getAllJobs = withServerActionAsyncCatcher<
   if (data?.salaryrange && !Array.isArray(data?.salaryrange)) {
     data.salaryrange = Array.of(data?.salaryrange);
   }
-  if (data?.location && !Array.isArray(data?.location)) {
-    data.location = Array.of(data?.location);
+  if (data?.city && !Array.isArray(data?.city)) {
+    data.city = Array.of(data?.city);
   }
   const result = JobQuerySchema.parse(data);
   const { filterQueries, orderBy, pagination } = getJobFilters(result);
@@ -97,7 +94,8 @@ export const getAllJobs = withServerActionAsyncCatcher<
       title: true,
       description: true,
       companyName: true,
-      location: true,
+      city: true,
+      address: true,
       workMode: true,
       minSalary: true,
       maxSalary: true,
@@ -138,7 +136,8 @@ export const getJobById = withServerActionAsyncCatcher<
       companyBio: true,
       companyEmail: true,
       companyLogo: true,
-      location: true,
+      city: true,
+      address: true,
       workMode: true,
       minSalary: true,
       maxSalary: true,
@@ -150,19 +149,14 @@ export const getJobById = withServerActionAsyncCatcher<
   }).serialize();
 });
 
-export const deleteJobById = withServerActionAsyncCatcher<
-  DeleteJobByIdSchemaType,
-  ServerActionReturnType<deletedJob>
->(async (data) => {
-  const result = deleteJobByIdSchema.parse(data);
-  const { id } = result;
-  const deletedJob = await prisma.job.delete({
-    where: {
-      id: id,
+export const getCityFilters = async () => {
+  const response = await prisma.job.findMany({
+    select: {
+      city: true,
     },
   });
-  const deletedJobID = deletedJob.id;
-  return new SuccessResponse('Job Deleted successfully', 200, {
-    deletedJobID,
+  const cities = Array.from(new Set(response.map((res) => res.city)));
+  return new SuccessResponse(`Cities fetched successfully`, 200, {
+    cities,
   }).serialize();
-});
+};
