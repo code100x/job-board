@@ -1,6 +1,42 @@
 import React from 'react';
 import Image from 'next/image';
 import { FaGithub, FaTwitter, FaLinkedin } from 'react-icons/fa';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+
+function SocialIcon({
+  href,
+  icon: Icon,
+  label,
+}: {
+  href: string;
+  icon: React.ElementType;
+  label: string;
+}) {
+  return (
+    <TooltipProvider delayDuration={0}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-600 hover:text-gray-800"
+          >
+            <Icon size={16} />
+          </a>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{label}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+}
 
 function UserCard() {
   const profiles = [
@@ -129,30 +165,21 @@ function UserCard() {
                   View Resume
                 </a>
                 <div className="flex gap-2">
-                  <a
+                  <SocialIcon
                     href={profile.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-600 hover:text-gray-800"
-                  >
-                    <FaGithub size={16} />
-                  </a>
-                  <a
+                    icon={FaGithub}
+                    label="GitHub"
+                  />
+                  <SocialIcon
                     href={profile.twitterUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-600 hover:text-gray-800"
-                  >
-                    <FaTwitter size={16} />
-                  </a>
-                  <a
+                    icon={FaTwitter}
+                    label="Twitter"
+                  />
+                  <SocialIcon
                     href={profile.linkedinUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-600 hover:text-gray-800"
-                  >
-                    <FaLinkedin size={16} />
-                  </a>
+                    icon={FaLinkedin}
+                    label="LinkedIn"
+                  />
                 </div>
               </div>
             </div>
