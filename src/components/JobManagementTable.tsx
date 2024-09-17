@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Table,
   TableBody,
@@ -9,8 +9,7 @@ import {
   TableRow,
 } from './ui/table';
 import { DeleteIcon, Edit } from 'lucide-react';
-// import { deleteJobById } from '@/actions/job.action';
-import { getAllJobsAdditonalType } from '@/types/jobs.types';
+import { getAllJobsAdditonalType, JobType } from '@/types/jobs.types';
 import { ServerActionReturnType } from '@/types/api.types';
 import { useToast } from './ui/use-toast';
 import {
@@ -32,24 +31,49 @@ import {
 } from './pagination-client';
 import APP_PATHS from '@/config/path.config';
 import { PaginationPages } from './ui/paginator';
+import { deleteJobById, getAllJobs } from '@/actions/job.action';
 
 type props = {
   searchParams: JobQuerySchemaType;
   jobs: ServerActionReturnType<getAllJobsAdditonalType>;
+  initialJobs: JobType[];
 };
 
-const JobManagementTable = ({ jobs, searchParams }: props) => {
+const JobManagementTable = ({ jobs, searchParams, initialJobs }: props) => {
   const { toast } = useToast();
+  const [DispJobs, setDispJobs] = useState<JobType[]>(initialJobs);
 
-  const handleDelete = async () => {
-    toast({
-      title: 'This feature is not live yet.',
-    });
+  const handleDelete = async (JobId: string) => {
+    try {
+      const result = await deleteJobById({ id: JobId });
+      if (result.status) {
+        setDispJobs((prevJobs) => prevJobs.filter((job) => job.id !== JobId));
+        toast({ title: result.message });
+      }
+    } catch (error: any) {
+      toast({
+        title: 'Failed to delete job',
+        description: error.message,
+        variant: 'destructive',
+      });
+    }
   };
+
+  const refreshJobs = async () => {
+    const refreshedJobs = await getAllJobs(searchParams);
+    if (refreshedJobs.status && Array.isArray(refreshedJobs.additional?.jobs)) {
+      setDispJobs(refreshedJobs.additional?.jobs);
+    }
+  };
+
+  useEffect(() => {
+    refreshJobs();
+  }, [searchParams]);
 
   if (!jobs.status) {
     return <div>Error {jobs.message}</div>;
   }
+
   const totalPages =
     Math.ceil((jobs.additional?.totalJobs || 0) / JOBS_PER_PAGE) ||
     DEFAULT_PAGE;
@@ -67,11 +91,11 @@ const JobManagementTable = ({ jobs, searchParams }: props) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {jobs.additional?.jobs.map((job) => (
+            {DispJobs?.map((job) => (
               <TableRow key={job?.id}>
                 <TableCell className="font-medium">{job?.title}</TableCell>
                 <TableCell>{job?.workMode}</TableCell>
-                <TableCell>{job?.location}</TableCell>
+                <TableCell>{job?.city}</TableCell>
                 <TableCell className="text-right w-full flex justify-end">
                   <span className="mr-5" role="button">
                     <Edit />
@@ -93,7 +117,7 @@ const JobManagementTable = ({ jobs, searchParams }: props) => {
                           <Button
                             className="mt-2"
                             variant={'destructive'}
-                            onClick={() => handleDelete()}
+                            onClick={() => handleDelete(job.id)}
                           >
                             Delete
                           </Button>
