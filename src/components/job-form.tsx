@@ -324,7 +324,6 @@ const PostJobForm = () => {
                             placeholder="0"
                           />
                         </FormControl>
-                        <FormMessage />
                       </FormItem>
                     )}
                   />
