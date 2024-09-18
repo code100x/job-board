@@ -5,7 +5,7 @@ import Providers from '@/providers/providers';
 import type { Metadata } from 'next';
 import { Inter as FontSans } from 'next/font/google';
 import './globals.css';
-import TopLoader from '@/components/Toploader';
+/* import TopLoader from '@/components/Toploader'; */
 import ScrollToTop from '@/components/ScrollToTop';
 
 const fontSans = FontSans({
@@ -31,7 +31,7 @@ export default async function RootLayout({
           fontSans.variable
         )}
       >
-        <TopLoader />
+        {/* <TopLoader /> */}
         <Providers>
           <Header />
           <main className="grow grid">{children}</main>
