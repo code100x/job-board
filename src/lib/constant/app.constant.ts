@@ -12,10 +12,8 @@ export const navbar = [
   },
   // todo: add actual path
   { id: 3, label: 'Internship', path: '/' },
-  { id: 4, label: 'Testimonials', path: '/' },
-
-  { id: 5, label: 'FAQs', path: '#faq' },
-
+  { id: 4, label: 'Testimonials', path: APP_PATHS.TESTIMONIALS },
+  { id: 5, label: 'FAQs', path: APP_PATHS.FAQS },
   { id: 6, label: 'Post a Job', path: APP_PATHS.POST_JOB },
 
 ];
