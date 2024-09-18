@@ -29,15 +29,13 @@ export default function Faqs() {
           {faqData.map((faq, i) => (
             <div
               key={i}
-              className={`w-full flex flex-col items-start md:p-6 p-4 ${
+              className={`w-full flex flex-col items-start md:p-6 p-4 cursor-pointer ${
                 i !== faqData.length - 1 && 'border-b'
               }`}
+              onClick={() => toggleExpand(i)}
+              aria-expanded={expandedIndex === i}
             >
-              <button
-                className="flex w-full justify-between items-center cursor-pointer focus:outline-none"
-                onClick={() => toggleExpand(i)}
-                aria-expanded={expandedIndex === i}
-              >
+              <div className="flex w-full justify-between items-center">
                 <p className="text-left font-medium dark:text-white text-gray-900">
                   {faq.question}
                 </p>
@@ -47,7 +45,7 @@ export default function Faqs() {
                 >
                   <ChevronDown className="w-6 h-6 dark:text-white text-gray-900" />
                 </motion.div>
-              </button>
+              </div>
               <AnimatePresence initial={false}>
                 {expandedIndex === i && (
                   <motion.div
