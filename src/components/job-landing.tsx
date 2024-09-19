@@ -72,11 +72,11 @@ const JobCard = async ({ searchParams }: PaginatorProps) => {
         return (
           <Link key={job.id} href={`/jobs/${job.id}`}>
             <div
-              className=" dark:bg-neutral-900  bg-background  mx-auto  w-[94%] sm:w-full  flex flex-col md:flex-row md:items-center items-start gap-4 rounded-3xl border p-5  overflow-hidden text-left text-sm transition-all hover:bg-accent"
+              className=" dark:bg-darkBgSecondary  bg-background  mx-auto  w-[94%] sm:w-full  flex flex-col md:flex-row md:items-center items-start gap-4 rounded-3xl border p-5  overflow-hidden text-left text-sm transition-all hover:bg-accent"
               key={job.id}
             >
               <div>
-                <div className="w-24 h-24 bg-neutral-200 dark:bg-neutral-800 rounded-2xl flex justify-center items-center">
+                <div className="w-24 h-24 bg-neutral-200 dark:bg-darkBgTertiary rounded-2xl flex justify-center items-center">
                   {job.companyLogo && (
                     <Image
                       src={job.companyLogo}

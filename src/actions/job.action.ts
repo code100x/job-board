@@ -133,6 +133,7 @@ export const getJobById = withServerActionAsyncCatcher<
       companyName: true,
       companyBio: true,
       companyEmail: true,
+      type: true,
       companyLogo: true,
       city: true,
       address: true,

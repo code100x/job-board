@@ -78,7 +78,7 @@ const JobsHeader = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                   <Input
                     placeholder="Search by title or company name"
                     {...field}
-                    className="rounded-full p-5 py-6  dark:bg-neutral-900 truncate"
+                    className="rounded-full p-5 py-6 dark:bg-darkBgSecondary truncate"
                   />
                 </FormControl>
                 <FormMessage />
@@ -92,7 +92,7 @@ const JobsHeader = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
         {isHome && (
           <div className={cn('flex items-center px-1 max-sm:hidden ', {})}>
             <Popover>
-              <PopoverTrigger className="bg-neutral-100 dark:bg-neutral-900 rounded-full p-3 cursor-pointer">
+              <PopoverTrigger className="bg-neutral-100 dark:bg-darkBgSecondary rounded-full p-3 cursor-pointer">
                 <Icon icon="filter" className="cursor-pointer" size="20" />
               </PopoverTrigger>
               <PopoverContent className="bg-transparent border-none shadow-none">
@@ -121,10 +121,10 @@ const JobsHeader = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
           onValueChange={sortChangeHandler}
           defaultValue={searchParams.sortby}
         >
-          <SelectTrigger className="w-[180px] rounded-full dark:bg-neutral-900 p-3 py-4">
+          <SelectTrigger className="w-[180px] rounded-full dark:bg-darkBgSecondary p-3 py-4">
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
-          <SelectContent className="rounded-xl dark:bg-neutral-900">
+          <SelectContent className="rounded-xl dark:bg-darkBgSecondary">
             {jobSorting.map((item) => (
               <SelectItem
                 className="rounded-lg"

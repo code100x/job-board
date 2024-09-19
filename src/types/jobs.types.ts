@@ -4,6 +4,7 @@ export type JobType = {
   city: string;
   address: string;
   minSalary: number | null;
+  type?: string;
   maxSalary: number | null;
   id: string;
   title: string;
