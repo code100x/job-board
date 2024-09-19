@@ -3,6 +3,7 @@ import { Job } from '@/components/job';
 import JobCard from '@/components/job-card';
 import { JobByIdSchemaType } from '@/lib/validators/jobs.validator';
 import { ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 const page = async ({ params }: { params: JobByIdSchemaType }) => {
@@ -20,10 +21,13 @@ const page = async ({ params }: { params: JobByIdSchemaType }) => {
   return (
     <div className="container max-w-8xl h-fit mx-auto my-8">
       <section className="flex  h-fit py-4">
-        <div className="flex border-2 border-transparent cursor-pointer h-fit p-2 rounded-full px-4 transition-all duration-450 ease-linear hover:border-2 hover:bg-[#F1F5F9] dark:hover:bg-[#0F172A] items-center gap-2">
+        <Link
+          href="/jobs"
+          className="flex border-2 border-transparent cursor-pointer h-fit p-2 rounded-full px-4 transition-all duration-450 ease-linear hover:border-2 hover:bg-[#F1F5F9] dark:hover:bg-[#0F172A] items-center gap-2"
+        >
           <ArrowLeft size={18} />
           <p className="text-xs">Back to All Jobs</p>
-        </div>
+        </Link>
       </section>
       <main className="grid grid-cols-1 lg:grid-cols-6 gap-8">
         {/* the particular job details */}
