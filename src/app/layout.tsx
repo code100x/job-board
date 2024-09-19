@@ -25,6 +25,9 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+      </head>
       <body
         className={cn(
           'font-sans antialiased bg-gradient-light dark:bg-gradient min-h-screen relative flex flex-col',

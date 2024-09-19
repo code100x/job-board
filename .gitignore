@@ -41,3 +41,7 @@ bun.lockb
 package-lock.json
 yarn.lock
 
+
+#pwa
+public/sw.js
+public/workbox-*.js
