@@ -372,3 +372,7 @@
 .pac-logo.hdpi::after {
   content: none;
 }
+
+html {
+  scroll-behavior: smooth;
+}

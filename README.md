@@ -17,7 +17,6 @@ Job Board is a platform designed to connect employers with potential employees. 
 - **Web-app**: Next.Js, TypeScript
 - **Database**: Prisma ORM, Postgres
 - **Authentication**: NextAuth
-- **Hosting**: Vercel, Heroku
 - **Containerization**: Docker
 
 ## Getting Started
