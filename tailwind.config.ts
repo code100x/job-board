@@ -21,7 +21,7 @@ const config = {
     },
     extend: {
       fontFamily: {
-        sans: ['var(--font-sans)', ...fontFamily.sans],
+        sans: ['Satoshi', ...fontFamily.sans],
       },
 
       colors: {

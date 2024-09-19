@@ -18,7 +18,7 @@ const HeroSection = () => {
           </Link>
           <div className="flex items-center flex-col gap-3 max-w-[950px]">
             <div>
-              <h1 className="text-6xl max-sm:text-3xl max-sm:leading-tight  font-extrabold leading-[70px]  text-center text-primary">
+              <h1 className="text-black dark:text-white  text-6xl max-sm:text-3xl max-sm:leading-tight  font-extrabold leading-[70px]  text-center">
                 {/* Find the Right{' '}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-600">
                   Opportunity

@@ -12,6 +12,8 @@ import Icon from './ui/icon';
 import { formatSalary } from '@/lib/utils';
 import Link from 'next/link';
 import APP_PATHS from '@/config/path.config';
+import Image from 'next/image';
+import _ from 'lodash';
 type PaginatorProps = {
   searchParams: JobQuerySchemaType;
 };
@@ -30,32 +32,48 @@ const AllJobs = async ({ searchParams }: PaginatorProps) => {
       {jobs.additional.jobs.length > 0 ? (
         jobs.additional?.jobs.map((job) => {
           return (
-            <Link key={job.id} href={`/jobs/${job.id}`}>
-              <div
-                className="w-[94%] mx-auto flex flex-col items-start gap-4 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent"
-                key={job.id}
-              >
-                <div className="flex w-full flex-col gap-2">
-                  <p className="font-semibold">{job.title}</p>
-                  <p className="text-xs font-medium">{job.companyName}</p>
+            <Link
+              key={job.id}
+              href={`/jobs/${job.id}`}
+              className="sm:text-sm text-xs text-slate-500 dark:text-slate-400 font-medium flex flex-col border p-6 bg-slate-100 gap-4 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg "
+            >
+              <div className="flex w-full gap-3">
+                <div>
+                  {/* Todo : replace with job.companyLogo */}
+                  <Image
+                    alt="company_logo"
+                    src={'/spotify.png'}
+                    width={48}
+                    height={48}
+                  />
                 </div>
-                <div className="flex gap-2 text-xs text-muted-foreground">
-                  <span className="flex items-center gap-0.5">
-                    <Icon icon="location" size={12} />
-                    {job.address}{' '}
-                    <span className="capitalize">({job.workMode})</span>
-                  </span>
-                  <span className="flex items-center gap-0.5">
-                    {job.minSalary && <Icon icon="currency" size={12} />}
-                    {job.minSalary && job.maxSalary
-                      ? `${formatSalary(job.minSalary)}-${formatSalary(job.maxSalary)}`
-                      : 'Not disclosed'}
-                  </span>
+                <div className="flex flex-col gap-2">
+                  <h1 className="font-bold text-black dark:text-white text-xl">
+                    {job.title}
+                  </h1>
+                  <div className="flex">
+                    <p>{job.companyName + '.'} </p>
+                    <p className="ml-2">
+                      {'Posted on ' + job.postedAt.toDateString()}
+                    </p>
+                  </div>
                 </div>
-                <p className="flex gap-0.5 items-center text-muted-foreground text-xs">
-                  <Icon icon="description" size={12} />
-                  <span>{job.description}</span>
-                </p>
+              </div>
+              <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+                <div className="p-2 bg-blue-100 dark:bg-blue-500 dark:bg-opacity-10 bg-opacity-90 text-blue-500 dark:text-blue-400 rounded">
+                  {_.startCase(job.type)}
+                </div>
+                <span className="flex items-center gap-0.5">
+                  <Icon icon="location" size={12} />
+                  {job.address}
+                  <span className="capitalize">({job.workMode})</span>
+                </span>
+                <span className="flex items-center gap-0.5">
+                  {job.minSalary && <Icon icon="currency" size={12} />}
+                  {job.minSalary && job.maxSalary
+                    ? `${formatSalary(job.minSalary)}-${formatSalary(job.maxSalary)}`
+                    : 'Not disclosed'}
+                </span>
               </div>
             </Link>
           );

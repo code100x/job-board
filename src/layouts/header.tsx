@@ -7,6 +7,7 @@ import { NavItem } from '@/components/navitem';
 import Image from 'next/image';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useState, useEffect } from 'react';
+import { ModeToggle } from '@/components/ui/theme-toggle';
 
 const CompanyLogo = () => {
   return (
@@ -70,6 +71,7 @@ const Header = () => {
                   return <NavItem {...item} key={item.id} />;
                 }
               })}
+              <ModeToggle />
             </ul>
           </nav>
           <div className="sm:hidden flex justify-center">

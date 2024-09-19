@@ -1,11 +1,12 @@
 export type JobType = {
-  companyLogo: string | undefined;
+  companyLogo: string;
   workMode: 'remote' | 'office' | 'hybrid';
   city: string;
   address: string;
   minSalary: number | null;
   maxSalary: number | null;
   id: string;
+  type: string;
   title: string;
   description: string | null;
   companyName: string;

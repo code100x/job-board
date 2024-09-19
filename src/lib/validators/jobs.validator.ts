@@ -55,6 +55,15 @@ export const JobPostSchema = z
   });
 
 export const JobQuerySchema = z.object({
+  EmpType: z
+    .union([z.string(), z.array(z.string())])
+    .optional()
+    .transform((val) => {
+      if (typeof val === 'string') {
+        return val.split(',');
+      }
+      return val;
+    }),
   workmode: z
     .union([z.string(), z.array(z.nativeEnum(WorkMode))])
     .optional()

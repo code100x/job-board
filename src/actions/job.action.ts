@@ -93,6 +93,7 @@ export const getAllJobs = withServerActionAsyncCatcher<
       description: true,
       companyName: true,
       city: true,
+      type: true,
       address: true,
       workMode: true,
       minSalary: true,
@@ -135,6 +136,7 @@ export const getJobById = withServerActionAsyncCatcher<
       companyEmail: true,
       companyLogo: true,
       city: true,
+      type: true,
       address: true,
       workMode: true,
       minSalary: true,
@@ -156,5 +158,17 @@ export const getCityFilters = async () => {
   const cities = Array.from(new Set(response.map((res) => res.city)));
   return new SuccessResponse(`Cities fetched successfully`, 200, {
     cities,
+  }).serialize();
+};
+
+export const getEmpTypeFilters = async () => {
+  const response = await prisma.job.findMany({
+    select: {
+      type: true,
+    },
+  });
+  const types = Array.from(new Set(response.map((res) => res.type)));
+  return new SuccessResponse(`Cities fetched successfully`, 200, {
+    types,
   }).serialize();
 };
