@@ -93,7 +93,7 @@ function UserCard() {
       {profiles.map((profile, index) => (
         <div
           key={index}
-          className="flex items-start space-x-4 bg-white p-4 border border-gray-200 rounded-lg"
+          className="flex items-start space-x-4 bg-white text-gray-700 p-4 border border-gray-200 rounded-lg"
         >
           <div className="w-16 flex-shrink-0">
             <Image

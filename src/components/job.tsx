@@ -4,7 +4,11 @@ import { formatSalary } from '@/lib/utils';
 import { Button } from './ui/button';
 import Image from 'next/image';
 import { MapPin, Share2 } from 'lucide-react';
-
+import Linkify from 'linkify-react';
+const options = {
+  defaultProtocol: 'https',
+  target: '_blank',
+};
 export const Job = ({ job }: { job: JobType }) => {
   return (
     <aside className="col-span-1 flex flex-col gap-6 lg:col-span-4">
@@ -61,7 +65,9 @@ export const Job = ({ job }: { job: JobType }) => {
 
       {/* job description */}
       <section className="border-2 bg-[#F1F5F9] dark:bg-[#0F172A] h-[10rem] p-6 rounded-xl">
+       <Linkify options={options}>
         <p>{job.description}</p>
+      </Linkify>
       </section>
 
       {/* about company */}

@@ -103,9 +103,11 @@ const JobCard = async ({ searchParams }: PaginatorProps) => {
                     ? `$${formatSalary(job.maxSalary)}`
                     : 'Not Disclosed'}
                 </span>
-                <p className=" md:text-right text-xs text-muted-foreground mt-1">
-                  per annum
-                </p>
+                {job.minSalary && job.maxSalary && (
+                  <p className="md:text-right text-xs text-muted-foreground mt-1">
+                    per annum
+                  </p>
+                )}
               </div>
             </div>
           </Link>
