@@ -1,10 +1,18 @@
 /** @type {import('next').NextConfig} */
 
+import { fileURLToPath } from 'node:url';
+import createJiti from 'jiti';
+const jiti = createJiti(fileURLToPath(import.meta.url));
+
+// Import env here to validate during build. Using jiti we can import .ts files :)
+jiti('./src/env/client');
+jiti('./src/env/server');
+
 const prod = process.env.NODE_ENV === 'production';
 
+// Import PWA dynamically
 const withPWA = async () => {
   const nextPWA = (await import('next-pwa')).default;
-
   return nextPWA({
     dest: 'public',
     register: true,
@@ -13,9 +21,9 @@ const withPWA = async () => {
   });
 };
 
-
 const getNextConfig = async () => {
   const nextPWAConfig = await withPWA();
+
   return nextPWAConfig({
     reactStrictMode: true,
     logging: {
@@ -27,8 +35,7 @@ const getNextConfig = async () => {
       remotePatterns: [
         {
           protocol: 'https',
-          //Change it with your cdn access domain here
-          hostname: 'job-board.b-cdn.net',
+          hostname: 'job-board.b-cdn.net', // Change this to your CDN domain
         },
       ],
     },
@@ -72,6 +79,5 @@ const getNextConfig = async () => {
     },
   });
 };
-
 
 export default await getNextConfig();
