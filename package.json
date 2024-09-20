@@ -2,6 +2,7 @@
   "name": "100xdevs-job-board",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -47,6 +48,7 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-switch": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.1",
+    "@t3-oss/env-nextjs": "^0.11.1",
     "@types/lodash": "^4.17.7",
     "@types/uuid": "^10.0.0",
     "@uidotdev/usehooks": "^2.4.1",
@@ -55,6 +57,7 @@
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
     "framer-motion": "^11.5.4",
+    "jiti": "^1.21.6",
     "lodash": "^4.17.21",
     "lucide-react": "^0.426.0",
     "next": "^14.2.12",
