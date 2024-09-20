@@ -1,9 +1,10 @@
+import { serverEnv } from '@/env/server';
 import { NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 
-const CDN_BASE_UPLOAD_URL = process.env.CDN_BASE_UPLOAD_URL;
-const CDN_BASE_ACCESS_URL = process.env.CDN_BASE_ACCESS_URL;
-const CDN_API_KEY = process.env.CDN_API_KEY!;
+const CDN_BASE_UPLOAD_URL = serverEnv.CDN_BASE_UPLOAD_URL;
+const CDN_BASE_ACCESS_URL = serverEnv.CDN_BASE_ACCESS_URL;
+const CDN_API_KEY = serverEnv.CDN_API_KEY!;
 
 export async function POST(req: Request): Promise<NextResponse> {
   try {
