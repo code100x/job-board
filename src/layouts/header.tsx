@@ -17,7 +17,7 @@ export const CompanyLogo = () => {
         alt="100xJobs"
         width={30}
         height={30}
-        className="rounded-full"
+        className="rounded"
       />
       <h3 className="text-xl font-bold">
         100x<span className="text-blue-700">Jobs</span>
@@ -31,7 +31,7 @@ const Header = () => {
 
   return (
     <div>
-      <header className="fixed z-50 mx-auto transition-opacity border-b duration-300 px-4 sm:px-16 flex justify-between w-screen items-center  bg-background/60  sm:bg-none sm:bg-background/60   h-14">
+      <header className="fixed z-50 mx-auto border-b px-4 sm:px-16 flex justify-between w-screen items-center  bg-background/60 backdrop-blur     h-14">
         <Link href="/" className="p-2.5 mr-4">
           <CompanyLogo />
         </Link>

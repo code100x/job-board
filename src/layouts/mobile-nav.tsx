@@ -60,7 +60,7 @@ export function MobileNav() {
           {navbar.map((item) => (
             <Item {...item} key={item.id} />
           ))}
-          <Link href={'/create'}>
+          <Link href={'/create'} className="">
             <SheetClose>
               <Button className="w-80 rounded bg-blue-800 dark:text-white">
                 Post a Job
