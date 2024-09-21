@@ -14,6 +14,7 @@ import Link from 'next/link';
 import APP_PATHS from '@/config/path.config';
 import Image from 'next/image';
 import _ from 'lodash';
+import { Briefcase } from 'lucide-react';
 type PaginatorProps = {
   searchParams: JobQuerySchemaType;
 };
@@ -64,9 +65,10 @@ const AllJobs = async ({ searchParams }: PaginatorProps) => {
                   {_.startCase(job.type)}
                 </div>
                 <span className="flex items-center gap-0.5">
-                  <Icon icon="location" size={12} />
-                  {job.address}
-                  <span className="capitalize">({job.workMode})</span>
+                  {job.minExperience && <Briefcase size={12} />}
+                  {job.minExperience && job.maxExperience
+                    ? `${job.minExperience}-${job.maxExperience} Yrs`
+                    : 'Not disclosed'}
                 </span>
                 <span className="flex items-center gap-0.5">
                   {job.minSalary && <Icon icon="currency" size={12} />}
@@ -74,6 +76,21 @@ const AllJobs = async ({ searchParams }: PaginatorProps) => {
                     ? `${formatSalary(job.minSalary)}-${formatSalary(job.maxSalary)}`
                     : 'Not disclosed'}
                 </span>
+                <span className="flex items-center gap-0.5">
+                  <Icon icon="location" size={12} />
+                  {job.address}
+                  <span className="capitalize">({job.workMode})</span>
+                </span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {job.skills.map((item, index) => (
+                  <div
+                    key={index}
+                    className="bg-slate-500 bg-opacity-10 text-slate-500 dark:text-slate-400 font-medium text-sm rounded-full px-2"
+                  >
+                    {item}
+                  </div>
+                ))}
               </div>
             </Link>
           );

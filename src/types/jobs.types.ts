@@ -5,6 +5,9 @@ export type JobType = {
   address: string;
   minSalary: number | null;
   maxSalary: number | null;
+  minExperience: number | null;
+  maxExperience: number | null;
+  skills: string[];
   id: string;
   type: string;
   title: string;

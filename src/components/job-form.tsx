@@ -32,6 +32,7 @@ import { FaFileUpload } from 'react-icons/fa';
 import { Switch } from './ui/switch';
 import { Label } from './ui/label';
 import { GmapsAutocompleteAddress } from './gmaps-autosuggest';
+import { EmployementType } from '@prisma/client';
 
 const PostJobForm = () => {
   const { toast } = useToast();
@@ -48,7 +49,7 @@ const PostJobForm = () => {
       address: '',
       companyLogo: '',
       workMode: 'remote',
-      type: 'full-time',
+      type: EmployementType.Full_time,
       category: 'design',
       hasSalaryRange: true,
       minSalary: 0,

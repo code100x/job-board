@@ -26,15 +26,14 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import useSetQueryParams from '@/hooks/useSetQueryParams';
 import { useEffect, useState } from 'react';
-import { WorkMode } from '@prisma/client';
+import { WorkMode, EmployementType } from '@prisma/client';
 import _ from 'lodash';
 import { DEFAULT_PAGE } from '@/config/app.config';
-import { getCityFilters, getEmpTypeFilters } from '@/actions/job.action';
+import { getCityFilters } from '@/actions/job.action';
 import { X } from 'lucide-react';
 
 const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   const [cityFilters, setCityFilters] = useState<string[]>([]);
-  const [empTypeFilter, setEmpTypeFilter] = useState<string[]>([]);
 
   const setQueryParams = useSetQueryParams();
   const form = useForm<JobQuerySchemaType>({
@@ -42,6 +41,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
     defaultValues: {
       page: DEFAULT_PAGE,
       workmode: searchParams.workmode,
+      EmpType: searchParams.EmpType,
       salaryrange: searchParams.salaryrange,
       city: searchParams.city,
     },
@@ -54,15 +54,9 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
     setCityFilters(cities.additional.cities);
     return cities;
   }
-  async function fetchEmpTypeFilters() {
-    const EmpTypes = await getEmpTypeFilters();
-    setEmpTypeFilter(EmpTypes.additional.types);
-    return EmpTypes;
-  }
 
   useEffect(() => {
     fetchCityFilters();
-    fetchEmpTypeFilters();
   }, []);
 
   useEffect(() => {
@@ -104,8 +98,8 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                     control={form.control}
                     name="EmpType"
                     render={() => (
-                      <FormItem className="flex flex-col flex-wrap gap-2 space-y-0">
-                        {empTypeFilter.map((item, index) => (
+                      <FormItem>
+                        {Object.keys(EmployementType).map((item, index) => (
                           <FormField
                             key={index}
                             control={form.control}
@@ -115,7 +109,6 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                 <FormItem
                                   key={index}
                                   className="flex items-center space-x-3 space-y-0"
-                                  aria-checked={field.value?.includes(item)}
                                 >
                                   <FormControl>
                                     <Checkbox

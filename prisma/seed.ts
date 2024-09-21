@@ -31,16 +31,6 @@ let jobs = [
     minSalary: 60000,
     maxSalary: 80000,
     isVerifiedJob: true,
-    skills : [
-      'Java',
-      'REST API',
-      'Docker',
-      'GraphQL',
-      'CSS',
-      'HTML',
-      'Python',
-      'SQL'
-    ]
   },
   {
     id: '2',
@@ -61,15 +51,6 @@ let jobs = [
     minSalary: null,
     maxSalary: null,
     isVerifiedJob: false,
-    skills : [
-      'Java',
-      'REST API',
-      'React',
-      'Node.js',
-      'TypeScript',
-      'Docker',
-      'GraphQL',
-    ]
   },
   {
     id: '3',
@@ -92,15 +73,6 @@ let jobs = [
     minSalary: 90000,
     maxSalary: 120000,
     isVerifiedJob: true,
-    skills : [
-      'TypeScript',
-      'Docker',
-      'GraphQL',
-      'CSS',
-      'HTML',
-      'Python',
-      'SQL'
-    ]
   },
   {
     id: '4',
@@ -123,13 +95,6 @@ let jobs = [
     minSalary: 50000,
     maxSalary: 70000,
     isVerifiedJob: true,
-    skills : [
-      'Java',
-      'REST API',
-      'React',
-      'Python',
-      'SQL'
-    ]
   },
   {
     id: '5',
@@ -150,12 +115,6 @@ let jobs = [
     minSalary: 110000,
     maxSalary: 150000,
     isVerifiedJob: true,
-    skills : [
-      'Java',
-      'REST API',
-      'React',,
-      'SQL'
-    ]
   },
   {
     id: '6',
@@ -178,15 +137,6 @@ let jobs = [
     minSalary: 80000,
     maxSalary: 100000,
     isVerifiedJob: false,
-    skills : [
-      'TypeScript',
-      'Docker',
-      'GraphQL',
-      'CSS',
-      'HTML',
-      'Python',
-      'SQL'
-    ]
   },
   {
     id: '7',
@@ -210,13 +160,6 @@ let jobs = [
     minSalary: 70000,
     maxSalary: 90000,
     isVerifiedJob: false,
-    skills : [
-      'Java',
-      'CSS',
-      'HTML',
-      'Python',
-      'SQL'
-    ]
   },
   {
     id: '8',
@@ -239,19 +182,6 @@ let jobs = [
     minSalary: null,
     maxSalary: null,
     isVerifiedJob: true,
-    skills : [
-      'Java',
-      'REST API',
-      'React',
-      'Node.js',
-      'TypeScript',
-      'Docker',
-      'GraphQL',
-      'CSS',
-      'HTML',
-      'Python',
-      'SQL'
-    ]
   },
   {
     id: '9',
@@ -274,11 +204,6 @@ let jobs = [
     minSalary: 100000,
     maxSalary: 130000,
     isVerifiedJob: true,
-    skills : [
-      'HTML',
-      'Python',
-      'SQL'
-    ]
   },
   {
     id: '10',
@@ -301,15 +226,6 @@ let jobs = [
     minSalary: 75000,
     maxSalary: 95000,
     isVerifiedJob: false,
-    skills : [
-      'Java',
-      'REST API',
-      'GraphQL',
-      'CSS',
-      'HTML',
-      'Python',
-      'SQL'
-    ]
   },
   {
     id: '11',
@@ -329,13 +245,6 @@ let jobs = [
     hasExperiencerange :false,
     maxSalary: 50000,
     isVerifiedJob: true,
-    skills : [
-      'GraphQL',
-      'CSS',
-      'HTML',
-      'Python',
-      'SQL'
-    ]
   },
   {
     id: '12',
@@ -358,16 +267,6 @@ let jobs = [
     minSalary: null,
     maxSalary: null,
     isVerifiedJob: true,
-    skills : [
-      'Java',
-      'REST API',
-      'React',
-      'Node.js',
-      'CSS',
-      'HTML',
-      'Python',
-      'SQL'
-    ]
   },
 ];
 
@@ -428,6 +327,16 @@ async function seedJobs() {
             hasSalaryRange: j.hasSalaryRange,
             minSalary: j.minSalary,
             maxSalary: j.maxSalary,
+            skills :  [
+              'Java',
+              'REST API',
+              'React',
+              'Node.js',
+              'CSS',
+              'HTML',
+              'Python',
+              'SQL'
+            ],
             isVerifiedJob: j.isVerifiedJob,
           },
           update: {},
