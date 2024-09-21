@@ -48,7 +48,7 @@ export function MobileNav() {
 
   return (
     <Sheet>
-      <SheetTrigger>
+      <SheetTrigger className="border p-1 rounded-sm">
         <Icon icon="menu" />
       </SheetTrigger>
       <SheetContent className="w-full">

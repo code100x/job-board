@@ -54,7 +54,8 @@ const Header = () => {
               </Link>
             </ul>
           </nav>
-          <div className="sm:hidden flex justify-center">
+          <div className="sm:hidden flex justify-center gap-2">
+            <ModeToggle />
             <MobileNav />
           </div>
         </div>

@@ -20,11 +20,11 @@ export function ModeToggle() {
         <Button
           variant="ghost"
           size="icon"
-          className="focus-visible:outline-0 focus-visible:ring-0 focus-visible:ring-offset-0 py-2 h-8 w-8 px-0"
+          className="text-slate-500 dark:text-slate-400 focus-visible:outline-0 focus-visible:ring-0 focus-visible:ring-offset-0 py-2 h-10 w-10 px-0 border rounded-sm text-center"
         >
           <Icon
             icon="sun"
-            className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
+            className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 "
           />
           <Icon
             icon="moon"
