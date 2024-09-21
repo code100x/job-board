@@ -1,5 +1,8 @@
 name: Continuous Integration
 
+env:
+ SKIP_ENV_CHECK: true
+
 on:
   push:
     branches: [ main ]

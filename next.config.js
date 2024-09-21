@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'node:url';
 import createJiti from 'jiti';
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.SKIP_ENV_CHECK !== 'true') {
   const jiti = createJiti(fileURLToPath(import.meta.url));
   jiti('./src/env/client');
   jiti('./src/env/server');
