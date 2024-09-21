@@ -1,4 +1,4 @@
-import { getJobById } from '@/actions/job.action';
+import { getJobById, getRecommendedJobs } from '@/actions/job.action';
 import { Job } from '@/components/job';
 import JobCard from '@/components/job-card';
 import { JobByIdSchemaType } from '@/lib/validators/jobs.validator';
@@ -17,6 +17,17 @@ const page = async ({ params }: { params: JobByIdSchemaType }) => {
   if (!jobDetail) {
     return redirect('/jobs');
   }
+
+  const curatedJobs = await getRecommendedJobs({
+    id: jobDetail.id,
+    category: jobDetail.category,
+  });
+
+  if (!curatedJobs.status) {
+    return;
+  }
+
+  const recommendedJobs = curatedJobs.additional?.jobs;
 
   return (
     <div className="container max-w-8xl h-fit mx-auto my-8">
@@ -37,7 +48,12 @@ const page = async ({ params }: { params: JobByIdSchemaType }) => {
         <aside className="col-span-1 rounded-md lg:col-span-2">
           <div className="sticky top-4">
             <h1 className="text-xl font-semibold mb-4">Recommended for you</h1>
-            <JobCard job={jobDetail} />
+            <main className="my-2 flex flex-col gap-4">
+              {recommendedJobs &&
+                recommendedJobs.map((job, index) => {
+                  return <JobCard key={`recommended_job_${index}`} job={job} />;
+                })}
+            </main>
           </div>
         </aside>
       </main>

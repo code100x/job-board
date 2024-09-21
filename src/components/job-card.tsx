@@ -3,9 +3,9 @@ import React from 'react';
 import Image from 'next/image';
 import { MapPin } from 'lucide-react';
 
-export default function JobCard({ job }: { job: JobType }) {
+export default function JobCard({ key, job }: { key: string; job: JobType }) {
   return (
-    <main className="my-2 flex flex-col gap-4">
+    <React.Fragment key={key}>
       {/* job card */}
       <div className="border-2 flex flex-col gap-6 h-fit max-h-[10rem] p-4 rounded-xl">
         <div className="flex gap-4 items-center">
@@ -39,6 +39,6 @@ export default function JobCard({ job }: { job: JobType }) {
           </div>
         </div>
       </div>
-    </main>
+    </React.Fragment>
   );
 }
