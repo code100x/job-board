@@ -21,7 +21,7 @@ const HomePage = async ({
       <div>
         <JobLanding searchParams={searchParams} />
       </div>
-      <Testimonials/>
+      <Testimonials />
       <Faqs />
       <HalfCircleGradient position="bottom" />
     </div>

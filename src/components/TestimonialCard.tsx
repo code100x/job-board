@@ -6,9 +6,7 @@ interface testimonialCardProps {
   testimonial: testimonialItem;
 }
 
-export default function TestimonialCard({
-  testimonial,
-}: testimonialCardProps) {
+export default function TestimonialCard({ testimonial }: testimonialCardProps) {
   return (
     <motion.div
       className="md:w-5/6 w-full h-fit p-5 flex flex-col mx-auto border rounded-3xl dark:bg-[#0b0b0b] rounded-bl-none my-2 cursor-pointer shadow-sm"

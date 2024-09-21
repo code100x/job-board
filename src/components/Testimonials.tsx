@@ -16,7 +16,7 @@ export default function Testimonials() {
       </div>
       <div className="w-full grid md:grid-cols-3 grid-cols-1 gap-3 items-center mt-10">
         {testimonials.map((testimonial, i) => (
-          <TestimonialCard key={i} testimonial={testimonial}/>
+          <TestimonialCard key={i} testimonial={testimonial} />
         ))}
       </div>
       <div className="bg-white border dark:bg-transparent rounded-xl md:w-5/6 w-full h-fit p-4 flex items-center justify-between my-5">
