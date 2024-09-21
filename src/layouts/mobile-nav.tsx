@@ -14,6 +14,7 @@ import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { CompanyLogo } from './header';
+import { Button } from '@/components/ui/button';
 
 export function MobileNav() {
   const router = useRouter();
@@ -55,11 +56,18 @@ export function MobileNav() {
           <CompanyLogo />
         </SheetHeader>
         <SheetDescription></SheetDescription>
-        <ul className="grid gap-2 text-sm lg:gap-6 justify-items-start">
+        <ul className="grid gap-4  text-sm lg:gap-6  py-2">
           {navbar.map((item) => (
             <Item {...item} key={item.id} />
           ))}
-          {session.status !== 'loading' && !session.data?.user && (
+          <Link href={'/create'}>
+            <SheetClose>
+              <Button className="w-80 rounded bg-blue-800 dark:text-white">
+                Post a Job
+              </Button>
+            </SheetClose>
+          </Link>
+          {/* {session.status !== 'loading' && !session.data?.user && (
             <>
               <li>
                 <Link
@@ -74,8 +82,8 @@ export function MobileNav() {
                   <SheetClose>Start Free</SheetClose>
                 </Link>
               </li>
-            </>
-          )}
+            </> 
+          )}*/}
           {session.status !== 'loading' && session.data?.user && (
             <>
               <li>
@@ -114,11 +122,13 @@ export function MobileNav() {
 const Item = ({
   path,
   label,
+  icon,
   roleRequired,
   isPrivate,
 }: {
   path: string;
   label: string;
+  icon: React.FC;
   roleRequired?: string;
   isPrivate?: boolean;
 }) => {
@@ -132,13 +142,15 @@ const Item = ({
   }
   if (session && roleRequired && session.data?.user.role !== roleRequired)
     return;
+  const IconComponent = icon;
   return (
     <li>
       <Link
         href={path}
         aria-selected={pathname === path}
-        className="transition-colors hover:text-foreground/80 text-foreground/60"
+        className="transition-colors hover:text-foreground/80 text-foreground/60 flex gap-2"
       >
+        <IconComponent />
         <SheetClose>{label}</SheetClose>
       </Link>
     </li>

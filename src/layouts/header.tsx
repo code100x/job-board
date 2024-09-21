@@ -7,6 +7,7 @@ import { NavItem } from '@/components/navitem';
 import Image from 'next/image';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ModeToggle } from '@/components/ui/theme-toggle';
+import { Button } from '@/components/ui/button';
 
 export const CompanyLogo = () => {
   return (
@@ -46,6 +47,11 @@ const Header = () => {
                 }
               })}
               <ModeToggle />
+              <Link href={'/create'}>
+                <Button className=" rounded bg-blue-800 dark:text-white">
+                  Post a Job
+                </Button>
+              </Link>
             </ul>
           </nav>
           <div className="sm:hidden flex justify-center">

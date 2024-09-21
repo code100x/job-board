@@ -1,20 +1,29 @@
 import { IconProps } from '@/components/ui/icon';
 import APP_PATHS from '@/config/path.config';
+import { Contact, DollarSign, PackageSearch } from 'lucide-react';
 
 export const GITHUB_REPO = 'https://github.com/code100x/job-board';
-export const navbar = [
-  { id: 1, label: 'Explore Jobs', path: APP_PATHS.JOBS },
+interface NavbarItem {
+  id: number;
+  path: string;
+  label: string;
+  icon: React.FC;
+  roleRequired?: string;
+  isPrivate?: boolean;
+}
+export const navbar: NavbarItem[] = [
+  { id: 1, label: 'Explore Jobs', path: APP_PATHS.JOBS, icon: PackageSearch },
   {
     id: 2,
     label: 'Manage',
     path: APP_PATHS.MANAGE_JOBS,
     roleRequired: 'ADMIN',
+    icon: PackageSearch,
   },
   // todo: add actual path
-  { id: 3, label: 'Pricing', path: '/' },
-  { id: 4, label: 'Contact us', path: APP_PATHS.CONTACT_US },
+  { id: 3, label: 'Pricing', path: '/', icon: DollarSign },
+  { id: 4, label: 'Contact us', path: APP_PATHS.CONTACT_US, icon: Contact },
   /* { id: 5, label: 'FAQs', path: APP_PATHS.FAQS }, */
-  { id: 6, label: 'Post a Job', path: APP_PATHS.POST_JOB },
 ];
 
 export const socials: {
