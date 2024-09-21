@@ -346,7 +346,6 @@
 
 /* Ensure long content does not wrap within the editor */
 .job-description-editor .ql-editor {
-  white-space: nowrap !important;
   overflow-x: hidden !important; /* Allow horizontal scrolling */
   overflow-y: hidden !important; /* Hide vertical overflow */
 }
@@ -386,3 +385,4 @@ html {
   display: inline-block;
   transform: rotate(-2deg);
 }
+
