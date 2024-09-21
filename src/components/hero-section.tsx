@@ -4,10 +4,10 @@ import Link from 'next/link';
 const HeroSection = () => {
   return (
     <>
-      <section className="relative md:py-5 container w-full py-10 dark:bg-hero-bg-dark bg-hero-bg-light object-contain">
-        <div className="flex flex-col items-center">
+      <section className="relative md:py-5 container w-full h-[100vh] py-10 dark:bg-hero-bg-dark bg-hero-bg-light object-contain">
+        <div className="flex flex-col items-center pt-10">
           <div className="flex flex-col items-center">
-            <div className="flex flex-col items-center h-fit">
+            <div className="flex flex-col items-center">
               <p className="py-2 px-3 rounded-full border text-sm my-4 dark:text-[#FFFF] text-[#020817] dark:bg-[#0F172A] dark:border-[#1E293B] bg-[#F1F5F9] border-[#E2E8F0]">
                 <span className="text-[#3259E8]">#1</span> Platform for jobs
               </p>
@@ -16,12 +16,12 @@ const HeroSection = () => {
                 <span className="career-span bg-[#3259E8] py-1 px-5 ml-1 font-bold rounded-xl text-white">
                   Career
                 </span>
-                <br />
+                <br/>
                 with 100xJobs
               </h1>
               <p className="md:w-4/6 w-full text-center my-3 dark:text-[#94A3B8] text-[#64748B] font-medium ">
                 Unlock exclusive job and internship opportunities. Remote,
-                onsite, or hybrid—we've got what you’re looking for.
+                onsite, or hybrid—we&apos;ve got what you&apos;re looking for.
               </p>
             </div>
             <div className="md:w-4/6 w-full flex md:flex-row flex-col  items-center justify-center my-4">
