@@ -180,7 +180,15 @@ const PostJobForm = () => {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-medium">Job title*</FormLabel>
+                  <FormLabel
+                    className={`font-medium ${
+                      form.formState.errors.title
+                        ? 'text-red-500'
+                        : 'text-white'
+                    }`}
+                  >
+                    Job title*
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -192,7 +200,7 @@ const PostJobForm = () => {
                       placeholder="What's the job?"
                     />
                   </FormControl>
-                  <FormMessage>
+                  <FormMessage className="text-red-500">
                     {form.formState.errors?.title?.message}
                   </FormMessage>
                 </FormItem>
@@ -314,7 +322,15 @@ const PostJobForm = () => {
                     render={({ field }) => (
                       <FormItem className="flex-1">
                         <div className="space-y-0.5">
-                          <FormLabel>Min</FormLabel>
+                          <FormLabel
+                            className={`font-medium ${
+                              form.formState.errors.minSalary
+                                ? 'text-red-500'
+                                : 'text-white'
+                            }`}
+                          >
+                            Min
+                          </FormLabel>
                         </div>
                         <FormControl>
                           <Input
@@ -327,7 +343,7 @@ const PostJobForm = () => {
                             placeholder="0"
                           />
                         </FormControl>
-                        <FormMessage>
+                        <FormMessage className="text-red-500">
                           {form.formState.errors?.minSalary?.message}
                         </FormMessage>
                       </FormItem>
@@ -340,7 +356,15 @@ const PostJobForm = () => {
                     render={({ field }) => (
                       <FormItem className="flex-1">
                         <div className="space-y-0.5">
-                          <FormLabel>Max</FormLabel>
+                          <FormLabel
+                            className={`font-medium ${
+                              form.formState.errors.maxSalary
+                                ? 'text-red-500'
+                                : 'text-white'
+                            }`}
+                          >
+                            Max
+                          </FormLabel>
                         </div>
                         <FormControl>
                           <Input
@@ -353,7 +377,7 @@ const PostJobForm = () => {
                             placeholder="0"
                           />
                         </FormControl>
-                        <FormMessage>
+                        <FormMessage className="text-red-500">
                           {form.formState.errors?.maxSalary?.message}
                         </FormMessage>
                       </FormItem>
@@ -370,7 +394,13 @@ const PostJobForm = () => {
               name="application"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-medium">
+                  <FormLabel
+                    className={`font-medium ${
+                      form.formState.errors.application
+                        ? 'text-red-500'
+                        : 'text-white'
+                    }`}
+                  >
                     Application Link*
                   </FormLabel>
                   <FormControl>
@@ -384,7 +414,7 @@ const PostJobForm = () => {
                       placeholder="Please enter a URL or Link for application"
                     />
                   </FormControl>
-                  <FormMessage>
+                  <FormMessage className="text-red-500">
                     {form.formState.errors?.application?.message}
                   </FormMessage>
                 </FormItem>
@@ -446,7 +476,13 @@ const PostJobForm = () => {
                   name="companyName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-medium">
+                      <FormLabel
+                        className={`font-medium ${
+                          form.formState.errors.companyName
+                            ? 'text-red-500'
+                            : 'text-white'
+                        }`}
+                      >
                         Company name*
                       </FormLabel>
                       <FormControl>
@@ -460,7 +496,7 @@ const PostJobForm = () => {
                           placeholder="What's your company called?"
                         />
                       </FormControl>
-                      <FormMessage>
+                      <FormMessage className="text-red-500">
                         {form.formState.errors?.companyName?.message}
                       </FormMessage>
                     </FormItem>
@@ -473,7 +509,13 @@ const PostJobForm = () => {
                   name="companyEmail"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-medium">
+                      <FormLabel
+                        className={`font-medium ${
+                          form.formState.errors.companyEmail
+                            ? 'text-red-500'
+                            : 'text-white'
+                        }`}
+                      >
                         Company email*
                       </FormLabel>
                       <FormControl>
@@ -487,7 +529,7 @@ const PostJobForm = () => {
                           placeholder="Enter your email address"
                         />
                       </FormControl>
-                      <FormMessage>
+                      <FormMessage className="text-red-500">
                         {form.formState.errors?.companyEmail?.message}
                       </FormMessage>
                     </FormItem>
