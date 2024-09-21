@@ -6,6 +6,7 @@ const APP_PATHS = {
   RESET_PASSWORD: '/reset-password',
   JOBS: '/jobs',
   MANAGE_JOBS: '/jobs/manage',
+  CONTACT_US: '',
   TESTIMONIALS: '#testimonials',
   FAQS: '#faq',
 };

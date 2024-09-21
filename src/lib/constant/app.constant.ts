@@ -3,7 +3,7 @@ import APP_PATHS from '@/config/path.config';
 
 export const GITHUB_REPO = 'https://github.com/code100x/job-board';
 export const navbar = [
-  { id: 1, label: 'Jobs', path: APP_PATHS.JOBS },
+  { id: 1, label: 'Explore Jobs', path: APP_PATHS.JOBS },
   {
     id: 2,
     label: 'Manage',
@@ -11,9 +11,9 @@ export const navbar = [
     roleRequired: 'ADMIN',
   },
   // todo: add actual path
-  { id: 3, label: 'Internship', path: '/' },
-  { id: 4, label: 'Testimonials', path: APP_PATHS.TESTIMONIALS },
-  { id: 5, label: 'FAQs', path: APP_PATHS.FAQS },
+  { id: 3, label: 'Pricing', path: '/' },
+  { id: 4, label: 'Contact us', path: APP_PATHS.CONTACT_US },
+  /* { id: 5, label: 'FAQs', path: APP_PATHS.FAQS }, */
   { id: 6, label: 'Post a Job', path: APP_PATHS.POST_JOB },
 ];
 
