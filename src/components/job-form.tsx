@@ -6,6 +6,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from '@/components/ui/form';
 import {
   Select,
@@ -191,6 +192,9 @@ const PostJobForm = () => {
                       placeholder="What's the job?"
                     />
                   </FormControl>
+                  <FormMessage>
+                    {form.formState.errors?.title?.message}
+                  </FormMessage>
                 </FormItem>
               )}
             />
@@ -323,6 +327,9 @@ const PostJobForm = () => {
                             placeholder="0"
                           />
                         </FormControl>
+                        <FormMessage>
+                          {form.formState.errors?.minSalary?.message}
+                        </FormMessage>
                       </FormItem>
                     )}
                   />
@@ -345,7 +352,10 @@ const PostJobForm = () => {
                             }`}
                             placeholder="0"
                           />
-                        </FormControl>{' '}
+                        </FormControl>
+                        <FormMessage>
+                          {form.formState.errors?.maxSalary?.message}
+                        </FormMessage>
                       </FormItem>
                     )}
                   />
@@ -374,6 +384,9 @@ const PostJobForm = () => {
                       placeholder="Please enter a URL or Link for application"
                     />
                   </FormControl>
+                  <FormMessage>
+                    {form.formState.errors?.application?.message}
+                  </FormMessage>
                 </FormItem>
               )}
             />
@@ -447,6 +460,9 @@ const PostJobForm = () => {
                           placeholder="What's your company called?"
                         />
                       </FormControl>
+                      <FormMessage>
+                        {form.formState.errors?.companyName?.message}
+                      </FormMessage>
                     </FormItem>
                   )}
                 />
@@ -471,6 +487,9 @@ const PostJobForm = () => {
                           placeholder="Enter your email address"
                         />
                       </FormControl>
+                      <FormMessage>
+                        {form.formState.errors?.companyEmail?.message}
+                      </FormMessage>
                     </FormItem>
                   )}
                 />
