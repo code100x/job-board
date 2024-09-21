@@ -158,3 +158,29 @@ export const getCityFilters = async () => {
     cities,
   }).serialize();
 };
+
+export const getRecentJobs = async () => {
+  const recentJobs = await prisma.job.findMany({
+    orderBy: {
+      postedAt: 'desc',
+    },
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      companyName: true,
+      city: true,
+      address: true,
+      workMode: true,
+      minSalary: true,
+      maxSalary: true,
+      postedAt: true,
+      companyLogo: true,
+      type: true,
+    },
+    take: 6,
+  });
+  return new SuccessResponse('Recently added jobs fetch successfully', 200, {
+    recentJobs,
+  }).serialize();
+};

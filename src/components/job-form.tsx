@@ -148,32 +148,34 @@ const PostJobForm = () => {
     form.setValue('companyLogo', 'https://wwww.example.com');
   }, [watchHasSalaryRange, form]);
   return (
-    <div className="flex flex-col items-center gap-y-10 justify-center">
-      <div className="mt-4 flex gap-2">
-        <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center text-white w-48">
+    <div className="w-full flex flex-col items-center gap-y-10 justify-center">
+      <div className="md:w-[37rem] w-5/6 mt-4 flex md:flex-row flex-col gap-2">
+        <div className="dark:bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center  bg-slate-100/90 dark:text-white md:w-48">
           <Calendar className="w-8 h-8 mb-3 mx-auto text-green-500" />
           <p className="text-base font-semibold mb-1">Posted for</p>
-          <p className="text-gray-400 text-sm">30 days</p>
+          <p className="dark:text-gray-400 text-gray-600 text-sm">30 days</p>
         </div>
 
-        <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center text-white w-48">
+        <div className="dark:bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center  bg-slate-100/90 dark:text-white md:w-48">
           <MailOpenIcon className="w-8 h-8 mb-3 mx-auto text-purple-500" />
           <p className="text-base font-semibold mb-1">Emailed to</p>
-          <p className="text-gray-400 text-sm">290,301 subscribers</p>
+          <p className="dark:text-gray-400 text-gray-600 text-sm">
+            290,301 subscribers
+          </p>
         </div>
 
-        <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center text-white w-48">
+        <div className="dark:bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center  bg-slate-100/90 dark:text-white md:w-48">
           <LucideRocket className="w-8 h-8 mb-3 mx-auto text-orange-500" />
           <p className="text-base font-semibold mb-1">Reach</p>
-          <p className="text-gray-400 text-sm">
+          <p className="dark:text-gray-400 text-gray-600 text-sm">
             300,000<span className="text-blue-500">+</span>
           </p>
         </div>
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleFormSubmit)}>
-          <div className="bg-gray-900 w-[37rem] text-gray-300 p-6 rounded-lg space-y-4">
+        <form onSubmit={form.handleSubmit(handleFormSubmit)} className='w-full flex flex-col items-center'>
+          <div className="dark:bg-gray-900 md:w-[37rem] w-5/6 dark:text-gray-300 text-gray-600 bg-slate-100 p-6 rounded-lg space-y-4">
             <h2 className="text-2xl font-semibold mb-6">Job details</h2>
 
             <FormField
@@ -185,7 +187,7 @@ const PostJobForm = () => {
                   <FormControl>
                     <Input
                       {...field}
-                      className="w-full bg-gray-800 border-none text-white"
+                      className="w-full dark:bg-gray-800 border-none text-white"
                       placeholder="What's the job?"
                     />
                   </FormControl>
@@ -205,7 +207,7 @@ const PostJobForm = () => {
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="bg-gray-800 border-none text-white">
+                        <SelectTrigger className="dark:bg-gray-800 border-none dark:text-white">
                           <SelectValue placeholder="Select a category" />
                         </SelectTrigger>
                       </FormControl>
@@ -233,7 +235,7 @@ const PostJobForm = () => {
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="bg-gray-800 border-none text-white">
+                        <SelectTrigger className="dark:bg-gray-800 border-none dark:text-white">
                           <SelectValue placeholder="Select a workmode" />
                         </SelectTrigger>
                       </FormControl>
@@ -260,7 +262,7 @@ const PostJobForm = () => {
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="bg-gray-800 border-none text-white">
+                        <SelectTrigger className="dark:bg-gray-800 border-none dark:text-white">
                           <SelectValue placeholder="Select a type" />
                         </SelectTrigger>
                       </FormControl>
@@ -275,9 +277,9 @@ const PostJobForm = () => {
                 )}
               />
             </div>
-            <div className="flex flex-col-2 gap-2">
+            <div className="flex flex-col gap-2">
               <div className="flex flex-col gap-2">
-                <div className="">
+                <div>
                   <Label>Salary Range &#40;in $ per annum&#41;</Label>
                 </div>
                 <FormField
@@ -289,7 +291,7 @@ const PostJobForm = () => {
                         <Switch
                           checked={field.value}
                           onCheckedChange={field.onChange}
-                          className="data-[state=checked]:bg-gray-300 data-[state=unchecked]:bg-gray-400"
+                          className="data-[state=checked]:bg-blue-500 data-[state=unchecked]:bg-gray-400"
                         />
                       </FormControl>
 
@@ -301,7 +303,7 @@ const PostJobForm = () => {
                 />
               </div>
               {watchHasSalaryRange && (
-                <div className="flex gap-4">
+                <div className="flex items-center gap-4">
                   <FormField
                     control={form.control}
                     name="minSalary"
@@ -313,7 +315,7 @@ const PostJobForm = () => {
                         <FormControl>
                           <Input
                             {...field}
-                            className="w-full bg-gray-800 border-gray-400"
+                            className="w-full dark:bg-gray-800 border-gray-400"
                             placeholder="0"
                           />
                         </FormControl>
@@ -333,7 +335,7 @@ const PostJobForm = () => {
                         <FormControl>
                           <Input
                             {...field}
-                            className="w-full bg-gray-800 border-gray-400"
+                            className="w-full dark:bg-gray-800 border-gray-400"
                             placeholder="0"
                           />
                         </FormControl>{' '}
@@ -358,7 +360,7 @@ const PostJobForm = () => {
                   <FormControl>
                     <Input
                       {...field}
-                      className="w-full bg-gray-800 border-none text-white"
+                      className="w-full dark:bg-gray-800 border-none text-white"
                       placeholder="Please enter a URL or Link for application"
                     />
                   </FormControl>
@@ -366,9 +368,11 @@ const PostJobForm = () => {
               )}
             />
           </div>
-          <div className="bg-gray-900 w-full p-6 rounded-lg space-y-4 mx-auto my-6">
-            <h2 className="text-sm text-white capitalize">Job description</h2>
-            <div className="bg-gray-800 rounded-xl mt-2 overflow-hidden">
+          <div className="dark:bg-gray-900 bg-slate-100 md:w-[37rem]  w-5/6 p-6 rounded-lg space-y-4 mx-auto my-6">
+            <h2 className="text-sm dark:text-white font-semibold  capitalize">
+              Job description
+            </h2>
+            <div className="dark:bg-gray-800 bg-white rounded-xl mt-2 overflow-hidden">
               <DescriptionEditor
                 fieldName="description"
                 initialValue={form.getValues('description')}
@@ -377,15 +381,15 @@ const PostJobForm = () => {
               />
             </div>
           </div>
-          <div className="bg-gray-900 p-6 rounded-lg w-[37rem] mx-auto text-gray-300">
-            <h2 className="text-lg font-semibold mb-4 text-gray-300">
+          <div className="dark:bg-gray-900 bg-slate-100 p-6 rounded-lg md:w-[37rem] w-5/6 mx-auto dark:text-gray-300 text-gray-600">
+            <h2 className="text-lg font-semibold mb-4 dark:text-gray-300">
               Company
             </h2>
 
             {/* Logo Upload Section */}
             <div className="flex flex-col items-center mb-6">
               <div
-                className="w-20 h-20 bg-gray-700 border border-dashed border-gray-500 rounded-md flex items-center justify-center cursor-pointer mb-2"
+                className="w-20 h-20 dark:bg-gray-700 border border-dashed border-gray-500 rounded-md flex items-center justify-center cursor-pointer mb-2"
                 onClick={handleClick}
               >
                 {previewImg ? (
@@ -398,7 +402,7 @@ const PostJobForm = () => {
                     height={80}
                   />
                 ) : (
-                  <FaFileUpload className="text-white text-2xl" />
+                  <FaFileUpload className="dark:text-white text-slate-600 text-2xl" />
                 )}
               </div>
               <input
@@ -427,7 +431,7 @@ const PostJobForm = () => {
                       <FormControl>
                         <Input
                           {...field}
-                          className="w-full bg-gray-800 border-none text-white"
+                          className="w-full dark:bg-gray-800 border-none text-white"
                           placeholder="What's your company called?"
                         />
                       </FormControl>
@@ -447,7 +451,7 @@ const PostJobForm = () => {
                       <FormControl>
                         <Input
                           {...field}
-                          className="w-full bg-gray-800 border-none text-white"
+                          className="w-full dark:bg-gray-800 border-none text-white"
                           placeholder="Enter your email address"
                         />
                       </FormControl>
@@ -470,7 +474,7 @@ const PostJobForm = () => {
               </div>
             </div>
           </div>
-          <div className="w-full flex justify-end items-center mt-4">
+          <div className="md:w-[37rem] w-5/6 flex justify-end items-center mt-4">
             <Button type="submit" disabled={form.formState.isSubmitting}>
               {form.formState.isSubmitting ? 'Please wait...' : 'Create Job'}
             </Button>
@@ -478,14 +482,16 @@ const PostJobForm = () => {
         </form>
       </Form>
 
-      <div className="bg-gray-900 p-6 rounded-lg w-[37rem] mx-auto text-gray-300">
-        <h2 className="text-lg font-semibold mb-4 text-gray-300">Payment</h2>
+      <div className="dark:bg-gray-900 bg-slate-100 p-6 rounded-lg w-5/6  md:w-[37rem] mx-auto dark:text-gray-300">
+        <h2 className="text-lg font-semibold mb-4 dark:text-gray-300">
+          Payment
+        </h2>
         <Button className="w-full rounded-full mt-4">
           Continue to Payment
         </Button>
 
         <div className="flex mt-4 gap-2 flex-col items-center">
-          <h1 className="text-center text-gray-400">
+          <h1 className="text-center dark:text-gray-400">
             &quot;I&apos;m a huge fan of remote work and 100xJobs is by far my
             favorite job board.&quot;
           </h1>
@@ -496,8 +502,8 @@ const PostJobForm = () => {
             height={40}
             className="rounded-full"
           />
-          <h1 className="text-gray-300">Harkirat Singh</h1>
-          <h1 className="text-sm text-gray-300">100xJobs.com</h1>
+          <h1>Harkirat Singh</h1>
+          <h1 className="text-sm">100xJobs.com</h1>
         </div>
       </div>
     </div>

@@ -55,7 +55,7 @@ const DescriptionEditor: React.FC<DescriptionEditorProps> = ({
       value={description}
       onChange={handleChange}
       placeholder={placeholder}
-      className="text-white bg-gray-800 overflow-hidden job-description-editor"
+      className="dark:text-white dark:bg-gray-800 bg-[#FFFF] overflow-hidden job-description-editor"
     />
   );
 };

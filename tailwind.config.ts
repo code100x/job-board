@@ -23,7 +23,13 @@ const config = {
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],
       },
-
+      backgroundImage: {
+        'hero-bg-dark': "url('/BG-Grid.svg')",
+        'hero-bg-light': "url('/BG-Grid-Light.svg')",
+        'grad-dark': "linear-gradient(180deg, rgba(15, 23, 42, 0.4) 0%, rgba(2, 8, 23, 0.4) 100%)",
+        'faq-dark': "linear-gradient(180deg, rgba(15, 23, 42, 0.4) 0%, rgba(2, 8, 23, 0.4) 100%)",
+        'grad-light': "linear-gradient(180deg, rgba(241, 245, 249, 0.4) 0%, rgba(255, 255, 255, 0.4) 100%)",
+      },
       colors: {
         'stroke-primary': 'hsl(var(--stroke-primary))',
         'stroke-secondary': 'hsl(var(--stroke-secondary))',
@@ -100,6 +106,9 @@ const config = {
         scroll: 'scroll 5s linear infinite',
         'loop-scroll': 'loop-scroll 50s linear infinite',
       },
+    },
+    fontFamily: {
+      satoshi: ['var(--font-satoshi)'],
     },
   },
   plugins: [require('tailwindcss-animate')],

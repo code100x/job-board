@@ -7,11 +7,6 @@ export const testimonials: testimonialItem[] = [
       'The job board made my job search seamless. I found my dream job in just a few weeks, and the application process was super easy!',
   },
   {
-    name: 'John Smith',
-    testimonial:
-      'This platform is incredibly user-friendly and helped me land a great position. The filtering and search options are fantastic!',
-  },
-  {
     name: 'Emily Johnson',
     testimonial:
       'I appreciate how easy it was to track my job applications. The job board helped me stay organized throughout my job search!',
