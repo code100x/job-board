@@ -4,9 +4,9 @@ import Image from 'next/image';
 import { MapPin } from 'lucide-react';
 import Link from 'next/link';
 
-export default function JobCard({ key, job }: { key: string; job: JobType }) {
+export default function JobCard({ job }: { job: JobType }) {
   return (
-    <Link href={`/jobs/${job.id}`} key={key}>
+    <Link href={`/jobs/${job.id}`}>
       {/* job card */}
       <div className="border-2 transition-all duration-115 ease-linear hover:bg-lightBgSecondary dark:hover:bg-darkBgSecondary flex flex-col gap-6 h-fit max-h-[10rem] p-4 rounded-xl">
         <div className="flex gap-4 items-center">
