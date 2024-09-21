@@ -2,12 +2,13 @@ import { JobType } from '@/types/jobs.types';
 import React from 'react';
 import Image from 'next/image';
 import { MapPin } from 'lucide-react';
+import Link from 'next/link';
 
 export default function JobCard({ key, job }: { key: string; job: JobType }) {
   return (
-    <React.Fragment key={key}>
+    <Link href={`/jobs/${job.id}`} key={key}>
       {/* job card */}
-      <div className="border-2 flex flex-col gap-6 h-fit max-h-[10rem] p-4 rounded-xl">
+      <div className="border-2 transition-all duration-115 ease-linear hover:bg-lightBgSecondary dark:hover:bg-darkBgSecondary flex flex-col gap-6 h-fit max-h-[10rem] p-4 rounded-xl">
         <div className="flex gap-4 items-center">
           <div className="w-[4rem] h-[4rem] bg-primary/20 rounded-md">
             {job.companyLogo && (
@@ -39,6 +40,6 @@ export default function JobCard({ key, job }: { key: string; job: JobType }) {
           </div>
         </div>
       </div>
-    </React.Fragment>
+    </Link>
   );
 }
