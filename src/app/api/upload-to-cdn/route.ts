@@ -1,10 +1,9 @@
-import { serverEnv } from '@/env/server';
 import { NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 
-const CDN_BASE_UPLOAD_URL = serverEnv.CDN_BASE_UPLOAD_URL;
-const CDN_BASE_ACCESS_URL = serverEnv.CDN_BASE_ACCESS_URL;
-const CDN_API_KEY = serverEnv.CDN_API_KEY!;
+const CDN_BASE_UPLOAD_URL = 'https://sg.storage.bunnycdn.com/mypull/assets';
+const CDN_BASE_ACCESS_URL = 'https://mypull.b-cdn.net/assets';
+const CDN_API_KEY = '581de718-e8aa-4199-93027e0b08e2-d1df-417d';
 
 export async function POST(req: Request): Promise<NextResponse> {
   try {

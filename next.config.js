@@ -1,5 +1,8 @@
 import { fileURLToPath } from "node:url";
 import createJiti from "jiti";
+import dotenv from 'dotenv'; // Load .env file
+
+dotenv.config(); // Load environment variables
 
 const jiti = createJiti(fileURLToPath(import.meta.url));
 
@@ -19,10 +22,10 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "job-board.b-cdn.net", // Change this to your CDN domain
+        hostname: "mypulll.b-cdn.net", // Change this to your CDN domain
       },
     ],
   },
 };
 
-export default nextConfig; // ES module export
+export default nextConfig;
