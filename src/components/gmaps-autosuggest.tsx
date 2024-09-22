@@ -4,7 +4,7 @@ import { clientEnv } from '@/env/client';
 
 export type TgmapsAddress = { city: string; fullAddress: string };
 
-export function GmapsAutocompleteAddress({ form }: { form: any }) {
+export default function GmapsAutocompleteAddress({ form }: { form: any }) {
   let autocomplete: any = null;
 
   function onPlaceChanged() {

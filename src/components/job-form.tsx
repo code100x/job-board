@@ -31,7 +31,14 @@ import Image from 'next/image';
 import { FaFileUpload } from 'react-icons/fa';
 import { Switch } from './ui/switch';
 import { Label } from './ui/label';
-import { GmapsAutocompleteAddress } from './gmaps-autosuggest';
+import dynamic from 'next/dynamic';
+
+const DynamicLineDrawingAnimation = dynamic(
+  () => import('./gmaps-autosuggest'),
+  {
+    ssr: false,
+  }
+);
 
 const PostJobForm = () => {
   const { toast } = useToast();
@@ -345,7 +352,9 @@ const PostJobForm = () => {
               )}
             </div>
 
-            <GmapsAutocompleteAddress form={form}></GmapsAutocompleteAddress>
+            <DynamicLineDrawingAnimation
+              form={form}
+            ></DynamicLineDrawingAnimation>
 
             <FormField
               control={form.control}
