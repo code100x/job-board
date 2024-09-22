@@ -6,121 +6,182 @@ import prisma from '@/config/prisma.config';
 import bcrypt from 'bcryptjs';
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { ErrorHandler } from './error';
-import { SigninSchema, SignupSchema } from './validators/auth.validator';
+
+async function validateUser(
+  email: string,
+  password: string
+): Promise<
+  | { data: null }
+  | {
+      data: {
+        user: {
+          id: string;
+          name: string;
+          password: string;
+          email: string;
+        };
+        courses: Array<{
+          id: number;
+          appxCourseId: string;
+          description: string;
+          imageUrl: string;
+          title: string;
+        }>;
+      };
+    }
+> {
+  // TODO: Implement this for local testing
+  // if (process.env.LOCAL_PROVIDER) {
+  //   if (password === '123456') {
+  //     return {
+  //       data: {
+  //         user: {
+  //           id: '1',
+  //           name: 'Random',
+  //           password: null,
+  //           email: 'test@gmail.com',
+  //         },
+  //         courses: [
+  //           {
+  //             id: 1,
+  //             appxCourseId: '1',
+  //             title: 'test course 1',
+  //             imageUrl: 'https://appx-recordings.s3.ap-south-1.amazonaws.com/drm/100x/images/test1.png',
+  //             description: 'test course 1',
+  //           },
+  //         ],
+  //       },
+  //     };
+  //   }
+  //   return { data: null };
+  // }
+  const url = 'https://app.100xdevs.com/api/admin/externalLogin';
+  const headers = {
+    'Auth-Key': process.env.JOB_BOARD_AUTH_SECRET || '',
+  };
+  const body = new URLSearchParams();
+  body.append('email', email);
+  body.append('password', password);
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers,
+      body,
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error validating user:', error);
+  }
+  return {
+    data: null,
+  };
+}
 
 export const options = {
   providers: [
     CredentialsProvider({
-      name: 'signin',
-      id: 'signin',
+      name: 'credentials',
+      id: 'credentials',
       credentials: {
         email: { label: 'Email', type: 'email', placeholder: 'email' },
         password: { label: 'password', type: 'password' },
       },
-      async authorize(credentials): Promise<any> {
-        const result = SigninSchema.safeParse(credentials);
+      async authorize(credentials: any) {
+        try {
+          // TODO: Implement this for local testing
+          // if (process.env.LOCAL_PROVIDER) {
+          //   return {
+          //     id: '1',
+          //     name: 'test',
+          //     email: 'test@gmail.com',
+          //     token: await generateJWT({
+          //       id: '1',
+          //     }),
+          //   };
+          // }
 
-        if (!result.success) {
-          throw new ErrorHandler(
-            'Input Validation failed',
-            'VALIDATION_ERROR',
-            {
-              fieldErrors: result.error.flatten().fieldErrors,
+          const hashedPassword = await bcrypt.hash(
+            credentials.password,
+            PASSWORD_HASH_SALT_ROUNDS
+          );
+          const userInDb = await prisma.user.findUnique({
+            where: { email: credentials.email },
+            select: {
+              id: true,
+              name: true,
+              password: true,
+              isVerified: true,
+              role: true,
+            },
+          });
+
+          if (
+            userInDb &&
+            userInDb.password &&
+            (await bcrypt.compare(credentials.password, userInDb.password))
+          ) {
+            return {
+              id: userInDb.id,
+              name: userInDb.name,
+              email: credentials.email,
+              isVerified: userInDb.isVerified,
+              role: userInDb.role,
+            };
+          }
+          // If not in db
+          const userCMSData = await validateUser(
+            credentials.email,
+            credentials.password
+          );
+          if (userCMSData.data) {
+            try {
+              const userData = await prisma.user.create({
+                data: {
+                  email: userCMSData.data.user.email,
+                  password: hashedPassword,
+                  name: userCMSData.data.user.name,
+                  isVerified: true,
+                  role: 'USER',
+                  course: {
+                    create: userCMSData.data.courses.map((course) => ({
+                      appxCourseId: course.appxCourseId,
+                      description: course.description,
+                      imageUrl: course.imageUrl,
+                      title: course.title,
+                    })),
+                  },
+                },
+                select: {
+                  id: true,
+                  name: true,
+                  email: true,
+                  isVerified: true,
+                  role: true,
+                },
+              });
+
+              return {
+                id: userData.id,
+                name: userData.name,
+                email: userData.email,
+                isVerified: userData.isVerified,
+                role: userData.role,
+              };
+            } catch (error) {
+              console.error('Error creating user:', error);
             }
-          );
+          }
+        } catch (error) {
+          console.error(error);
         }
-        const { email, password } = result.data;
-        const user = await prisma.user.findUnique({
-          where: { email: email },
-          select: {
-            id: true,
-            name: true,
-            password: true,
-            isVerified: true,
-            role: true,
-          },
-        });
-
-        if (!user)
-          throw new ErrorHandler(
-            'Email or password is incorrect',
-            'AUTHENTICATION_FAILED'
-          );
-
-        const isPasswordMatched = await bcrypt.compare(password, user.password);
-        if (!isPasswordMatched) {
-          throw new ErrorHandler(
-            'Email or password is incorrect',
-            'AUTHENTICATION_FAILED'
-          );
-        }
-        return {
-          id: user.id,
-          name: user.name,
-          email: email,
-          isVerified: user.isVerified,
-          role: user.role,
-        };
-      },
-    }),
-    CredentialsProvider({
-      name: 'signup',
-      id: 'signup',
-      credentials: {
-        name: { label: 'Name', type: 'text' },
-        email: { label: 'Email', type: 'email', placeholder: 'email' },
-        password: { label: 'password', type: 'password' },
-      },
-      async authorize(credentials): Promise<any> {
-        const result = SignupSchema.safeParse(credentials);
-
-        if (!result.success) {
-          throw new ErrorHandler(
-            'Input Validation failed',
-            'VALIDATION_ERROR',
-            {
-              fieldErrors: result.error.flatten().fieldErrors,
-            }
-          );
-        }
-        const { email, password, name } = result.data;
-        const userExist = await prisma.user.findUnique({
-          where: { email: email },
-          select: { id: true, name: true, password: true },
-        });
-
-        if (userExist)
-          throw new ErrorHandler(
-            'User with this email already exist',
-            'CONFLICT'
-          );
-
-        const hashedPassword = await bcrypt.hash(
-          password,
-          PASSWORD_HASH_SALT_ROUNDS
-        );
-        const user = await prisma.user.create({
-          data: {
-            email: email,
-            password: hashedPassword,
-            name: name,
-          },
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            isVerified: true,
-            role: true,
-          },
-        });
-        return {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          isVerified: user.isVerified,
-          role: user.role,
-        };
+        return null;
       },
     }),
   ],
