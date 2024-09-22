@@ -1,20 +1,36 @@
-import Icon from '@/components/ui/icon';
 import {
   Sheet,
   SheetClose,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { toast } from '@/components/ui/use-toast';
 import APP_PATHS from '@/config/path.config';
-import { navbar } from '@/lib/constant/app.constant';
+import {
+  adminNavbar,
+  nonUserNavbar,
+  userNavbar,
+} from '@/lib/constant/app.constant';
+import {
+  CircleHelp,
+  Contact,
+  DollarSign,
+  LogOut,
+  Menu,
+  PackageSearch,
+  Pen,
+  Users,
+  X,
+} from 'lucide-react';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-
+import { CompanyLogo } from './header';
+import spotifyLogo from '../../public/spotify.svg';
+import Image from 'next/image';
+import { ADMIN_ROLE } from '@/config/app.config';
 export function MobileNav() {
   const router = useRouter();
   const session = useSession();
@@ -47,64 +63,87 @@ export function MobileNav() {
 
   return (
     <Sheet>
-      <SheetTrigger>
-        <Icon icon="menu" />
+      <SheetTrigger className="border p-2.5 rounded-lg text-foreground/60 hover:dark:bg-[#191919] hover:bg-gray-100">
+        <Menu className="w-4 h-4" />
       </SheetTrigger>
       <SheetContent className="w-full">
-        <SheetHeader>
-          <SheetTitle>Menu</SheetTitle>
-          <SheetDescription></SheetDescription>
-          <ul className="grid gap-2 text-sm lg:gap-6 justify-items-start">
-            {navbar.map((item) => (
-              <Item {...item} key={item.id} />
-            ))}
+        <SheetHeader className="h-fit rounded-xl border dark:border-[#1E293B]">
+          <SheetTitle className="w-full flex justify-between items-center p-3  border-b dark:border-b-[#1E293B]">
+            <CompanyLogo />
+            <SheetClose className="rounded-sm h-fit opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none  disabled:pointer-events-none data-[state=open]:bg-secondary">
+              <X className="h-4 w-4" />
+              <span className="sr-only">Close</span>
+            </SheetClose>
+          </SheetTitle>
+          <ul className="flex flex-col gap-2 text-sm justify-items-start px-4 py-2">
+            {session.status !== 'loading' && session.data?.user && (
+              <div className="w-full flex items-center">
+                {session.data?.user.role === ADMIN_ROLE ? (
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center border-none ouline-none dark:bg-[#0F172A] dark:text-white bg-slate-200">
+                    <p>HS</p>
+                  </div>
+                ) : (
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center border-none ouline-none">
+                    <Image
+                      className="w-12 h-12"
+                      src={spotifyLogo}
+                      alt="company-logo"
+                    />
+                  </div>
+                )}
+                <div className="flex flex-col items-start justify-center px-2 mt-2">
+                  <p className="font-semibold text-lg dark:text-[#F8FAFC] text-[#020817]">
+                    {session.data?.user.role === ADMIN_ROLE
+                      ? 'Harkirat Singh'
+                      : 'User'}
+                  </p>
+                  <div className="flex items-center text-[#64748B] dark:text-[#94A3B8]">
+                    <p className="py-1 text-sm  font-medium">
+                      {session.data?.user.role === ADMIN_ROLE
+                        ? 'admin@gmail.com'
+                        : 'work@spotify.com'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
             {session.status !== 'loading' && !session.data?.user && (
               <>
-                <li>
-                  <Link
-                    href={APP_PATHS.SIGNIN}
-                    className="transition-colors hover:text-foreground/80 text-foreground/60"
-                  >
-                    <SheetClose>Login</SheetClose>
-                  </Link>
-                </li>
-                <li>
-                  <Link href={APP_PATHS.SIGNUP}>
-                    <SheetClose>Start Free</SheetClose>
-                  </Link>
-                </li>
+                {nonUserNavbar.map((item) => (
+                  <Item {...item} key={item.id} />
+                ))}
+                <button className="w-full rounded-lg p-2 my-2 bg-[#3259E8] hover:bg-[#3e63e9] text-white font-medium ">
+                  Post a job
+                </button>
               </>
             )}
             {session.status !== 'loading' && session.data?.user && (
               <>
-                <li>
-                  <Link
-                    href={'/create'}
-                    className="transition-colors hover:text-foreground/80 text-foreground/60"
-                  >
-                    <SheetClose>Create Job</SheetClose>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href={'/setting'}
-                    className="transition-colors hover:text-foreground/80 text-foreground/60"
-                  >
-                    <SheetClose>Setting</SheetClose>
-                  </Link>
-                </li>
-                <li onClick={handleSignout}>
-                  <SheetClose className="flex gap-2 items-center transition-colors hover:text-foreground/80 text-foreground/60">
-                    Logout
-                    <Icon
-                      icon="logout"
-                      className="h-[1rem] w-[1rem] text-accent-foreground/80"
-                    />
-                  </SheetClose>
-                </li>
+                {userNavbar.map((item) => (
+                  <Item {...item} key={item.id} />
+                ))}
               </>
             )}
+            {session.status !== 'loading' &&
+              session.data?.user.role === ADMIN_ROLE && (
+                <>
+                  {adminNavbar.map((item) => (
+                    <Item {...item} key={item.id} />
+                  ))}
+                </>
+              )}
           </ul>
+          {session.status !== 'loading' && session.data?.user && (
+            <SheetClose className="w-full border-t rounded-lg rounded-t-none dark:border-t-[#1E293B] h-fit p-3">
+              <button
+                onClick={handleSignout}
+                className="text-[#DD503F] flex items-center justify-start font-medium text-lg"
+              >
+                <LogOut className="w-4 h-4" />
+                <p className="mx-1">Logout</p>
+              </button>
+            </SheetClose>
+          )}
         </SheetHeader>
       </SheetContent>
     </Sheet>
@@ -133,13 +172,32 @@ const Item = ({
   if (session && roleRequired && session.data?.user.role !== roleRequired)
     return;
   return (
-    <li>
+    <li className="my-1 dark:hover:bg-slate-800 hover:bg-slate-50 p-2 rounded-lg">
       <Link
         href={path}
         aria-selected={pathname === path}
         className="transition-colors hover:text-foreground/80 text-foreground/60"
       >
-        <SheetClose>{label}</SheetClose>
+        <SheetClose className="flex items-center font-medium text-lg">
+          {label === 'Explore jobs' ? (
+            <PackageSearch className="mr-2 w-4 h-4" />
+          ) : label === 'Pricing' ? (
+            <DollarSign className="mr-2 w-4 h-4" />
+          ) : label === 'Contact us' ? (
+            <Contact className="mr-2 w-4 h-4" />
+          ) : label === 'Manage Jobs' ? (
+            <PackageSearch className="mr-2 w-4 h-4" />
+          ) : label === 'Payment History' ? (
+            <DollarSign className="mr-2 w-4 h-4" />
+          ) : label === 'Post a Job' ? (
+            <Pen className="mr-2 w-4 h-4" />
+          ) : label === 'Help' ? (
+            <CircleHelp className="mr-2 w-4 h-4" />
+          ) : (
+            label === 'Manage Recruiters' && <Users className="mr-2 w-4 h-4" />
+          )}
+          <p className="dark:text-[#F8FAFC] text-[#212121]">{label}</p>
+        </SheetClose>
       </Link>
     </li>
   );
