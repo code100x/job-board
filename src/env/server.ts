@@ -10,12 +10,8 @@ export const serverEnv = createEnv({
     CDN_API_KEY: z.string().min(1),
     CDN_BASE_UPLOAD_URL: z.string().url(),
     CDN_BASE_ACCESS_URL: z.string().url(),
-    NODE_ENV: z
-      .enum(['development', 'test', 'production'])
-      .default('development'),
   },
   runtimeEnv: {
-    NODE_ENV: process.env.NODE_ENV,
     DATABASE_URL: process.env.DATABASE_URL,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
