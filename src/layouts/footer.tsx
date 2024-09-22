@@ -1,76 +1,25 @@
 import Icon from '@/components/ui/icon';
-import { socials, footerLinks } from '@/lib/constant/app.constant';
-import Image from 'next/image';
+import { footerItems, socials } from '@/lib/constant/app.constant';
 import Link from 'next/link';
 
 const Footer = () => {
   return (
-    <footer className="mt-20 relative  w-full p-3">
-      <div className="w-full  flex  flex-col  lg:flex-row justify-between gap-3 mx-auto bg-background dark:bg-neutral-900 rounded-3xl p-3 md:p-10 lg:px-16 lg:h-[360px]">
-        <div className="h-auto md:h-auto flex flex-col justify-between gap-3 p-2 sm:p-5 md:p-6">
-          <div className="flex items-center gap-2">
-            <Image
-              src="/main.png"
-              alt="100xJobs"
-              width={90}
-              height={90}
-              className="rounded-full w-16 h-16 md:w-20 md:h-20"
-            />
-            <div className="flex flex-col">
-              <h3 className="text-4xl md:text-5xl font-bold inline-flex bg-gradient-to-r from-[#63ADF7] to-[#296EE7] bg-[200%_auto] bg-clip-text leading-tight text-transparent dark:from-[#63ADF7] dark:to-[#296EE7]">
-                100xDevs
-              </h3>
-              <p className="text-neutral-50 text-sm md:text-lg">
-                because 10x ain&apos;t enough
-              </p>
-            </div>
-          </div>
-          <div className="flex flex-col gap-2">
-            <p className="font-bold text-base md:text-lg">Follow us on</p>
-            <div className="flex gap-3">
-              {socials.map((social, index) => (
-                <Link
-                  target="_blank"
-                  key={social.href + index}
-                  href={social.href}
-                  aria-label={social.label}
-                >
-                  <Icon
-                    icon={social.icon}
-                    className="text-foreground/60 hover:text-foreground/80 text-xl md:text-2xl"
-                  />
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-        <div className=" flex flex-col sm:flex-row gap-10 p-2 sm:p-5 ">
-          <div className="flex flex-col gap-2 ">
-            <p className="font-bold text-xl md:text-2xl">100xLinks</p>
-
-            {footerLinks['100xlinks'].map((link, index) => (
-              <Link
-                key={link.href + index}
-                href={link.href}
-                className="text-foreground/60 hover:text-foreground/80 sm:text-lg font-light"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-          <div className="flex flex-col gap-2 ">
-            <p className="font-bold text-xl md:text-2xl">100xLegal</p>
-
-            {footerLinks['100xlegal'].map((link, index) => (
-              <Link
-                key={link.href + index}
-                href={link.href}
-                className="text-foreground/60 hover:text-foreground/80 sm:text-lg font-light"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
+    <footer className="mt-20 md:h-20 h-40 dark:bg-[#020817] relative w-full p-3 border-t dark:border-t-[#1E293B] border-t-[#E2E8F0] flex md:flex-row flex-col items-center md:justify-between justify-around md:px-14 px-3">
+      <ul className="flex items-center text-sm dark:text-[#94A3B8] text-[#64748B] font-medium">
+        {footerItems.map((item, i) => (
+          <li key={i} className="px-2">
+            <Link href={item.href}>{item.label}</Link>
+          </li>
+        ))}
+      </ul>
+      <div className="flex items-center md:flex-row flex-col-reverse">
+        <p className="text-[#94A3B8]">© 2024 100xJobs. All rights reserved.</p>
+        <div className="flex items-center ml-4 md:mb-0 mb-3 text-[#64748B]">
+          {socials.map((social, i) => (
+            <Link key={i} href={social.href} className="p-3 rounded-full border mx-2 hover:bg-slate-50 duration-150 ease-in-out transition">
+              <Icon icon={social.icon} className="w-4 h-4" />
+            </Link>
+          ))}
         </div>
       </div>
     </footer>
