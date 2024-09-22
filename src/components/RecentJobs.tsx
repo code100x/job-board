@@ -27,7 +27,7 @@ export default async function RecentJobs() {
                 />
               </div>
             ) : (
-              <div className="w-12 h-12 rounded-full flex items-center justify-center border-none ouline-none dark:bg-[#0F172A] dark:text-white bg-slate-200">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center  ouline-none dark:bg-[#0F172A] dark:text-white bg-slate-200 border">
                 <p className="font-semibold">
                   {getFirstLetterCaps(job.companyName)}
                 </p>
