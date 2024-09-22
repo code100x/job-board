@@ -35,7 +35,6 @@ export const adminNavbar = [
   },
   { id: 2, label: 'Manage Recruiters', path: '/' },
   { id: 3, label: 'Payment History', path: '/' },
-
 ];
 
 export const socials: {
@@ -64,7 +63,6 @@ export const footerItems = [
   },
 ];
 
-
 export const trustedCompanies = [
   {
     icon: adobe,
@@ -91,4 +89,3 @@ export const trustedCompanies = [
     name: 'google',
   },
 ];
-
