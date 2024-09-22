@@ -185,7 +185,7 @@ export const getRecentJobs = async () => {
     return new SuccessResponse('Recently added jobs fetch successfully', 200, {
       recentJobs,
     }).serialize();
-  } catch (error) {
+  } catch (_error) {
     return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
   }
 };

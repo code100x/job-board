@@ -16,7 +16,7 @@ const HeroSection = () => {
                 <span className="career-span bg-[#3259E8] py-1 px-5 ml-1 font-bold rounded-xl text-white">
                   Career
                 </span>
-                <br/>
+                <br />
                 with 100xJobs
               </h1>
               <p className="md:w-4/6 w-full text-center my-3 dark:text-[#94A3B8] text-[#64748B] font-medium ">
@@ -41,7 +41,7 @@ const HeroSection = () => {
               {trustedCompanies.map((company, i) => (
                 <Image
                   key={i}
-                  className="mx-4 md:w-28 w-24 h-14 md:h-24"
+                  className="mx-4 md:w-28 w-24 h-20 md:h-24"
                   src={company.icon}
                   alt={`${company.name}-icon`}
                 />

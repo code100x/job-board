@@ -4,9 +4,7 @@ import { cn } from '@/lib/utils';
 import Providers from '@/providers/providers';
 import type { Metadata } from 'next';
 import './globals.css';
-import ScrollToTop from '@/components/ScrollToTop';
 import localFont from 'next/font/local';
-
 
 const satoshi = localFont({
   display: 'swap',
@@ -41,7 +39,8 @@ export default async function RootLayout({
           <main className="grow grid">{children}</main>
           <Footer />
         </Providers>
-        <ScrollToTop />
+        {/* Commenting this out for temp basis */}
+        {/* <ScrollToTop />  */}
       </body>
     </html>
   );
