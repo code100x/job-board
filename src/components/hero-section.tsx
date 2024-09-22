@@ -41,7 +41,7 @@ const HeroSection = () => {
               {trustedCompanies.map((company, i) => (
                 <Image
                   key={i}
-                  className="mx-4 md:w-28 w-24 h-14 md:h-24"
+                  className="mx-4 md:w-28 w-24 h-20 md:h-24"
                   src={company.icon}
                   alt={`${company.name}-icon`}
                 />

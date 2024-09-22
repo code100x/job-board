@@ -11,11 +11,11 @@ export default async function RecentJobs() {
   }
 
   return (
-    <div className="w-full grid md:grid-cols-3 grid-cols-1 gap-2 items-center mt-10">
+    <div className="w-full grid lg:grid-cols-3  md:grid-cols-2 grid-cols-1 gap-2 items-center mt-10">
       {recentJobs.additional.recentJobs.map((job, i) => (
         <div
           key={i}
-          className="md:max-w-[420px] md:min-w-[400px] min-w-[250px] w-full min-h-[200px] h-auto flex flex-col mx-auto my-2 gap-3 cursor-pointer dark:bg-[#0F172A] border bg-[#F1F5F9] dark:border-[#1E293B] border-[#E2E8F0] rounded-xl md:p-5 p-3 dark:hover:bg-[#111a2f] hover:bg-[#ebf1f7] duration-200 transition ease-in-out"
+          className="md:max-w-[520px] md:min-w-[300px] min-w-[250px] w-full min-h-[200px] h-auto flex flex-col mx-auto my-2 gap-3 cursor-pointer dark:bg-[#0F172A] border bg-[#F1F5F9] dark:border-[#1E293B] border-[#E2E8F0] rounded-xl md:p-5 p-3 dark:hover:bg-[#111a2f] hover:bg-[#ebf1f7] duration-200 transition ease-in-out"
         >
           <div className="w-full flex items-center">
             {job.companyLogo ? (

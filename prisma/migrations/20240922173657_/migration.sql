@@ -7,9 +7,6 @@ CREATE TYPE "WorkMode" AS ENUM ('remote', 'hybrid', 'office');
 -- CreateEnum
 CREATE TYPE "Role" AS ENUM ('USER', 'ADMIN');
 
--- CreateEnum
-CREATE TYPE "JobLocations" AS ENUM ('BANGLORE', 'DELHI', 'MUMBAI', 'CHENNAI', 'PUNE', 'HYDERABAD', 'KOLKATA', 'AHMEDABAD', 'JAIPUR', 'SURAT');
-
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -36,7 +33,8 @@ CREATE TABLE "Job" (
     "type" TEXT NOT NULL,
     "work_mode" "WorkMode" NOT NULL,
     "currency" "Currency" NOT NULL DEFAULT 'INR',
-    "location" "JobLocations" NOT NULL,
+    "city" TEXT NOT NULL,
+    "address" TEXT NOT NULL,
     "application" TEXT NOT NULL,
     "companyLogo" TEXT NOT NULL,
     "has_salary_range" BOOLEAN NOT NULL DEFAULT false,

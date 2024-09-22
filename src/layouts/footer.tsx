@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 const Footer = () => {
   return (
-    <footer className="mt-20 md:h-20 h-40 dark:bg-[#020817] relative w-full p-3 border-t dark:border-t-[#1E293B] border-t-[#E2E8F0] flex md:flex-row flex-col items-center md:justify-between justify-around md:px-14 px-3">
+    <footer className=" md:h-20 h-40 dark:bg-[#020817] relative w-full p-3 border-t dark:border-t-[#1E293B] border-t-[#E2E8F0] flex md:flex-row flex-col items-center md:justify-between justify-around md:px-14 px-3">
       <ul className="flex items-center text-sm dark:text-[#94A3B8] text-[#64748B] font-medium">
         {footerItems.map((item, i) => (
           <li key={i} className="px-2">

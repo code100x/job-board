@@ -46,12 +46,12 @@ const Header = () => {
 
   return (
     <nav className="sticky w-full z-50">
-      <div className="flex h-[72px] w-full items-center justify-between dark:bg-[#020817] bg-[#FFFFFF] md:px-20 px-3 shadow-sm">
+      <div className="flex h-[72px] w-full items-center justify-between dark:bg-[#020817] bg-[#FFFFFF] lg:px-20 px-3 shadow-sm">
         <Link href="/" className="p-2.5">
           <CompanyLogo />
         </Link>
         <div className="flex items-center">
-          <ul className="flex items-center gap-4 text-sm lg:gap-6 max-sm:hidden mx-4">
+          <ul className="md:flex items-center gap-4 text-sm lg:gap-6 hidden mx-4">
             {session.status === 'loading'
               ? nonUserNavbar.map((_, index) => (
                   <Skeleton className="h-4 w-[60px]" key={index} />
@@ -83,12 +83,12 @@ const Header = () => {
             )}
 
             {session.status !== 'loading' && !session.data?.user && (
-              <button className="rounded-lg p-2 bg-[#3259E8] hover:bg-[#3e63e9] text-white font-medium max-sm:hidden">
+              <button className="rounded-lg p-2 bg-[#3259E8] hover:bg-[#3e63e9] text-white font-medium hidden md:block">
                 <Link href={'/create'}>Post a job</Link>
               </button>
             )}
 
-            <div className="sm:hidden flex justify-center ml-3">
+            <div className="md:hidden flex justify-center ml-3">
               <MobileNav />
             </div>
           </div>
