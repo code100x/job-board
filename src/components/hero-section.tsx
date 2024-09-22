@@ -1,41 +1,54 @@
-import { GITHUB_REPO } from '@/lib/constant/app.constant';
+import Image from 'next/image';
+import { trustedCompanies } from '@/lib/constant/app.constant';
 import Link from 'next/link';
-import Icon from './ui/icon';
-import { LogoMarquee } from './infinitescroll';
-
 const HeroSection = () => {
   return (
     <>
-      <section className="relative sm:py-10 container">
-        <div className="flex flex-col gap-4 items-center justify-center py-8 md:py-12 md:pb-8 lg:py-12 lg:pb-10">
-          <Link
-            href={GITHUB_REPO}
-            target="_blank"
-            className="flex border border-neutral-200 dark:border-neutral-600 bg-gradient-to-b from-transparent dark:via-white/5 to-purple-400 backdrop-blur-md py-2 gap-2 items-center px-4 rounded-full"
-          >
-            <Icon icon="sparcle" className="text-yellow-500" size="18" />
-            <p className=" text-primary-text text-sm">Star us on Github</p>
-          </Link>
-          <div className="flex items-center flex-col gap-3 max-w-[950px]">
-            <div>
-              <h1 className="text-6xl max-sm:text-3xl max-sm:leading-tight  font-extrabold leading-[70px]  text-center text-primary">
-                {/* Find the Right{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-600">
-                  Opportunity
-                </span>
-                , Hire the Perfect Talent */}
-                Find Your Perfect Job Today!
-              </h1>
-            </div>
-            <div>
-              <p className="max-w-2xl text-sm md:text-lg font-light text-foreground text-center">
-                Discover a thoughtfully selected collection of job opportunities
-                chosen by our dedicated team of experts.
+      <section className="relative container min-w-[100vw] pb-10 h-fit py-10 dark:bg-hero-bg-dark bg-hero-bg-light object-contain">
+        <div className="flex flex-col items-center pt-10">
+          <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center">
+              <p className="py-2 px-3 rounded-full border text-sm my-4 dark:text-[#FFFF] text-[#020817] dark:bg-[#0F172A] dark:border-[#1E293B] bg-[#F1F5F9] border-[#E2E8F0]">
+                <span className="text-[#3259E8]">#1</span> Platform for jobs
               </p>
+              <h1 className="text-5xl font-bold leading-snug text-center dark:text-[#F8FAFC] text-[#020817]">
+                Build Your
+                <span className="career-span bg-[#3259E8] py-1 px-5 ml-1 font-bold rounded-xl text-white">
+                  Career
+                </span>
+                <br/>
+                with 100xJobs
+              </h1>
+              <p className="md:w-4/6 w-full text-center my-3 dark:text-[#94A3B8] text-[#64748B] font-medium ">
+                Unlock exclusive job and internship opportunities. Remote,
+                onsite, or hybrid—we&apos;ve got what you&apos;re looking for.
+              </p>
+            </div>
+            <div className="md:w-4/6 w-full flex md:flex-row flex-col  items-center justify-center my-4">
+              <button className="md:w-fit w-full rounded-lg py-2 px-3 bg-[#3259E8] text-sm text-[#FFFF] font-medium hover:bg-[#3e63e9] ">
+                <Link href={'/jobs'}>Explore Jobs </Link>
+              </button>
+              <button className="md:w-fit w-full rounded-lg py-2 px-3 border text-sm md:ml-3 md:my-0 my-3 dark:text-[#94A3B8] text-[#64748B] font-medium dark:hover:bg-slate-900 hover:bg-slate-100">
+                <Link href={'#testimonials'}>View Testimonials</Link>
+              </button>
+            </div>
+          </div>
+          <div className="flex flex-col items-center my-5">
+            <p className="border border-[#4E7AFF] rounded-lg bg-opacity-10 py-1 px-3 text-[#4E7AFF] text-xs w-fit font-medium">
+              Trusted By Leading Companies
+            </p>
+            <div className="grid md:grid-cols-6 grid-cols-2 items-center gap-1 md:mt-0 mt-4 dark:bg-[#02081766]">
+              {trustedCompanies.map((company, i) => (
+                <Image
+                  key={i}
+                  className="mx-4 md:w-28 w-24 h-14 md:h-24"
+                  src={company.icon}
+                  alt={`${company.name}-icon`}
+                />
+              ))}
             </div>
           </div>
         </div>
-        <LogoMarquee />
       </section>
     </>
   );

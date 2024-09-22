@@ -1,60 +1,94 @@
 import { IconProps } from '@/components/ui/icon';
 import APP_PATHS from '@/config/path.config';
+import adobe from '../../../public/adobe.svg';
+import atlassian from '../../../public/atlassian.svg';
+import google from '../../../public/google.svg';
+import medium from '../../../public/medium.svg';
+import framer from '../../../public/framer.svg';
+import coinbase from '../../../public/coinbase.svg';
 
 export const GITHUB_REPO = 'https://github.com/code100x/job-board';
-export const navbar = [
-  { id: 1, label: 'Jobs', path: APP_PATHS.JOBS },
+
+export const nonUserNavbar = [
+  { id: 1, label: 'Explore jobs', path: APP_PATHS.JOBS },
+
+  { id: 2, label: 'Pricing', path: '/' },
+  { id: 3, label: 'Contact us', path: APP_PATHS.TESTIMONIALS },
+];
+
+export const userNavbar = [
   {
-    id: 2,
-    label: 'Manage',
+    id: 1,
+    label: 'Manage Jobs',
+    path: APP_PATHS.MANAGE_JOBS,
+  },
+  { id: 2, label: 'Payment History', path: '/' },
+  { id: 4, label: 'Post a Job', path: '/create' },
+  { id: 3, label: 'Help', path: '/' },
+];
+export const adminNavbar = [
+  {
+    id: 1,
+    label: 'Manage Jobs',
     path: APP_PATHS.MANAGE_JOBS,
     roleRequired: 'ADMIN',
   },
-  // todo: add actual path
-  { id: 3, label: 'Internship', path: '/' },
-  { id: 4, label: 'Testimonials', path: APP_PATHS.TESTIMONIALS },
-  { id: 5, label: 'FAQs', path: APP_PATHS.FAQS },
-  { id: 6, label: 'Post a Job', path: APP_PATHS.POST_JOB },
+  { id: 2, label: 'Manage Recruiters', path: '/' },
+  { id: 3, label: 'Payment History', path: '/' },
+
 ];
 
 export const socials: {
   href: string;
-  label: string;
   icon: IconProps['icon'];
 }[] = [
   {
     icon: 'youtube',
-    label: 'Youtube',
     href: 'https://www.youtube.com/@100xDevs-n1w',
   },
-  { icon: 'twitter', label: 'Twitter', href: 'https://x.com/100xDevs' },
-  { icon: 'github', label: 'Github', href: 'https://github.com/code100x' },
+  { icon: 'twitter', href: 'https://x.com/100xDevs' },
+];
+
+export const footerItems = [
   {
-    icon: 'instagram',
-    label: 'Instagram',
-    href: 'https://www.instagram.com/100xdevsofficial/',
+    label: 'About Us',
+    href: '/',
   },
   {
-    icon: 'linkedin',
-    label: 'Linkedin',
-    href: 'https://www.linkedin.com/company/100xdevs/',
+    label: 'Terms of Service',
+    href: '/',
   },
   {
-    icon: 'telergam',
-    label: 'Telegram',
-    href: 'https://t.me/kirat_internal_group',
+    label: 'Privacy Policy',
+    href: '/',
   },
 ];
 
-export const footerLinks = {
-  '100xlinks': [
-    { label: 'App', href: 'https://app.100xdevs.com' },
-    { label: 'Projects', href: '' },
-    { label: 'Reports', href: '' },
-  ],
-  '100xlegal': [
-    { label: 'Privacy Policy', href: '' },
-    { label: 'Terms of Service', href: '' },
-    { label: 'Disclaimer', href: '' },
-  ],
-};
+
+export const trustedCompanies = [
+  {
+    icon: adobe,
+    name: 'adobe',
+  },
+  {
+    icon: atlassian,
+    name: 'atlassian',
+  },
+  {
+    icon: medium,
+    name: 'medium',
+  },
+  {
+    icon: coinbase,
+    name: 'coinbase',
+  },
+  {
+    icon: framer,
+    name: 'framer',
+  },
+  {
+    icon: google,
+    name: 'google',
+  },
+];
+
