@@ -149,20 +149,20 @@ const PostJobForm = () => {
   }, [watchHasSalaryRange, form]);
   return (
     <div className="flex flex-col items-center gap-y-10 justify-center">
-      <div className="mt-4 flex gap-2">
-        <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center text-white w-48">
+      <div className="w-full md:justify-center mt-4 flex flex-col md:flex-row gap-2">
+        <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center text-white w-full md:w-48">
           <Calendar className="w-8 h-8 mb-3 mx-auto text-green-500" />
           <p className="text-base font-semibold mb-1">Posted for</p>
           <p className="text-gray-400 text-sm">30 days</p>
         </div>
 
-        <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center text-white w-48">
+        <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center text-white w-full md:w-48">
           <MailOpenIcon className="w-8 h-8 mb-3 mx-auto text-purple-500" />
           <p className="text-base font-semibold mb-1">Emailed to</p>
           <p className="text-gray-400 text-sm">290,301 subscribers</p>
         </div>
 
-        <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center text-white w-48">
+        <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center text-white w-full md:w-48">
           <LucideRocket className="w-8 h-8 mb-3 mx-auto text-orange-500" />
           <p className="text-base font-semibold mb-1">Reach</p>
           <p className="text-gray-400 text-sm">
@@ -172,8 +172,8 @@ const PostJobForm = () => {
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleFormSubmit)}>
-          <div className="bg-gray-900 w-[37rem] text-gray-300 p-6 rounded-lg space-y-4">
+        <form className='w-full' onSubmit={form.handleSubmit(handleFormSubmit)}>
+          <div className="bg-gray-900 w-full md:w-[37rem] text-gray-300 p-6 rounded-lg space-y-4">
             <h2 className="text-2xl font-semibold mb-6">Job details</h2>
 
             <FormField
@@ -193,7 +193,7 @@ const PostJobForm = () => {
               )}
             />
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-col md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="category"
@@ -275,7 +275,7 @@ const PostJobForm = () => {
                 )}
               />
             </div>
-            <div className="flex flex-col-2 gap-2">
+            <div className="flex flex-col md:flex-col-2 gap-2">
               <div className="flex flex-col gap-2">
                 <div className="">
                   <Label>Salary Range &#40;in $ per annum&#41;</Label>
@@ -377,7 +377,7 @@ const PostJobForm = () => {
               />
             </div>
           </div>
-          <div className="bg-gray-900 p-6 rounded-lg w-[37rem] mx-auto text-gray-300">
+          <div className="bg-gray-900 p-6 rounded-lg w-full md:w-[37rem] mx-auto text-gray-300">
             <h2 className="text-lg font-semibold mb-4 text-gray-300">
               Company
             </h2>
@@ -478,7 +478,7 @@ const PostJobForm = () => {
         </form>
       </Form>
 
-      <div className="bg-gray-900 p-6 rounded-lg w-[37rem] mx-auto text-gray-300">
+      <div className="bg-gray-900 p-6 rounded-lg w-full md:w-[37rem] mx-auto text-gray-300">
         <h2 className="text-lg font-semibold mb-4 text-gray-300">Payment</h2>
         <Button className="w-full rounded-full mt-4">
           Continue to Payment
