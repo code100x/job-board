@@ -36,7 +36,10 @@ Follow these steps to set up the repository locally and run it.
 1. Create a `.env` file in the root folder of your project. Update it following the convention of the `.env.example` file. Here's an example:
 
    ```bash
-   DATABASE_URL="postgresql://postgres:123456@localhost:5432/job100x"
+   #
+   # Database 
+   #
+   DATABASE_URL="postgres://postgres:password@localhost:5432/postgres"
 
    #
    # AUTH 
