@@ -13,7 +13,7 @@ export default function Testimonials() {
           Real Success Stories from Job Seekers and Employers
         </p>
       </div>
-      <div className="w-full grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-2 items-center mt-10">
+      <div className="w-full grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 items-center mt-10">
         {testimonials.map((testimonial, i) => (
           <TestimonialCard key={i} testimonial={testimonial} />
         ))}
