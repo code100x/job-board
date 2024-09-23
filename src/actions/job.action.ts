@@ -2,6 +2,7 @@
 import prisma from '@/config/prisma.config';
 import { withServerActionAsyncCatcher } from '@/lib/async-catch';
 import { withSession } from '@/lib/session';
+import { ErrorHandler } from '@/lib/error';
 import { SuccessResponse } from '@/lib/success';
 import {
   ApproveJobSchema,
@@ -173,6 +174,36 @@ export const getCityFilters = async () => {
   return new SuccessResponse(`Cities fetched successfully`, 200, {
     cities,
   }).serialize();
+};
+
+export const getRecentJobs = async () => {
+  try {
+    const recentJobs = await prisma.job.findMany({
+      orderBy: {
+        postedAt: 'desc',
+      },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        companyName: true,
+        city: true,
+        address: true,
+        workMode: true,
+        minSalary: true,
+        maxSalary: true,
+        postedAt: true,
+        companyLogo: true,
+        type: true,
+      },
+      take: 6,
+    });
+    return new SuccessResponse('Recently added jobs fetch successfully', 200, {
+      recentJobs,
+    }).serialize();
+  } catch (_error) {
+    return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
+  }
 };
 
 export const deleteJobById = withServerActionAsyncCatcher<

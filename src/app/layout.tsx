@@ -3,14 +3,17 @@ import Header from '@/layouts/header';
 import { cn } from '@/lib/utils';
 import Providers from '@/providers/providers';
 import type { Metadata } from 'next';
-import { Inter as FontSans } from 'next/font/google';
 import './globals.css';
-import TopLoader from '@/components/Toploader';
-import ScrollToTop from '@/components/ScrollToTop';
+import localFont from 'next/font/local';
 
-const fontSans = FontSans({
-  subsets: ['latin'],
-  variable: '--font-sans',
+const satoshi = localFont({
+  display: 'swap',
+  src: [
+    {
+      path: '../../public/fonts/satoshi.ttf',
+    },
+  ],
+  variable: '--font-satoshi',
 });
 
 export const metadata: Metadata = {
@@ -27,17 +30,17 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning={true}>
       <body
         className={cn(
-          'font-sans antialiased bg-gradient-light dark:bg-gradient min-h-screen relative flex flex-col',
-          fontSans.variable
+          'font-satoshi antialiased bg-gradient-light dark:bg-gradient min-h-screen relative flex flex-col',
+          satoshi.variable
         )}
       >
-        <TopLoader />
         <Providers>
           <Header />
           <main className="grow grid">{children}</main>
           <Footer />
         </Providers>
-        <ScrollToTop />
+        {/* Commenting this out for temp basis */}
+        {/* <ScrollToTop />  */}
       </body>
     </html>
   );

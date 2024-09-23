@@ -1,3 +1,12 @@
+import { fileURLToPath } from 'node:url';
+import createJiti from 'jiti';
+
+if (process.env.SKIP_ENV_CHECK !== 'true') {
+  const jiti = createJiti(fileURLToPath(import.meta.url));
+  jiti('./src/env/client');
+  jiti('./src/env/server');
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -10,11 +19,10 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        //Change it with your cdn access domain here
-        hostname: 'job-board.b-cdn.net',
+        hostname: 'job-board.b-cdn.net', // Change this to your CDN domain
       },
     ],
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig; // ES module export

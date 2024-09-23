@@ -1,10 +1,13 @@
 name: Continuous Integration
 
+env:
+  SKIP_ENV_CHECK: 'true'
+
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
@@ -14,6 +17,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+
       - name: Use Node.js
         uses: actions/setup-node@v2
         with:

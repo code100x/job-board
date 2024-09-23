@@ -31,7 +31,7 @@ export const NavItem = ({
       <Link
         href={path}
         aria-selected={pathname === path}
-        className="transition-colors hover:text-foreground/80 text-foreground/60"
+        className="transition-colors hover:text-foreground/80 text-foreground/60 font-medium"
       >
         {label}
       </Link>

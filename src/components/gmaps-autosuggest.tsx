@@ -1,9 +1,10 @@
 import Script from 'next/script';
 import { Input } from './ui/input';
+import { clientEnv } from '@/env/client';
 
 export type TgmapsAddress = { city: string; fullAddress: string };
 
-export function GmapsAutocompleteAddress({ form }: { form: any }) {
+export default function GmapsAutocompleteAddress({ form }: { form: any }) {
   let autocomplete: any = null;
 
   function onPlaceChanged() {
@@ -26,7 +27,7 @@ export function GmapsAutocompleteAddress({ form }: { form: any }) {
   return (
     <>
       <Script
-        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
+        src={`https://maps.googleapis.com/maps/api/js?key=${clientEnv.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
         strategy="lazyOnload"
         onLoad={initializeGmaps}
       />
