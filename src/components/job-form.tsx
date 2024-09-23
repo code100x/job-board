@@ -34,6 +34,7 @@ import { Label } from './ui/label';
 import dynamic from 'next/dynamic';
 import { uploadFileAction } from '@/actions/upload-to-cdn';
 
+
 const DynamicLineDrawingAnimation = dynamic(
   () => import('./gmaps-autosuggest'),
   {
