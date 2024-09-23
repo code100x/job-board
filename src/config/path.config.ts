@@ -6,7 +6,7 @@ const APP_PATHS = {
   RESET_PASSWORD: '/reset-password',
   JOBS: '/jobs',
   MANAGE_JOBS: '/jobs/manage',
-  TESTIMONIALS: '#testimonials',
-  FAQS: '#faq',
+  TESTIMONIALS: '/#testimonials',
+  FAQS: '/#faq',
 };
 export default APP_PATHS;
