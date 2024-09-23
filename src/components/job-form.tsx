@@ -57,6 +57,8 @@ const PostJobForm = () => {
     },
   });
 
+  const ref = useRef<any>(null);
+
   const handleClick = () => {
     //@ts-ignore
     document.getElementById('fileInput').click();
@@ -128,6 +130,7 @@ const PostJobForm = () => {
         variant: 'success',
       });
       setPreviewImg(null);
+      ref.current.reset();
       form.reset(form.formState.defaultValues);
     } catch (_error) {
       toast({
@@ -345,7 +348,10 @@ const PostJobForm = () => {
               )}
             </div>
 
-            <GmapsAutocompleteAddress form={form}></GmapsAutocompleteAddress>
+            <GmapsAutocompleteAddress
+              ref={ref}
+              form={form}
+            ></GmapsAutocompleteAddress>
 
             <FormField
               control={form.control}
@@ -392,7 +398,7 @@ const PostJobForm = () => {
                   <Image
                     src={previewImg}
                     ref={companyLogoImg}
-                    className="object-cover"
+                    className="object-cover w-full h-full"
                     alt="Company Logo"
                     width={80}
                     height={80}
