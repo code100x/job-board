@@ -371,3 +371,8 @@
 html {
   scroll-behavior: smooth;
 }
+
+.career-span {
+  display: inline-block;
+  transform: rotate(-2deg);
+}

@@ -1,17 +1,12 @@
 import Footer from '@/layouts/footer';
 import Header from '@/layouts/header';
-import localFont from 'next/font/local';
 import { cn } from '@/lib/utils';
 import Providers from '@/providers/providers';
 import type { Metadata } from 'next';
 import './globals.css';
-/* import TopLoader from '@/components/Toploader'; */
 import ScrollToTop from '@/components/ScrollToTop';
+import localFont from 'next/font/local';
 
-/* const fontSans = FontSans({
-  subsets: ['latin'],
-  variable: '--font-sans',
-}); */
 const satoshi = localFont({
   display: 'swap',
   src: [
@@ -39,7 +34,6 @@ export default async function RootLayout({
           satoshi.variable
         )}
       >
-        {/* <TopLoader /> */}
         <Providers>
           <Header />
           <main className="grow grid">{children}</main>

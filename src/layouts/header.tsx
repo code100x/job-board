@@ -1,19 +1,24 @@
 'use client';
 import { MobileNav } from '@/layouts/mobile-nav';
-import { navbar } from '@/lib/constant/app.constant';
+import {
+  adminNavbar,
+  nonUserNavbar,
+  userNavbar,
+} from '@/lib/constant/app.constant';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { NavItem } from '@/components/navitem';
 import Image from 'next/image';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ModeToggle } from '@/components/ui/theme-toggle';
-import { Button } from '@/components/ui/button';
-
+import { Moon, Sun } from 'lucide-react';
+import { useTheme } from 'next-themes';
+import { ADMIN_ROLE } from '@/config/app.config';
+import { useEffect, useState } from 'react';
 export const CompanyLogo = () => {
   return (
     <div className="flex items-center gap-2">
       <Image
-        src={'/main.png'}
+        src={'/main.svg'}
         alt="100xJobs"
         width={30}
         height={30}
@@ -28,40 +33,70 @@ export const CompanyLogo = () => {
 
 const Header = () => {
   const session = useSession();
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
-    <div>
-      <header className="fixed z-50 mx-auto border-b px-4 sm:px-16 flex justify-between w-screen items-center  bg-background/60 backdrop-blur     h-14">
-        <Link href="/" className="p-2.5 mr-4">
+    <nav className="sticky w-full z-50">
+      <div className="flex h-[72px] w-full items-center justify-between dark:bg-[#020817] bg-[#FFFFFF] md:px-20 px-3 shadow-sm">
+        <Link href="/" className="p-2.5">
           <CompanyLogo />
         </Link>
+        <div className="flex items-center">
+          <ul className="flex items-center gap-4 text-sm lg:gap-6 max-sm:hidden mx-4">
+            {session.status === 'loading'
+              ? nonUserNavbar.map((_, index) => (
+                  <Skeleton className="h-4 w-[60px]" key={index} />
+                ))
+              : session.data?.user
+                ? session.data?.user.role === ADMIN_ROLE
+                  ? adminNavbar.map((item) => (
+                      <NavItem {...item} key={item.id} />
+                    ))
+                  : userNavbar.map((item) => (
+                      <NavItem {...item} key={item.id} />
+                    ))
+                : nonUserNavbar.map((item) => (
+                    <NavItem {...item} key={item.id} />
+                  ))}
+          </ul>
+          <div className="flex items-center">
+            {mounted && (
+              <button
+                className="border p-2.5 rounded-lg text-foreground/60 hover:dark:bg-[#191919] hover:bg-gray-100 md:mx-4 outline-none"
+                onClick={toggleTheme}
+              >
+                {theme === 'dark' ? (
+                  <Moon className="w-4 h-4" />
+                ) : (
+                  <Sun className="w-4 h-4" />
+                )}
+              </button>
+            )}
 
-        <div className="items-center gap-3">
-          <nav className="py-1 rounded-full max-sm:hidden">
-            <ul className="flex items-center gap-4 text-sm lg:gap-6">
-              {navbar.map((item, index) => {
-                if (session.status === 'loading') {
-                  return <Skeleton className="h-4 w-[60px]" key={index} />;
-                } else {
-                  return <NavItem {...item} key={item.id} />;
-                }
-              })}
-              <ModeToggle />
+            {session.status !== 'loading' && !session.data?.user && (
               <Link href={'/create'}>
-                <Button className=" rounded bg-blue-800 dark:text-white">
-                  Post a Job
-                </Button>
+                <button className="rounded-lg p-2 bg-[#3259E8] hover:bg-[#3e63e9] text-white font-medium max-sm:hidden">
+                  Post a job
+                </button>
               </Link>
-            </ul>
-          </nav>
-          <div className="sm:hidden flex justify-center gap-2">
-            <ModeToggle />
-            <MobileNav />
+            )}
+
+            <div className="sm:hidden flex justify-center ml-3">
+              <MobileNav />
+            </div>
           </div>
         </div>
-      </header>
-      <div className="h-16 print:hidden"></div>
-    </div>
+      </div>
+    </nav>
   );
 };
 

@@ -1,6 +1,7 @@
 'use server';
 import prisma from '@/config/prisma.config';
 import { withServerActionAsyncCatcher } from '@/lib/async-catch';
+import { ErrorHandler } from '@/lib/error';
 import { SuccessResponse } from '@/lib/success';
 import {
   JobByIdSchema,
@@ -71,6 +72,9 @@ export const getAllJobs = withServerActionAsyncCatcher<
 >(async (data) => {
   if (data?.workmode && !Array.isArray(data?.workmode)) {
     data.workmode = Array.of(data?.workmode);
+  }
+  if (data?.EmpType && !Array.isArray(data?.EmpType)) {
+    data.EmpType = Array.of(data?.EmpType);
   }
   if (data?.salaryrange && !Array.isArray(data?.salaryrange)) {
     data.salaryrange = Array.of(data?.salaryrange);
@@ -168,4 +172,37 @@ export const getCityFilters = async () => {
   return new SuccessResponse(`Cities fetched successfully`, 200, {
     cities,
   }).serialize();
+};
+
+export const getRecentJobs = async () => {
+  try {
+    const recentJobs = await prisma.job.findMany({
+      orderBy: {
+        postedAt: 'desc',
+      },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        companyName: true,
+        city: true,
+        address: true,
+        workMode: true,
+        minSalary: true,
+        maxSalary: true,
+        minExperience: true,
+        maxExperience: true,
+        skills: true,
+        postedAt: true,
+        companyLogo: true,
+        type: true,
+      },
+      take: 6,
+    });
+    return new SuccessResponse('Recently added jobs fetch successfully', 200, {
+      recentJobs,
+    }).serialize();
+  } catch (error) {
+    return new ErrorHandler('Internal server error', 'DATABASE_ERROR', error);
+  }
 };

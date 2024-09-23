@@ -26,7 +26,6 @@ const Footer = () => {
               target="_blank"
               key={social.href + index}
               href={social.href}
-              aria-label={social.label}
               className="border p-1 rounded-full"
             >
               <Icon
