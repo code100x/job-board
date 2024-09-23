@@ -8,7 +8,7 @@ export const JobPostSchema = z
     companyName: z.string().min(1, 'Company Name is required'),
     city: z.string().min(1, 'City Name is required'),
     address: z.string().min(1, 'Address is required'),
-    application: z.string(),
+    application: z.string().min(1, 'Application link is required'),
     type: z.nativeEnum(EmployementType, {
       message: 'Employment Type is Required',
     }),
@@ -43,14 +43,14 @@ export const JobPostSchema = z
     if (data.hasSalaryRange) {
       if (!data.minSalary) {
         return ctx.addIssue({
-          message: 'minSalary is required when hasSalaryRange is true',
+          message: 'minSalary is required ',
           path: ['minSalary'],
           code: z.ZodIssueCode.custom,
         });
       }
       if (!data.maxSalary) {
         return ctx.addIssue({
-          message: 'maxSalary is required when hasSalaryRange is true',
+          message: 'maxSalary is required ',
           path: ['maxSalary'],
           code: z.ZodIssueCode.custom,
         });
