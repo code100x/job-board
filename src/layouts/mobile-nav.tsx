@@ -112,11 +112,12 @@ export function MobileNav() {
                 {nonUserNavbar.map((item) => (
                   <Item {...item} key={item.id} />
                 ))}
-                <Link href={'/create'}>
+
+                <Link href={'/create'} className="">
                   <SheetClose className="w-full">
-                    <button className="w-full rounded-lg p-2 my-2 bg-[#3259E8] hover:bg-[#3e63e9] text-white font-medium ">
+                    <div className="w-full rounded-lg p-2 my-2 bg-[#3259E8] hover:bg-[#3e63e9] text-white font-medium ">
                       Post a job
-                    </button>
+                    </div>
                   </SheetClose>
                 </Link>
               </>
@@ -162,7 +163,6 @@ const Item = ({
 }: {
   path: string;
   label: string;
-  icon: React.FC;
   roleRequired?: string;
   isPrivate?: boolean;
 }) => {
@@ -181,7 +181,7 @@ const Item = ({
       <Link
         href={path}
         aria-selected={pathname === path}
-        className="transition-colors hover:text-foreground/80 text-foreground/60 flex gap-2"
+        className="transition-colors hover:text-foreground/80 text-foreground/60"
       >
         <SheetClose className="flex items-center font-medium text-lg">
           {label === 'Explore jobs' ? (
