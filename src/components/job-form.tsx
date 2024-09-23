@@ -485,7 +485,7 @@ const PostJobForm = () => {
         </form>
       </Form>
 
-      <div className="bg-gray-900 p-6 rounded-lg w-[37rem] mx-auto text-gray-300">
+      <div className="bg-gray-900 p-6 rounded-lg w-[37rem] mb-12 mx-auto text-gray-300">
         <h2 className="text-lg font-semibold mb-4 text-gray-300">Payment</h2>
         <Button className="w-full rounded-full mt-4">
           Continue to Payment
