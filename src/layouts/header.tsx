@@ -1,7 +1,7 @@
 'use client';
 import { MobileNav } from '@/layouts/mobile-nav';
 import { navbar } from '@/lib/constant/app.constant';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { NavItem } from '@/components/navitem';
 import Image from 'next/image';
@@ -75,6 +75,13 @@ const Header = () => {
           <div className="sm:hidden flex justify-center">
             <MobileNav />
           </div>
+          {session.data?.user ? (
+            <p className="cursor-pointer" onClick={() => signOut()}>
+              Logout
+            </p>
+          ) : (
+            <Link href={'/api/auth/signin'}>Login</Link>
+          )}
         </div>
       </div>
     </header>

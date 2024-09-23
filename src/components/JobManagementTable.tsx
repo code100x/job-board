@@ -31,7 +31,12 @@ import {
 } from './pagination-client';
 import APP_PATHS from '@/config/path.config';
 import { PaginationPages } from './ui/paginator';
-import { deleteJobById, getAllJobs } from '@/actions/job.action';
+import {
+  approveJob,
+  deleteJobById,
+  getAllJobsForAdmin,
+} from '@/actions/job.action';
+import ApproveJobDialog from './ApproveJobDialog';
 
 type props = {
   searchParams: JobQuerySchemaType;
@@ -59,8 +64,25 @@ const JobManagementTable = ({ jobs, searchParams, initialJobs }: props) => {
     }
   };
 
+  const handleApproveJob = async (jobId: string) => {
+    try {
+      const result = await approveJob({ id: jobId });
+      if (result.status) {
+        const item = DispJobs.find((job) => job.id === jobId);
+        if (item) {
+          const updatedJob = DispJobs.map((job) =>
+            job.id === jobId ? { ...job, isVerifiedJob: true } : job
+          );
+          setDispJobs(updatedJob);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const refreshJobs = async () => {
-    const refreshedJobs = await getAllJobs(searchParams);
+    const refreshedJobs = await getAllJobsForAdmin(searchParams);
     if (refreshedJobs.status && Array.isArray(refreshedJobs.additional?.jobs)) {
       setDispJobs(refreshedJobs.additional?.jobs);
     }
@@ -85,8 +107,9 @@ const JobManagementTable = ({ jobs, searchParams, initialJobs }: props) => {
           <TableHeader>
             <TableRow>
               <TableHead className="w-[200px]">Job Title</TableHead>
-              <TableHead className="w-[200px]">JobType</TableHead>
+              <TableHead className="w-[150px]">JobType</TableHead>
               <TableHead className="w-[200px]">Location</TableHead>
+              <TableHead className="w-[200px]">isVerified</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -96,6 +119,21 @@ const JobManagementTable = ({ jobs, searchParams, initialJobs }: props) => {
                 <TableCell className="font-medium">{job?.title}</TableCell>
                 <TableCell>{job?.workMode}</TableCell>
                 <TableCell>{job?.city}</TableCell>
+                <TableCell>
+                  {job.isVerifiedJob ? (
+                    <span className="bg-green-400 p-1 rounded-md text-secondary">
+                      Approved
+                    </span>
+                  ) : (
+                    <ApproveJobDialog
+                      title="Approve this Job?"
+                      description='"Approving this job will make it visible to users"'
+                      handleClick={() => {
+                        handleApproveJob(job.id);
+                      }}
+                    />
+                  )}
+                </TableCell>
                 <TableCell className="text-right w-full flex justify-end">
                   <span className="mr-5" role="button">
                     <Edit />

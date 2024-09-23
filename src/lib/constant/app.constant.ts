@@ -4,12 +4,6 @@ import APP_PATHS from '@/config/path.config';
 export const GITHUB_REPO = 'https://github.com/code100x/job-board';
 export const navbar = [
   { id: 1, label: 'Jobs', path: APP_PATHS.JOBS },
-  {
-    id: 2,
-    label: 'Manage',
-    path: APP_PATHS.MANAGE_JOBS,
-    roleRequired: 'ADMIN',
-  },
   // todo: add actual path
   { id: 3, label: 'Internship', path: '/' },
   { id: 4, label: 'Testimonials', path: '/' },
