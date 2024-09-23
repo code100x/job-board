@@ -1,11 +1,11 @@
-import { fileURLToPath } from "node:url";
-import createJiti from "jiti";
+import { fileURLToPath } from 'node:url';
+import createJiti from 'jiti';
 
-const jiti = createJiti(fileURLToPath(import.meta.url));
-
-// Import env here to validate during build. Using jiti we can import .ts files :)
-jiti("./src/env/client");
-jiti("./src/env/server");
+if (process.env.SKIP_ENV_CHECK !== 'true') {
+  const jiti = createJiti(fileURLToPath(import.meta.url));
+  jiti('./src/env/client');
+  jiti('./src/env/server');
+}
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -18,8 +18,8 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "job-board.b-cdn.net", // Change this to your CDN domain
+        protocol: 'https',
+        hostname: 'job-board.b-cdn.net', // Change this to your CDN domain
       },
     ],
   },

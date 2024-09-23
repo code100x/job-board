@@ -31,7 +31,15 @@ import Image from 'next/image';
 import { FaFileUpload } from 'react-icons/fa';
 import { Switch } from './ui/switch';
 import { Label } from './ui/label';
-import { GmapsAutocompleteAddress } from './gmaps-autosuggest';
+import dynamic from 'next/dynamic';
+import { uploadFileAction } from '@/actions/upload-to-cdn';
+
+const DynamicLineDrawingAnimation = dynamic(
+  () => import('./gmaps-autosuggest'),
+  {
+    ssr: false,
+  }
+);
 
 const PostJobForm = () => {
   const { toast } = useToast();
@@ -81,16 +89,12 @@ const PostJobForm = () => {
       const uniqueFileName = `${Date.now()}-${file.name}`;
       formData.append('uniqueFileName', uniqueFileName);
 
-      const res = await fetch(`/api/upload-to-cdn`, {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!res.ok) {
+      const res = await uploadFileAction(formData);
+      if (!res) {
         throw new Error('Failed to upload image');
       }
 
-      const uploadRes = await res.json();
+      const uploadRes = res;
       return uploadRes.url;
     } catch (error) {
       console.error('Image upload failed:', error);
@@ -120,8 +124,7 @@ const PostJobForm = () => {
       const response = await createJob(data);
       if (!response.status) {
         return toast({
-          title: response.name || 'Something went wrong',
-          description: response.message || 'Internal server error',
+          title: response.message || 'Error',
           variant: 'destructive',
         });
       }
@@ -184,14 +187,29 @@ const PostJobForm = () => {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-medium">Job title*</FormLabel>
+                  <FormLabel
+                    className={`font-medium ${
+                      form.formState.errors.title
+                        ? 'text-red-500'
+                        : 'text-white'
+                    }`}
+                  >
+                    Job title*
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      className="w-full bg-gray-800 border-none text-white"
+                      className={`w-full bg-gray-800 border-gray-400 ${
+                        form.formState.errors.title
+                          ? 'border-2 border-red-500'
+                          : ''
+                      }`}
                       placeholder="What's the job?"
                     />
                   </FormControl>
+                  <FormMessage className="text-red-500">
+                    {form.formState.errors?.title?.message}
+                  </FormMessage>
                 </FormItem>
               )}
             />
@@ -311,16 +329,30 @@ const PostJobForm = () => {
                     render={({ field }) => (
                       <FormItem className="flex-1">
                         <div className="space-y-0.5">
-                          <FormLabel>Min</FormLabel>
+                          <FormLabel
+                            className={`font-medium ${
+                              form.formState.errors.minSalary
+                                ? 'text-red-500'
+                                : 'text-white'
+                            }`}
+                          >
+                            Min
+                          </FormLabel>
                         </div>
                         <FormControl>
                           <Input
                             {...field}
-                            className="w-full bg-gray-800 border-gray-400"
+                            className={`w-full bg-gray-800 border-gray-400 ${
+                              form.formState.errors.minSalary
+                                ? 'border-2 border-red-500'
+                                : ''
+                            }`}
                             placeholder="0"
                           />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="text-red-500">
+                          {form.formState.errors?.minSalary?.message}
+                        </FormMessage>
                       </FormItem>
                     )}
                   />
@@ -331,16 +363,30 @@ const PostJobForm = () => {
                     render={({ field }) => (
                       <FormItem className="flex-1">
                         <div className="space-y-0.5">
-                          <FormLabel>Max</FormLabel>
+                          <FormLabel
+                            className={`font-medium ${
+                              form.formState.errors.maxSalary
+                                ? 'text-red-500'
+                                : 'text-white'
+                            }`}
+                          >
+                            Max
+                          </FormLabel>
                         </div>
                         <FormControl>
                           <Input
                             {...field}
-                            className="w-full bg-gray-800 border-gray-400"
+                            className={`w-full bg-gray-800 border-gray-400 ${
+                              form.formState.errors.maxSalary
+                                ? 'border-2 border-red-500'
+                                : ''
+                            }`}
                             placeholder="0"
                           />
-                        </FormControl>{' '}
-                        <FormMessage />
+                        </FormControl>
+                        <FormMessage className="text-red-500">
+                          {form.formState.errors?.maxSalary?.message}
+                        </FormMessage>
                       </FormItem>
                     )}
                   />
@@ -348,26 +394,39 @@ const PostJobForm = () => {
               )}
             </div>
 
-            <GmapsAutocompleteAddress
-              ref={ref}
+            <DynamicLineDrawingAnimation
               form={form}
-            ></GmapsAutocompleteAddress>
+              ref={ref}
+            ></DynamicLineDrawingAnimation>
 
             <FormField
               control={form.control}
               name="application"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-medium">
+                  <FormLabel
+                    className={`font-medium ${
+                      form.formState.errors.application
+                        ? 'text-red-500'
+                        : 'text-white'
+                    }`}
+                  >
                     Application Link*
                   </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      className="w-full bg-gray-800 border-none text-white"
+                      className={`w-full bg-gray-800 border-gray-400 ${
+                        form.formState.errors.application
+                          ? 'border-2 border-red-500'
+                          : ''
+                      }`}
                       placeholder="Please enter a URL or Link for application"
                     />
                   </FormControl>
+                  <FormMessage className="text-red-500">
+                    {form.formState.errors?.application?.message}
+                  </FormMessage>
                 </FormItem>
               )}
             />
@@ -427,16 +486,29 @@ const PostJobForm = () => {
                   name="companyName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-medium">
+                      <FormLabel
+                        className={`font-medium ${
+                          form.formState.errors.companyName
+                            ? 'text-red-500'
+                            : 'text-white'
+                        }`}
+                      >
                         Company name*
                       </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
-                          className="w-full bg-gray-800 border-none text-white"
+                          className={`w-full bg-gray-800 border-gray-400 ${
+                            form.formState.errors.companyName
+                              ? 'border-2 border-red-500'
+                              : ''
+                          }`}
                           placeholder="What's your company called?"
                         />
                       </FormControl>
+                      <FormMessage className="text-red-500">
+                        {form.formState.errors?.companyName?.message}
+                      </FormMessage>
                     </FormItem>
                   )}
                 />
@@ -447,16 +519,29 @@ const PostJobForm = () => {
                   name="companyEmail"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-medium">
+                      <FormLabel
+                        className={`font-medium ${
+                          form.formState.errors.companyEmail
+                            ? 'text-red-500'
+                            : 'text-white'
+                        }`}
+                      >
                         Company email*
                       </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
-                          className="w-full bg-gray-800 border-none text-white"
+                          className={`w-full bg-gray-800 border-gray-400 ${
+                            form.formState.errors.companyEmail
+                              ? 'border-2 border-red-500'
+                              : ''
+                          }`}
                           placeholder="Enter your email address"
                         />
                       </FormControl>
+                      <FormMessage className="text-red-500">
+                        {form.formState.errors?.companyEmail?.message}
+                      </FormMessage>
                     </FormItem>
                   )}
                 />
@@ -476,15 +561,19 @@ const PostJobForm = () => {
               </div>
             </div>
           </div>
-          <div className="w-full flex justify-end items-center mt-4">
-            <Button type="submit" disabled={form.formState.isSubmitting}>
+          <div className="w-full flex justify-center items-center mt-4">
+            <Button
+              type="submit"
+              className="w-full p-7 rounded-full text-lg"
+              disabled={form.formState.isSubmitting}
+            >
               {form.formState.isSubmitting ? 'Please wait...' : 'Create Job'}
             </Button>
           </div>
         </form>
       </Form>
 
-      <div className="bg-gray-900 p-6 rounded-lg w-[37rem] mx-auto text-gray-300">
+      <div className="bg-gray-900 p-6 rounded-lg w-[37rem] mb-12 mx-auto text-gray-300">
         <h2 className="text-lg font-semibold mb-4 text-gray-300">Payment</h2>
         <Button className="w-full rounded-full mt-4">
           Continue to Payment
