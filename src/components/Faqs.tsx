@@ -26,7 +26,7 @@ export default function Faqs() {
       </div>
 
       <div className="w-full h-fit py-10 flex justify-center items-center">
-        <div className="md:w-3/6 w-full flex flex-col items-center bg-white dark:bg-transparent">
+        <div className="md:w-3/6 w-full flex flex-col items-center bg-white dark:bg-transparent flex-grow lg:flex-grow-0">
           {faqData.map((faq, i) => (
             <div
               key={i}

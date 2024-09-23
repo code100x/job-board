@@ -91,11 +91,3 @@ export const trustedCompanies = [
     name: 'google',
   },
 ];
-
-export const footerLinks = {
-  '100xlegal': [
-    { label: 'About us', href: '' },
-    { label: 'Terms of Service', href: '' },
-    { label: 'Privacy Policy', href: '' },
-  ],
-};

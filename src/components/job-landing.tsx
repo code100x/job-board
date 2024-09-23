@@ -17,7 +17,7 @@ export const JobLanding = () => {
   return (
     <div
       id="recent-jobs"
-      className="w-full h-fit md:px-16 px-5 flex flex-col items-center pt-20 dark:bg-grad-dark bg-grad-light"
+      className="w-full h-fit md:px-16 px-5 flex flex-col items-center pt-6 md:pt-20 dark:bg-grad-dark bg-grad-light"
     >
       <div className="w-full h-fit flex flex-col items-center">
         <h1 className="font-bold md:text-4xl text-3xl">Recently Added jobs</h1>

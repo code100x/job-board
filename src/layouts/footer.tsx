@@ -1,43 +1,32 @@
 import Icon from '@/components/ui/icon';
-import { socials, footerLinks } from '@/lib/constant/app.constant';
+import { footerItems, socials } from '@/lib/constant/app.constant';
 import Link from 'next/link';
 
 const Footer = () => {
   return (
-    <div className="flex max-sm:flex-col gap-5 flex-wrap justify-between border-t py-4 sm:px-28 items-center">
-      <div className="flex gap-4">
-        {footerLinks['100xlegal'].map((link, index) => (
-          <Link
-            key={link.href + index}
-            href={link.href}
-            className="text-base font-medium text-foreground/60 hover:text-foreground"
-          >
-            {link.label}
-          </Link>
+    <footer className=" md:h-20 h-40 dark:bg-[#020817] relative w-full p-3 border-t dark:border-t-[#1E293B] border-t-[#E2E8F0] flex md:flex-row flex-col items-center md:justify-between justify-around md:px-14 px-3">
+      <ul className="flex items-center text-sm dark:text-[#94A3B8] text-[#64748B] font-medium">
+        {footerItems.map((item, i) => (
+          <li key={i} className="px-2">
+            <Link href={item.href}>{item.label}</Link>
+          </li>
         ))}
-      </div>
-      <div className="flex max-sm:flex-col-reverse justify-center flex-wrap gap-4 text-center">
-        <div className="text-base font-medium text-slate-400 dark:text-slate-500">
-          © 2024 100xJobs. All rights reserved.
-        </div>
-        <div className="flex gap-2 justify-center">
-          {socials.map((social, index) => (
+      </ul>
+      <div className="flex items-center md:flex-row flex-col-reverse">
+        <p className="text-[#94A3B8]">© 2024 100xJobs. All rights reserved.</p>
+        <div className="flex items-center ml-4 md:mb-0 mb-3 text-[#64748B]">
+          {socials.map((social, i) => (
             <Link
-              target="_blank"
-              key={social.href + index}
+              key={i}
               href={social.href}
-              className="border p-1 rounded-full"
+              className="p-3 rounded-full border mx-2 hover:bg-slate-50 duration-150 ease-in-out transition"
             >
-              <Icon
-                icon={social.icon}
-                className="text-foreground/60 hover:text-foreground text-xl md:text-2xl text-center "
-                size={20}
-              />
+              <Icon icon={social.icon} className="w-4 h-4" />
             </Link>
           ))}
         </div>
       </div>
-    </div>
+    </footer>
   );
 };
 
