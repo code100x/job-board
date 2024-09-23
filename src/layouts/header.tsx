@@ -46,7 +46,7 @@ const Header = () => {
 
   return (
     <>
-      <nav className="fixed w-full z-50 backdrop-blur-md">
+      <nav className="fixed w-full z-50 backdrop-blur-md border">
         <div className="flex h-[72px] w-full items-center justify-between lg:px-20 px-3 shadow-sm">
           <Link href="/" className="p-2.5">
             <CompanyLogo />

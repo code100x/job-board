@@ -32,6 +32,7 @@ import { FaFileUpload } from 'react-icons/fa';
 import { Switch } from './ui/switch';
 import { Label } from './ui/label';
 import dynamic from 'next/dynamic';
+import { uploadFileAction } from '@/actions/upload-to-cdn';
 
 const DynamicLineDrawingAnimation = dynamic(
   () => import('./gmaps-autosuggest'),
@@ -87,16 +88,12 @@ const PostJobForm = () => {
       const uniqueFileName = `${Date.now()}-${file.name}`;
       formData.append('uniqueFileName', uniqueFileName);
 
-      const res = await fetch(`/api/upload-to-cdn`, {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!res.ok) {
+      const res = await uploadFileAction(formData);
+      if (!res) {
         throw new Error('Failed to upload image');
       }
 
-      const uploadRes = await res.json();
+      const uploadRes = res;
       return uploadRes.url;
     } catch (error) {
       console.error('Image upload failed:', error);
@@ -126,8 +123,7 @@ const PostJobForm = () => {
       const response = await createJob(data);
       if (!response.status) {
         return toast({
-          title: response.name || 'Something went wrong',
-          description: response.message || 'Internal server error',
+          title: response.message || 'Error',
           variant: 'destructive',
         });
       }
