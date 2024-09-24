@@ -12,7 +12,7 @@ export default function TestimonialCard({ testimonial }: testimonialCardProps) {
   const { theme } = useTheme();
   return (
     <motion.div
-      className="md:w-5/6 w-full min-h-[250px] h-auto mx-auto my-2 cursor-pointer"
+      className="md:w-5/6 w-full  h-auto mx-auto my-2 cursor-pointer"
       whileHover={{ y: -5 }}
       transition={{ type: 'tween' }}
     >

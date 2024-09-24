@@ -79,6 +79,9 @@ export const getAllJobs = withServerActionAsyncCatcher<
   if (data?.workmode && !Array.isArray(data?.workmode)) {
     data.workmode = Array.of(data?.workmode);
   }
+  if (data?.EmpType && !Array.isArray(data?.EmpType)) {
+    data.EmpType = Array.of(data?.EmpType);
+  }
   if (data?.salaryrange && !Array.isArray(data?.salaryrange)) {
     data.salaryrange = Array.of(data?.salaryrange);
   }
@@ -101,6 +104,11 @@ export const getAllJobs = withServerActionAsyncCatcher<
       description: true,
       companyName: true,
       city: true,
+      hasExperiencerange: true,
+      minExperience: true,
+      maxExperience: true,
+      skills: true,
+      type: true,
       address: true,
       workMode: true,
       category: true,
@@ -218,8 +226,14 @@ export const getJobById = withServerActionAsyncCatcher<
       companyLogo: true,
       category: true,
       city: true,
+      type: true,
+      hasExperiencerange: true,
+      minExperience: true,
+      maxExperience: true,
+      skills: true,
       address: true,
       workMode: true,
+      hasSalaryRange: true,
       minSalary: true,
       maxSalary: true,
       postedAt: true,
@@ -258,6 +272,9 @@ export const getRecentJobs = async () => {
         workMode: true,
         minSalary: true,
         maxSalary: true,
+        minExperience: true,
+        maxExperience: true,
+        skills: true,
         postedAt: true,
         companyLogo: true,
         type: true,
@@ -267,7 +284,7 @@ export const getRecentJobs = async () => {
     return new SuccessResponse('Recently added jobs fetch successfully', 200, {
       recentJobs,
     }).serialize();
-  } catch (error) {
+  } catch (_error) {
     return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
   }
 };

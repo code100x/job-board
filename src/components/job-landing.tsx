@@ -17,7 +17,7 @@ export const JobLanding = () => {
   return (
     <div
       id="recent-jobs"
-      className="w-full h-fit md:px-16 px-5 flex flex-col items-center pt-20 dark:bg-grad-dark bg-grad-light"
+      className="w-full h-fit md:px-16 px-5 flex flex-col items-center pt-6 md:pt-20 dark:bg-grad-dark bg-grad-light"
     >
       <div className="w-full h-fit flex flex-col items-center">
         <h1 className="font-bold md:text-4xl text-3xl">Recently Added jobs</h1>
@@ -28,7 +28,7 @@ export const JobLanding = () => {
       <RecentJobs />
       <div className="w-full flex justify-center items-center my-5">
         <button className="flex items-center text-[#4E7AFF] border-none outline-none text-lg font-medium group">
-          <Link href={'/jobs'} className='flex items-center'>
+          <Link href={'/jobs'} className="flex items-center">
             View all jobs
             <ChevronRight className="w-4 h-4 mx-2 group-hover:translate-x-1 duration-200 ease-in-out transition" />
           </Link>

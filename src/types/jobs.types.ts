@@ -1,5 +1,5 @@
 export type JobType = {
-  companyLogo: string | undefined;
+  companyLogo: string;
   workMode: 'remote' | 'office' | 'hybrid';
   city: string;
   address: string;
@@ -7,7 +7,11 @@ export type JobType = {
   type: string;
   category: string;
   maxSalary: number | null;
+  minExperience: number | null;
+  maxExperience: number | null;
+  skills: string[];
   id: string;
+  type: string;
   title: string;
   description: string | null;
   companyName: string;

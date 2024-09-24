@@ -19,28 +19,32 @@ model User {
 }
 
 model Job {
-  id             String   @id @default(cuid())
-  userId         String
-  title          String
-  description    String?
-  companyName    String   @map("company_name")
-  companyBio     String   @map("company_bio")
-  companyEmail   String   @map("company_email")
-  category       String 
-  type           String
-  workMode       WorkMode @map("work_mode")
-  currency       Currency @default(INR)
-  city           String
-  address        String
-  application    String
-  companyLogo    String 
-  hasSalaryRange Boolean  @default(false) @map("has_salary_range")
-  minSalary      Int?
-  maxSalary      Int?
-  isVerifiedJob  Boolean  @default(false) @map("is_verified_job")
-  postedAt       DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  user           User     @relation(fields: [userId], references: [id])
+  id                 String   @id @default(cuid())
+  userId             String
+  title              String
+  description        String?
+  companyName        String   @map("company_name")
+  companyBio         String   @map("company_bio")
+  companyEmail       String   @map("company_email")
+  category           String 
+  type               EmployementType
+  workMode           WorkMode @map("work_mode")
+  currency           Currency @default(INR)
+  city               String
+  address            String
+  application        String
+  companyLogo        String 
+  skills             String[]
+  hasSalaryRange     Boolean  @default(false) @map("has_salary_range")
+  minSalary          Int?
+  maxSalary          Int?
+  hasExperiencerange Boolean @default(false) @map("has_experience_range")
+  minExperience      Int?
+  maxExperience      Int?
+  isVerifiedJob      Boolean  @default(false) @map("is_verified_job")
+  postedAt           DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  user               User     @relation(fields: [userId], references: [id])
 }
 
 enum Currency {
@@ -57,5 +61,12 @@ enum WorkMode {
 enum Role {
   USER
   ADMIN
+}
+
+enum EmployementType {
+  Full_time
+  Part_time
+  Internship
+  Contract
 }
 
