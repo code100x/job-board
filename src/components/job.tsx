@@ -28,7 +28,8 @@ export const Job = ({ job }: { job: JobType }) => {
           <div className="flex flex-col gap-2">
             <h3 className="font-bold text-2xl">{job.title}</h3>
             <div className="text-xs flex gap-1 font-medium items-center text-gray-500">
-              <span>{job.companyName}</span>•<span>Posted 3 days ago</span>
+              <span>{job.companyName}</span>•
+              <span>{'Posted on ' + job.postedAt.toDateString()}</span>
             </div>
           </div>
         </div>
@@ -65,9 +66,9 @@ export const Job = ({ job }: { job: JobType }) => {
 
       {/* job description */}
       <section className="border-2 bg-[#F1F5F9] dark:bg-[#0F172A] h-[10rem] p-6 rounded-xl">
-       <Linkify options={options}>
-        <p>{job.description}</p>
-      </Linkify>
+        <Linkify options={options}>
+          <p>{job.description}</p>
+        </Linkify>
       </section>
 
       {/* about company */}
