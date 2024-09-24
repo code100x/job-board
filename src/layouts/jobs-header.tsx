@@ -38,6 +38,7 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Filter, SearchIcon } from 'lucide-react';
 const FormSchema = z.object({
   search: z.string().optional(),
 });
@@ -66,20 +67,26 @@ const JobsHeader = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   }, [formValues, searchParams, setQueryParams]);
 
   return (
-    <div className="flex flex-col  gap-5 px-5">
+    <div className="flex max-sm:flex-col gap-5">
       <Form {...form}>
-        <form className="w-full grid grid-cols-[1fr_auto] ">
+        <form className="flex-grow grid grid-cols-[1fr_auto] ">
           <FormField
             control={form.control}
             name="search"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input
-                    placeholder="Search by title or company name"
-                    {...field}
-                    className="rounded-full p-5 py-6  dark:bg-neutral-900 truncate"
-                  />
+                  <div className="relative">
+                    <Input
+                      placeholder="Search by title or company name"
+                      {...field}
+                      className="rounded pl-10 pr-4 py-4 truncate"
+                    />
+                    <SearchIcon
+                      className="absolute inset-y-3 left-3  w-4 h-4 text-gray-500"
+                      aria-hidden="true"
+                    />
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -88,7 +95,7 @@ const JobsHeader = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
         </form>
       </Form>
 
-      <div className="flex gap-5 max-sm:justify-between justify-end">
+      <div className="flex gap-5 max-sm:justify-between justify-end text-slate-500 dark:text-slate-400">
         {isHome && (
           <div className={cn('flex items-center px-1 max-sm:hidden ', {})}>
             <Popover>
@@ -101,30 +108,14 @@ const JobsHeader = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
             </Popover>
           </div>
         )}
-
-        {(isJobs || isHome) && (
-          <Sheet>
-            <SheetTrigger className="sm:hidden">
-              <Icon icon="filter" className="cursor-pointer" size="20" />
-            </SheetTrigger>
-            <SheetContent side={'left'} className="h-full w-80">
-              <SheetHeader className="mt-2 h-full w-full">
-                <ScrollArea>
-                  <JobFilters searchParams={searchParams}></JobFilters>
-                </ScrollArea>
-              </SheetHeader>
-            </SheetContent>
-          </Sheet>
-        )}
-
         <Select
           onValueChange={sortChangeHandler}
           defaultValue={searchParams.sortby}
         >
-          <SelectTrigger className="w-[180px] rounded-full dark:bg-neutral-900 p-3 py-4">
+          <SelectTrigger className="flex-grow rounded  space-x-2 ">
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
-          <SelectContent className="rounded-xl dark:bg-neutral-900">
+          <SelectContent className="rounded-md dark:bg-neutral-900">
             {jobSorting.map((item) => (
               <SelectItem
                 className="rounded-lg"
@@ -136,6 +127,20 @@ const JobsHeader = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
             ))}
           </SelectContent>
         </Select>
+        {(isJobs || isHome) && (
+          <Sheet>
+            <SheetTrigger className="sm:hidden">
+              <Filter className="border p-2 rounded-lg" size={40} />
+            </SheetTrigger>
+            <SheetContent side={'left'} className="h-full w-80">
+              <SheetHeader className="mt-2 h-full w-full">
+                <ScrollArea>
+                  <JobFilters searchParams={searchParams}></JobFilters>
+                </ScrollArea>
+              </SheetHeader>
+            </SheetContent>
+          </Sheet>
+        )}
       </div>
     </div>
   );

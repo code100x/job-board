@@ -1,5 +1,6 @@
 import { IconProps } from '@/components/ui/icon';
 import APP_PATHS from '@/config/path.config';
+import { PackageSearch } from 'lucide-react';
 import adobe from '../../../public/adobe.svg';
 import atlassian from '../../../public/atlassian.svg';
 import google from '../../../public/google.svg';
@@ -32,6 +33,7 @@ export const adminNavbar = [
     label: 'Manage Jobs',
     path: APP_PATHS.MANAGE_JOBS,
     roleRequired: 'ADMIN',
+    icon: PackageSearch,
   },
   { id: 2, label: 'Manage Recruiters', path: '/' },
   { id: 3, label: 'Payment History', path: '/' },

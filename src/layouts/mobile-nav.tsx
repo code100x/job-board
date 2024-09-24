@@ -112,9 +112,14 @@ export function MobileNav() {
                 {nonUserNavbar.map((item) => (
                   <Item {...item} key={item.id} />
                 ))}
-                <button className="w-full rounded-lg p-2 my-2 bg-[#3259E8] hover:bg-[#3e63e9] text-white font-medium ">
-                  Post a job
-                </button>
+
+                <Link href={'/create'} className="">
+                  <SheetClose className="w-full">
+                    <div className="w-full rounded-lg p-2 my-2 bg-[#3259E8] hover:bg-[#3e63e9] text-white font-medium ">
+                      Post a job
+                    </div>
+                  </SheetClose>
+                </Link>
               </>
             )}
             {session.status !== 'loading' && session.data?.user && (

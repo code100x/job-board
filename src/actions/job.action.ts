@@ -73,6 +73,9 @@ export const getAllJobs = withServerActionAsyncCatcher<
   if (data?.workmode && !Array.isArray(data?.workmode)) {
     data.workmode = Array.of(data?.workmode);
   }
+  if (data?.EmpType && !Array.isArray(data?.EmpType)) {
+    data.EmpType = Array.of(data?.EmpType);
+  }
   if (data?.salaryrange && !Array.isArray(data?.salaryrange)) {
     data.salaryrange = Array.of(data?.salaryrange);
   }
@@ -94,6 +97,11 @@ export const getAllJobs = withServerActionAsyncCatcher<
       description: true,
       companyName: true,
       city: true,
+      hasExperiencerange: true,
+      minExperience: true,
+      maxExperience: true,
+      skills: true,
+      type: true,
       address: true,
       workMode: true,
       minSalary: true,
@@ -136,8 +144,14 @@ export const getJobById = withServerActionAsyncCatcher<
       companyEmail: true,
       companyLogo: true,
       city: true,
+      type: true,
+      hasExperiencerange: true,
+      minExperience: true,
+      maxExperience: true,
+      skills: true,
       address: true,
       workMode: true,
+      hasSalaryRange: true,
       minSalary: true,
       maxSalary: true,
       postedAt: true,
@@ -176,6 +190,9 @@ export const getRecentJobs = async () => {
         workMode: true,
         minSalary: true,
         maxSalary: true,
+        minExperience: true,
+        maxExperience: true,
+        skills: true,
         postedAt: true,
         companyLogo: true,
         type: true,

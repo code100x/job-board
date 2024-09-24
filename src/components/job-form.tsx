@@ -34,13 +34,13 @@ import { Label } from './ui/label';
 import dynamic from 'next/dynamic';
 import { uploadFileAction } from '@/actions/upload-to-cdn';
 
-
 const DynamicLineDrawingAnimation = dynamic(
   () => import('./gmaps-autosuggest'),
   {
     ssr: false,
   }
 );
+import { EmployementType } from '@prisma/client';
 
 const PostJobForm = () => {
   const { toast } = useToast();
@@ -57,7 +57,7 @@ const PostJobForm = () => {
       address: '',
       companyLogo: '',
       workMode: 'remote',
-      type: 'full-time',
+      type: EmployementType.Full_time,
       category: 'design',
       hasSalaryRange: true,
       minSalary: 0,
@@ -153,20 +153,20 @@ const PostJobForm = () => {
   }, [watchHasSalaryRange, form]);
   return (
     <div className="flex flex-col items-center gap-y-10 justify-center">
-      <div className="mt-4 flex gap-2">
-        <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center text-white w-48">
+      <div className=" mt-4 flex gap-2 ">
+        <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center text-white flex-1 sm:min-w-[12rem]">
           <Calendar className="w-8 h-8 mb-3 mx-auto text-green-500" />
           <p className="text-base font-semibold mb-1">Posted for</p>
           <p className="text-gray-400 text-sm">30 days</p>
         </div>
 
-        <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center text-white w-48">
+        <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center text-white flex-1 sm:min-w-[12rem]">
           <MailOpenIcon className="w-8 h-8 mb-3 mx-auto text-purple-500" />
           <p className="text-base font-semibold mb-1">Emailed to</p>
           <p className="text-gray-400 text-sm">290,301 subscribers</p>
         </div>
 
-        <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center text-white w-48">
+        <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center text-white flex-1 sm:min-w-[12rem]">
           <LucideRocket className="w-8 h-8 mb-3 mx-auto text-orange-500" />
           <p className="text-base font-semibold mb-1">Reach</p>
           <p className="text-gray-400 text-sm">
@@ -174,422 +174,344 @@ const PostJobForm = () => {
           </p>
         </div>
       </div>
+      <div className="flex-col  justify-center">
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(handleFormSubmit)}
+            className="flex flex-col max-w-full max-sm:p-2 "
+          >
+            <div className="bg-gray-900 w-full  text-gray-300 p-6 rounded-lg space-y-4">
+              <h2 className="text-2xl font-semibold mb-6">Job details</h2>
 
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleFormSubmit)}>
-          <div className="bg-gray-900 w-[37rem] text-gray-300 p-6 rounded-lg space-y-4">
-            <h2 className="text-2xl font-semibold mb-6">Job details</h2>
-
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel
-                    className={`font-medium ${
-                      form.formState.errors.title
-                        ? 'text-red-500'
-                        : 'text-white'
-                    }`}
-                  >
-                    Job title*
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className={`w-full bg-gray-800 border-gray-400 ${
-                        form.formState.errors.title
-                          ? 'border-2 border-red-500'
-                          : ''
-                      }`}
-                      placeholder="What's the job?"
-                    />
-                  </FormControl>
-                  <FormMessage className="text-red-500">
-                    {form.formState.errors?.title?.message}
-                  </FormMessage>
-                </FormItem>
-              )}
-            />
-
-            <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
-                name="category"
+                name="title"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-medium">Category*</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="bg-gray-800 border-none text-white">
-                          <SelectValue placeholder="Select a category" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="design">Design</SelectItem>
-                        <SelectItem value="development">Development</SelectItem>
-                        <SelectItem value="marketing">Marketing</SelectItem>
-                        <SelectItem value="management">Management</SelectItem>
-                        <SelectItem value="finance">Finance</SelectItem>
-                        <SelectItem value="support">Support</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <FormLabel className="font-medium">Job title*</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        className="w-full bg-gray-800 border-none text-white"
+                        placeholder="What's the job?"
+                      />
+                    </FormControl>
                   </FormItem>
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="workMode"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-medium">Work mode*</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="bg-gray-800 border-none text-white">
-                          <SelectValue placeholder="Select a workmode" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="remote">Remote</SelectItem>
-                        <SelectItem value="office">Office</SelectItem>
-                        <SelectItem value="hybrid">Hybrid</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="grid grid-cols gap-4">
-              <FormField
-                control={form.control}
-                name="type"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-medium">Type*</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="bg-gray-800 border-none text-white">
-                          <SelectValue placeholder="Select a type" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="full-time">Full-time</SelectItem>
-                        <SelectItem value="part-time">Part-time</SelectItem>
-                        <SelectItem value="contract">Contract</SelectItem>
-                        <SelectItem value="internship">Internship</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="flex flex-col-2 gap-2">
-              <div className="flex flex-col gap-2">
-                <div className="">
-                  <Label>Salary Range &#40;in $ per annum&#41;</Label>
-                </div>
+              <div className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
-                  name="hasSalaryRange"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center space-y-0 gap-2">
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                          className="data-[state=checked]:bg-gray-300 data-[state=unchecked]:bg-gray-400"
-                        />
-                      </FormControl>
-
-                      <FormLabel className="mt-0">
-                        Do you want to disclose the salary range?
-                      </FormLabel>
-                    </FormItem>
-                  )}
-                />
-              </div>
-              {watchHasSalaryRange && (
-                <div className="flex gap-4">
-                  <FormField
-                    control={form.control}
-                    name="minSalary"
-                    render={({ field }) => (
-                      <FormItem className="flex-1">
-                        <div className="space-y-0.5">
-                          <FormLabel
-                            className={`font-medium ${
-                              form.formState.errors.minSalary
-                                ? 'text-red-500'
-                                : 'text-white'
-                            }`}
-                          >
-                            Min
-                          </FormLabel>
-                        </div>
-                        <FormControl>
-                          <Input
-                            {...field}
-                            className={`w-full bg-gray-800 border-gray-400 ${
-                              form.formState.errors.minSalary
-                                ? 'border-2 border-red-500'
-                                : ''
-                            }`}
-                            placeholder="0"
-                          />
-                        </FormControl>
-                        <FormMessage className="text-red-500">
-                          {form.formState.errors?.minSalary?.message}
-                        </FormMessage>
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="maxSalary"
-                    render={({ field }) => (
-                      <FormItem className="flex-1">
-                        <div className="space-y-0.5">
-                          <FormLabel
-                            className={`font-medium ${
-                              form.formState.errors.maxSalary
-                                ? 'text-red-500'
-                                : 'text-white'
-                            }`}
-                          >
-                            Max
-                          </FormLabel>
-                        </div>
-                        <FormControl>
-                          <Input
-                            {...field}
-                            className={`w-full bg-gray-800 border-gray-400 ${
-                              form.formState.errors.maxSalary
-                                ? 'border-2 border-red-500'
-                                : ''
-                            }`}
-                            placeholder="0"
-                          />
-                        </FormControl>
-                        <FormMessage className="text-red-500">
-                          {form.formState.errors?.maxSalary?.message}
-                        </FormMessage>
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              )}
-            </div>
-
-            <DynamicLineDrawingAnimation
-              form={form}
-            ></DynamicLineDrawingAnimation>
-
-            <FormField
-              control={form.control}
-              name="application"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel
-                    className={`font-medium ${
-                      form.formState.errors.application
-                        ? 'text-red-500'
-                        : 'text-white'
-                    }`}
-                  >
-                    Application Link*
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className={`w-full bg-gray-800 border-gray-400 ${
-                        form.formState.errors.application
-                          ? 'border-2 border-red-500'
-                          : ''
-                      }`}
-                      placeholder="Please enter a URL or Link for application"
-                    />
-                  </FormControl>
-                  <FormMessage className="text-red-500">
-                    {form.formState.errors?.application?.message}
-                  </FormMessage>
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="bg-gray-900 w-full p-6 rounded-lg space-y-4 mx-auto my-6">
-            <h2 className="text-sm text-white capitalize">Job description</h2>
-            <div className="bg-gray-800 rounded-xl mt-2 overflow-hidden">
-              <DescriptionEditor
-                fieldName="description"
-                initialValue={form.getValues('description')}
-                onDescriptionChange={handleDescriptionChange}
-                placeholder={'Tell us about your job'}
-              />
-            </div>
-          </div>
-          <div className="bg-gray-900 p-6 rounded-lg w-[37rem] mx-auto text-gray-300">
-            <h2 className="text-lg font-semibold mb-4 text-gray-300">
-              Company
-            </h2>
-
-            {/* Logo Upload Section */}
-            <div className="flex flex-col items-center mb-6">
-              <div
-                className="w-20 h-20 bg-gray-700 border border-dashed border-gray-500 rounded-md flex items-center justify-center cursor-pointer mb-2"
-                onClick={handleClick}
-              >
-                {previewImg ? (
-                  <Image
-                    src={previewImg}
-                    ref={companyLogoImg}
-                    className="object-cover"
-                    alt="Company Logo"
-                    width={80}
-                    height={80}
-                  />
-                ) : (
-                  <FaFileUpload className="text-white text-2xl" />
-                )}
-              </div>
-              <input
-                id="fileInput"
-                className="hidden"
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-              />
-              <p className="text-sm text-gray-500 text-center">
-                Click the avatar to change or upload your company logo
-              </p>
-            </div>
-
-            {/* Company Name and Email Fields */}
-            <div className="flex gap-4 mb-4">
-              <div className="flex-1">
-                <FormField
-                  control={form.control}
-                  name="companyName"
+                  name="category"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel
-                        className={`font-medium ${
-                          form.formState.errors.companyName
-                            ? 'text-red-500'
-                            : 'text-white'
-                        }`}
+                      <FormLabel className="font-medium">Category*</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
                       >
-                        Company name*
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className={`w-full bg-gray-800 border-gray-400 ${
-                            form.formState.errors.companyName
-                              ? 'border-2 border-red-500'
-                              : ''
-                          }`}
-                          placeholder="What's your company called?"
-                        />
-                      </FormControl>
-                      <FormMessage className="text-red-500">
-                        {form.formState.errors?.companyName?.message}
-                      </FormMessage>
+                        <FormControl>
+                          <SelectTrigger className="bg-gray-800 border-none text-white">
+                            <SelectValue placeholder="Select a category" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="design">Design</SelectItem>
+                          <SelectItem value="development">
+                            Development
+                          </SelectItem>
+                          <SelectItem value="marketing">Marketing</SelectItem>
+                          <SelectItem value="management">Management</SelectItem>
+                          <SelectItem value="finance">Finance</SelectItem>
+                          <SelectItem value="support">Support</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </FormItem>
                   )}
                 />
-              </div>
-              <div className="flex-1">
+
                 <FormField
                   control={form.control}
-                  name="companyEmail"
+                  name="workMode"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel
-                        className={`font-medium ${
-                          form.formState.errors.companyEmail
-                            ? 'text-red-500'
-                            : 'text-white'
-                        }`}
+                      <FormLabel className="font-medium">Work mode*</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
                       >
-                        Company email*
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className={`w-full bg-gray-800 border-gray-400 ${
-                            form.formState.errors.companyEmail
-                              ? 'border-2 border-red-500'
-                              : ''
-                          }`}
-                          placeholder="Enter your email address"
-                        />
-                      </FormControl>
-                      <FormMessage className="text-red-500">
-                        {form.formState.errors?.companyEmail?.message}
-                      </FormMessage>
+                        <FormControl>
+                          <SelectTrigger className="bg-gray-800 border-none text-white">
+                            <SelectValue placeholder="Select a workmode" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="remote">Remote</SelectItem>
+                          <SelectItem value="office">Office</SelectItem>
+                          <SelectItem value="hybrid">Hybrid</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </FormItem>
                   )}
                 />
               </div>
+
+              <div className="grid grid-cols gap-4">
+                <FormField
+                  control={form.control}
+                  name="type"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-medium">Type*</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="bg-gray-800 border-none text-white">
+                            <SelectValue placeholder="Select a type" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="full-time">Full-time</SelectItem>
+                          <SelectItem value="part-time">Part-time</SelectItem>
+                          <SelectItem value="contract">Contract</SelectItem>
+                          <SelectItem value="internship">Internship</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="flex flex-col-2 gap-2">
+                <div className="flex flex-col gap-2">
+                  <div className="">
+                    <Label>Salary Range &#40;in $ per annum&#41;</Label>
+                  </div>
+                  <div className="">
+                    <FormField
+                      control={form.control}
+                      name="hasSalaryRange"
+                      render={({ field }) => (
+                        <FormItem className="flex items-center space-y-0 gap-2">
+                          <FormControl>
+                            <Switch
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                              className="data-[state=checked]:bg-gray-300 data-[state=unchecked]:bg-gray-400"
+                            />
+                          </FormControl>
+
+                          <FormLabel className="mt-0">
+                            Do you want to disclose the salary range?
+                          </FormLabel>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  {watchHasSalaryRange && (
+                    <div className="flex gap-4">
+                      <FormField
+                        control={form.control}
+                        name="minSalary"
+                        render={({ field }) => (
+                          <FormItem className="flex-1">
+                            <div className="space-y-0.5">
+                              <FormLabel>Min</FormLabel>
+                            </div>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                className="w-full bg-gray-800 border-gray-400"
+                                placeholder="0"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="maxSalary"
+                        render={({ field }) => (
+                          <FormItem className="flex-1">
+                            <div className="space-y-0.5">
+                              <FormLabel>Max</FormLabel>
+                            </div>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                className="w-full bg-gray-800 border-gray-400"
+                                placeholder="0"
+                              />
+                            </FormControl>{' '}
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <DynamicLineDrawingAnimation
+                form={form}
+              ></DynamicLineDrawingAnimation>
+
+              <FormField
+                control={form.control}
+                name="application"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-medium">
+                      Application Link*
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        className="w-full bg-gray-800 border-none text-white"
+                        placeholder="Please enter a URL or Link for application"
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
             </div>
-            <div>
-              <label className="block text-sm mb-1 text-gray-400">
-                Company bio
-              </label>
+            <div className="bg-gray-900 w-full p-6 rounded-lg space-y-4 mx-auto my-6">
+              <h2 className="text-sm text-white capitalize">Job description</h2>
               <div className="bg-gray-800 rounded-xl mt-2 overflow-hidden">
                 <DescriptionEditor
-                  fieldName="companyBio"
-                  initialValue={form.getValues('companyBio')}
+                  fieldName="description"
+                  initialValue={form.getValues('description')}
                   onDescriptionChange={handleDescriptionChange}
-                  placeholder={'Tell us about your company'}
+                  placeholder={'Tell us about your job'}
                 />
               </div>
             </div>
-          </div>
-          <div className="w-full flex justify-center items-center mt-4">
-            <Button
-              type="submit"
-              className="w-full p-7 rounded-full text-lg"
-              disabled={form.formState.isSubmitting}
-            >
-              {form.formState.isSubmitting ? 'Please wait...' : 'Create Job'}
-            </Button>
-          </div>
-        </form>
-      </Form>
+            <div className="bg-gray-900 w-full p-6 rounded-lg  mx-auto text-gray-300">
+              <h2 className="text-lg font-semibold mb-4 text-gray-300">
+                Company
+              </h2>
 
-      <div className="bg-gray-900 p-6 rounded-lg w-[37rem] mb-12 mx-auto text-gray-300">
-        <h2 className="text-lg font-semibold mb-4 text-gray-300">Payment</h2>
-        <Button className="w-full rounded-full mt-4">
-          Continue to Payment
-        </Button>
+              {/* Logo Upload Section */}
+              <div className="flex flex-col items-center mb-6">
+                <div
+                  className="w-20 h-20 bg-gray-700 border border-dashed border-gray-500 rounded-md flex items-center justify-center cursor-pointer mb-2"
+                  onClick={handleClick}
+                >
+                  {previewImg ? (
+                    <Image
+                      src={previewImg}
+                      ref={companyLogoImg}
+                      className="object-cover"
+                      alt="Company Logo"
+                      width={80}
+                      height={80}
+                    />
+                  ) : (
+                    <FaFileUpload className="text-white text-2xl" />
+                  )}
+                </div>
+                <input
+                  id="fileInput"
+                  className="hidden"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                />
+                <p className="text-sm text-gray-500 text-center">
+                  Click the avatar to change or upload your company logo
+                </p>
+              </div>
 
-        <div className="flex mt-4 gap-2 flex-col items-center">
-          <h1 className="text-center text-gray-400">
-            &quot;I&apos;m a huge fan of remote work and 100xJobs is by far my
-            favorite job board.&quot;
-          </h1>
-          <Image
-            src={'/main.png'}
-            alt="100xJobs"
-            width={40}
-            height={40}
-            className="rounded-full"
-          />
-          <h1 className="text-gray-300">Harkirat Singh</h1>
-          <h1 className="text-sm text-gray-300">100xJobs.com</h1>
+              {/* Company Name and Email Fields */}
+              <div className="flex gap-4 mb-4">
+                <div className="flex-1">
+                  <FormField
+                    control={form.control}
+                    name="companyName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="font-medium">
+                          Company name*
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            className="w-full bg-gray-800 border-none text-white"
+                            placeholder="What's your company called?"
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="flex-1">
+                  <FormField
+                    control={form.control}
+                    name="companyEmail"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="font-medium">
+                          Company email*
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            className="w-full bg-gray-800 border-none text-white"
+                            placeholder="Enter your email address"
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm mb-1 text-gray-400">
+                  Company bio
+                </label>
+                <div className="bg-gray-800 rounded-xl mt-2 overflow-hidden">
+                  <DescriptionEditor
+                    fieldName="companyBio"
+                    initialValue={form.getValues('companyBio')}
+                    onDescriptionChange={handleDescriptionChange}
+                    placeholder={'Tell us about your company'}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="w-full flex justify-end items-center my-4 ">
+              <Button type="submit" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting ? 'Please wait...' : 'Create Job'}
+              </Button>
+            </div>
+          </form>
+        </Form>
+
+        <div className="mb-2 bg-gray-900 w-full p-6 rounded-lg  mx-auto text-gray-300">
+          <h2 className="text-lg font-semibold mb-4 text-gray-300">Payment</h2>
+          <Button className="w-full rounded-full mt-4">
+            Continue to Payment
+          </Button>
+
+          <div className="flex mt-4 gap-2 flex-col items-center">
+            <h1 className="text-center text-gray-400">
+              &quot;I&apos;m a huge fan of remote work and 100xJobs is by far my
+              favorite job board.&quot;
+            </h1>
+            <Image
+              src={'/main.png'}
+              alt="100xJobs"
+              width={40}
+              height={40}
+              className="rounded-full"
+            />
+            <h1 className="text-gray-300">Harkirat Singh</h1>
+            <h1 className="text-sm text-gray-300">100xJobs.com</h1>
+          </div>
         </div>
       </div>
     </div>
