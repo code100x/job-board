@@ -11,7 +11,6 @@ export type JobType = {
   maxExperience: number | null;
   skills: string[];
   id: string;
-  type: string;
   title: string;
   description: string | null;
   companyName: string;
