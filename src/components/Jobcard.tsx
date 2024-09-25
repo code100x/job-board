@@ -14,12 +14,12 @@ export default function JobCard({ job }: { job: JobType }) {
       className="sm:text-sm text-xs text-slate-500 dark:text-slate-400 font-medium flex flex-col border p-6 bg-slate-100 gap-4 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg "
     >
       <div className="flex w-full gap-3">
-        <div>
+        <div className="size-16 relative">
           <Image
             alt="company_logo"
+            className="object-cover"
             src={job.companyLogo}
-            width={48}
-            height={48}
+            fill
           />
         </div>
         <div className="flex flex-col gap-2">

@@ -34,13 +34,11 @@ import { Label } from './ui/label';
 import dynamic from 'next/dynamic';
 import { uploadFileAction } from '@/actions/upload-to-cdn';
 
-const DynamicLineDrawingAnimation = dynamic(
-  () => import('./gmaps-autosuggest'),
-  {
-    ssr: false,
-  }
-);
+const DynamicGmapsAutoSuggest = dynamic(() => import('./gmaps-autosuggest'), {
+  ssr: false,
+});
 import { EmployementType } from '@prisma/client';
+import _ from 'lodash';
 
 const PostJobForm = () => {
   const { toast } = useToast();
@@ -56,6 +54,7 @@ const PostJobForm = () => {
       city: '',
       address: '',
       companyLogo: '',
+      hasExperiencerange: false,
       workMode: 'remote',
       type: EmployementType.Full_time,
       category: 'design',
@@ -65,6 +64,8 @@ const PostJobForm = () => {
       application: '',
     },
   });
+
+  const gmapsInputRef = useRef<any>(null);
 
   const handleClick = () => {
     //@ts-ignore
@@ -132,6 +133,11 @@ const PostJobForm = () => {
         variant: 'success',
       });
       setPreviewImg(null);
+
+      if (gmapsInputRef.current) {
+        gmapsInputRef.current.reset();
+      }
+
       form.reset(form.formState.defaultValues);
     } catch (_error) {
       toast({
@@ -274,10 +280,13 @@ const PostJobForm = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="full-time">Full-time</SelectItem>
-                          <SelectItem value="part-time">Part-time</SelectItem>
-                          <SelectItem value="contract">Contract</SelectItem>
-                          <SelectItem value="internship">Internship</SelectItem>
+                          {Object.keys(EmployementType).map((item, index) => {
+                            return (
+                              <SelectItem key={index} value={item}>
+                                {_.startCase(item)}
+                              </SelectItem>
+                            );
+                          })}
                         </SelectContent>
                       </Select>
                     </FormItem>
@@ -356,9 +365,10 @@ const PostJobForm = () => {
                 </div>
               </div>
 
-              <DynamicLineDrawingAnimation
+              <DynamicGmapsAutoSuggest
+                innerRef={gmapsInputRef}
                 form={form}
-              ></DynamicLineDrawingAnimation>
+              ></DynamicGmapsAutoSuggest>
 
               <FormField
                 control={form.control}
@@ -405,7 +415,7 @@ const PostJobForm = () => {
                     <Image
                       src={previewImg}
                       ref={companyLogoImg}
-                      className="object-cover"
+                      className="object-cover w-full h-full"
                       alt="Company Logo"
                       width={80}
                       height={80}
