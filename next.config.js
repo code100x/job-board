@@ -25,11 +25,6 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'wwww.example.com',
       },
-
-      {
-        protocol: 'https',
-        hostname: 'aakash2330.b-cdn.net',
-      },
     ],
   },
 };
