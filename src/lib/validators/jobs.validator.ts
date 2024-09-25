@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { WorkMode } from '@prisma/client';
+import { WorkMode, EmployementType } from '@prisma/client';
 
 export const JobPostSchema = z
   .object({
@@ -9,7 +9,10 @@ export const JobPostSchema = z
     city: z.string().min(1, 'City Name is required'),
     address: z.string().min(1, 'Address is required'),
     application: z.string().min(1, 'Application link is required'),
-    type: z.string(),
+    type: z.nativeEnum(EmployementType, {
+      message: 'Employment Type is Required',
+    }),
+    skills: z.array(z.string()),
     category: z.string(),
     companyEmail: z.string().email('Invalid email').min(1, 'Email is required'),
     companyBio: z.string().min(1, 'Company Bio is required'),
@@ -21,6 +24,15 @@ export const JobPostSchema = z
       .optional(),
     maxSalary: z.coerce
       .number({ message: 'Max salary must be a number' })
+      .nonnegative()
+      .optional(),
+    hasExperiencerange: z.boolean(),
+    minExperience: z.coerce
+      .number({ message: 'Min Experience must be a number' })
+      .nonnegative()
+      .optional(),
+    maxExperience: z.coerce
+      .number({ message: 'Max Experience must be a number' })
       .nonnegative()
       .optional(),
     workMode: z.nativeEnum(WorkMode, {
@@ -55,6 +67,15 @@ export const JobPostSchema = z
   });
 
 export const JobQuerySchema = z.object({
+  EmpType: z
+    .union([z.string(), z.array(z.nativeEnum(EmployementType))])
+    .optional()
+    .transform((val) => {
+      if (typeof val === 'string') {
+        return val.split(',');
+      }
+      return val;
+    }),
   workmode: z
     .union([z.string(), z.array(z.nativeEnum(WorkMode))])
     .optional()

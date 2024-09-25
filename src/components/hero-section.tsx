@@ -4,7 +4,7 @@ import Link from 'next/link';
 const HeroSection = () => {
   return (
     <>
-      <section className="relative container min-w-[100vw] pb-10 h-fit py-10 dark:bg-hero-bg-dark bg-hero-bg-light object-contain">
+      <section className="relative container min-w-full pb-10 h-fit py-10 dark:bg-hero-bg-dark bg-hero-bg-light object-contain">
         <div className="flex flex-col items-center pt-10">
           <div className="flex flex-col items-center">
             <div className="flex flex-col items-center">
