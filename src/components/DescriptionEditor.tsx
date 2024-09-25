@@ -53,9 +53,10 @@ const DescriptionEditor: React.FC<DescriptionEditorProps> = ({
       modules={modules}
       formats={formats}
       value={description}
+      style={{ width: '100%' }}
       onChange={handleChange}
       placeholder={placeholder}
-      className="text-white bg-gray-800 overflow-hidden job-description-editor"
+      className="text-white bg-gray-800 overflow-hidden job-description-editor text-wrap max-w-[537px]"
     />
   );
 };
