@@ -85,7 +85,9 @@ export function MobileNav() {
                 ) : (
                   <div className="w-12 h-12 rounded-full flex items-center justify-center border-none ouline-none">
                     <Image
-                      className="w-12 h-12"
+                      width={400}
+                      height={400}
+                      className="object-cover w-full h-full"
                       src={spotifyLogo}
                       alt="company-logo"
                     />
