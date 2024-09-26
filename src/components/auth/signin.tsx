@@ -21,6 +21,7 @@ import {
 } from '../ui/form';
 import { useToast } from '../ui/use-toast';
 import { DemarcationLine, GoogleOauthButton } from './social-auth';
+import { PasswordInput } from '../password-input';
 
 export const Signin = () => {
   const { toast } = useToast();
@@ -79,6 +80,7 @@ export const Signin = () => {
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="password"
@@ -86,7 +88,7 @@ export const Signin = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type="password" {...field} placeholder="••••••••" />
+                  <PasswordInput field={field} placeholder="Password" />
                 </FormControl>
                 <FormMessage />
               </FormItem>

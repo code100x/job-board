@@ -8,6 +8,7 @@ import { resetPassword } from '@/actions/auth.actions';
 import { useToast } from '../ui/use-toast';
 import { useRouter } from 'next/navigation';
 import APP_PATHS from '@/config/path.config';
+import { EyeIcon, EyeOffIcon } from 'lucide-react';
 
 export const ResetPassword = () => {
   const params = useParams();
@@ -56,28 +57,22 @@ export const ResetPassword = () => {
       <div className="space-y-2">
         <Label htmlFor="email">Password</Label>
 
-        <Input
-          type="password"
-          id="password"
-          placeholder="Password"
-          required={true}
+        <PasswordInput
+          placeholder="Enter your password"
           value={data.password}
-          onChange={(e) => {
-            setData((p) => ({ ...p, password: e.target.value }));
-          }}
+          onChange={(e) =>
+            setData((prev) => ({ ...prev, password: e.target.value }))
+          }
         />
       </div>
       <div className="space-y-2">
         <Label htmlFor="email">Confirm Password</Label>
-        <Input
-          type="password"
-          id="confirmPassword"
-          placeholder="Confirm Password"
-          required={true}
+        <PasswordInput
+          placeholder="Confirm your password"
           value={data.confirmPassword}
-          onChange={(e) => {
-            setData((p) => ({ ...p, confirmPassword: e.target.value }));
-          }}
+          onChange={(e) =>
+            setData((prev) => ({ ...prev, confirmPassword: e.target.value }))
+          }
         />
       </div>
       {errorMessage ? (
@@ -87,5 +82,41 @@ export const ResetPassword = () => {
         Submit
       </Button>
     </form>
+  );
+};
+
+interface PasswordInputProps {
+  placeholder?: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export const PasswordInput = ({
+  placeholder,
+  value,
+  onChange,
+}: PasswordInputProps) => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  return (
+    <div className="relative">
+      <Input
+        type={showPassword ? 'text' : 'password'}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder || '••••••••'}
+      />
+      <button
+        type="button"
+        onClick={togglePasswordVisibility}
+        className="absolute right-2 top-1/2 transform -translate-y-1/2 focus:outline-none"
+      >
+        {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+      </button>
+    </div>
   );
 };

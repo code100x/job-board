@@ -13,7 +13,11 @@ export const DemarcationLine = () => (
 
 export const GoogleOauthButton = ({ label }: { label: string }) => (
   <Button
-    onClick={() => signIn('google')}
+    onClick={(e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      signIn('google');
+    }}
     className="w-full h-10 bg-white border border-gray-300 text-gray-700 font-medium hover:bg-gray-50"
   >
     <svg

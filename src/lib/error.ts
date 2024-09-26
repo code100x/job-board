@@ -6,6 +6,7 @@ export type ErrorResponseType = {
   message: string;
   code: number;
   status: false;
+  error?: any;
 };
 class ErrorHandler extends Error {
   status: false;
@@ -27,6 +28,7 @@ function standardizeApiError(error: unknown): ErrorResponseType {
       message: error.message,
       code: error.code,
       status: false,
+      error: error.error,
     };
   }
   if (error instanceof ZodError) {
