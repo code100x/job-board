@@ -14,6 +14,8 @@ import {
 import { getJobFilters } from '@/services/jobs.services';
 import { ServerActionReturnType } from '@/types/api.types';
 import { getAllJobsAdditonalType, getJobType } from '@/types/jobs.types';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/authOptions';
 
 type additional = {
   isVerifiedJob: boolean;
@@ -22,6 +24,10 @@ export const createJob = withServerActionAsyncCatcher<
   JobPostSchemaType,
   ServerActionReturnType<additional>
 >(async (data) => {
+  const auth = await getServerSession(authOptions);
+  if (!auth || !auth?.user?.id)
+    throw new ErrorHandler('Not Authrised', 'UNAUTHORIZED');
+
   const result = JobPostSchema.parse(data);
   const {
     companyName,
@@ -42,7 +48,7 @@ export const createJob = withServerActionAsyncCatcher<
   } = result;
   await prisma.job.create({
     data: {
-      userId: '1', // Default to 1 since there's no session to check for user id
+      userId: auth.user.id,
       title,
       description,
       companyName,
@@ -206,3 +212,38 @@ export const getRecentJobs = async () => {
     return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
   }
 };
+
+export const updateJob = withServerActionAsyncCatcher<
+  JobPostSchemaType & { jobId: string },
+  ServerActionReturnType<additional>
+>(async (data) => {
+  const auth = await getServerSession(authOptions);
+  if (!auth || !auth?.user?.id)
+    throw new ErrorHandler('Not Authorized', 'UNAUTHORIZED');
+
+  const { jobId, ...updateData } = data;
+  const parsedId = JobByIdSchema.parse({ id: jobId });
+
+  const result = JobPostSchema.parse(updateData);
+
+  let job = await prisma.job.findFirst({
+    where: { id: parsedId.id, userId: auth.user.id },
+  });
+
+  if (!job)
+    throw new ErrorHandler('Job not found or not authorized', 'NOT_FOUND');
+
+  // Update the job
+  job = await prisma.job.update({
+    where: { id: parsedId.id },
+    data: { ...result, isVerifiedJob: false },
+  });
+
+  const additonal = { isVerifiedJob: false, jobId: job.id };
+
+  return new SuccessResponse(
+    'Job updated successfully',
+    200,
+    additonal
+  ).serialize();
+});

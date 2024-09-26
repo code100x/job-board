@@ -1,3 +1,4 @@
+import { EMAIL_VERIFICATION_LINK_EXPIRATION_TIME } from '@/config/auth.config';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -18,4 +19,12 @@ export const formatSalary = (salary: number) => {
     return `${(salary / 1000).toFixed(0)}K`;
   }
   return salary;
+};
+
+export const isTokenExpiredUtil = (createdAt: Date) => {
+  const now = new Date().getTime();
+  const tokenCreationTime = new Date(createdAt).getTime();
+  return (
+    now - tokenCreationTime > EMAIL_VERIFICATION_LINK_EXPIRATION_TIME * 1000
+  );
 };

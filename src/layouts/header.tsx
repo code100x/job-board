@@ -5,15 +5,16 @@ import {
   nonUserNavbar,
   userNavbar,
 } from '@/lib/constant/app.constant';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { NavItem } from '@/components/navitem';
 import Image from 'next/image';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Moon, Sun } from 'lucide-react';
+import { LogOutIcon, Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { ADMIN_ROLE } from '@/config/app.config';
 import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
 export const CompanyLogo = () => {
   return (
     <div className="flex items-center gap-2">
@@ -68,6 +69,22 @@ const Header = () => {
                   : nonUserNavbar.map((item) => (
                       <NavItem {...item} key={item.id} />
                     ))}
+              {session.status === 'authenticated' ? (
+                <li>
+                  <Button
+                    className="rounded-lg"
+                    size="sm"
+                    variant="destructive"
+                  >
+                    <LogOutIcon
+                      className="w-4 h-4"
+                      onClick={() => {
+                        signOut();
+                      }}
+                    />
+                  </Button>
+                </li>
+              ) : null}
             </ul>
             <div className="flex items-center">
               {mounted && (

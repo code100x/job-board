@@ -10,12 +10,40 @@ datasource db {
 model User {
   id         String  @id @default(cuid())
   name       String
-  email      String  @unique
-  password   String
+
+  password   String?
   avatar     String?
   isVerified Boolean @default(false)
   role       Role    @default(USER)
   jobs       Job[]
+
+  email         String    @unique
+  emailVerified DateTime?
+  
+  oauthProvider   OauthProvider?  // Tracks OAuth provider (e.g., 'google')
+  oauthId String?
+
+  blockedByAdmin DateTime?
+  
+}
+
+enum OauthProvider {
+  GOOGLE
+}
+
+
+model VerificationToken {
+  token String
+  identifier String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  type TokenType
+  @@unique([token,identifier])
+}
+
+enum  TokenType {
+  EMAIL_VERIFICATION
+  RESET_PASSWORD
 }
 
 model Job {
