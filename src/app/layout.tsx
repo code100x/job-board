@@ -35,7 +35,7 @@ export default async function RootLayout({
       >
         <Providers>
           <Header />
-          <main className="grow grid">{children}</main>
+          <main className="grow grid p-4">{children}</main>
           <Footer />
         </Providers>
         {/* Commenting this out for temp basis */}
