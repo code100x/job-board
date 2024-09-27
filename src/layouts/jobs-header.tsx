@@ -102,7 +102,7 @@ const JobsHeader = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
               <PopoverTrigger className="bg-neutral-100 dark:bg-neutral-900 rounded-full p-3 cursor-pointer">
                 <Icon icon="filter" className="cursor-pointer" size="20" />
               </PopoverTrigger>
-              <PopoverContent className="bg-transparent border-none shadow-none">
+              <PopoverContent className="bg-transparent border-none shadow-none overflow-y-auto h-[22rem]">
                 <JobFilters searchParams={searchParams} />
               </PopoverContent>
             </Popover>
