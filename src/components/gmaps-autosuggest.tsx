@@ -1,20 +1,32 @@
 import Script from 'next/script';
 import { Input } from './ui/input';
 import { clientEnv } from '@/env/client';
-import { forwardRef, useImperativeHandle, useRef } from 'react';
+import { useImperativeHandle, useRef } from 'react';
 
 export type TgmapsAddress = { city: string; fullAddress: string };
 
-const GmapsAutocompleteAddress = forwardRef(function GmapsAutocompleteAddress(
-  {
-    form,
-  }: {
-    form: any;
-  },
-  ref
-) {
-  let autocomplete: any = null;
+export default function GmapsAutocompleteAddress({
+  form,
+  innerRef,
+}: {
+  form: any;
+  innerRef: any;
+}) {
   const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useImperativeHandle(innerRef, () => {
+    return {
+      reset: () => {
+        if (inputRef.current) {
+          inputRef.current.value = '';
+          form.setValue('city', '');
+          form.setValue('address', '');
+        }
+      },
+    };
+  });
+
+  let autocomplete: any = null;
 
   function onPlaceChanged() {
     const { name, formatted_address } = autocomplete.getPlace();
@@ -33,16 +45,6 @@ const GmapsAutocompleteAddress = forwardRef(function GmapsAutocompleteAddress(
       autocomplete.addListener('place_changed', onPlaceChanged);
     }
   }
-
-  useImperativeHandle(ref, () => ({
-    reset: () => {
-      if (inputRef.current) {
-        inputRef.current.value = '';
-        form.setValue('city', '');
-        form.setValue('address', '');
-      }
-    },
-  }));
   return (
     <>
       <Script
@@ -60,6 +62,4 @@ const GmapsAutocompleteAddress = forwardRef(function GmapsAutocompleteAddress(
       />
     </>
   );
-});
-
-export default GmapsAutocompleteAddress;
+}

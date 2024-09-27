@@ -87,7 +87,7 @@ export function MobileNav() {
                     <Image
                       width={400}
                       height={400}
-                      className="w-12 h-12"
+                      className="object-cover w-full h-full"
                       src={spotifyLogo}
                       alt="company-logo"
                     />

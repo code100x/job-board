@@ -12,12 +12,12 @@ export const JobPostSchema = z
     type: z.nativeEnum(EmployementType, {
       message: 'Employment Type is Required',
     }),
-    skills: z.array(z.string()),
+    skills: z.array(z.string()).optional(),
     category: z.string(),
     companyEmail: z.string().email('Invalid email').min(1, 'Email is required'),
     companyBio: z.string().min(1, 'Company Bio is required'),
     companyLogo: z.string().url(),
-    hasSalaryRange: z.boolean(),
+    hasSalaryRange: z.boolean().optional(),
     minSalary: z.coerce
       .number({ message: 'Min salary must be a number' })
       .nonnegative()
