@@ -298,6 +298,7 @@ async function seedUsers() {
               name: u.name,
               password: hashedPassword,
               role: u.role || Role.USER,
+              emailVerified: new Date(),
             },
             update: {},
           })

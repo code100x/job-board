@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   JobPostSchema,
@@ -39,8 +39,18 @@ const DynamicGmapsAutoSuggest = dynamic(() => import('./gmaps-autosuggest'), {
 });
 import { EmployementType } from '@prisma/client';
 import _ from 'lodash';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import APP_PATHS from '@/config/path.config';
 
 const PostJobForm = () => {
+  const session = useSession();
+  const router = useRouter();
+  useEffect(() => {
+    if (session.status !== 'loading' && session.status === 'unauthenticated')
+      router.push(`${APP_PATHS.SIGNIN}?redirectTo=/create`);
+  }, [session.status]);
+
   const { toast } = useToast();
   const companyLogoImg = useRef<HTMLImageElement>(null);
   const form = useForm<JobPostSchemaType>({
@@ -157,6 +167,9 @@ const PostJobForm = () => {
     }
     form.setValue('companyLogo', 'https://wwww.example.com');
   }, [watchHasSalaryRange, form]);
+
+  if (session.status === 'loading') return null;
+
   return (
     <div className="flex flex-col items-center gap-y-10 justify-center">
       <div className="w-full md:justify-center mt-4 flex flex-col md:flex-row gap-2">
