@@ -315,20 +315,14 @@
 
 .ql-container.ql-snow {
   border: none !important;
-  max-height: 56rem;
+  max-height: 30rem !important;
+  white-space: wrap !important;
+  width: '100%' !important;
   /* Set a fixed height */
-  overflow-y: hidden;
+  overflow-y: scroll;
   /* Hide vertical overflow */
   overflow-x: auto;
   /* Allow horizontal scrolling */
-}
-
-.ql-editor {
-  min-height: 10px;
-  overflow-y: hidden;
-  /* Prevent height increase */
-  white-space: nowrap;
-  /* Ensure long lines don't wrap */
 }
 
 .ql-editor.ql-blank::before {
@@ -354,11 +348,9 @@
 
 /* Ensure long content does not wrap within the editor */
 .job-description-editor .ql-editor {
-
   white-space: nowrap !important;
   overflow-x: hidden !important; /* Allow horizontal scrolling */
   overflow-y: hidden !important; /* Hide vertical overflow */
-
 }
 
 .pac-container {
