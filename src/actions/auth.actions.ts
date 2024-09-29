@@ -52,7 +52,7 @@ export const signUp = withServerActionAsyncCatcher<
         },
       });
 
-      const confirmationLink = `${process.env.NEXTAUTH_URL}/${APP_PATHS.VERIFY_EMAIL}/${verificationToken.token}`;
+      const confirmationLink = `${process.env.NEXTAUTH_URL}${APP_PATHS.VERIFY_EMAIL}/${verificationToken.token}`;
       await sendConfirmationEmail(
         data.email,
         confirmationLink,
