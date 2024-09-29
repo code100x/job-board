@@ -23,12 +23,16 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'wwww.example.com',
+        hostname: 'lh3.googleusercontent.com',
+        // Change this to your CDN domain
       },
-
       {
         protocol: 'https',
         hostname: 'aakash2330.b-cdn.net',
+      },
+      {
+        protocol: 'https',
+        hostname: 'wwww.example.com',
       },
     ],
   },

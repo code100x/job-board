@@ -39,40 +39,46 @@ export const signUp = withServerActionAsyncCatcher<
   );
 
   try {
-    await prisma.$transaction(async (txn) => {
-      const user = await txn.user.create({
-        data: { ...data, password: hashedPassword },
-      });
+    await prisma.$transaction(
+      async (txn) => {
+        const user = await txn.user.create({
+          data: { ...data, password: hashedPassword },
+        });
 
-      const verificationToken = await txn.verificationToken.create({
-        data: {
-          identifier: user.id,
-          token: uuidv4(),
-          type: 'EMAIL_VERIFICATION',
-        },
-      });
+        const verificationToken = await txn.verificationToken.create({
+          data: {
+            identifier: user.id,
+            token: uuidv4(),
+            type: 'EMAIL_VERIFICATION',
+          },
+        });
 
-      const confirmationLink = `${process.env.NEXTAUTH_URL}${APP_PATHS.VERIFY_EMAIL}/${verificationToken.token}`;
-      await sendConfirmationEmail(
-        data.email,
-        confirmationLink,
-        'EMAIL_VERIFICATION'
-      );
+        const confirmationLink = `${process.env.NEXTAUTH_URL}${APP_PATHS.VERIFY_EMAIL}/${verificationToken.token}`;
+        await sendConfirmationEmail(
+          data.email,
+          confirmationLink,
+          'EMAIL_VERIFICATION'
+        );
 
-      cookies().set(PENDING_EMAIL_VERIFICATION_USER_ID, user.id, {
-        maxAge: 5 * 60, // 5 minutes
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-      });
+        cookies().set(PENDING_EMAIL_VERIFICATION_USER_ID, user.id, {
+          maxAge: 5 * 60, // 5 minutes
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+        });
 
-      return user;
-    });
+        return user;
+      },
+      {
+        maxWait: 5000,
+        timeout: 20000,
+      }
+    );
 
     return new SuccessResponse(
       'User registered successfully. A verification link has been sent to your email.',
       201
     ).serialize();
-  } catch {
+  } catch (_err) {
     throw new ErrorHandler(
       'Registration Failed, please try again!',
       'INTERNAL_SERVER_ERROR'

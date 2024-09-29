@@ -31,7 +31,7 @@ export default function JobCard({ job }: { job: JobType }) {
         </div>
         <div className="flex items-center gap-4">
           <div className="px-4 py-1 w-fit text-blue-500 bg-blue-500/20 rounded-lg flex items-center justify-center text-xs font-bold">
-            {job.type && job?.type.toUpperCase()}
+            {job.type && job?.type.toUpperCase().replace('_', ' ')}
           </div>
           <div className="flex items-center gap-2">
             <MapPin size={16} />

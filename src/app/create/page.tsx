@@ -10,6 +10,7 @@ const page = () => {
           100xJobs is trusted by leading companies
         </p>
       </div>
+
       <PostJobForm />
     </div>
   );

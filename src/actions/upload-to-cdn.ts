@@ -26,7 +26,6 @@ export async function uploadFileAction(formData: FormData) {
       },
       body: fileBuffer,
     });
-
     if (response.ok) {
       return {
         message: 'File uploaded successfully',
