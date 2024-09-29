@@ -28,7 +28,12 @@ import {
 import icons from '@/lib/icons';
 export const CompanyLogo = () => {
   return (
-    <div className="flex items-center gap-2">
+    <div
+      className="flex items-center gap-2 cursor-pointer"
+      onClick={() => {
+        window.location.href = '/';
+      }}
+    >
       <Image
         src={'/main.svg'}
         alt="100xJobs"
@@ -95,66 +100,72 @@ const Header = () => {
                   )}
                 </button>
               )}
-
-              <div className="md:hidden flex justify-center ml-3">
-                <MobileNav />
-              </div>
             </div>
-            {session.status === 'loading' ? (
-              <Skeleton className="h-8 w-8 rounded-full" />
-            ) : session.status === 'authenticated' ? (
-              <>
-                <DropdownMenu open={open} onOpenChange={setOpen}>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className="relative h-8 w-8 rounded-full"
+            <div className="hidden md:block">
+              {session.status === 'loading' ? (
+                <Skeleton className="h-8 w-8 rounded-full" />
+              ) : session.status === 'authenticated' ? (
+                <>
+                  <DropdownMenu open={open} onOpenChange={setOpen}>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        className="relative h-8 w-8 rounded-full"
+                      >
+                        <Avatar className="h-8 w-8">
+                          <AvatarImage
+                            src={
+                              session.data.user.image
+                                ? session.data.user.image
+                                : ''
+                            }
+                          />
+                          <AvatarFallback>
+                            {getNameInitials(session.data.user.name)}
+                          </AvatarFallback>
+                        </Avatar>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                      className="w-56"
+                      align="end"
+                      forceMount
                     >
-                      <Avatar className="h-8 w-8">
-                        <AvatarImage
-                          src={
-                            session.data.user.image
-                              ? session.data.user.image
-                              : ''
-                          }
-                        />
-                        <AvatarFallback>
-                          {getNameInitials(session.data.user.name)}
-                        </AvatarFallback>
-                      </Avatar>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56" align="end" forceMount>
-                    <DropdownMenuItem>
-                      <icons.profile className="mr-2 h-4 w-4" />
-                      <span>Profile</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      onClick={() => {
-                        signOut();
-                      }}
-                    >
-                      <icons.logout className="mr-2 h-4 w-4" />
-                      <span>Log out</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </>
-            ) : (
-              <div>
-                <Button
-                  className="rounded-lg"
-                  size="sm"
-                  variant="default"
-                  onClick={() => {
-                    router.push('/signin');
-                  }}
-                >
-                  Login
-                </Button>
-              </div>
-            )}
+                      <DropdownMenuItem>
+                        <icons.profile className="mr-2 h-4 w-4" />
+                        <span>Profile</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        onClick={() => {
+                          signOut();
+                        }}
+                      >
+                        <icons.logout className="mr-2 h-4 w-4" />
+                        <span>Log out</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </>
+              ) : (
+                <div>
+                  <Button
+                    className="rounded-lg"
+                    size="sm"
+                    variant="default"
+                    onClick={() => {
+                      router.push('/signin');
+                    }}
+                  >
+                    Login
+                  </Button>
+                </div>
+              )}
+            </div>
+
+            <div className="md:hidden flex justify-center ml-3">
+              <MobileNav />
+            </div>
           </div>
         </div>
       </nav>
