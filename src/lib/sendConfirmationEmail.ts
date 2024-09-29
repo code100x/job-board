@@ -1,6 +1,5 @@
 import { TokenType } from '@prisma/client';
 import nodemailer from 'nodemailer';
-import { serverEnv } from '../env/server';
 
 export async function sendConfirmationEmail(
   email: string,
@@ -9,16 +8,17 @@ export async function sendConfirmationEmail(
 ) {
   try {
     const transporter = nodemailer.createTransport({
-      service: 'Gmail',
+      host: process.env.EMAIL_HOST,
+      port: parseInt(process.env.EMAIL_PORT as string),
       auth: {
-        user: serverEnv.EMAIL_USER,
-        pass: serverEnv.EMAIL_PASSWORD,
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD,
       },
     });
 
     if (type === 'EMAIL_VERIFICATION') {
       const mailOptions = {
-        from: serverEnv.BASE_URL,
+        from: process.env.NEXTAUTH_URL,
         to: email,
         subject: 'Confirm your Email',
         text: `Click the following link to confirm your email: ${confirmationLink}`,
@@ -28,7 +28,7 @@ export async function sendConfirmationEmail(
       await transporter.sendMail(mailOptions);
     } else if (type === 'RESET_PASSWORD') {
       const mailOptions = {
-        from: serverEnv.BASE_URL,
+        from: process.env.NEXTAUTH_URL,
         to: email,
         subject: 'Reset your password',
         text: `Click the following link to reset your password: ${confirmationLink}`,

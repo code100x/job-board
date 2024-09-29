@@ -15,16 +15,15 @@ import {
 } from '@/lib/validators/jobs.validator';
 import { getJobFilters } from '@/services/jobs.services';
 import { ServerActionReturnType } from '@/types/api.types';
- 
+
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/authOptions';
- 
+
 import {
   getAllJobsAdditonalType,
   getAllRecommendedJobs,
   getJobType,
 } from '@/types/jobs.types';
- 
 
 type additional = {
   isVerifiedJob: boolean;
@@ -73,7 +72,7 @@ export const createJob = withServerActionAsyncCatcher<
       address,
       companyLogo,
       workMode,
-      isVerifiedJob: false, // Default to false since there's no session to check for admin role
+      isVerifiedJob: false,
     },
   });
   const message = 'Job created successfully, waiting for admin approval';
