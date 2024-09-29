@@ -6,6 +6,13 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export const getNameInitials = (name: string) => {
+  const initials = name
+    .split(' ')
+    .map((n) => n[0])
+    .join('');
+  return initials.toUpperCase();
+};
 export const formatFilterSearchParams = (params: string[] | string) => {
   if (!Array.isArray(params)) {
     return [params];

@@ -9,7 +9,9 @@ declare module 'next-auth' {
     user: {
       id: string;
       role: string;
+      name: string;
       isVerified: boolean;
+      image?: string;
     };
   }
 }
