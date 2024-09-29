@@ -99,7 +99,7 @@ const JobsHeader = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
         {isHome && (
           <div className={cn('flex items-center px-1 max-sm:hidden ', {})}>
             <Popover>
-              <PopoverTrigger className="bg-neutral-100 dark:bg-neutral-900 rounded-full p-3 cursor-pointer">
+              <PopoverTrigger className="bg-neutral-100 dark:bg-darkBgSecondary rounded-full p-3 cursor-pointer">
                 <Icon icon="filter" className="cursor-pointer" size="20" />
               </PopoverTrigger>
               <PopoverContent className="bg-transparent border-none shadow-none">

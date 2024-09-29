@@ -1,4 +1,4 @@
-// server-env.ts
+// // server-env.ts
 import { createEnv } from '@t3-oss/env-nextjs';
 import { z } from 'zod';
 
@@ -29,4 +29,4 @@ export const serverEnv = createEnv({
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   },
-});
+});  

@@ -4,12 +4,13 @@ export type JobType = {
   city: string;
   address: string;
   minSalary: number | null;
+  type: string;
+  category: string;
   maxSalary: number | null;
   minExperience: number | null;
   maxExperience: number | null;
   skills: string[];
   id: string;
-  type: string;
   title: string;
   description: string | null;
   companyName: string;
@@ -18,6 +19,9 @@ export type JobType = {
 export type getAllJobsAdditonalType = {
   jobs: JobType[];
   totalJobs: number;
+};
+export type getAllRecommendedJobs = {
+  jobs: JobType[];
 };
 export type getJobType = {
   job: JobType | null;

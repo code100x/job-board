@@ -10,12 +10,21 @@ import {
   JobPostSchemaType,
   JobQuerySchema,
   JobQuerySchemaType,
+  RecommendedJobSchema,
+  RecommendedJobSchemaType,
 } from '@/lib/validators/jobs.validator';
 import { getJobFilters } from '@/services/jobs.services';
 import { ServerActionReturnType } from '@/types/api.types';
-import { getAllJobsAdditonalType, getJobType } from '@/types/jobs.types';
+ 
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/authOptions';
+ 
+import {
+  getAllJobsAdditonalType,
+  getAllRecommendedJobs,
+  getJobType,
+} from '@/types/jobs.types';
+ 
 
 type additional = {
   isVerifiedJob: boolean;
@@ -99,6 +108,7 @@ export const getAllJobs = withServerActionAsyncCatcher<
     },
     select: {
       id: true,
+      type: true,
       title: true,
       description: true,
       companyName: true,
@@ -107,9 +117,9 @@ export const getAllJobs = withServerActionAsyncCatcher<
       minExperience: true,
       maxExperience: true,
       skills: true,
-      type: true,
       address: true,
       workMode: true,
+      category: true,
       minSalary: true,
       maxSalary: true,
       postedAt: true,
@@ -133,6 +143,84 @@ export const getAllJobs = withServerActionAsyncCatcher<
   }).serialize();
 });
 
+export const getRecommendedJobs = withServerActionAsyncCatcher<
+  RecommendedJobSchemaType,
+  ServerActionReturnType<getAllRecommendedJobs>
+>(async (data) => {
+  const result = RecommendedJobSchema.parse(data);
+  const { id, category } = result;
+
+  // fettching the latest three jobs excluding the current job and in the same category
+  const jobs = await prisma.job.findMany({
+    where: {
+      category: category,
+      id: { not: id },
+    },
+    orderBy: {
+      postedAt: 'desc',
+    },
+    take: 3,
+    select: {
+      id: true,
+      type: true,
+      title: true,
+      description: true,
+      companyName: true,
+      city: true,
+      address: true,
+      category: true,
+      workMode: true,
+      minSalary: true,
+      minExperience: true,
+      maxExperience: true,
+      maxSalary: true,
+      postedAt: true,
+      skills: true,
+      companyLogo: true,
+    },
+  });
+
+  if (jobs.length === 0) {
+    const fallbackJobs = await prisma.job.findMany({
+      where: {
+        id: { not: id },
+      },
+      orderBy: {
+        postedAt: 'desc',
+      },
+      take: 3, // Fallback to showing latest 3 jobs from other categories
+      select: {
+        id: true,
+        type: true,
+        title: true,
+        description: true,
+        companyName: true,
+        city: true,
+        address: true,
+        workMode: true,
+        minSalary: true,
+        skills: true,
+        maxSalary: true,
+        postedAt: true,
+        companyLogo: true,
+        minExperience: true,
+        maxExperience: true,
+        category: true,
+      },
+    });
+
+    return new SuccessResponse(
+      'No jobs found in this category, here are some recent jobs',
+      200,
+      { jobs: fallbackJobs }
+    ).serialize();
+  }
+
+  return new SuccessResponse('Recommended jobs fetched successfully', 200, {
+    jobs,
+  }).serialize();
+});
+
 export const getJobById = withServerActionAsyncCatcher<
   JobByIdSchemaType,
   ServerActionReturnType<getJobType>
@@ -148,9 +236,10 @@ export const getJobById = withServerActionAsyncCatcher<
       companyName: true,
       companyBio: true,
       companyEmail: true,
-      companyLogo: true,
-      city: true,
       type: true,
+      companyLogo: true,
+      category: true,
+      city: true,
       hasExperiencerange: true,
       minExperience: true,
       maxExperience: true,
@@ -196,6 +285,7 @@ export const getRecentJobs = async () => {
         workMode: true,
         minSalary: true,
         maxSalary: true,
+        category: true,
         minExperience: true,
         maxExperience: true,
         skills: true,
