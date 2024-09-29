@@ -1,3 +1,5 @@
+'use client';
+
 import { JobType } from '@/types/jobs.types';
 import Icon from './ui/icon';
 import { formatSalary } from '@/lib/utils';
@@ -17,7 +19,7 @@ export const Job = ({ job }: { job: JobType }) => {
           <div className="w-[4rem] h-[4rem] bg-primary/20 rounded-md">
             {job.companyLogo && (
               <Image
-                className="size-full object-cover dark:invert"
+                className="size-full object-cover "
                 src={job.companyLogo || ''}
                 width={'500'}
                 height={'500'}
@@ -39,7 +41,7 @@ export const Job = ({ job }: { job: JobType }) => {
           </div>
 
           <span className="flex bg-green-500/20 font-bold rounded-lg px-4 py-1 text-green-500 text-xs md:text-sm items-center gap-0.5">
-            {job.minSalary && <Icon icon="currency" size={16} />}
+            {!!job.minSalary && <Icon icon="currency" size={16} />}
             {job.minSalary && job.maxSalary
               ? `${formatSalary(job.minSalary)}-${formatSalary(job.maxSalary)}`
               : 'Not disclosed'}
@@ -65,16 +67,22 @@ export const Job = ({ job }: { job: JobType }) => {
       </section>
 
       {/* job description */}
-      <section className="border-2 bg-[#F1F5F9] dark:bg-[#0F172A] h-[10rem] p-6 rounded-xl">
+      <section className="border-2 bg-[#F1F5F9] dark:bg-[#0F172A] h-auto max-h-[20rem] overflow-y-auto p-6 rounded-xl">
         <Linkify options={options}>
-          <p>{job.description}</p>
+          <div
+            className="my-4text-neutral-200"
+            dangerouslySetInnerHTML={{ __html: job.description ?? '' }}
+          ></div>
         </Linkify>
       </section>
 
       {/* about company */}
-      <section className="border-2 bg-[#F1F5F9] dark:bg-[#0F172A] h-[10rem] p-6 rounded-xl">
+      <section className="border-2 bg-[#F1F5F9] dark:bg-[#0F172A] h-auto max-h-[15rem] overflow-y-auto p-6 rounded-xl">
         <h1 className="font-bold">About {job.companyName}</h1>
-        <p className="my-4 text-sm text-gray-500">{job.description}</p>
+        <div
+          dangerouslySetInnerHTML={{ __html: job.companyBio ?? '' }}
+          className="my-4 text-neutral-200"
+        ></div>
       </section>
     </aside>
   );

@@ -69,8 +69,8 @@ const PostJobForm = () => {
       type: EmployementType.Full_time,
       category: 'design',
       hasSalaryRange: true,
-      minSalary: 0,
-      maxSalary: 0,
+      minSalary: undefined,
+      maxSalary: undefined,
       application: '',
     },
   });

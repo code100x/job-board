@@ -13,7 +13,7 @@ export default function JobCard({ job }: { job: JobType }) {
           <div className="w-[4rem] h-[4rem] bg-primary/20 rounded-md">
             {job.companyLogo && (
               <Image
-                className="size-full object-cover dark:invert"
+                className="size-full object-cover "
                 src={job.companyLogo || ''}
                 width={'500'}
                 height={'500'}

@@ -1,5 +1,6 @@
 export type JobType = {
   companyLogo: string;
+  companyBio: string;
   workMode: 'remote' | 'office' | 'hybrid';
   city: string;
   address: string;
