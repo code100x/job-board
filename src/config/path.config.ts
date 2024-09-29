@@ -9,5 +9,8 @@ const APP_PATHS = {
   CONTACT_US: '',
   TESTIMONIALS: '#testimonials',
   FAQS: '#faq',
+  VERIFY_EMAIL: '/verify-email',
+  FORGOT_PASSWORD: '/forgot-password',
+  WELCOME: '/welcome',
 };
 export default APP_PATHS;

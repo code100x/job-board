@@ -10,10 +10,21 @@ import {
   JobPostSchemaType,
   JobQuerySchema,
   JobQuerySchemaType,
+  RecommendedJobSchema,
+  RecommendedJobSchemaType,
 } from '@/lib/validators/jobs.validator';
 import { getJobFilters } from '@/services/jobs.services';
 import { ServerActionReturnType } from '@/types/api.types';
-import { getAllJobsAdditonalType, getJobType } from '@/types/jobs.types';
+ 
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/authOptions';
+ 
+import {
+  getAllJobsAdditonalType,
+  getAllRecommendedJobs,
+  getJobType,
+} from '@/types/jobs.types';
+ 
 
 type additional = {
   isVerifiedJob: boolean;
@@ -22,6 +33,10 @@ export const createJob = withServerActionAsyncCatcher<
   JobPostSchemaType,
   ServerActionReturnType<additional>
 >(async (data) => {
+  const auth = await getServerSession(authOptions);
+  if (!auth || !auth?.user?.id)
+    throw new ErrorHandler('Not Authrised', 'UNAUTHORIZED');
+
   const result = JobPostSchema.parse(data);
   const {
     companyName,
@@ -42,7 +57,7 @@ export const createJob = withServerActionAsyncCatcher<
   } = result;
   await prisma.job.create({
     data: {
-      userId: '1', // Default to 1 since there's no session to check for user id
+      userId: auth.user.id,
       title,
       description,
       companyName,
@@ -93,6 +108,7 @@ export const getAllJobs = withServerActionAsyncCatcher<
     },
     select: {
       id: true,
+      type: true,
       title: true,
       description: true,
       companyName: true,
@@ -101,9 +117,9 @@ export const getAllJobs = withServerActionAsyncCatcher<
       minExperience: true,
       maxExperience: true,
       skills: true,
-      type: true,
       address: true,
       workMode: true,
+      category: true,
       minSalary: true,
       maxSalary: true,
       postedAt: true,
@@ -127,6 +143,84 @@ export const getAllJobs = withServerActionAsyncCatcher<
   }).serialize();
 });
 
+export const getRecommendedJobs = withServerActionAsyncCatcher<
+  RecommendedJobSchemaType,
+  ServerActionReturnType<getAllRecommendedJobs>
+>(async (data) => {
+  const result = RecommendedJobSchema.parse(data);
+  const { id, category } = result;
+
+  // fettching the latest three jobs excluding the current job and in the same category
+  const jobs = await prisma.job.findMany({
+    where: {
+      category: category,
+      id: { not: id },
+    },
+    orderBy: {
+      postedAt: 'desc',
+    },
+    take: 3,
+    select: {
+      id: true,
+      type: true,
+      title: true,
+      description: true,
+      companyName: true,
+      city: true,
+      address: true,
+      category: true,
+      workMode: true,
+      minSalary: true,
+      minExperience: true,
+      maxExperience: true,
+      maxSalary: true,
+      postedAt: true,
+      skills: true,
+      companyLogo: true,
+    },
+  });
+
+  if (jobs.length === 0) {
+    const fallbackJobs = await prisma.job.findMany({
+      where: {
+        id: { not: id },
+      },
+      orderBy: {
+        postedAt: 'desc',
+      },
+      take: 3, // Fallback to showing latest 3 jobs from other categories
+      select: {
+        id: true,
+        type: true,
+        title: true,
+        description: true,
+        companyName: true,
+        city: true,
+        address: true,
+        workMode: true,
+        minSalary: true,
+        skills: true,
+        maxSalary: true,
+        postedAt: true,
+        companyLogo: true,
+        minExperience: true,
+        maxExperience: true,
+        category: true,
+      },
+    });
+
+    return new SuccessResponse(
+      'No jobs found in this category, here are some recent jobs',
+      200,
+      { jobs: fallbackJobs }
+    ).serialize();
+  }
+
+  return new SuccessResponse('Recommended jobs fetched successfully', 200, {
+    jobs,
+  }).serialize();
+});
+
 export const getJobById = withServerActionAsyncCatcher<
   JobByIdSchemaType,
   ServerActionReturnType<getJobType>
@@ -142,9 +236,10 @@ export const getJobById = withServerActionAsyncCatcher<
       companyName: true,
       companyBio: true,
       companyEmail: true,
-      companyLogo: true,
-      city: true,
       type: true,
+      companyLogo: true,
+      category: true,
+      city: true,
       hasExperiencerange: true,
       minExperience: true,
       maxExperience: true,
@@ -190,6 +285,7 @@ export const getRecentJobs = async () => {
         workMode: true,
         minSalary: true,
         maxSalary: true,
+        category: true,
         minExperience: true,
         maxExperience: true,
         skills: true,
@@ -206,3 +302,38 @@ export const getRecentJobs = async () => {
     return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
   }
 };
+
+export const updateJob = withServerActionAsyncCatcher<
+  JobPostSchemaType & { jobId: string },
+  ServerActionReturnType<additional>
+>(async (data) => {
+  const auth = await getServerSession(authOptions);
+  if (!auth || !auth?.user?.id)
+    throw new ErrorHandler('Not Authorized', 'UNAUTHORIZED');
+
+  const { jobId, ...updateData } = data;
+  const parsedId = JobByIdSchema.parse({ id: jobId });
+
+  const result = JobPostSchema.parse(updateData);
+
+  let job = await prisma.job.findFirst({
+    where: { id: parsedId.id, userId: auth.user.id },
+  });
+
+  if (!job)
+    throw new ErrorHandler('Job not found or not authorized', 'NOT_FOUND');
+
+  // Update the job
+  job = await prisma.job.update({
+    where: { id: parsedId.id },
+    data: { ...result, isVerifiedJob: false },
+  });
+
+  const additonal = { isVerifiedJob: false, jobId: job.id };
+
+  return new SuccessResponse(
+    'Job updated successfully',
+    200,
+    additonal
+  ).serialize();
+});
