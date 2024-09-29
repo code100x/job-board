@@ -40,7 +40,6 @@ export const Signup = () => {
   async function signupHandler(data: SignupSchemaType) {
     try {
       const response = await signUp(data);
-
       if (!response.status) {
         toast({
           title: response.message || 'Something went wrong',

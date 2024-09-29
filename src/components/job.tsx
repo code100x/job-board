@@ -1,23 +1,34 @@
+'use client';
 import { JobType } from '@/types/jobs.types';
 import Icon from './ui/icon';
 import { formatSalary } from '@/lib/utils';
 import { Button } from './ui/button';
 import Image from 'next/image';
-import { MapPin, Share2 } from 'lucide-react';
+import { MapPin } from 'lucide-react';
+import { Twitter } from 'lucide-react';
 import Linkify from 'linkify-react';
 const options = {
   defaultProtocol: 'https',
   target: '_blank',
 };
 export const Job = ({ job }: { job: JobType }) => {
+  const shareOnTwitter = () => {
+    const tweetText = encodeURIComponent(
+      'I just read an amazing blog post! Check it out:'
+    );
+    const tweetUrl = encodeURIComponent(window.location.href);
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${tweetText}&url=${tweetUrl}`;
+    window.open(twitterUrl, '_blank');
+  };
+
   return (
     <aside className="col-span-1 flex flex-col gap-6 lg:col-span-4">
       <section className="grid gap-5 border-2 shadow-sm p-6 w-full bg-gradient-to-b from-[#F1F5F9] to-white dark:from-darkBgSecondary dark:to-darkBgTertiary rounded-lg">
         <div className="flex gap-4 items-center">
-          <div className="w-[4rem] h-[4rem] bg-primary/20 rounded-md">
+          <div className="w-[4rem] h-[4rem]  rounded-md">
             {job.companyLogo && (
               <Image
-                className="size-full object-cover dark:invert"
+                className="size-full object-cover "
                 src={job.companyLogo || ''}
                 width={'500'}
                 height={'500'}
@@ -33,21 +44,35 @@ export const Job = ({ job }: { job: JobType }) => {
             </div>
           </div>
         </div>
-        <div className="flex flex-wrap items-center gap-4">
-          <div className="px-4 py-1 w-fit text-blue-500 bg-blue-500/20 rounded-lg flex items-center justify-center text-xs md:text-sm font-bold">
-            {job.type && job.type.toUpperCase()}
+        <div className=" flex flex-col gap-6">
+          <div className="flex flex-wrap items-center gap-4">
+            <div className="px-4 py-1 w-fit text-blue-500 bg-blue-500/20 rounded-lg flex items-center justify-center text-xs md:text-sm font-bold">
+              {job.type && job.type.toUpperCase().replace('_', ' ')}
+            </div>
+
+            <span className="flex bg-green-500/20 font-bold rounded-lg px-4 py-1 text-green-500 text-xs md:text-sm items-center gap-0.5">
+              {job.minSalary && <Icon icon="currency" size={16} />}
+              {job.minSalary && job.maxSalary
+                ? `${formatSalary(job.minSalary)}-${formatSalary(job.maxSalary)}`
+                : 'Not disclosed'}
+            </span>
+
+            <div className="flex items-center gap-2">
+              <MapPin size={16} />
+              <p className="text-xs md:text-sm font-semibold">{job.address}</p>
+            </div>
           </div>
-
-          <span className="flex bg-green-500/20 font-bold rounded-lg px-4 py-1 text-green-500 text-xs md:text-sm items-center gap-0.5">
-            {job.minSalary && <Icon icon="currency" size={16} />}
-            {job.minSalary && job.maxSalary
-              ? `${formatSalary(job.minSalary)}-${formatSalary(job.maxSalary)}`
-              : 'Not disclosed'}
-          </span>
-
-          <div className="flex items-center gap-2">
-            <MapPin size={16} />
-            <p className="text-xs md:text-sm font-semibold">{job.address}</p>
+          <div className="w-full md:max-w-[60%] flex-wrap flex justify-start items-center gap-2">
+            {job.skills.map((skill, index) => {
+              return (
+                <span
+                  key={`job_skill_${index}`}
+                  className=" bg-gray-700/20 text-gray-600 dark:bg-gray-500/20 font-bold rounded-lg px-4 py-1 dark:text-gray-300 text-xs items-center gap-0.5"
+                >
+                  {skill}
+                </span>
+              );
+            })}
           </div>
         </div>
 
@@ -56,10 +81,12 @@ export const Job = ({ job }: { job: JobType }) => {
             Apply Now
           </Button>
           <Button
-            className="justify-self-start flex gap-2 items-center"
-            variant={'link'}
+            variant="outline"
+            size="sm"
+            className="flex items-center gap-2 py-4 px-6"
+            onClick={shareOnTwitter}
           >
-            <Share2 size={16} /> Share Job
+            Share on <Twitter size={16} />
           </Button>
         </div>
       </section>

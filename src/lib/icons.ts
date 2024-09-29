@@ -25,7 +25,6 @@ import {
   LogOut,
   SlidersHorizontal,
 } from 'lucide-react';
-
 const icons = {
   sparcle: Sparkles,
   rightarrow: ArrowRight,
