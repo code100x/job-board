@@ -132,6 +132,7 @@ const PostJobForm = () => {
         (await submitImage(file)) ?? 'https://wwww.example.com';
       ``;
       const response = await createJob(data);
+
       if (!response.status) {
         return toast({
           title: response.message || 'Error',

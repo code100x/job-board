@@ -9,7 +9,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/signin', req.url));
   }
   if (pathname === '/create' && token?.role !== 'ADMIN') {
-    return NextResponse.redirect(new URL('/', req.url)); // Redirect to an unauthorized page
+    return NextResponse.redirect(new URL('/', req.url));
   }
   return NextResponse.next();
 }
