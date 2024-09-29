@@ -51,17 +51,17 @@ export const Job = ({ job }: { job: JobType }) => {
             </div>
 
             <span className="flex bg-green-500/20 font-bold rounded-lg px-4 py-1 text-green-500 text-xs md:text-sm items-center gap-0.5">
-              {job.minSalary && <Icon icon="currency" size={16} />}
+              {!!job.minSalary && <Icon icon="currency" size={16} />}
               {job.minSalary && job.maxSalary
                 ? `${formatSalary(job.minSalary)}-${formatSalary(job.maxSalary)}`
                 : 'Not disclosed'}
             </span>
-
-            <div className="flex items-center gap-2">
-              <MapPin size={16} />
-              <p className="text-xs md:text-sm font-semibold">{job.address}</p>
-            </div>
           </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <MapPin size={16} />
+          <p className="text-xs md:text-sm font-semibold">{job.address}</p>
           <div className="w-full md:max-w-[60%] flex-wrap flex justify-start items-center gap-2">
             {job.skills.map((skill, index) => {
               return (
@@ -92,16 +92,27 @@ export const Job = ({ job }: { job: JobType }) => {
       </section>
 
       {/* job description */}
-      <section className="border-2 bg-[#F1F5F9] dark:bg-[#0F172A] h-[10rem] p-6 rounded-xl">
+      <section className="border-2 bg-[#F1F5F9] dark:bg-[#0F172A] h-auto max-h-[20rem] overflow-y-auto p-6 rounded-xl">
+        <h1 className="font-extrabold px-4 py-1 w-fit text-white bg-blue-500/20 rounded-lg text-xl ">
+          Job Description
+        </h1>
         <Linkify options={options}>
-          <p>{job.description}</p>
+          <div
+            className="my-4 text-neutral-100"
+            dangerouslySetInnerHTML={{ __html: job.description ?? '' }}
+          ></div>
         </Linkify>
       </section>
 
       {/* about company */}
-      <section className="border-2 bg-[#F1F5F9] dark:bg-[#0F172A] h-[10rem] p-6 rounded-xl">
-        <h1 className="font-bold">About {job.companyName}</h1>
-        <p className="my-4 text-sm text-gray-500">{job.description}</p>
+      <section className="border-2 bg-[#F1F5F9] dark:bg-[#0F172A] h-auto max-h-[15rem] overflow-y-auto p-6 rounded-xl">
+        <h1 className="font-extrabold px-4 py-1 w-fit text-white bg-blue-500/20 rounded-lg text-xl ">
+          About {job.companyName}
+        </h1>
+        <div
+          dangerouslySetInnerHTML={{ __html: job.companyBio ?? '' }}
+          className="my-4 text-neutral-200"
+        ></div>
       </section>
     </aside>
   );
