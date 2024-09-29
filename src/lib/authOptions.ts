@@ -6,13 +6,12 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { ErrorHandler } from './error';
 import { SigninSchema } from './validators/auth.validator';
 import GoogleProvider from 'next-auth/providers/google';
-import { serverEnv } from '@/env/server';
 
 export const authOptions = {
   providers: [
     GoogleProvider({
-      clientId: serverEnv.GOOGLE_CLIENT_ID as string,
-      clientSecret: serverEnv.GOOGLE_CLIENT_SECRET as string,
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
     CredentialsProvider({
       name: 'signin',

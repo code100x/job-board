@@ -132,6 +132,7 @@ const PostJobForm = () => {
         (await submitImage(file)) ?? 'https://wwww.example.com';
       ``;
       const response = await createJob(data);
+
       if (!response.status) {
         return toast({
           title: response.message || 'Error',
@@ -182,14 +183,14 @@ const PostJobForm = () => {
         <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center text-white w-full md:w-48">
           <MailOpenIcon className="w-8 h-8 mb-3 mx-auto text-purple-500" />
           <p className="text-base font-semibold mb-1">Emailed to</p>
-          <p className="text-gray-400 text-sm">290,301 subscribers</p>
+          <p className="text-gray-400 text-sm">17,000 subscribers</p>
         </div>
 
         <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center text-white w-full md:w-48">
           <LucideRocket className="w-8 h-8 mb-3 mx-auto text-orange-500" />
           <p className="text-base font-semibold mb-1">Reach</p>
           <p className="text-gray-400 text-sm">
-            300,000<span className="text-blue-500">+</span>
+            500,000<span className="text-blue-500">+</span>
           </p>
         </div>
       </div>
@@ -382,7 +383,6 @@ const PostJobForm = () => {
                 innerRef={gmapsInputRef}
                 form={form}
               ></DynamicGmapsAutoSuggest>
-
               <FormField
                 control={form.control}
                 name="application"

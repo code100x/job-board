@@ -28,9 +28,9 @@ import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { CompanyLogo } from './header';
-import spotifyLogo from '../../public/spotify.svg';
-import Image from 'next/image';
-import { ADMIN_ROLE } from '@/config/app.config';
+import { ADMIN_ROLE, USER_ROLE } from '@/config/app.config';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { getNameInitials } from '@/lib/utils';
 export function MobileNav() {
   const router = useRouter();
   const session = useSession();
@@ -84,26 +84,25 @@ export function MobileNav() {
                   </div>
                 ) : (
                   <div className="w-12 h-12 rounded-full flex items-center justify-center border-none ouline-none">
-                    <Image
-                      width={400}
-                      height={400}
-                      className="object-cover w-full h-full"
-                      src={spotifyLogo}
-                      alt="company-logo"
-                    />
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage
+                        src={
+                          session.data.user.image ? session.data.user.image : ''
+                        }
+                      />
+                      <AvatarFallback>
+                        {getNameInitials(session.data.user.name)}
+                      </AvatarFallback>
+                    </Avatar>
                   </div>
                 )}
                 <div className="flex flex-col items-start justify-center px-2 mt-2">
                   <p className="font-semibold text-lg dark:text-[#F8FAFC] text-[#020817]">
-                    {session.data?.user.role === ADMIN_ROLE
-                      ? 'Harkirat Singh'
-                      : 'User'}
+                    {session.data?.user.name}
                   </p>
                   <div className="flex items-center text-[#64748B] dark:text-[#94A3B8]">
                     <p className="py-1 text-sm  font-medium">
-                      {session.data?.user.role === ADMIN_ROLE
-                        ? 'admin@gmail.com'
-                        : 'work@spotify.com'}
+                      {session.data?.user.email}
                     </p>
                   </div>
                 </div>
@@ -115,22 +114,23 @@ export function MobileNav() {
                   <Item {...item} key={item.id} />
                 ))}
 
-                <Link href={'/create'} className="">
+                <Link href={'/signin'} className="">
                   <SheetClose className="w-full">
                     <div className="w-full rounded-lg p-2 my-2 bg-[#3259E8] hover:bg-[#3e63e9] text-white font-medium ">
-                      Post a job
+                      Login
                     </div>
                   </SheetClose>
                 </Link>
               </>
             )}
-            {session.status !== 'loading' && session.data?.user && (
-              <>
-                {userNavbar.map((item) => (
-                  <Item {...item} key={item.id} />
-                ))}
-              </>
-            )}
+            {session.status !== 'loading' &&
+              session.data?.user.role === USER_ROLE && (
+                <>
+                  {userNavbar.map((item) => (
+                    <Item {...item} key={item.id} />
+                  ))}
+                </>
+              )}
             {session.status !== 'loading' &&
               session.data?.user.role === ADMIN_ROLE && (
                 <>

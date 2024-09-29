@@ -6,7 +6,6 @@ import {
 } from '@/config/auth.config';
 import APP_PATHS from '@/config/path.config';
 import prisma from '@/config/prisma.config';
-import { serverEnv } from '@/env/server';
 import { withServerActionAsyncCatcher } from '@/lib/async-catch';
 import { ErrorHandler } from '@/lib/error';
 import {
@@ -53,8 +52,7 @@ export const signUp = withServerActionAsyncCatcher<
         },
       });
 
-      const confirmationLink = `${serverEnv.BASE_URL}/${APP_PATHS.VERIFY_EMAIL}/${verificationToken.token}`;
-
+      const confirmationLink = `${process.env.NEXTAUTH_URL}${APP_PATHS.VERIFY_EMAIL}/${verificationToken.token}`;
       await sendConfirmationEmail(
         data.email,
         confirmationLink,
@@ -160,7 +158,7 @@ const resendVerificationLinkUtil = async ({
     data: { token: newToken, ...(reIssue ? { createdAt: new Date() } : {}) },
   });
 
-  const confirmationLink = `${serverEnv.BASE_URL}/${APP_PATHS.VERIFY_EMAIL}/${newToken}`;
+  const confirmationLink = `${process.env.NEXTAUTH_URL}/${APP_PATHS.VERIFY_EMAIL}/${newToken}`;
   await sendConfirmationEmail(email, confirmationLink, type);
 };
 
@@ -246,7 +244,7 @@ export const forgetPassword = withServerActionAsyncCatcher<
     },
   });
 
-  const resetPasswordLink = `${serverEnv.BASE_URL}/${APP_PATHS.RESET_PASSWORD}/${verificationToken.token}`;
+  const resetPasswordLink = `${process.env.NEXTAUTH_URL}/${APP_PATHS.RESET_PASSWORD}/${verificationToken.token}`;
 
   await sendConfirmationEmail(email, resetPasswordLink, 'RESET_PASSWORD');
 
