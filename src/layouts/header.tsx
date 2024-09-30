@@ -117,9 +117,17 @@ const Header = () => {
                             src={
                               session.data.user.image
                                 ? session.data.user.image
-                                : ''
+                                : 'hello'
                             }
                           />
+                          {/* <Image
+                            src={session.data.user.image}
+                            alt={session.data.user.name}
+                            width={32}
+                            height={32}
+                            className="rounded-full"
+                          /> */}
+
                           <AvatarFallback>
                             {getNameInitials(session.data.user.name)}
                           </AvatarFallback>

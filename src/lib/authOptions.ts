@@ -87,7 +87,6 @@ export const authOptions = {
           },
         });
         if (existingUser?.blockedByAdmin) return false;
-
         if (!existingUser) {
           existingUser = await prisma.user.create({
             data: {
@@ -96,6 +95,7 @@ export const authOptions = {
               email: email as string,
               name: name as string,
               avatar,
+              isVerified: true,
               emailVerified: new Date(),
             },
           });
@@ -122,11 +122,10 @@ export const authOptions = {
           },
         });
         if (!loggedInUser) return null;
-
         token.id = loggedInUser.id;
         token.name = user.name;
         token.isVerified = user.isVerified;
-        token.role = user.role;
+        token.role = loggedInUser.role ? loggedInUser.role : user.role;
       }
       return token;
     },

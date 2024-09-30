@@ -130,7 +130,6 @@ const PostJobForm = () => {
     try {
       data.companyLogo =
         (await submitImage(file)) ?? 'https://wwww.example.com';
-      ``;
       const response = await createJob(data);
 
       if (!response.status) {
@@ -513,29 +512,6 @@ const PostJobForm = () => {
             </div>
           </form>
         </Form>
-
-        <div className="mb-2 bg-gray-900 w-full p-6 rounded-lg  mx-auto text-gray-300">
-          <h2 className="text-lg font-semibold mb-4 text-gray-300">Payment</h2>
-          <Button className="w-full rounded-full mt-4">
-            Continue to Payment
-          </Button>
-
-          <div className="flex mt-4 gap-2 flex-col items-center">
-            <h1 className="text-center text-gray-400">
-              &quot;I&apos;m a huge fan of remote work and 100xJobs is by far my
-              favorite job board.&quot;
-            </h1>
-            <Image
-              src={'/main.png'}
-              alt="100xJobs"
-              width={40}
-              height={40}
-              className="rounded-full"
-            />
-            <h1 className="text-gray-300">Harkirat Singh</h1>
-            <h1 className="text-sm text-gray-300">100xJobs.com</h1>
-          </div>
-        </div>
       </div>
     </div>
   );
