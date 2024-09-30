@@ -99,7 +99,7 @@ export const Signin = () => {
               href={APP_PATHS.FORGOT_PASSWORD}
               className="text-xs text-muted-foreground font-medium hover:underline"
             >
-              Forget your password?
+              Forgot your password?
             </Link>
           </div>
           <Button
