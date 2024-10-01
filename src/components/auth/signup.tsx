@@ -112,7 +112,7 @@ export const Signup = () => {
               href={APP_PATHS.FORGOT_PASSWORD}
               className="text-xs text-muted-foreground font-medium hover:underline"
             >
-              Forget your password?
+              Forgot your password?
             </Link>
           </div>
           <Button
@@ -123,7 +123,7 @@ export const Signup = () => {
             {form.formState.isSubmitting ? 'Please wait...' : 'Create Account'}
           </Button>
           <DemarcationLine />
-          <GoogleOauthButton label="Sign un with Google" />
+          <GoogleOauthButton label="Sign up with Google" />
         </form>
       </Form>
       <div className="flex items-center justify-center mt-6">
