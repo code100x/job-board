@@ -171,7 +171,7 @@ const PostJobForm = () => {
   if (session.status === 'loading') return null;
 
   return (
-    <div className="flex flex-col items-center gap-y-10 justify-center">
+    <div className="flex flex-col items-center gap-y-10 justify-center mb-20">
       <div className="w-full md:justify-center mt-4 flex flex-col md:flex-row gap-2">
         <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center text-white w-full md:w-48">
           <Calendar className="w-8 h-8 mb-3 mx-auto text-green-500" />
