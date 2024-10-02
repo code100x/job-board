@@ -39,6 +39,7 @@ export const createJob = withServerActionAsyncCatcher<
   const result = JobPostSchema.parse(data);
   const {
     companyName,
+    skills,
     companyBio,
     companyEmail,
     type,
@@ -51,7 +52,10 @@ export const createJob = withServerActionAsyncCatcher<
     workMode,
     description,
     hasSalaryRange,
+    hasExperiencerange,
     maxSalary,
+    minExperience,
+    maxExperience,
     minSalary,
   } = result;
   await prisma.job.create({
@@ -59,6 +63,10 @@ export const createJob = withServerActionAsyncCatcher<
       userId: auth.user.id,
       title,
       description,
+      hasExperiencerange,
+      minExperience,
+      maxExperience,
+      skills,
       companyName,
       companyBio,
       companyEmail,

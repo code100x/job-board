@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { WorkMode, EmployementType } from '@prisma/client';
+import { WorkMode, EmployementType, Currency } from '@prisma/client';
 
 export const JobPostSchema = z
   .object({
@@ -11,6 +11,9 @@ export const JobPostSchema = z
     application: z.string().min(1, 'Application link is required'),
     type: z.nativeEnum(EmployementType, {
       message: 'Employment Type is Required',
+    }),
+    currency: z.nativeEnum(Currency, {
+      message: 'Curreny is required',
     }),
     skills: z.array(z.string()).optional(),
     category: z.string(),
@@ -43,22 +46,48 @@ export const JobPostSchema = z
     if (data.hasSalaryRange) {
       if (!data.minSalary) {
         return ctx.addIssue({
-          message: 'minSalary is required ',
+          message: 'Minimum Salary is required ',
           path: ['minSalary'],
           code: z.ZodIssueCode.custom,
         });
       }
       if (!data.maxSalary) {
         return ctx.addIssue({
-          message: 'maxSalary is required ',
+          message: 'Maximum Salary is required ',
           path: ['maxSalary'],
           code: z.ZodIssueCode.custom,
         });
       }
       if (data.maxSalary <= data.minSalary) {
         return ctx.addIssue({
-          message: 'minSalary cannot be greater than or equal to maxSalary',
+          message:
+            'Minimum Salary cannot be greater than or equal to Maximum Salary',
           path: ['minSalary'],
+          code: z.ZodIssueCode.custom,
+        });
+      }
+    }
+
+    if (data.hasExperiencerange) {
+      if (!data.minExperience) {
+        return ctx.addIssue({
+          message: 'Minimum Experience is required ',
+          path: ['minExperience'],
+          code: z.ZodIssueCode.custom,
+        });
+      }
+      if (!data.maxExperience) {
+        return ctx.addIssue({
+          message: 'Maximum Experience is required ',
+          path: ['maxExperience'],
+          code: z.ZodIssueCode.custom,
+        });
+      }
+      if (data.minExperience >= data.maxExperience) {
+        return ctx.addIssue({
+          message:
+            'Minimum Experience cannot be greater than or equal to Maximum Experience',
+          path: ['minExperience'],
           code: z.ZodIssueCode.custom,
         });
       }

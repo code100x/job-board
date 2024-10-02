@@ -5,6 +5,7 @@ import Providers from '@/providers/providers';
 import type { Metadata } from 'next';
 import './globals.css';
 import localFont from 'next/font/local';
+import { startAuthTokenCronJob } from '@/actions/skills.cron';
 
 const satoshi = localFont({
   display: 'swap',
@@ -25,6 +26,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  startAuthTokenCronJob();
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body
