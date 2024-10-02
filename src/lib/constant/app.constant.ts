@@ -12,12 +12,12 @@ export const GITHUB_REPO = 'https://github.com/code100x/job-board';
 
 export const nonUserNavbar = [
   { id: 1, label: 'Explore jobs', path: APP_PATHS.JOBS },
-  { id: 2, label: 'Contact us', path: APP_PATHS.TESTIMONIALS },
+  { id: 2, label: 'Contact us', path: APP_PATHS.CONTACT_US },
 ];
 
 export const userNavbar = [
   { id: 1, label: 'Explore jobs', path: APP_PATHS.JOBS },
-  { id: 2, label: 'Contact us', path: APP_PATHS.TESTIMONIALS },
+  { id: 2, label: 'Contact us', path: APP_PATHS.CONTACT_US },
 ];
 export const adminNavbar = [
   { id: 1, label: 'Explore jobs', path: APP_PATHS.JOBS },
