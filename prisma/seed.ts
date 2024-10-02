@@ -298,6 +298,7 @@ async function seedUsers() {
               name: u.name,
               password: hashedPassword,
               role: u.role || Role.USER,
+              emailVerified: new Date(),
             },
             update: {},
           })
@@ -332,7 +333,7 @@ async function seedJobs() {
             currency: j.currency,
             application: j.application,
             city: faker.location.city(),
-            address: faker.location.streetAddress(),
+            address: faker.location.city(),
             hasExperiencerange: j.hasExperiencerange,
             minExperience: j.minExperience,
             maxExperience: j.maxExperience,

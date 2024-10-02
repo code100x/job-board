@@ -42,7 +42,7 @@ export const options = {
           },
         });
 
-        if (!user)
+        if (!user || !user.password)
           throw new ErrorHandler(
             'Email or password is incorrect',
             'AUTHENTICATION_FAILED'

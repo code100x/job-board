@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   JobPostSchema,
@@ -34,15 +34,23 @@ import { Label } from './ui/label';
 import dynamic from 'next/dynamic';
 import { uploadFileAction } from '@/actions/upload-to-cdn';
 
-const DynamicLineDrawingAnimation = dynamic(
-  () => import('./gmaps-autosuggest'),
-  {
-    ssr: false,
-  }
-);
+const DynamicGmapsAutoSuggest = dynamic(() => import('./gmaps-autosuggest'), {
+  ssr: false,
+});
 import { EmployementType } from '@prisma/client';
+import _ from 'lodash';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import APP_PATHS from '@/config/path.config';
 
 const PostJobForm = () => {
+  const session = useSession();
+  const router = useRouter();
+  useEffect(() => {
+    if (session.status !== 'loading' && session.status === 'unauthenticated')
+      router.push(`${APP_PATHS.SIGNIN}?redirectTo=/create`);
+  }, [session.status]);
+
   const { toast } = useToast();
   const companyLogoImg = useRef<HTMLImageElement>(null);
   const form = useForm<JobPostSchemaType>({
@@ -56,15 +64,18 @@ const PostJobForm = () => {
       city: '',
       address: '',
       companyLogo: '',
+      hasExperiencerange: false,
       workMode: 'remote',
       type: EmployementType.Full_time,
       category: 'design',
       hasSalaryRange: true,
-      minSalary: 0,
-      maxSalary: 0,
+      minSalary: undefined,
+      maxSalary: undefined,
       application: '',
     },
   });
+
+  const gmapsInputRef = useRef<any>(null);
 
   const handleClick = () => {
     //@ts-ignore
@@ -119,8 +130,8 @@ const PostJobForm = () => {
     try {
       data.companyLogo =
         (await submitImage(file)) ?? 'https://wwww.example.com';
-      ``;
       const response = await createJob(data);
+
       if (!response.status) {
         return toast({
           title: response.message || 'Error',
@@ -132,6 +143,11 @@ const PostJobForm = () => {
         variant: 'success',
       });
       setPreviewImg(null);
+
+      if (gmapsInputRef.current) {
+        gmapsInputRef.current.reset();
+      }
+
       form.reset(form.formState.defaultValues);
     } catch (_error) {
       toast({
@@ -151,34 +167,37 @@ const PostJobForm = () => {
     }
     form.setValue('companyLogo', 'https://wwww.example.com');
   }, [watchHasSalaryRange, form]);
+
+  if (session.status === 'loading') return null;
+
   return (
-    <div className="flex flex-col items-center gap-y-10 justify-center">
-      <div className=" mt-4 flex gap-2 ">
-        <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center text-white flex-1 sm:min-w-[12rem]">
+    <div className="flex flex-col items-center gap-y-10 justify-center mb-20">
+      <div className="w-full md:justify-center mt-4 flex flex-col md:flex-row gap-2">
+        <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center text-white w-full md:w-48">
           <Calendar className="w-8 h-8 mb-3 mx-auto text-green-500" />
           <p className="text-base font-semibold mb-1">Posted for</p>
           <p className="text-gray-400 text-sm">30 days</p>
         </div>
 
-        <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center text-white flex-1 sm:min-w-[12rem]">
+        <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center text-white w-full md:w-48">
           <MailOpenIcon className="w-8 h-8 mb-3 mx-auto text-purple-500" />
           <p className="text-base font-semibold mb-1">Emailed to</p>
-          <p className="text-gray-400 text-sm">290,301 subscribers</p>
+          <p className="text-gray-400 text-sm">17,000 subscribers</p>
         </div>
 
-        <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center text-white flex-1 sm:min-w-[12rem]">
+        <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center text-white w-full md:w-48">
           <LucideRocket className="w-8 h-8 mb-3 mx-auto text-orange-500" />
           <p className="text-base font-semibold mb-1">Reach</p>
           <p className="text-gray-400 text-sm">
-            300,000<span className="text-blue-500">+</span>
+            500,000<span className="text-blue-500">+</span>
           </p>
         </div>
       </div>
-      <div className="flex-col  justify-center">
+      <div className="flex-col justify-center">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleFormSubmit)}
-            className="flex flex-col max-w-full max-sm:p-2 "
+            className="flex flex-col max-w-full"
           >
             <div className="bg-gray-900 w-full  text-gray-300 p-6 rounded-lg space-y-4">
               <h2 className="text-2xl font-semibold mb-6">Job details</h2>
@@ -200,7 +219,7 @@ const PostJobForm = () => {
                 )}
               />
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols md:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
                   name="category"
@@ -274,10 +293,13 @@ const PostJobForm = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="full-time">Full-time</SelectItem>
-                          <SelectItem value="part-time">Part-time</SelectItem>
-                          <SelectItem value="contract">Contract</SelectItem>
-                          <SelectItem value="internship">Internship</SelectItem>
+                          {Object.keys(EmployementType).map((item, index) => {
+                            return (
+                              <SelectItem key={index} value={item}>
+                                {_.startCase(item)}
+                              </SelectItem>
+                            );
+                          })}
                         </SelectContent>
                       </Select>
                     </FormItem>
@@ -356,10 +378,10 @@ const PostJobForm = () => {
                 </div>
               </div>
 
-              <DynamicLineDrawingAnimation
+              <DynamicGmapsAutoSuggest
+                innerRef={gmapsInputRef}
                 form={form}
-              ></DynamicLineDrawingAnimation>
-
+              ></DynamicGmapsAutoSuggest>
               <FormField
                 control={form.control}
                 name="application"
@@ -405,7 +427,7 @@ const PostJobForm = () => {
                     <Image
                       src={previewImg}
                       ref={companyLogoImg}
-                      className="object-cover"
+                      className="object-cover w-full h-full"
                       alt="Company Logo"
                       width={80}
                       height={80}
@@ -427,7 +449,7 @@ const PostJobForm = () => {
               </div>
 
               {/* Company Name and Email Fields */}
-              <div className="flex gap-4 mb-4">
+              <div className="flex flex-col md:flex-row gap-4 mb-4">
                 <div className="flex-1">
                   <FormField
                     control={form.control}
@@ -490,29 +512,6 @@ const PostJobForm = () => {
             </div>
           </form>
         </Form>
-
-        <div className="mb-2 bg-gray-900 w-full p-6 rounded-lg  mx-auto text-gray-300">
-          <h2 className="text-lg font-semibold mb-4 text-gray-300">Payment</h2>
-          <Button className="w-full rounded-full mt-4">
-            Continue to Payment
-          </Button>
-
-          <div className="flex mt-4 gap-2 flex-col items-center">
-            <h1 className="text-center text-gray-400">
-              &quot;I&apos;m a huge fan of remote work and 100xJobs is by far my
-              favorite job board.&quot;
-            </h1>
-            <Image
-              src={'/main.png'}
-              alt="100xJobs"
-              width={40}
-              height={40}
-              className="rounded-full"
-            />
-            <h1 className="text-gray-300">Harkirat Singh</h1>
-            <h1 className="text-sm text-gray-300">100xJobs.com</h1>
-          </div>
-        </div>
       </div>
     </div>
   );

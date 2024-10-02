@@ -5,7 +5,7 @@ import {
   nonUserNavbar,
   userNavbar,
 } from '@/lib/constant/app.constant';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { NavItem } from '@/components/navitem';
 import Image from 'next/image';
@@ -14,9 +14,26 @@ import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { ADMIN_ROLE } from '@/config/app.config';
 import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useRouter } from 'next/navigation';
+import { getNameInitials } from '@/lib/utils';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import icons from '@/lib/icons';
 export const CompanyLogo = () => {
   return (
-    <div className="flex items-center gap-2">
+    <div
+      className="flex items-center gap-2 cursor-pointer"
+      onClick={() => {
+        window.location.href = '/';
+      }}
+    >
       <Image
         src={'/main.svg'}
         alt="100xJobs"
@@ -34,8 +51,9 @@ export const CompanyLogo = () => {
 const Header = () => {
   const session = useSession();
   const { theme, setTheme } = useTheme();
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
-
+  const [open, setOpen] = useState(false);
   const toggleTheme = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };
@@ -82,18 +100,79 @@ const Header = () => {
                   )}
                 </button>
               )}
+            </div>
+            <div className="hidden md:block">
+              {session.status === 'loading' ? (
+                <Skeleton className="h-8 w-8 rounded-full" />
+              ) : session.status === 'authenticated' ? (
+                <>
+                  <DropdownMenu open={open} onOpenChange={setOpen}>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        className="relative h-8 w-8 rounded-full"
+                      >
+                        <Avatar className="h-8 w-8">
+                          <AvatarImage
+                            src={
+                              session.data.user.image
+                                ? session.data.user.image
+                                : 'hello'
+                            }
+                          />
+                          {/* <Image
+                            src={session.data.user.image}
+                            alt={session.data.user.name}
+                            width={32}
+                            height={32}
+                            className="rounded-full"
+                          /> */}
 
-              {session.status !== 'loading' && !session.data?.user && (
-                <Link href={'/create'}>
-                  <button className="rounded-lg p-2 bg-[#3259E8] hover:bg-[#3e63e9] text-white font-medium max-sm:hidden">
-                    Post a job
-                  </button>
-                </Link>
+                          <AvatarFallback>
+                            {getNameInitials(session.data.user.name)}
+                          </AvatarFallback>
+                        </Avatar>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                      className="w-56"
+                      align="end"
+                      forceMount
+                    >
+                      <DropdownMenuItem>
+                        <icons.profile className="mr-2 h-4 w-4" />
+                        <span>Profile</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        onClick={() => {
+                          signOut();
+                        }}
+                      >
+                        <icons.logout className="mr-2 h-4 w-4" />
+                        <span>Log out</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </>
+              ) : (
+                <div>
+                  <Button
+                    className="rounded-lg"
+                    size="sm"
+                    variant="default"
+                    onClick={() => {
+                      router.push('/signin');
+                    }}
+                  >
+                    Login
+                  </Button>
+                </div>
               )}
+            </div>
 
-              <div className="md:hidden flex justify-center ml-3">
-                <MobileNav />
-              </div>
+            <div className="md:hidden flex justify-center ml-3">
+              <MobileNav />
             </div>
           </div>
         </div>
