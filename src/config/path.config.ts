@@ -6,7 +6,7 @@ const APP_PATHS = {
   RESET_PASSWORD: '/reset-password',
   JOBS: '/jobs',
   MANAGE_JOBS: '/jobs/manage',
-  CONTACT_US: '',
+  CONTACT_US: 'mailto:vineetagarwal.now@gmail.com',
   TESTIMONIALS: '#testimonials',
   FAQS: '#faq',
   VERIFY_EMAIL: '/verify-email',

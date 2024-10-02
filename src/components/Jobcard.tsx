@@ -1,4 +1,4 @@
-import { Briefcase } from 'lucide-react';
+import { AlertCircle, Briefcase } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Icon from './ui/icon';
@@ -11,16 +11,30 @@ export default function JobCard({ job }: { job: JobType }) {
     <Link
       key={job.id}
       href={`/jobs/${job.id}`}
-      className="sm:text-sm text-xs text-slate-500 dark:text-slate-400 font-medium flex flex-col border p-6 bg-slate-100 gap-4 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg "
+      className="min-h-[250px] overflow-y-scroll sm:text-sm text-xs text-slate-500 dark:text-slate-400 font-medium flex flex-col border p-6 bg-slate-100 gap-4 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg "
     >
       <div className="flex w-full gap-3">
         <div className="size-16 relative">
-          <Image
-            alt="company_logo"
-            className="object-cover"
-            src={job.companyLogo}
-            fill
-          />
+          {job.companyLogo ? (
+            job.companyLogo === 'https://wwww.example.com' ? (
+              <div className=" w-full h-full flex items-center justify-center rounded-md">
+                <Image
+                  src={'/main.svg'}
+                  width={500}
+                  height={500}
+                  alt="company-logo"
+                />
+              </div>
+            ) : (
+              <Image
+                className="size-full object-cover "
+                src={job.companyLogo || ''}
+                width={'500'}
+                height={'500'}
+                alt="company-logo"
+              />
+            )
+          ) : null}
         </div>
         <div className="flex flex-col gap-2">
           <h1 className="font-bold text-black dark:text-white text-xl">
@@ -55,14 +69,20 @@ export default function JobCard({ job }: { job: JobType }) {
         </span>
       </div>
       <div className="flex flex-wrap gap-2">
-        {job.skills.map((item, index) => (
-          <div
-            key={index}
-            className="bg-slate-500 bg-opacity-10 text-slate-500 dark:text-slate-400 font-medium text-sm rounded-full px-2"
-          >
-            {item}
+        {job.skills && job.skills.length !== 0 ? (
+          job.skills.map((item, index) => (
+            <div
+              key={index}
+              className="bg-slate-500 bg-opacity-10 text-slate-500 dark:text-slate-400 font-medium text-sm rounded-full px-2"
+            >
+              {item}
+            </div>
+          ))
+        ) : (
+          <div className="mt-3 bg-slate-500 flex justify-start items-center gap-3 bg-opacity-10 text-slate-500 dark:text-slate-400 font-medium text-sm rounded-full px-2">
+            <AlertCircle size={12} /> No skills provided
           </div>
-        ))}
+        )}
       </div>
     </Link>
   );

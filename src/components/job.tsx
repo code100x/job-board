@@ -22,19 +22,25 @@ export const Job = ({ job }: { job: JobType }) => {
   };
 
   return (
-    <aside className="col-span-1 flex flex-col gap-6 lg:col-span-4">
+    <aside className="col-span-1 flex flex-col gap-6 lg:col-span-4 ">
       <section className="grid gap-5 border-2 shadow-sm p-6 w-full bg-gradient-to-b from-[#F1F5F9] to-white dark:from-darkBgSecondary dark:to-darkBgTertiary rounded-lg">
         <div className="flex gap-4 items-center">
           <div className="w-[4rem] h-[4rem]  rounded-md">
-            {job.companyLogo && (
-              <Image
-                className="size-full object-cover "
-                src={job.companyLogo || ''}
-                width={'500'}
-                height={'500'}
-                alt="company-logo"
-              />
-            )}
+            {job.companyLogo ? (
+              job.companyLogo === 'https://www.example.com' ? (
+                <div className="bg-gray-200 w-full h-full flex items-center justify-center rounded-md">
+                  hi
+                </div>
+              ) : (
+                <Image
+                  className="size-full object-cover "
+                  src={job.companyLogo || ''}
+                  width={'500'}
+                  height={'500'}
+                  alt="company-logo"
+                />
+              )
+            ) : null}
           </div>
           <div className="flex flex-col gap-2">
             <h3 className="font-bold text-2xl">{job.title}</h3>
