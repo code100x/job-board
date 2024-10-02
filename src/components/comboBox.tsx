@@ -16,6 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { LoadingSpinner } from './loading-spinner';
 
 export type TcomboBoxValue = { value: string; label: string };
 
@@ -59,7 +60,9 @@ export function Combobox({
           />
           <CommandList>
             {isLoading ? (
-              <CommandEmpty>Loading</CommandEmpty>
+              <CommandEmpty>
+                <LoadingSpinner></LoadingSpinner>
+              </CommandEmpty>
             ) : (
               <>
                 {!dropdownValues.length && (
