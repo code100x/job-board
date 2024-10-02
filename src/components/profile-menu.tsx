@@ -10,7 +10,7 @@ import {
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import Icon from './ui/icon';
-import { toast } from './ui/use-toast';
+import { toast } from 'react-hot-toast';
 import APP_PATHS from '@/config/path.config';
 import { useRouter } from 'next/navigation';
 
@@ -42,6 +42,14 @@ export function ProfileMenu() {
       });
     }
   };
+
+  const handleManageProfile = () => {
+    toast('Coming soon!', {
+      icon: '🚀',
+      duration: 2000,
+    });
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -55,6 +63,9 @@ export function ProfileMenu() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={handleManageProfile}>
+          Manage Profile
+        </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href={'/create'}>Create Job</Link>
         </DropdownMenuItem>
