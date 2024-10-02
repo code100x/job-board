@@ -72,6 +72,7 @@
     "react-hook-form": "^7.52.2",
     "react-icons": "^5.2.1",
     "react-quill": "^2.0.0",
+    "react-tweet": "^3.2.1",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^10.0.0",
