@@ -7,11 +7,11 @@ var cron = require('node-cron');
 
 const url = 'https://auth.emsicloud.com/connect/token';
 
-export async function startAuthTokenCronJob() {
+async function startAuthTokenCronJob() {
   // don't run the cron job if its already running
-  fetchAuthTokenCronJob();
+  await fetchAuthTokenCronJob();
   // Schedule the cron to run every 45 minutes , the token resets after one hour
-  cron.schedule('*/10 * * * * *', async () => {
+  cron.schedule('*/45 * * * * *', async () => {
     await fetchAuthTokenCronJob();
   });
   return NextResponse.json({ data: 'Success', status: 200 });
@@ -47,3 +47,5 @@ async function fetchAuthTokenCronJob() {
 export async function getBearerToken() {
   return bearerToken.value;
 }
+
+startAuthTokenCronJob();
