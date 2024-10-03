@@ -10,12 +10,13 @@ import {
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import Icon from './ui/icon';
-import { toast } from 'react-hot-toast';
+import { useToast } from '@/components/ui/use-toast'; // Add this import
 import APP_PATHS from '@/config/path.config';
 import { useRouter } from 'next/navigation';
 
 export function ProfileMenu() {
   const router = useRouter();
+  const { toast } = useToast(); // Add this line
 
   const handleSignout = async () => {
     try {
@@ -31,7 +32,7 @@ export function ProfileMenu() {
       }
       toast({
         title: 'Logout successful!',
-        variant: 'success',
+        variant: 'default', // Change this to match your toaster's variants
       });
       const redirect = APP_PATHS.HOME;
       router.push(redirect);
@@ -44,8 +45,9 @@ export function ProfileMenu() {
   };
 
   const handleManageProfile = () => {
-    toast('Coming soon!', {
-      icon: '🚀',
+    toast({
+      title: 'Coming soon!',
+      description: 'This feature is not yet available.',
       duration: 2000,
     });
   };
