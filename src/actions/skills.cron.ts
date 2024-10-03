@@ -11,7 +11,7 @@ async function startAuthTokenCronJob() {
   // don't run the cron job if its already running
   await fetchAuthTokenCronJob();
   // Schedule the cron to run every 45 minutes , the token resets after one hour
-  cron.schedule('*/45 * * * * *', async () => {
+  cron.schedule('*/45 * * * *', async () => {
     await fetchAuthTokenCronJob();
   });
   return NextResponse.json({ data: 'Success', status: 200 });
