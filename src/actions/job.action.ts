@@ -282,6 +282,9 @@ export const getCityFilters = async () => {
 export const getRecentJobs = async () => {
   try {
     const recentJobs = await prisma.job.findMany({
+      where: {
+        isVerifiedJob: true,
+      },
       orderBy: {
         postedAt: 'desc',
       },
