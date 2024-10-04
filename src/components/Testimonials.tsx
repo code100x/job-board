@@ -1,23 +1,27 @@
 'use client';
-import { testimonials } from '@/lib/constant/testimonials.constants';
-import TestimonialCard from './TestimonialCard';
+import React from 'react';
+import { InfiniteMovingCards } from './ui/infinite-moving-cards';
+
+const tweetIds = [
+  '1837845866289209697',
+  '1834930679877865784',
+  '1834096118218801563',
+  '1832413072960389558',
+  '1829435530913714557',
+  '1827998618256544145',
+  '1826968639049724010',
+];
+
 export default function Testimonials() {
   return (
-    <div
-      id="testimonials"
-      className="w-full h-fit md:px-16 px-5 flex flex-col items-center py-10 dark:bg-[#020817] bg-[#FFFFFF]"
-    >
+    <div className="flex justify-center items-center min-h-fit max-w-[100vw] overflow-hidden flex-col">
       <div className="w-full h-fit flex flex-col items-center">
-        <h1 className="font-bold md:text-4xl text-3xl">Testimonials</h1>
-        <p className="md:text-sm text-xs py-2 font-semibold text-[#64748B] dark:text-[#94A3B8]">
+        <h1 className="font-bold text-2xl md:text-4xl">Testimonials</h1>
+        <p className="text-sm md:text-base py-2 font-semibold text-[#64748B] dark:text-[#94A3B8]">
           Real Success Stories from Job Seekers and Employers
         </p>
       </div>
-      <div className="w-full grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-2 items-center mt-10">
-        {testimonials.map((testimonial, i) => (
-          <TestimonialCard key={i} testimonial={testimonial} />
-        ))}
-      </div>
+      <InfiniteMovingCards items={tweetIds} direction="right" speed="slow" />
     </div>
   );
 }

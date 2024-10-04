@@ -17,22 +17,31 @@ const page = async ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   }
   const parsedSearchParams = parsedData.data;
   return (
-    <div className="container flex gap-5 pt-5 mt-10">
-      <div className="hidden sm:block border  h-fit rounded-lg w-[310px] ">
-        <JobFilters searchParams={parsedSearchParams} />
+    <div className="container grid sm:gap-6 gap-4 mt-12">
+      <div className="grid gap-2">
+        <h1 className="text-3xl sm:text-4xl font-bold">Explore Jobs</h1>
+        <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
+          Explore thousands of remote and onsite jobs that match your skills and
+          aspirations.
+        </p>
       </div>
-      <div className="grow">
-        <JobsHeader searchParams={parsedSearchParams} />
-        <Suspense
-          key={JSON.stringify(parsedSearchParams)}
-          fallback={
-            <div className="flex justify-center items-center h-full gap-5 ">
-              <Loader />
-            </div>
-          }
-        >
-          <AllJobs searchParams={parsedSearchParams} />
-        </Suspense>
+      <div className="flex gap-6">
+        <div className="hidden sm:block border  h-fit rounded-lg w-[310px] ">
+          <JobFilters searchParams={parsedSearchParams} />
+        </div>
+        <div className="grow">
+          <JobsHeader searchParams={parsedSearchParams} />
+          <Suspense
+            key={JSON.stringify(parsedSearchParams)}
+            fallback={
+              <div className="flex justify-center items-center h-full gap-5 ">
+                <Loader />
+              </div>
+            }
+          >
+            <AllJobs searchParams={parsedSearchParams} />
+          </Suspense>
+        </div>
       </div>
     </div>
   );
