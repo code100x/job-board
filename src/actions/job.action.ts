@@ -14,7 +14,7 @@ import {
 } from '@/lib/validators/jobs.validator';
 import { getJobFilters } from '@/services/jobs.services';
 import { ServerActionReturnType } from '@/types/api.types';
-import { getAllJobsAdditonalType, getJobType } from '@/types/jobs.types';
+import { getAllJobsAdditionalType, getJobType } from '@/types/jobs.types';
 import { redirect } from 'next/navigation';
 
 type additional = {
@@ -53,13 +53,13 @@ export const createJob = withSession<
   const message = isVerifiedJob
     ? 'Job created successfully'
     : 'Job created successfully, waiting for admin approval';
-  const additonal = { isVerifiedJob };
-  return new SuccessResponse(message, 201, additonal).serialize();
+  const additional = { isVerifiedJob };
+  return new SuccessResponse(message, 201, additional).serialize();
 });
 
 export const getAllJobs = withServerActionAsyncCatcher<
   JobQuerySchemaType,
-  ServerActionReturnType<getAllJobsAdditonalType>
+  ServerActionReturnType<getAllJobsAdditionalType>
 >(async (data) => {
   if (data?.workmode && !Array.isArray(data?.workmode)) {
     data.workmode = Array.of(data?.workmode);
