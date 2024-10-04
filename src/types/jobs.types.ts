@@ -9,7 +9,7 @@ export type JobType = {
   companyName: string;
   postedAt: Date;
 };
-export type getAllJobsAdditonalType = {
+export type getAllJobsAdditionalType = {
   jobs: JobType[];
   totalJobs: number;
 };
