@@ -37,11 +37,12 @@ import { uploadFileAction } from '@/actions/upload-to-cdn';
 const DynamicGmapsAutoSuggest = dynamic(() => import('./gmaps-autosuggest'), {
   ssr: false,
 });
-import { EmployementType } from '@prisma/client';
+import { Currency, EmployementType } from '@prisma/client';
 import _ from 'lodash';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import APP_PATHS from '@/config/path.config';
+import { SkillsCombobox } from './skills-combobox';
 
 const PostJobForm = () => {
   const session = useSession();
@@ -64,13 +65,16 @@ const PostJobForm = () => {
       city: '',
       address: '',
       companyLogo: '',
-      hasExperiencerange: false,
+      currency: 'USD',
+      hasExperiencerange: true,
+      minExperience: 0,
+      maxExperience: 0,
       workMode: 'remote',
       type: EmployementType.Full_time,
       category: 'design',
       hasSalaryRange: true,
-      minSalary: undefined,
-      maxSalary: undefined,
+      minSalary: 0,
+      maxSalary: 0,
       application: '',
     },
   });
@@ -149,6 +153,7 @@ const PostJobForm = () => {
       }
 
       form.reset(form.formState.defaultValues);
+      setComboBoxSelectedValues([]);
     } catch (_error) {
       toast({
         title: 'Something went wrong will creating job',
@@ -158,6 +163,11 @@ const PostJobForm = () => {
     }
   };
   const watchHasSalaryRange = form.watch('hasSalaryRange');
+  const watchHasExperienceRange = form.watch('hasExperiencerange');
+
+  const [comboBoxSelectedValues, setComboBoxSelectedValues] = useState<
+    string[]
+  >([]);
 
   React.useEffect(() => {
     if (!watchHasSalaryRange) {
@@ -171,7 +181,7 @@ const PostJobForm = () => {
   if (session.status === 'loading') return null;
 
   return (
-    <div className="flex flex-col items-center gap-y-10 justify-center mb-20">
+    <div className="flex flex-col items-center w-[30rem] gap-y-10 justify-center mb-20">
       <div className="w-full md:justify-center mt-4 flex flex-col md:flex-row gap-2">
         <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center text-white w-full md:w-48">
           <Calendar className="w-8 h-8 mb-3 mx-auto text-green-500" />
@@ -193,13 +203,13 @@ const PostJobForm = () => {
           </p>
         </div>
       </div>
-      <div className="flex-col justify-center">
+      <div className="flex-col w-full justify-center">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleFormSubmit)}
             className="flex flex-col max-w-full"
           >
-            <div className="bg-gray-900 w-full  text-gray-300 p-6 rounded-lg space-y-4">
+            <div className="bg-gray-900 w-full text-gray-300 p-6 rounded-lg space-y-7">
               <h2 className="text-2xl font-semibold mb-6">Job details</h2>
 
               <FormField
@@ -373,15 +383,121 @@ const PostJobForm = () => {
                           </FormItem>
                         )}
                       />
+
+                      <FormField
+                        control={form.control}
+                        name="currency"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Currency</FormLabel>
+                            <Select
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                            >
+                              <FormControl>
+                                <SelectTrigger className="bg-gray-800 border-none text-white">
+                                  <SelectValue placeholder="Select a verified email to display" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {Object.keys(Currency).map((c, index) => {
+                                  return (
+                                    <SelectItem key={index} value={c}>
+                                      {c}
+                                    </SelectItem>
+                                  );
+                                })}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
                     </div>
                   )}
                 </div>
               </div>
 
-              <DynamicGmapsAutoSuggest
-                innerRef={gmapsInputRef}
-                form={form}
-              ></DynamicGmapsAutoSuggest>
+              <div className="flex flex-col-2 gap-2">
+                <div className="flex flex-col gap-2">
+                  <div className="">
+                    <Label>Experience Range in Years</Label>
+                  </div>
+                  <div>
+                    <FormField
+                      control={form.control}
+                      name="hasExperiencerange"
+                      render={({ field }) => (
+                        <FormItem className="flex items-center space-y-0 gap-2">
+                          <FormControl>
+                            <Switch
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                              className="data-[state=checked]:bg-gray-300 data-[state=unchecked]:bg-gray-400"
+                            />
+                          </FormControl>
+
+                          <FormLabel className="mt-0">
+                            Is there an experience range required for this role
+                            ?
+                          </FormLabel>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  {watchHasExperienceRange && (
+                    <div className="flex gap-4">
+                      <FormField
+                        control={form.control}
+                        name="minExperience"
+                        render={({ field }) => (
+                          <FormItem className="flex-1">
+                            <div className="space-y-0.5">
+                              <FormLabel>Min</FormLabel>
+                            </div>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                className="w-full bg-gray-800 border-gray-400"
+                                placeholder="0"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="maxExperience"
+                        render={({ field }) => (
+                          <FormItem className="flex-1">
+                            <div className="space-y-0.5">
+                              <FormLabel>Max</FormLabel>
+                            </div>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                className="w-full bg-gray-800 border-gray-400"
+                                placeholder="0"
+                              />
+                            </FormControl>{' '}
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <FormLabel className="font-medium">Loction</FormLabel>
+                <DynamicGmapsAutoSuggest
+                  innerRef={gmapsInputRef}
+                  form={form}
+                ></DynamicGmapsAutoSuggest>
+              </div>
               <FormField
                 control={form.control}
                 name="application"
@@ -400,6 +516,11 @@ const PostJobForm = () => {
                   </FormItem>
                 )}
               />
+              <SkillsCombobox
+                comboBoxSelectedValues={comboBoxSelectedValues}
+                setComboBoxSelectedValues={setComboBoxSelectedValues}
+                form={form}
+              ></SkillsCombobox>
             </div>
             <div className="bg-gray-900 w-full p-6 rounded-lg space-y-4 mx-auto my-6">
               <h2 className="text-sm text-white capitalize">Job description</h2>
