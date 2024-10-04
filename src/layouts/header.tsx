@@ -141,7 +141,9 @@ const Header = () => {
                     >
                       <DropdownMenuItem>
                         <icons.profile className="mr-2 h-4 w-4" />
-                        <span>Profile</span>
+                        <Link className="w-full" href={'/profile'}>
+                          Profile
+                        </Link>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem
