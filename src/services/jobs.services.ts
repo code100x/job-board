@@ -24,6 +24,7 @@ function salaryRangeQuery(salaryrange: JobQuerySchemaType['salaryrange']) {
   return query;
 }
 export function getJobFilters({
+  EmpType,
   workmode,
   city,
   salaryrange,
@@ -33,6 +34,7 @@ export function getJobFilters({
   limit,
 }: JobQuerySchemaType) {
   const filters = [
+    EmpType && { type: { in: EmpType } },
     workmode && { workMode: { in: workmode } },
     city && { city: { in: city } },
     salaryrange && { OR: salaryRangeQuery(salaryrange) },
