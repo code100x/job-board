@@ -135,6 +135,8 @@ export const authOptions = {
         session.user.id = token.id;
         session.user.isVerified = token.isVerified;
         session.user.role = token.role;
+        session.user.name = token.name ?? '';
+        session.user.email = token.email ?? '';
       }
       return session;
     },
