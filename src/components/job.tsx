@@ -14,7 +14,7 @@ const options = {
 export const Job = ({ job }: { job: JobType }) => {
   const shareOnTwitter = () => {
     const tweetText = encodeURIComponent(
-      'I just read an amazing blog post! Check it out:'
+      'Check out this job posting @100xDevs: ' + job.title
     );
     const tweetUrl = encodeURIComponent(window.location.href);
     const twitterUrl = `https://twitter.com/intent/tweet?text=${tweetText}&url=${tweetUrl}`;
@@ -59,16 +59,18 @@ export const Job = ({ job }: { job: JobType }) => {
             <span className="flex bg-green-500/20 font-bold rounded-lg px-4 py-1 text-green-500 text-xs md:text-sm items-center gap-0.5">
               {!!job.minSalary && <Icon icon="currency" size={16} />}
               {job.minSalary && job.maxSalary
-                ? `${formatSalary(job.minSalary)}-${formatSalary(job.maxSalary)}`
+                ? `${formatSalary(job.minSalary)}k-${formatSalary(job.maxSalary)}k`
                 : 'Not disclosed'}
+            </span>
+            <span className="flex justify-center items-center gap-2">
+              <MapPin size={16} />
+              <p className="text-xs md:text-sm font-semibold">{job.address}</p>
             </span>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
-          <MapPin size={16} />
-          <p className="text-xs md:text-sm font-semibold">{job.address}</p>
-          <div className="w-full md:max-w-[60%] flex-wrap flex justify-start items-center gap-2">
+          <div className="w-full md:max-w-[80%] flex-wrap flex justify-start items-center gap-2">
             {job.skills.map((skill, index) => {
               return (
                 <span
@@ -86,6 +88,7 @@ export const Job = ({ job }: { job: JobType }) => {
           <Button className="justify-self-start px-6 dark:text-white py-2 w-fit h-fit">
             Apply Now
           </Button>
+
           <Button
             variant="outline"
             size="sm"

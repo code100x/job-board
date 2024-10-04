@@ -132,8 +132,7 @@ const PostJobForm = () => {
 
   const handleFormSubmit = async (data: JobPostSchemaType) => {
     try {
-      data.companyLogo =
-        (await submitImage(file)) ?? 'https://wwww.example.com';
+      data.companyLogo = (await submitImage(file)) ?? 'https://www.example.com';
       const response = await createJob(data);
 
       if (!response.status) {
@@ -175,7 +174,7 @@ const PostJobForm = () => {
       form.setValue('minSalary', 0);
       form.setValue('maxSalary', 0);
     }
-    form.setValue('companyLogo', 'https://wwww.example.com');
+    form.setValue('companyLogo', '/main.svg');
   }, [watchHasSalaryRange, form]);
 
   if (session.status === 'loading') return null;
