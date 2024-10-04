@@ -12,7 +12,7 @@ export default function TestimonialCard({ testimonial }: testimonialCardProps) {
   const { theme } = useTheme();
   return (
     <motion.div
-      className="md:w-5/6 w-full  h-auto mx-auto my-2 cursor-pointer"
+      className="md:w-5/6 w-full md:h-[15rem] h-auto mx-auto my-2 cursor-pointer"
       whileHover={{ y: -5 }}
       transition={{ type: 'tween' }}
     >
@@ -27,7 +27,7 @@ export default function TestimonialCard({ testimonial }: testimonialCardProps) {
                 : '',
         }}
       >
-        <div className="bg-gradient-to-b dark:from-[#0F172A] dark:to-[#020817] from-[#F1F5F9] to-[#FFFFFF] rounded-3xl p-5 flex flex-col  relative">
+        <div className="bg-gradient-to-b  dark:from-[#0F172A] dark:to-[#020817] from-[#F1F5F9] to-[#FFFFFF] rounded-3xl p-5 flex flex-col relative">
           <div className="w-full flex items-center">
             <Quote className="w-7 h-7 absolute top-5 right-5 text-[#94A3B8]" />
             <p className="w-12 h-12 p-2 rounded-full flex items-center justify-center border bg-gray-500 text-white">

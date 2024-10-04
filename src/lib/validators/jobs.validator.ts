@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { WorkMode } from '@prisma/client';
+import { WorkMode, EmployementType, Currency } from '@prisma/client';
 
 export const JobPostSchema = z
   .object({
@@ -8,19 +8,34 @@ export const JobPostSchema = z
     companyName: z.string().min(1, 'Company Name is required'),
     city: z.string().min(1, 'City Name is required'),
     address: z.string().min(1, 'Address is required'),
-    application: z.string(),
-    type: z.string(),
+    application: z.string().min(1, 'Application link is required'),
+    type: z.nativeEnum(EmployementType, {
+      message: 'Employment Type is Required',
+    }),
+    currency: z.nativeEnum(Currency, {
+      message: 'Curreny is required',
+    }),
+    skills: z.array(z.string()).optional(),
     category: z.string(),
     companyEmail: z.string().email('Invalid email').min(1, 'Email is required'),
     companyBio: z.string().min(1, 'Company Bio is required'),
     companyLogo: z.string().url(),
-    hasSalaryRange: z.boolean(),
+    hasSalaryRange: z.boolean().optional(),
     minSalary: z.coerce
       .number({ message: 'Min salary must be a number' })
       .nonnegative()
       .optional(),
     maxSalary: z.coerce
       .number({ message: 'Max salary must be a number' })
+      .nonnegative()
+      .optional(),
+    hasExperiencerange: z.boolean(),
+    minExperience: z.coerce
+      .number({ message: 'Min Experience must be a number' })
+      .nonnegative()
+      .optional(),
+    maxExperience: z.coerce
+      .number({ message: 'Max Experience must be a number' })
       .nonnegative()
       .optional(),
     workMode: z.nativeEnum(WorkMode, {
@@ -31,22 +46,48 @@ export const JobPostSchema = z
     if (data.hasSalaryRange) {
       if (!data.minSalary) {
         return ctx.addIssue({
-          message: 'minSalary is required when hasSalaryRange is true',
+          message: 'Minimum Salary is required ',
           path: ['minSalary'],
           code: z.ZodIssueCode.custom,
         });
       }
       if (!data.maxSalary) {
         return ctx.addIssue({
-          message: 'maxSalary is required when hasSalaryRange is true',
+          message: 'Maximum Salary is required ',
           path: ['maxSalary'],
           code: z.ZodIssueCode.custom,
         });
       }
       if (data.maxSalary <= data.minSalary) {
         return ctx.addIssue({
-          message: 'minSalary cannot be greater than or equal to maxSalary',
+          message:
+            'Minimum Salary cannot be greater than or equal to Maximum Salary',
           path: ['minSalary'],
+          code: z.ZodIssueCode.custom,
+        });
+      }
+    }
+
+    if (data.hasExperiencerange) {
+      if (!data.minExperience) {
+        return ctx.addIssue({
+          message: 'Minimum Experience is required ',
+          path: ['minExperience'],
+          code: z.ZodIssueCode.custom,
+        });
+      }
+      if (!data.maxExperience) {
+        return ctx.addIssue({
+          message: 'Maximum Experience is required ',
+          path: ['maxExperience'],
+          code: z.ZodIssueCode.custom,
+        });
+      }
+      if (data.minExperience >= data.maxExperience) {
+        return ctx.addIssue({
+          message:
+            'Minimum Experience cannot be greater than or equal to Maximum Experience',
+          path: ['minExperience'],
           code: z.ZodIssueCode.custom,
         });
       }
@@ -55,6 +96,15 @@ export const JobPostSchema = z
   });
 
 export const JobQuerySchema = z.object({
+  EmpType: z
+    .union([z.string(), z.array(z.nativeEnum(EmployementType))])
+    .optional()
+    .transform((val) => {
+      if (typeof val === 'string') {
+        return val.split(',');
+      }
+      return val;
+    }),
   workmode: z
     .union([z.string(), z.array(z.nativeEnum(WorkMode))])
     .optional()
@@ -96,6 +146,11 @@ export const JobByIdSchema = z.object({
   id: z.string().min(1, 'Job id is required'),
 });
 
+export const RecommendedJobSchema = z.object({
+  id: z.string().min(1, 'Job id is required'),
+  category: z.string().min(1, 'Job category is required'),
+});
+
 export const deleteJobByIdSchema = z.object({
   id: z.string().min(1, 'Job id is required'),
 });
@@ -103,7 +158,9 @@ export const deleteJobByIdSchema = z.object({
 export const ApproveJobSchema = z.object({
   id: z.string().min(1, 'Job id is required'),
 });
+
 export type JobByIdSchemaType = z.infer<typeof JobByIdSchema>;
+export type RecommendedJobSchemaType = z.infer<typeof RecommendedJobSchema>;
 export type JobPostSchemaType = z.infer<typeof JobPostSchema>;
 export type JobQuerySchemaType = z.infer<typeof JobQuerySchema>;
 export type DeleteJobByIdSchemaType = z.infer<typeof deleteJobByIdSchema>;
