@@ -10,7 +10,7 @@ export default async function RecentJobs() {
   return (
     <div className="w-full grid md:grid-cols-3 grid-cols-1 gap-6 items-center mt-10">
       {recentJobs.additional.recentJobs.map((job, index) => (
-        <JobCard job={job} key={index} />
+        <JobCard job={job} key={index} className="min-h-[250px]" />
       ))}
     </div>
   );
