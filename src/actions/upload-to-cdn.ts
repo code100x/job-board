@@ -14,7 +14,6 @@ export async function uploadFileAction(formData: FormData) {
     if (!file) {
       return { error: 'File is required', status: 400 };
     }
-
     const uploadUrl = `${CDN_BASE_UPLOAD_URL}/${uniqueFileName}`;
     const fileBuffer = Buffer.from(await file.arrayBuffer());
 

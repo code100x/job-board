@@ -32,7 +32,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'wwww.example.com',
+        hostname: 'www.example.com',
       },
     ],
   },
