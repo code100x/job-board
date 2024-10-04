@@ -5,18 +5,27 @@ import Icon from './ui/icon';
 import { formatSalary } from '@/lib/utils';
 import { JobType } from '@/types/jobs.types';
 import _ from 'lodash';
-
-export default function JobCard({ job }: { job: JobType }) {
+import { cn } from '@/lib/utils';
+export default function JobCard({
+  job,
+  className,
+}: {
+  job: JobType;
+  className?: string;
+}) {
   return (
     <Link
       key={job.id}
       href={`/jobs/${job.id}`}
-      className="min-h-[250px] overflow-y-scroll sm:text-sm text-xs text-slate-500 dark:text-slate-400 font-medium flex flex-col border p-6 bg-slate-100 gap-4 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg "
+      className={cn(
+        'min-h-[200px] overflow-y-scroll sm:text-sm text-xs text-slate-500 dark:text-slate-400 font-medium flex flex-col border p-6 bg-slate-100 gap-4 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg ',
+        className
+      )}
     >
       <div className="flex w-full gap-3">
         <div className="size-16 relative">
           {job.companyLogo ? (
-            job.companyLogo === 'https://wwww.example.com' ? (
+            job.companyLogo === 'https://www.example.com' ? (
               <div className=" w-full h-full flex items-center justify-center rounded-md">
                 <Image
                   src={'/main.svg'}
@@ -70,15 +79,28 @@ export default function JobCard({ job }: { job: JobType }) {
       </div>
       <div className="flex flex-wrap gap-2">
         {job.skills && job.skills.length !== 0 ? (
-          job.skills.map((item, index) => (
-            <div
-              key={index}
-              className="bg-slate-500 bg-opacity-10 text-slate-500 dark:text-slate-400 font-medium text-sm rounded-full px-2"
-            >
-              {item}
-            </div>
-          ))
+          !(job.skills.length > 4) ? (
+            // If there are more than 3 skills, show them all
+            job.skills.map((item, index) => (
+              <div
+                key={index}
+                className="bg-slate-500 bg-opacity-10 text-slate-500 dark:text-slate-400 font-medium text-sm rounded-full px-2"
+              >
+                {item}
+              </div>
+            ))
+          ) : (
+            job.skills.slice(0, 7).map((item, index) => (
+              <div
+                key={index}
+                className="bg-slate-500 bg-opacity-10 text-slate-500 dark:text-slate-400 font-medium text-sm rounded-full px-2"
+              >
+                {item}
+              </div>
+            ))
+          )
         ) : (
+          // If there are no skills, show the "No skills provided" message
           <div className="mt-3 bg-slate-500 flex justify-start items-center gap-3 bg-opacity-10 text-slate-500 dark:text-slate-400 font-medium text-sm rounded-full px-2">
             <AlertCircle size={12} /> No skills provided
           </div>
