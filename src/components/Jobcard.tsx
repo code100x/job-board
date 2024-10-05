@@ -46,9 +46,9 @@ export default function JobCard({
           ) : null}
         </div>
         <div className="flex flex-col gap-2">
-          <h1 className="font-bold text-black dark:text-white text-xl">
+          <h2 className="font-bold text-black dark:text-white text-xl">
             {job.title}
-          </h1>
+          </h2>
           <div className="flex">
             <p>{job.companyName + '.'} </p>
             <p className="ml-2">{'Posted on ' + job.postedAt.toDateString()}</p>
