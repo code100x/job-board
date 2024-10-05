@@ -1,6 +1,12 @@
 'use client';
 
+import { useTransition } from 'react';
+
+import { signOut, useSession } from 'next-auth/react';
+import { useToast } from '../ui/use-toast';
+
 import { Button } from '../ui/button';
+
 import {
   Dialog,
   DialogContent,
@@ -8,36 +14,40 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from '@/components/ui/dialog';
+
 import { ChangePassword } from './ChangePassword';
 import { deleteUser } from '@/actions/user.profile.actions';
-import { useSession } from 'next-auth/react';
-import { useToast } from '../ui/use-toast';
+import Loader from '../loader';
 
 type Props = {};
 export const AccountSettings = ({}: Props) => {
   const { toast } = useToast();
   const session = useSession();
-  type DeleteUserResponse = {
-    error?: string;
-    success?: string;
-  };
+
+  const [isPending, startTransition] = useTransition();
+
   const handleDeleteAccount = async () => {
-    const res = (await deleteUser(
-      session.data?.user.email as string
-    )) as DeleteUserResponse;
-    if (res.error) {
-      toast({
-        title: res.error as string,
-        variant: 'destructive',
-      });
-    } else {
-      toast({
-        title: res.success,
-        variant: 'success',
-      });
-    }
+    startTransition(() => {
+      deleteUser(session.data?.user.email as string)
+        .then((res) => {
+          res.error
+            ? toast({
+                title: res.error as string,
+                variant: 'destructive',
+              })
+            : toast({
+                title: res.success as string,
+                variant: 'success',
+              });
+        })
+        .then(() => {
+          signOut();
+        });
+    });
   };
+
   return (
     <div className="flex flex-col gap-6 w-full h-full">
       <div className="flex flex-col gap-4 rounded-xl border p-3">
@@ -59,11 +69,13 @@ export const AccountSettings = ({}: Props) => {
           </DialogContent>
         </Dialog>
       </div>
-      <div className="flex flex-col gap-4 rounded-xl border border-red-400 shadow-sm shadow-red-400 p-3">
+      <div className="flex flex-col gap-4 rounded-xl border shadow-sm p-3">
         <p className="font-bold text-red-500">Danger zone</p>
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant={'destructive'}>Delete Account</Button>
+            <Button className="w-40" variant={'destructive'}>
+              {isPending ? <Loader /> : 'Delete Account'}
+            </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
@@ -76,10 +88,18 @@ export const AccountSettings = ({}: Props) => {
               </DialogDescription>
             </DialogHeader>
             <div className="flex gap-4 justify-end">
-              <Button variant={'destructive'} onClick={handleDeleteAccount}>
+              <Button
+                variant={'destructive'}
+                onClick={handleDeleteAccount}
+                disabled={isPending}
+              >
                 Delete Account
               </Button>
-              <Button variant={'ghost'}>Cancel</Button>
+              <DialogClose asChild>
+                <Button variant={'ghost'} disabled={isPending}>
+                  Cancel
+                </Button>
+              </DialogClose>
             </div>
           </DialogContent>
         </Dialog>
