@@ -1,22 +1,28 @@
 'use client';
 
-import APP_PATHS from '@/config/path.config';
+import React, { useEffect } from 'react';
+
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
-import { getNameInitials } from '@/lib/utils';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-type Props = {};
-export const ProfileInfo = ({}: Props) => {
+
+import APP_PATHS from '@/config/path.config';
+
+import { getNameInitials } from '@/lib/utils';
+
+export const ProfileInfo = () => {
   const router = useRouter();
   const session = useSession();
+
   useEffect(() => {
     if (session.status !== 'loading' && session.status === 'unauthenticated')
       router.push(`${APP_PATHS.SIGNIN}?redirectTo=/profile`);
   }, [session.status]);
+
   return (
     <div className="flex flex-col justify-center items-start my-3 gap-4">
       <div className="flex w-full mt-2 p-4 border rounded-md">
@@ -27,11 +33,11 @@ export const ProfileInfo = ({}: Props) => {
           </AvatarFallback>
         </Avatar>
       </div>
-      <div className="flex flex-col gap-3 p-4 border rounded-md w-full min-h-[45vh]">
-        <div className="flex justify-between items-center my-4">
+      <div className="flex flex-col gap-4 p-4 border rounded-md w-full min-h-[40vh]">
+        <div className="flex justify-between items-center mb-3">
           <span>Profile Info</span>
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-4">
           <Label>Name</Label>
           <Input
             disabled
@@ -39,7 +45,7 @@ export const ProfileInfo = ({}: Props) => {
             className="rounded focus-visible:ring-0 focus:outline-none focus:border-slate-500"
           />
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-4">
           <Label>Email</Label>
           <Input
             disabled
