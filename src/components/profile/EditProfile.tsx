@@ -1,9 +1,27 @@
 'use client';
 
-import APP_PATHS from '@/config/path.config';
+import { useEffect, useTransition } from 'react';
+
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+
+import APP_PATHS from '@/config/path.config';
+import { getNameInitials } from '@/lib/utils';
+import { EditProfilePicture } from './EditProfilePicture';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Input } from '@/components/ui/input';
+import { Button } from '../ui/button';
+
+import {
+  UserProfileSchema,
+  UserProfileSchemaType,
+} from '@/lib/validators/user.profile.validator';
+
+import { updateUser } from '@/actions/user.profile.actions';
+import { useToast } from '../ui/use-toast';
+
 import {
   Dialog,
   DialogContent,
@@ -12,17 +30,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { getNameInitials } from '@/lib/utils';
-import { EditProfilePicture } from './EditProfilePicture';
-import { Input } from '@/components/ui/input';
-import { useEffect } from 'react';
-import { Button } from '../ui/button';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  UserProfileSchema,
-  UserProfileSchemaType,
-} from '@/lib/validators/user.profile.validator';
+
 import {
   Form,
   FormControl,
@@ -31,20 +39,20 @@ import {
   FormLabel,
   FormMessage,
 } from '../ui/form';
-import { updateUser } from '@/actions/user.profile.actions';
-import { useToast } from '../ui/use-toast';
+
+import Loader from '../loader';
+
 type Props = {
-  name: string | '';
-  email: string | '';
+  name: string;
+  email: string;
 };
+
 export const EditProfile = ({ name, email }: Props) => {
   const router = useRouter();
   const session = useSession();
-  useEffect(() => {
-    if (session.status !== 'loading' && session.status === 'unauthenticated')
-      router.push(`${APP_PATHS.SIGNIN}?redirectTo=/profile/edit`);
-  });
   const { toast } = useToast();
+
+  const [isPending, startTransition] = useTransition();
 
   const user = session.data?.user;
   const form = useForm<UserProfileSchemaType>({
@@ -64,24 +72,22 @@ export const EditProfile = ({ name, email }: Props) => {
     form.setValue(e.target.name as keyof UserProfileSchemaType, e.target.value);
   };
 
-  type UpdateUserResponse = {
-    error?: string;
-    success?: string;
-  };
-
   const handleFormSubmit = async (data: UserProfileSchemaType) => {
     try {
-      const res = (await updateUser(
-        user?.email || email,
-        data
-      )) as UpdateUserResponse;
-      await session.update({ ...session, user: { ...user, ...data } });
-      res?.error
-        ? toast({
-            title: res.error || 'something went wrong',
-            variant: 'destructive',
+      startTransition(() => {
+        updateUser(user?.email || email, data)
+          .then((res) => {
+            res.error
+              ? toast({
+                  title: (res.error as string) || 'something went wrong',
+                  variant: 'destructive',
+                })
+              : toast({ title: res.success as string, variant: 'success' });
           })
-        : toast({ title: res.success, variant: 'success' });
+          .then(() => {
+            session.update({ ...session, user: { ...user, ...data } });
+          });
+      });
     } catch (error: any) {
       toast({
         title: error?.message || 'Internal server error',
@@ -89,6 +95,11 @@ export const EditProfile = ({ name, email }: Props) => {
       });
     }
   };
+
+  useEffect(() => {
+    if (session.status !== 'loading' && session.status === 'unauthenticated')
+      router.push(`${APP_PATHS.SIGNIN}?redirectTo=/profile/edit`);
+  });
 
   return (
     <div className="flex flex-col justify-center items-start my-3 gap-4">
@@ -118,10 +129,10 @@ export const EditProfile = ({ name, email }: Props) => {
       </div>
       <Form {...form}>
         <form
-          className="flex flex-col gap-3 p-4 border rounded-md w-full min-h-[45vh]"
+          className="flex flex-col gap-3 p-4 border rounded-md w-full min-h-[40vh]"
           onSubmit={form.handleSubmit(handleFormSubmit)}
         >
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex justify-between items-center mb-3">
             <span>Profile Info</span>
           </div>
           <FormField
@@ -133,6 +144,7 @@ export const EditProfile = ({ name, email }: Props) => {
                 <FormControl>
                   <Input
                     {...field}
+                    disabled={isPending}
                     onChange={handleInputChange}
                     className="rounded focus-visible:ring-0 focus:outline-none focus:border-slate-500"
                   />
@@ -150,6 +162,8 @@ export const EditProfile = ({ name, email }: Props) => {
                 <FormControl>
                   <Input
                     {...field}
+                    disabled={isPending}
+                    onChange={handleInputChange}
                     className="rounded focus-visible:ring-0 focus:outline-none focus:border-slate-500"
                   />
                 </FormControl>
@@ -158,8 +172,11 @@ export const EditProfile = ({ name, email }: Props) => {
             )}
           />
           <div className="flex justify-end w-full">
-            <Button className="bg-slate-950 text-white dark:text-slate-950 dark:bg-white rounded-md py-2 px-4 md:w-56 w-full">
-              Save
+            <Button
+              disabled={isPending}
+              className="bg-slate-950 text-white dark:text-slate-950 dark:bg-white rounded-md py-2 px-4 md:w-56 w-full"
+            >
+              {isPending ? <Loader /> : 'Save'}
             </Button>
           </div>
         </form>
