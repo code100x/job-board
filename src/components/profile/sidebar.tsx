@@ -1,20 +1,24 @@
 'use client';
+
 import { useSession } from 'next-auth/react';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+
+import Link from 'next/link';
+
 import {
   Sheet,
   SheetClose,
   SheetContent,
   SheetTrigger,
 } from '@/components/ui/sheet';
+import { Separator } from '@/components/ui/separator';
+
 import { userProfileNavbar } from '@/lib/constant/app.constant';
 import { MenuIcon, XIcon } from 'lucide-react';
-import { Separator } from '../ui/separator';
 
 const Sidebar = () => {
   return (
-    <div className="flex flex-col justify-start h-full items-start md:px-2 z-[4]">
+    <div className="flex flex-col justify-start h-full items-start md:px-2 z-[4] md:border md:rounded-xl md:pt-6">
       <DesktopSidebar />
       <MobileSidebar />
     </div>
@@ -23,7 +27,7 @@ const Sidebar = () => {
 
 const DesktopSidebar = () => {
   return (
-    <div className="md:flex hidden w-56 h-full border-r-2 p-2">
+    <div className="md:flex hidden w-56 h-full p-2">
       <div className="flex flex-col w-full">
         <SidebarNavs />
       </div>
