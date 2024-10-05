@@ -1,8 +1,9 @@
 /* eslint-disable no-console */
-import { Currency, EmployementType, Role, WorkMode } from '@prisma/client';
+import { PrismaClient, Currency, EmployementType, Role, WorkMode } from '@prisma/client';
 import { faker } from '@faker-js/faker';
 import bcrypt from 'bcryptjs';
-import prisma from '../src/config/prisma.config';
+
+const prisma = new PrismaClient();
 
 const users = [
   { id: '1', name: 'Jack', email: 'user@gmail.com' },
@@ -288,36 +289,44 @@ let jobs = [
 async function seedUsers() {
   try {
     const hashedPassword = await bcrypt.hash('123456', 10);
-    await Promise.all(
-      users.map(
-        async (u) =>
-          await prisma.user.upsert({
-            where: { id: u.id },
-            create: {
-              id: u.id,
-              email: u.email,
-              name: u.name,
-              password: hashedPassword,
-              role: u.role || Role.USER,
-              emailVerified: new Date(),
-            },
-            update: {},
-          })
-      )
-    );
-    console.log('✅ user seed successfully');
-    await prisma.$disconnect();
+    for (const u of users) {
+      try {
+        await prisma.user.upsert({
+          where: { email: u.email },
+          update: {},
+          create: {
+            id: u.id,
+            email: u.email,
+            name: u.name,
+            password: hashedPassword,
+            role: u.role || Role.USER,
+            emailVerified: new Date(),
+          },
+        });
+        console.log(`User created or updated: ${u.email}`);
+      } catch (error) {
+        console.log(`Error processing user ${u.email}:`, error);
+      }
+    }
+    console.log('✅ User seed completed');
   } catch (error) {
-    console.log(error);
-    await prisma.$disconnect();
-    process.exit(1);
+    console.error('Error seeding users:', error);
   }
 }
 
 async function seedJobs() {
   try {
+
+    const existingUsers = await prisma.user.findMany({
+      select: { id: true },
+    });
+    const existingUserIds = new Set(existingUsers.map(user => user.id));
+
+   
+    const validJobs = jobs.filter(job => existingUserIds.has(job.userId));
+
     await Promise.all(
-      jobs.map(async (j) =>
+      validJobs.map(async (j) =>
         prisma.job.upsert({
           where: { id: j.id },
           create: {
@@ -358,12 +367,9 @@ async function seedJobs() {
         })
       )
     );
-    console.log('✅ job seed successfully');
+    console.log('✅ Job seed completed successfully');
   } catch (error) {
-    console.error(error);
-    process.exit(1);
-  } finally {
-    await prisma.$disconnect();
+    console.error('Error seeding jobs:', error);
   }
 }
 
