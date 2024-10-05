@@ -120,10 +120,7 @@ export const EditProfile = ({ name, email }: Props) => {
                 A profile picture helps others recognize you.
               </DialogDescription>
             </DialogHeader>
-            <EditProfilePicture
-              imageUrl={user?.image}
-              name={getNameInitials(user?.name ?? '')}
-            />
+            <EditProfilePicture />
           </DialogContent>
         </Dialog>
       </div>

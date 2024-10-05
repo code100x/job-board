@@ -15,30 +15,26 @@ import { Label } from '@/components/ui/label';
 
 import { PencilIcon, Trash } from 'lucide-react';
 import APP_PATHS from '@/config/path.config';
+import { getNameInitials } from '@/lib/utils';
 
-type Props = {
-  imageUrl?: string;
-  name: string;
-};
-
-export const EditProfilePicture = ({ imageUrl, name }: Props) => {
+export const EditProfilePicture = () => {
   const router = useRouter();
   const session = useSession();
   const { toast } = useToast();
-  const [file, setFile] = React.useState<File | null>(null);
 
+  const name = getNameInitials(session.data?.user.name as string);
   const [isPending, startTransition] = useTransition();
 
   const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     startTransition(() => {
       const file = e.target.files?.[0];
       if (!file) return;
-      setFile(file);
 
       const formData = new FormData();
 
       formData.append('file', file);
-
+      // const fileName = file.name;
+      // formData.append('uniqueFileName', fileName);
       uploadFileAction(formData).then((response) => {
         if (response.error) {
           toast({
@@ -49,17 +45,24 @@ export const EditProfilePicture = ({ imageUrl, name }: Props) => {
           updateAvatar(
             session.data?.user.email as string,
             response?.url as string
-          ).then((res) => {
-            res.error
-              ? toast({
-                  title: res.error as string,
-                  variant: 'destructive',
-                })
-              : toast({
-                  title: res.success,
-                  variant: 'success',
-                });
-          });
+          )
+            .then((res) => {
+              res.error
+                ? toast({
+                    title: res.error as string,
+                    variant: 'destructive',
+                  })
+                : toast({
+                    title: res.success,
+                    variant: 'success',
+                  });
+            })
+            .then(() => {
+              session.update({
+                ...session,
+                user: { ...session.data?.user, image: response.url },
+              });
+            });
         }
       });
     });
@@ -76,7 +79,7 @@ export const EditProfilePicture = ({ imageUrl, name }: Props) => {
         <Avatar className="cursor-pointer w-64 h-64">
           <AvatarImage
             className=" object-cover"
-            src={imageUrl || (file ? URL.createObjectURL(file) : undefined)}
+            src={session.data?.user.image}
           />
           <AvatarFallback className="text-8xl font-bold">{name}</AvatarFallback>
         </Avatar>
