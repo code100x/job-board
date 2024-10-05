@@ -3,6 +3,7 @@ import React from 'react';
 import Image from 'next/image';
 import { MapPin } from 'lucide-react';
 import Link from 'next/link';
+import _ from 'lodash';
 
 export default function JobCard({ job }: { job: JobType }) {
   return (
@@ -36,7 +37,7 @@ export default function JobCard({ job }: { job: JobType }) {
           <div className="flex items-center gap-2">
             <MapPin size={16} />
             <p className="text-xs font-semibold">
-              {job.address}({job.workMode})
+              {job.address} ({_.startCase(job.workMode)})
             </p>
           </div>
         </div>
