@@ -9,11 +9,12 @@
     "start": "next start",
     "lint": "next lint",
     "dev:docker": "npm run db:seed & next dev",
-    "db:seed": "npx prisma db push & npx prisma db seed",
+    "db:seed": "npx prisma db push && node --import 'data:text/javascript,import { register } from \"node:module\"; import { pathToFileURL } from \"node:url\"; register(\"ts-node/esm\", pathToFileURL(\"./\"));' prisma/seed.ts",
     "db:studio": "npx prisma studio",
     "check": "prettier --check \"**/*.{ts,tsx,js,jsx,md,mdx,css}\"",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,md,mdx,css}\"",
-    "prepare": "husky"
+    "prepare": "husky",
+    "db:reset": "npx prisma migrate reset && npm run db:seed"
   },
   "husky": {
     "hooks": {

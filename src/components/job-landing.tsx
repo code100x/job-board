@@ -20,7 +20,7 @@ export const JobLanding = () => {
       className="w-full h-fit md:px-16 px-5 flex flex-col items-center pt-6 md:pt-20 dark:bg-grad-dark bg-grad-light"
     >
       <div className="w-full h-fit flex flex-col items-center">
-        <h1 className="font-bold md:text-4xl text-3xl">Recently Added jobs</h1>
+        <h2 className="font-bold md:text-4xl text-3xl">Recently Added jobs</h2>
         <p className="md:text-sm text-xs py-2 font-semibold text-[#64748B] dark:text-[#94A3B8]">
           Stay ahead with newly added jobs
         </p>
