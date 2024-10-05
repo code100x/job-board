@@ -21,7 +21,7 @@ const ProfilePage = () => {
         <span className="w-full">My Account</span>
         <Link
           href={'/profile/edit'}
-          className="sm:w-40 w-full items-center justify-center gap-4 sm:flex hidden"
+          className="sm:w-40 w-full items-center justify-center gap-4 md:flex hidden"
         >
           <Edit size={18} />
           Edit Profile

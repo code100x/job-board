@@ -18,7 +18,7 @@ import { MenuIcon, XIcon } from 'lucide-react';
 
 const Sidebar = () => {
   return (
-    <div className="flex flex-col justify-start h-full items-start md:px-2 z-[4] md:border md:rounded-xl md:pt-6">
+    <div className="flex flex-col justify-start md:h-full items-start md:px-2 z-[4] md:border md:rounded-xl md:pt-6 max-md:absolute right-5">
       <DesktopSidebar />
       <MobileSidebar />
     </div>
@@ -42,7 +42,7 @@ const MobileSidebar = () => {
         <SheetTrigger>
           <MenuIcon />
         </SheetTrigger>
-        <SheetContent className="md:hidden" side={'left'}>
+        <SheetContent className="md:hidden">
           <SheetClose className="absolute top-3 right-3">
             <XIcon />
           </SheetClose>
