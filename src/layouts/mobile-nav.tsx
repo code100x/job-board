@@ -77,7 +77,12 @@ export function MobileNav() {
           </SheetTitle>
           <ul className="flex flex-col gap-2 text-sm justify-items-start px-4 py-2">
             {session.status !== 'loading' && session.data?.user && (
-              <div className="w-full flex items-center">
+              <div
+                className="w-full flex items-center"
+                onClick={() => {
+                  router.push(APP_PATHS.PROFILE);
+                }}
+              >
                 {session.data?.user.role === ADMIN_ROLE ? (
                   <div className="w-12 h-12 rounded-full flex items-center justify-center border-none ouline-none dark:bg-[#0F172A] dark:text-white bg-slate-200">
                     <p>HS</p>
