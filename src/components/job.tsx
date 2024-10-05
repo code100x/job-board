@@ -43,7 +43,7 @@ export const Job = ({ job }: { job: JobType }) => {
             ) : null}
           </div>
           <div className="flex flex-col gap-2">
-            <h3 className="font-bold text-2xl">{job.title}</h3>
+            <h1 className="font-bold text-2xl">{job.title}</h1>
             <div className="text-xs flex gap-1 font-medium items-center text-gray-500">
               <span>{job.companyName}</span>•
               <span>{'Posted on ' + job.postedAt.toDateString()}</span>
@@ -102,9 +102,9 @@ export const Job = ({ job }: { job: JobType }) => {
 
       {/* job description */}
       <section className="border-2 bg-[#F1F5F9] dark:bg-[#0F172A] h-auto max-h-[20rem] overflow-y-auto p-6 rounded-xl">
-        <h1 className="font-extrabold px-4 py-1 w-fit text-white bg-blue-500/20 rounded-lg text-xl ">
+        <h2 className="font-extrabold px-4 py-1 w-fit text-white bg-blue-500/20 rounded-lg text-xl ">
           Job Description
-        </h1>
+        </h2>
         <Linkify options={options}>
           <div
             className="my-4 text-neutral-100"
@@ -115,9 +115,9 @@ export const Job = ({ job }: { job: JobType }) => {
 
       {/* about company */}
       <section className="border-2 bg-[#F1F5F9] dark:bg-[#0F172A] h-auto max-h-[15rem] overflow-y-auto p-6 rounded-xl">
-        <h1 className="font-extrabold px-4 py-1 w-fit text-white bg-blue-500/20 rounded-lg text-xl ">
+        <h2 className="font-extrabold px-4 py-1 w-fit text-white bg-blue-500/20 rounded-lg text-xl ">
           About {job.companyName}
-        </h1>
+        </h2>
         <div
           dangerouslySetInnerHTML={{ __html: job.companyBio ?? '' }}
           className="my-4 text-neutral-200"
