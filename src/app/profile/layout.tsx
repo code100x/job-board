@@ -13,9 +13,9 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
       router.push(`${APP_PATHS.SIGNIN}?redirectTo=/profile`);
   }, [session.status]);
   return (
-    <div className="container flex gap-2 w-full">
+    <div className="container flex gap-5 w-full">
       <Sidebar />
-      <div className="flex px-2 w-full overflow-y-auto md:max-h-[73vh]">
+      <div className="flex px-2 w-full overflow-y-auto md:max-h-[73vh] lg:h-full md:border md:rounded-xl md:pt-6 ">
         {children}
       </div>
     </div>
