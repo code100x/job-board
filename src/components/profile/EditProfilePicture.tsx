@@ -16,6 +16,7 @@ import { Label } from '@/components/ui/label';
 import { PencilIcon, Trash } from 'lucide-react';
 import APP_PATHS from '@/config/path.config';
 import { getNameInitials } from '@/lib/utils';
+import Loader from '../loader';
 
 export const EditProfilePicture = () => {
   const router = useRouter();
@@ -68,6 +69,29 @@ export const EditProfilePicture = () => {
     });
   };
 
+  const removeImage = () => {
+    startTransition(() => {
+      updateAvatar(session.data?.user.email as string, '')
+        .then((res) => {
+          res.error
+            ? toast({
+                title: res.error as string,
+                variant: 'destructive',
+              })
+            : toast({
+                title: res.success,
+                variant: 'success',
+              });
+        })
+        .then(() => {
+          session.update({
+            ...session,
+            user: { ...session.data?.user, image: '' },
+          });
+        });
+    });
+  };
+
   useEffect(() => {
     if (session.status !== 'loading' && session.status === 'unauthenticated')
       router.push(`${APP_PATHS.SIGNIN}?redirectTo=/profile/edit`);
@@ -87,11 +111,11 @@ export const EditProfilePicture = () => {
       <span className="text-xs text-slate-500">Accepts .PNG, .JPEG, .JPG</span>
       <form className="flex mt-2" method="post" encType="multipart/form-data">
         <Label
-          className="flex items-center justify-center gap-3 text-xs bg-slate-950 text-white dark:bg-white dark:text-black rounded-full px-6 cursor-pointer"
+          className="flex items-center justify-center gap-3 text-xs bg-slate-950 text-white dark:bg-white dark:text-black rounded-full px-6 cursor-pointer w-32"
           htmlFor="pfp"
         >
           {isPending ? (
-            'Uploading...'
+            <Loader />
           ) : (
             <>
               <PencilIcon className="w-4 h-4" />
@@ -112,6 +136,7 @@ export const EditProfilePicture = () => {
         <Button
           variant={'ghost'}
           disabled={isPending}
+          onClick={removeImage}
           className="flex items-center justify-center gap-3 text-xs text-red-400 bg-none border-none bg-transparent hover:bg-transparent"
         >
           <Trash className="w-4 h-4" />

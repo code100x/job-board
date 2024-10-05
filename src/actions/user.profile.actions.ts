@@ -93,6 +93,24 @@ export const updateAvatar = async (email: string, avatar: string) => {
   }
 };
 
+export const removeAvatar = async (email: string) => {
+  try {
+    const existingUser = await prisma.user.findFirst({
+      where: { email: email },
+    });
+    if (!existingUser) return { error: 'User not found!' };
+    await prisma.user.update({
+      where: { id: existingUser.id },
+      data: {
+        avatar: null,
+      },
+    });
+    return { success: 'Your avatar has been successfully removed.' };
+  } catch (error) {
+    return { error: error };
+  }
+};
+
 export const deleteUser = async (email: string) => {
   try {
     const existingUser = await prisma.user.findFirst({
