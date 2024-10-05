@@ -47,7 +47,7 @@ const page = async ({ params }: { params: JobByIdSchemaType }) => {
         {/* job recommendations */}
         <aside className="col-span-1 rounded-md lg:col-span-2">
           <div className="sticky top-4">
-            <h1 className="text-xl font-semibold mb-4">Recommended for you</h1>
+            <h2 className="text-xl font-semibold mb-4">Recommended for you</h2>
             <main className="my-2 flex flex-col gap-4">
               {recommendedJobs &&
                 recommendedJobs.map((job, index) => {

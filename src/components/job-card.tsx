@@ -23,7 +23,7 @@ export default function JobCard({ job }: { job: JobType }) {
             )}
           </div>
           <div className="flex flex-col gap-2">
-            <h3 className="font-bold">{job.title}</h3>
+            <h2 className="font-bold">{job.title}</h2>
             <div className="text-xs flex gap-1 font-medium items-center text-gray-500">
               <span>{job.companyName}</span>•
               <span>{'Posted on ' + job.postedAt.toDateString()}</span>
