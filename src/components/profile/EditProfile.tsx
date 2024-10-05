@@ -41,6 +41,7 @@ import {
 } from '../ui/form';
 
 import Loader from '../loader';
+import { DeleteAccountDialog } from './DeleteAccountDialog';
 
 type Props = {
   name: string;
@@ -131,6 +132,7 @@ export const EditProfile = ({ name, email }: Props) => {
         >
           <div className="flex justify-between items-center mb-3">
             <span>Profile Info</span>
+            <DeleteAccountDialog />
           </div>
           <FormField
             control={form.control}

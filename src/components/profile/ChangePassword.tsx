@@ -87,6 +87,7 @@ export const ChangePassword = () => {
         className="flex flex-col gap-3 p-4 w-full min-h-[45vh]"
         onSubmit={form.handleSubmit(handleFormSubmit)}
       >
+        <p className="text-md">Change your password</p>
         <FormField
           control={form.control}
           name="currentPassword"
