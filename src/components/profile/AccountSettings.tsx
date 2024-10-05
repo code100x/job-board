@@ -74,7 +74,7 @@ export const AccountSettings = ({}: Props) => {
         <Dialog>
           <DialogTrigger asChild>
             <Button className="w-40" variant={'destructive'}>
-              {isPending ? <Loader /> : 'Delete Account'}
+              Delete Account
             </Button>
           </DialogTrigger>
           <DialogContent>
@@ -89,11 +89,12 @@ export const AccountSettings = ({}: Props) => {
             </DialogHeader>
             <div className="flex gap-4 justify-end">
               <Button
+                className="w-40"
                 variant={'destructive'}
                 onClick={handleDeleteAccount}
                 disabled={isPending}
               >
-                Delete Account
+                {isPending ? <Loader /> : 'Delete Account'}
               </Button>
               <DialogClose asChild>
                 <Button variant={'ghost'} disabled={isPending}>
