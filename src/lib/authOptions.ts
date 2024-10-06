@@ -126,6 +126,7 @@ export const authOptions = {
         token.name = user.name;
         token.isVerified = user.isVerified;
         token.role = loggedInUser.role ? loggedInUser.role : user.role;
+        token.image = loggedInUser ? loggedInUser.avatar : user.image;
       }
       return token;
     },
