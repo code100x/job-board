@@ -319,7 +319,7 @@
   white-space: wrap !important;
   width: '100%' !important;
   /* Set a fixed height */
-  overflow-y: scroll;
+  overflow-y: auto;
   /* Hide vertical overflow */
   overflow-x: auto;
   /* Allow horizontal scrolling */
@@ -348,8 +348,9 @@
 
 /* Ensure long content does not wrap within the editor */
 .job-description-editor .ql-editor {
+  min-height: 6rem;
   white-space: nowrap !important;
-  overflow-x: hidden !important; /* Allow horizontal scrolling */
+  overflow-x: auto !important; /* Allow horizontal scrolling */
   overflow-y: hidden !important; /* Hide vertical overflow */
 }
 

@@ -75,7 +75,7 @@ export const Signup = () => {
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Jhon Doe" />
+                  <Input {...field} placeholder="John Doe" />
                 </FormControl>
                 <FormMessage />
               </FormItem>

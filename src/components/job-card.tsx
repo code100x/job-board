@@ -14,7 +14,7 @@ export default function JobCard({ job }: { job: JobType }) {
           <div className="w-[4rem] h-[4rem]  rounded-md">
             {job.companyLogo && (
               <Image
-                className="size-full object-cover "
+                className="size-full object-contain"
                 src={job.companyLogo || ''}
                 width={'500'}
                 height={'500'}
