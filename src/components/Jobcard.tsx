@@ -1,4 +1,4 @@
-import { AlertCircle, Briefcase } from 'lucide-react';
+import { Briefcase } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Icon from './ui/icon';
@@ -6,6 +6,7 @@ import { formatSalary } from '@/lib/utils';
 import { JobType } from '@/types/jobs.types';
 import _ from 'lodash';
 import { cn } from '@/lib/utils';
+import { JobSkills } from './job-skills';
 export default function JobCard({
   job,
   className,
@@ -24,26 +25,15 @@ export default function JobCard({
     >
       <div className="flex w-full gap-3">
         <div className="size-16 relative">
-          {job.companyLogo ? (
-            job.companyLogo === 'https://www.example.com' ? (
-              <div className=" w-full h-full flex items-center justify-center rounded-md">
-                <Image
-                  src={'/main.svg'}
-                  width={500}
-                  height={500}
-                  alt="company-logo"
-                />
-              </div>
-            ) : (
-              <Image
-                className="size-full object-contain "
-                src={job.companyLogo || ''}
-                width={'500'}
-                height={'500'}
-                alt="company-logo"
-              />
-            )
-          ) : null}
+          {job.companyLogo && (
+            <Image
+              className="size-full object-contain "
+              src={job.companyLogo || ''}
+              width={'500'}
+              height={'500'}
+              alt="company-logo"
+            />
+          )}
         </div>
         <div className="flex flex-col gap-2">
           <h2 className="font-bold text-black dark:text-white text-xl">
@@ -60,51 +50,37 @@ export default function JobCard({
           {_.startCase(job.type)}
         </div>
         <span className="flex items-center gap-0.5">
-          <Briefcase size={12} />
-          {job.minExperience && job.maxExperience
-            ? `${job.minExperience}-${job.maxExperience} Yrs`
-            : 'Not disclosed'}
+          {job.minSalary && job.maxSalary ? (
+            <span className="flex justify-start items-center gap-1 flex-nowrap bg-green-900/90 px-2 py-1 rounded-full text-white">
+              <Icon icon="currency" size={12} />
+              {`${formatSalary(job.minSalary)}-${formatSalary(job.maxSalary)}`}
+            </span>
+          ) : (
+            'Not disclosed'
+          )}
         </span>
         <span className="flex items-center gap-0.5">
-          <Icon icon="currency" size={12} />
-          {job.minSalary && job.maxSalary
-            ? `${formatSalary(job.minSalary)}-${formatSalary(job.maxSalary)}`
-            : 'Not disclosed'}
+          {job.minExperience && job.maxExperience ? (
+            <span className="flex justify-start items-center gap-1 flex-nowrap">
+              <Briefcase size={12} />
+
+              {`${job.minExperience}-${job.maxExperience} Yrs`}
+            </span>
+          ) : (
+            'Ex: Not disclosed'
+          )}
         </span>
+
         <span className="flex items-center gap-0.5">
           <Icon icon="location" size={12} />
-          {job.address}
-          <span className="capitalize">({job.workMode})</span>
+          {job.city} -
+          <span className=" dark:bg-opacity-10 bg-opacity-90 text-blue-500 dark:text-blue-400 rounded capitalize">
+            {job.workMode}
+          </span>
         </span>
       </div>
-      <div className="flex flex-wrap gap-2">
-        {job.skills && job.skills.length !== 0 ? (
-          !(job.skills.length > 4) ? (
-            // If there are more than 3 skills, show them all
-            job.skills.map((item, index) => (
-              <div
-                key={index}
-                className="bg-slate-500 bg-opacity-10 text-slate-500 dark:text-slate-400 font-medium text-sm rounded-full px-2"
-              >
-                {item}
-              </div>
-            ))
-          ) : (
-            job.skills.slice(0, 7).map((item, index) => (
-              <div
-                key={index}
-                className="bg-slate-500 bg-opacity-10 text-slate-500 dark:text-slate-400 font-medium text-sm rounded-full px-2"
-              >
-                {item}
-              </div>
-            ))
-          )
-        ) : (
-          // If there are no skills, show the "No skills provided" message
-          <div className="mt-3 bg-slate-500 flex justify-start items-center gap-3 bg-opacity-10 text-slate-500 dark:text-slate-400 font-medium text-sm rounded-full px-2">
-            <AlertCircle size={12} /> No skills provided
-          </div>
-        )}
+      <div className="flex flex-wrap gap-2 max-w-[70%]">
+        <JobSkills skills={job.skills} />
       </div>
     </Link>
   );

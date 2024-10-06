@@ -4,7 +4,8 @@ import Icon from './ui/icon';
 import { formatSalary } from '@/lib/utils';
 import { Button } from './ui/button';
 import Image from 'next/image';
-import { MapPin } from 'lucide-react';
+import { Briefcase, MapPin } from 'lucide-react';
+import Link from 'next/link';
 import { Twitter } from 'lucide-react';
 import Linkify from 'linkify-react';
 const options = {
@@ -26,21 +27,15 @@ export const Job = ({ job }: { job: JobType }) => {
       <section className="grid gap-5 border-2 shadow-sm p-6 w-full bg-gradient-to-b from-[#F1F5F9] to-white dark:from-darkBgSecondary dark:to-darkBgTertiary rounded-lg">
         <div className="flex gap-4 items-center">
           <div className="w-[4rem] h-[4rem]  rounded-md">
-            {job.companyLogo ? (
-              job.companyLogo === 'https://www.example.com' ? (
-                <div className="bg-gray-200 w-full h-full flex items-center justify-center rounded-md">
-                  hi
-                </div>
-              ) : (
-                <Image
-                  className="size-full object-cover "
-                  src={job.companyLogo || ''}
-                  width={'500'}
-                  height={'500'}
-                  alt="company-logo"
-                />
-              )
-            ) : null}
+            {job.companyLogo && (
+              <Image
+                className="size-full object-cover "
+                src={job.companyLogo || ''}
+                width={'500'}
+                height={'500'}
+                alt="company-logo"
+              />
+            )}
           </div>
           <div className="flex flex-col gap-2">
             <h1 className="font-bold text-2xl">{job.title}</h1>
@@ -57,11 +52,23 @@ export const Job = ({ job }: { job: JobType }) => {
             </div>
 
             <span className="flex bg-green-500/20 font-bold rounded-lg px-4 py-1 text-green-500 text-xs md:text-sm items-center gap-0.5">
-              {!!job.minSalary && <Icon icon="currency" size={16} />}
+              <Icon icon="currency" size={16} />
               {job.minSalary && job.maxSalary
-                ? `${formatSalary(job.minSalary)}k-${formatSalary(job.maxSalary)}k`
+                ? `${formatSalary(job.minSalary)}-${formatSalary(job.maxSalary)}`
                 : 'Not disclosed'}
             </span>
+            <span className="flex items-center gap-0.5">
+              {job.minExperience && job.maxExperience ? (
+                <span className="flex justify-start items-center gap-1 flex-nowrap">
+                  <Briefcase size={12} />
+
+                  {`${job.minExperience}-${job.maxExperience} Yrs`}
+                </span>
+              ) : (
+                'Ex: Not disclosed'
+              )}
+            </span>
+
             <span className="flex justify-center items-center gap-2">
               <MapPin size={16} />
               <p className="text-xs md:text-sm font-semibold">{job.address}</p>
@@ -85,14 +92,15 @@ export const Job = ({ job }: { job: JobType }) => {
         </div>
 
         <div className="mt-4 flex gap-2">
-          <Button className="justify-self-start px-6 dark:text-white py-2 w-fit h-fit">
-            Apply Now
-          </Button>
-
+          <Link href={job.application ? job.application : ''}>
+            <Button className="justify-self-start px-6 dark:text-white py-2 w-fit h-fit">
+              Apply Now
+            </Button>
+          </Link>
           <Button
             variant="outline"
             size="sm"
-            className="flex items-center gap-2 py-4 px-6"
+            className="justify-self-start px-6 dark:text-white py-2 w-fit h-fit gap-2 flex "
             onClick={shareOnTwitter}
           >
             Share on <Twitter size={16} />
@@ -102,12 +110,12 @@ export const Job = ({ job }: { job: JobType }) => {
 
       {/* job description */}
       <section className="border-2 bg-[#F1F5F9] dark:bg-[#0F172A] h-auto max-h-[20rem] overflow-y-auto p-6 rounded-xl">
-        <h2 className="font-extrabold px-4 py-1 w-fit text-white bg-blue-500/20 rounded-lg text-xl ">
+        <h2 className="font-extrabold px-4 py-1 w-fit text-white bg-blue-500 dark:bg-opacity-20 rounded-lg text-xl ">
           Job Description
         </h2>
         <Linkify options={options}>
           <div
-            className="my-4 text-neutral-100"
+            className="my-4 dark:text-neutral-100"
             dangerouslySetInnerHTML={{ __html: job.description ?? '' }}
           ></div>
         </Linkify>
@@ -115,12 +123,12 @@ export const Job = ({ job }: { job: JobType }) => {
 
       {/* about company */}
       <section className="border-2 bg-[#F1F5F9] dark:bg-[#0F172A] h-auto max-h-[15rem] overflow-y-auto p-6 rounded-xl">
-        <h2 className="font-extrabold px-4 py-1 w-fit text-white bg-blue-500/20 rounded-lg text-xl ">
+        <h2 className="font-extrabold px-4 py-1 w-fit text-white bg-blue-500 dark:bg-opacity-20 rounded-lg text-xl ">
           About {job.companyName}
         </h2>
         <div
           dangerouslySetInnerHTML={{ __html: job.companyBio ?? '' }}
-          className="my-4 text-neutral-200"
+          className="my-4 dark:text-neutral-200"
         ></div>
       </section>
     </aside>
