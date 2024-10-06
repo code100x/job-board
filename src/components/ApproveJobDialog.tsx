@@ -26,7 +26,7 @@ const ApproveJobDialog = ({
         <DialogTrigger>
           <span
             role="button"
-            className="p-1 py-1 bg-primary text-primary-foreground rounded-md cursor-pointer"
+            className="p-1 py-1 px-3 bg-primary text-primary-foreground rounded-md cursor-pointer tracking-wide"
           >
             Approve Now
           </span>

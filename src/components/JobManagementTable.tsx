@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from './ui/table';
-import { DeleteIcon, Edit } from 'lucide-react';
+import { Edit, X } from 'lucide-react';
 import { getAllJobsAdditonalType, JobType } from '@/types/jobs.types';
 import { ServerActionReturnType } from '@/types/api.types';
 import { useToast } from './ui/use-toast';
@@ -121,7 +121,7 @@ const JobManagementTable = ({ jobs, searchParams, initialJobs }: props) => {
                 <TableCell>{job?.city}</TableCell>
                 <TableCell>
                   {job.isVerifiedJob ? (
-                    <span className="bg-green-400 p-1 rounded-md text-secondary">
+                    <span className="bg-green-400 p-1 rounded-md text-secondary px-3 tracking-wide">
                       Approved
                     </span>
                   ) : (
@@ -141,7 +141,7 @@ const JobManagementTable = ({ jobs, searchParams, initialJobs }: props) => {
                   <span role="button">
                     <Dialog>
                       <DialogTrigger>
-                        <DeleteIcon />
+                        <X />
                       </DialogTrigger>
                       <DialogContent>
                         <DialogHeader>

@@ -174,13 +174,6 @@ const Header = () => {
             <div className="md:hidden flex justify-center ml-3">
               <MobileNav />
             </div>
-            {session.data?.user ? (
-              <p className="cursor-pointer" onClick={() => signOut()}>
-                Logout
-              </p>
-            ) : (
-              <Link href={'/api/auth/signin'}>Login</Link>
-            )}
           </div>
         </div>
       </nav>
