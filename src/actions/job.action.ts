@@ -260,6 +260,7 @@ export const getJobById = withServerActionAsyncCatcher<
       minSalary: true,
       maxSalary: true,
       postedAt: true,
+      application: true,
     },
   });
   return new SuccessResponse(`${id} Job fetched successfully`, 200, {
@@ -303,6 +304,7 @@ export const getRecentJobs = async () => {
         postedAt: true,
         companyLogo: true,
         type: true,
+        application: true,
       },
       take: 6,
     });
