@@ -75,14 +75,16 @@ export const InfiniteMovingCards = ({
       >
         {items.map((id, index) => (
           <li
-            className="w-[350px] min-h-fit  max-w-full relative rounded-2xl   flex-shrink-0  px-8 py-6 md:w-[450px]"
+            className="w-[350px] flex flex-col min-h-fit max-w-full relative rounded-2xl flex-shrink-0  px-8 py-6 md:w-[450px]"
             // style={{
             //   background:
             //     'linear-gradient(180deg, var(--slate-800), var(--slate-900)',
             // }}
             key={index}
           >
-            <Tweet id={id} />
+            <div className="flex-grow flex min-h-0">
+              <Tweet id={id} />
+            </div>
           </li>
         ))}
       </ul>
