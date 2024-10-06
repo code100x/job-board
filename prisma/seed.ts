@@ -1,5 +1,11 @@
 /* eslint-disable no-console */
-import { PrismaClient, Currency, EmployementType, Role, WorkMode } from '@prisma/client';
+import {
+  PrismaClient,
+  Currency,
+  EmployementType,
+  Role,
+  WorkMode,
+} from '@prisma/client';
 import { faker } from '@faker-js/faker';
 import bcrypt from 'bcryptjs';
 
@@ -24,7 +30,6 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    application: 'apply@techcorp.com',
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
@@ -47,7 +52,7 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.office,
     currency: Currency.USD,
-    application: 'jobs@innovatech.com',
+
     hasExperiencerange: false,
     companyLogo: '',
     hasSalaryRange: false,
@@ -68,7 +73,6 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.hybrid,
     currency: Currency.USD,
-    application: 'careers@globalsolutions.com',
     hasExperiencerange: true,
     minExperience: 3,
     maxExperience: 4,
@@ -92,7 +96,6 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    application: 'apply@devopsltd.com',
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
@@ -116,7 +119,6 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.hybrid,
     currency: Currency.USD,
-    application: 'careers@productiveminds.com',
     hasExperiencerange: false,
     companyLogo: '',
     hasSalaryRange: true,
@@ -138,7 +140,6 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.office,
     currency: Currency.USD,
-    application: 'apply@datainsights.com',
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
@@ -162,7 +163,6 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    application: 'jobs@creativedesigns.com',
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
@@ -185,7 +185,6 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.hybrid,
     currency: Currency.USD,
-    application: 'apply@appinnovators.com',
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
@@ -207,7 +206,6 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.office,
     currency: Currency.USD,
-    application: 'careers@cloudworks.com',
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
@@ -230,14 +228,13 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    application: 'jobs@securetech.com',
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
     companyLogo: '',
     hasSalaryRange: true,
-    minSalary: 75,
-    maxSalary: 95,
+    minSalary: 75000,
+    maxSalary: 95000,
     isVerifiedJob: false,
   },
   {
@@ -253,12 +250,11 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    application: 'apply@qasolutions.com',
     companyLogo: '',
     hasSalaryRange: true,
     hasExperiencerange: false,
-    minSalary: 25,
-    maxSalary: 50,
+    minSalary: 25000,
+    maxSalary: 50000,
     isVerifiedJob: true,
   },
   {
@@ -274,7 +270,6 @@ let jobs = [
     type: EmployementType.Contract,
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    application: 'careers@writetech.com',
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
@@ -316,14 +311,12 @@ async function seedUsers() {
 
 async function seedJobs() {
   try {
-
     const existingUsers = await prisma.user.findMany({
       select: { id: true },
     });
-    const existingUserIds = new Set(existingUsers.map(user => user.id));
+    const existingUserIds = new Set(existingUsers.map((user) => user.id));
 
-   
-    const validJobs = jobs.filter(job => existingUserIds.has(job.userId));
+    const validJobs = jobs.filter((job) => existingUserIds.has(job.userId));
 
     await Promise.all(
       validJobs.map(async (j) =>
@@ -341,7 +334,7 @@ async function seedJobs() {
             type: j.type,
             workMode: j.workMode,
             currency: j.currency,
-            application: j.application,
+            application: 'https://x.com/100xDevs',
             city: faker.location.city(),
             address: faker.location.city(),
             hasExperiencerange: j.hasExperiencerange,
