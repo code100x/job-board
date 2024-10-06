@@ -59,7 +59,7 @@ export const Job = ({ job }: { job: JobType }) => {
             <span className="flex bg-green-500/20 font-bold rounded-lg px-4 py-1 text-green-500 text-xs md:text-sm items-center gap-0.5">
               {!!job.minSalary && <Icon icon="currency" size={16} />}
               {job.minSalary && job.maxSalary
-                ? `${formatSalary(job.minSalary)}k-${formatSalary(job.maxSalary)}k`
+                ? `${formatSalary(job.minSalary)}-${formatSalary(job.maxSalary)}`
                 : 'Not disclosed'}
             </span>
             <span className="flex justify-center items-center gap-2">
@@ -102,12 +102,12 @@ export const Job = ({ job }: { job: JobType }) => {
 
       {/* job description */}
       <section className="border-2 bg-[#F1F5F9] dark:bg-[#0F172A] h-auto max-h-[20rem] overflow-y-auto p-6 rounded-xl">
-        <h2 className="font-extrabold px-4 py-1 w-fit text-white bg-blue-500/20 rounded-lg text-xl ">
+        <h2 className="font-extrabold px-4 py-1 w-fit text-white bg-blue-500 dark:bg-opacity-20 rounded-lg text-xl ">
           Job Description
         </h2>
         <Linkify options={options}>
           <div
-            className="my-4 text-neutral-100"
+            className="my-4 dark:text-neutral-100"
             dangerouslySetInnerHTML={{ __html: job.description ?? '' }}
           ></div>
         </Linkify>
@@ -115,12 +115,12 @@ export const Job = ({ job }: { job: JobType }) => {
 
       {/* about company */}
       <section className="border-2 bg-[#F1F5F9] dark:bg-[#0F172A] h-auto max-h-[15rem] overflow-y-auto p-6 rounded-xl">
-        <h2 className="font-extrabold px-4 py-1 w-fit text-white bg-blue-500/20 rounded-lg text-xl ">
+        <h2 className="font-extrabold px-4 py-1 w-fit text-white bg-blue-500 dark:bg-opacity-20 rounded-lg text-xl ">
           About {job.companyName}
         </h2>
         <div
           dangerouslySetInnerHTML={{ __html: job.companyBio ?? '' }}
-          className="my-4 text-neutral-200"
+          className="my-4 dark:text-neutral-200"
         ></div>
       </section>
     </aside>

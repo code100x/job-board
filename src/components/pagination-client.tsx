@@ -21,7 +21,7 @@ const PaginationPreviousButton = ({
       }
       aria-disabled={currentPage - PAGE_INCREMENT < PAGE_INCREMENT}
       role="button"
-      className="aria-disabled:pointer-events-none dark:bg-neutral-900 rounded-full bg-neutral-100"
+      className="aria-disabled:pointer-events-none aria-disabled:text-gray-400 dark:bg-neutral-900 rounded-full bg-neutral-100"
     />
   );
 };
@@ -44,7 +44,7 @@ const PaginationNextButton = ({
         })
       }
       aria-disabled={currentPage > totalPages - PAGE_INCREMENT}
-      className="aria-disabled:pointer-events-none dark:bg-neutral-900 rounded-full bg-neutral-100"
+      className="aria-disabled:pointer-events-none aria-disabled:text-gray-400 dark:bg-neutral-900 rounded-full bg-neutral-100"
     />
   );
 };
