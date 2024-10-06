@@ -1,6 +1,6 @@
 import { getJobById, getRecommendedJobs } from '@/actions/job.action';
 import { Job } from '@/components/job';
-import JobCard from '@/components/job-card';
+import JobCard from '@/components/job-card-rec';
 import { JobByIdSchemaType } from '@/lib/validators/jobs.validator';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
@@ -8,7 +8,6 @@ import { redirect } from 'next/navigation';
 
 const page = async ({ params }: { params: JobByIdSchemaType }) => {
   const job = await getJobById(params);
-
   if (!job.status) {
     return;
   }

@@ -16,6 +16,7 @@ export type JobType = {
   description: string | null;
   companyName: string;
   postedAt: Date;
+  application?: string;
 };
 export type getAllJobsAdditonalType = {
   jobs: JobType[];
