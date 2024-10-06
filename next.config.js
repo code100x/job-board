@@ -9,6 +9,7 @@ if (process.env.SKIP_ENV_CHECK !== 'true') {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone',
   reactStrictMode: true,
   logging: {
     fetches: {
