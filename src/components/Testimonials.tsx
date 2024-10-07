@@ -12,6 +12,8 @@ const tweetIds = [
   '1826968639049724010',
 ];
 
+const finalTweetIds = [...tweetIds, ...tweetIds];
+
 export default function Testimonials() {
   return (
     <div className="flex justify-center items-center min-h-fit max-w-[90vw] sm:max-w-[100vw]  overflow-hidden flex-col">
@@ -21,7 +23,11 @@ export default function Testimonials() {
           Real Success Stories from Job Seekers and Employers
         </p>
       </div>
-      <InfiniteMovingCards items={tweetIds} direction="right" speed="slow" />
+      <InfiniteMovingCards
+        items={finalTweetIds}
+        direction="right"
+        speed="slow"
+      />
     </div>
   );
 }
