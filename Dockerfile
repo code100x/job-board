@@ -3,6 +3,13 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm i
 
+FROM node:20-alpine AS development
+WORKDIR /app
+COPY . .
+COPY --from=deps /app/node_modules ./node_modules
+RUN npx prisma generate
+CMD ["npm", "run", "dev"]
+
 FROM node:20-alpine AS builder
 WORKDIR /app
 COPY . .
