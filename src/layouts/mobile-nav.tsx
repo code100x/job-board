@@ -28,7 +28,7 @@ import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { CompanyLogo } from './header';
-import { ADMIN_ROLE, USER_ROLE } from '@/config/app.config';
+import { ADMIN_ROLE, HR_ROLE, USER_ROLE } from '@/config/app.config';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { getNameInitials } from '@/lib/utils';
 export function MobileNav() {
@@ -78,7 +78,8 @@ export function MobileNav() {
           <ul className="flex flex-col gap-2 text-sm justify-items-start px-4 py-2">
             {session.status !== 'loading' && session.data?.user && (
               <div className="w-full flex items-center">
-                {session.data?.user.role === ADMIN_ROLE ? (
+                {session.data?.user.role === ADMIN_ROLE ||
+                session.data?.user.role === HR_ROLE ? (
                   <div className="w-12 h-12 rounded-full flex items-center justify-center border-none ouline-none dark:bg-[#0F172A] dark:text-white bg-slate-200">
                     <p>HS</p>
                   </div>
