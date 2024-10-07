@@ -270,7 +270,6 @@ const PostJobForm = () => {
                           <SelectItem value="management">Management</SelectItem>
                           <SelectItem value="finance">Finance</SelectItem>
                           <SelectItem value="support">Support</SelectItem>
-                          <SelectItem value="HR">HR</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormItem>
