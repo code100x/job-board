@@ -398,3 +398,6 @@ html {
 .tweet-container_article__0ERPK {
   height: 100%;
 }
+html {
+  scroll-behavior: smooth;
+}
