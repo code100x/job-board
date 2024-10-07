@@ -17,9 +17,9 @@ export default function Faqs() {
       className="w-full h-fit dark:bg-faq-dark md:px-16 px-5 flex flex-col items-center pt-10"
     >
       <div className="w-full h-fit flex flex-col items-center">
-        <h1 className="font-bold md:text-4xl text-3xl text-center">
+        <h2 className="font-bold md:text-4xl text-3xl text-center">
           Frequently Asked Questions
-        </h1>
+        </h2>
         <p className="md:text-sm text-xs py-2 font-semibold text-[#64748B] dark:text-[#94A3B8]">
           Quick answers to any questions you may have.
         </p>

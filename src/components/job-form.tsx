@@ -25,7 +25,7 @@ import {
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { useToast } from './ui/use-toast';
-import { Calendar, LucideRocket, MailOpenIcon } from 'lucide-react';
+import { Calendar, LucideRocket, MailOpenIcon, X } from 'lucide-react';
 import DescriptionEditor from './DescriptionEditor';
 import Image from 'next/image';
 import { FaFileUpload } from 'react-icons/fa';
@@ -82,8 +82,21 @@ const PostJobForm = () => {
   const gmapsInputRef = useRef<any>(null);
 
   const handleClick = () => {
-    //@ts-ignore
-    document.getElementById('fileInput').click();
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+
+    if (fileInput) {
+      fileInput.click();
+    }
+  };
+
+  const clearLogoImage = () => {
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+
+    if (fileInput) {
+      fileInput.value = '';
+    }
+    setPreviewImg(null);
+    setFile(null);
   };
 
   const [file, setFile] = useState<File | null>(null);
@@ -117,6 +130,10 @@ const PostJobForm = () => {
 
   const handleFileChange = async (e: any) => {
     const selectedFile = e.target.files[0];
+    if (!selectedFile) {
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = () => {
       if (companyLogoImg.current) {
@@ -491,7 +508,7 @@ const PostJobForm = () => {
               </div>
 
               <div className="space-y-2">
-                <FormLabel className="font-medium">Loction</FormLabel>
+                <FormLabel className="font-medium">Location</FormLabel>
                 <DynamicGmapsAutoSuggest
                   innerRef={gmapsInputRef}
                   form={form}
@@ -539,21 +556,32 @@ const PostJobForm = () => {
 
               {/* Logo Upload Section */}
               <div className="flex flex-col items-center mb-6">
-                <div
-                  className="w-20 h-20 bg-gray-700 border border-dashed border-gray-500 rounded-md flex items-center justify-center cursor-pointer mb-2"
-                  onClick={handleClick}
-                >
-                  {previewImg ? (
-                    <Image
-                      src={previewImg}
-                      ref={companyLogoImg}
-                      className="object-cover w-full h-full"
-                      alt="Company Logo"
-                      width={80}
-                      height={80}
-                    />
-                  ) : (
-                    <FaFileUpload className="text-white text-2xl" />
+                <div className="relative">
+                  <div
+                    className="w-20 h-20 bg-gray-700 border border-dashed border-gray-500 rounded-md flex items-center justify-center cursor-pointer mb-2"
+                    onClick={handleClick}
+                  >
+                    {previewImg ? (
+                      <Image
+                        src={previewImg}
+                        ref={companyLogoImg}
+                        className="object-contain w-full h-full"
+                        alt="Company Logo"
+                        width={80}
+                        height={80}
+                      />
+                    ) : (
+                      <FaFileUpload className="text-white text-2xl" />
+                    )}
+                  </div>
+                  {previewImg && (
+                    <button
+                      type="button"
+                      onClick={clearLogoImage}
+                      className="absolute top-0 right-0 w-5 h-5 bg-red-500 rounded-full items-center flex justify-center cursor-pointer translate-x-1/2 -translate-y-1/2"
+                    >
+                      <X size="16" />
+                    </button>
                   )}
                 </div>
                 <input

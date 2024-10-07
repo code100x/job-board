@@ -1,8 +1,15 @@
 /* eslint-disable no-console */
-import { Currency, EmployementType, Role, WorkMode } from '@prisma/client';
+import {
+  PrismaClient,
+  Currency,
+  EmployementType,
+  Role,
+  WorkMode,
+} from '@prisma/client';
 import { faker } from '@faker-js/faker';
 import bcrypt from 'bcryptjs';
-import prisma from '../src/config/prisma.config';
+
+const prisma = new PrismaClient();
 
 const users = [
   { id: '1', name: 'Jack', email: 'user@gmail.com' },
@@ -23,7 +30,6 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    application: 'apply@techcorp.com',
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
@@ -46,7 +52,7 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.office,
     currency: Currency.USD,
-    application: 'jobs@innovatech.com',
+
     hasExperiencerange: false,
     companyLogo: '',
     hasSalaryRange: false,
@@ -67,7 +73,6 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.hybrid,
     currency: Currency.USD,
-    application: 'careers@globalsolutions.com',
     hasExperiencerange: true,
     minExperience: 3,
     maxExperience: 4,
@@ -91,7 +96,6 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    application: 'apply@devopsltd.com',
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
@@ -115,7 +119,6 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.hybrid,
     currency: Currency.USD,
-    application: 'careers@productiveminds.com',
     hasExperiencerange: false,
     companyLogo: '',
     hasSalaryRange: true,
@@ -137,7 +140,6 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.office,
     currency: Currency.USD,
-    application: 'apply@datainsights.com',
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
@@ -161,7 +163,6 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    application: 'jobs@creativedesigns.com',
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
@@ -184,7 +185,6 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.hybrid,
     currency: Currency.USD,
-    application: 'apply@appinnovators.com',
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
@@ -206,7 +206,6 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.office,
     currency: Currency.USD,
-    application: 'careers@cloudworks.com',
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
@@ -229,14 +228,13 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    application: 'jobs@securetech.com',
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
     companyLogo: '',
     hasSalaryRange: true,
-    minSalary: 75,
-    maxSalary: 95,
+    minSalary: 75000,
+    maxSalary: 95000,
     isVerifiedJob: false,
   },
   {
@@ -252,12 +250,11 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    application: 'apply@qasolutions.com',
     companyLogo: '',
     hasSalaryRange: true,
     hasExperiencerange: false,
-    minSalary: 25,
-    maxSalary: 50,
+    minSalary: 25000,
+    maxSalary: 50000,
     isVerifiedJob: true,
   },
   {
@@ -273,7 +270,6 @@ let jobs = [
     type: EmployementType.Contract,
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    application: 'careers@writetech.com',
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
@@ -288,36 +284,42 @@ let jobs = [
 async function seedUsers() {
   try {
     const hashedPassword = await bcrypt.hash('123456', 10);
-    await Promise.all(
-      users.map(
-        async (u) =>
-          await prisma.user.upsert({
-            where: { id: u.id },
-            create: {
-              id: u.id,
-              email: u.email,
-              name: u.name,
-              password: hashedPassword,
-              role: u.role || Role.USER,
-              emailVerified: new Date(),
-            },
-            update: {},
-          })
-      )
-    );
-    console.log('✅ user seed successfully');
-    await prisma.$disconnect();
+    for (const u of users) {
+      try {
+        await prisma.user.upsert({
+          where: { email: u.email },
+          update: {},
+          create: {
+            id: u.id,
+            email: u.email,
+            name: u.name,
+            password: hashedPassword,
+            role: u.role || Role.USER,
+            emailVerified: new Date(),
+          },
+        });
+        console.log(`User created or updated: ${u.email}`);
+      } catch (error) {
+        console.log(`Error processing user ${u.email}:`, error);
+      }
+    }
+    console.log('✅ User seed completed');
   } catch (error) {
-    console.log(error);
-    await prisma.$disconnect();
-    process.exit(1);
+    console.error('Error seeding users:', error);
   }
 }
 
 async function seedJobs() {
   try {
+    const existingUsers = await prisma.user.findMany({
+      select: { id: true },
+    });
+    const existingUserIds = new Set(existingUsers.map((user) => user.id));
+
+    const validJobs = jobs.filter((job) => existingUserIds.has(job.userId));
+
     await Promise.all(
-      jobs.map(async (j) =>
+      validJobs.map(async (j) =>
         prisma.job.upsert({
           where: { id: j.id },
           create: {
@@ -332,7 +334,7 @@ async function seedJobs() {
             type: j.type,
             workMode: j.workMode,
             currency: j.currency,
-            application: j.application,
+            application: 'https://x.com/100xDevs',
             city: faker.location.city(),
             address: faker.location.city(),
             hasExperiencerange: j.hasExperiencerange,
@@ -358,12 +360,9 @@ async function seedJobs() {
         })
       )
     );
-    console.log('✅ job seed successfully');
+    console.log('✅ Job seed completed successfully');
   } catch (error) {
-    console.error(error);
-    process.exit(1);
-  } finally {
-    await prisma.$disconnect();
+    console.error('Error seeding jobs:', error);
   }
 }
 

@@ -112,7 +112,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                 >
                                   <FormControl>
                                     <Checkbox
-                                      className="rounded border-slate-300"
+                                      className="rounded border-slate-300 hover:border-2"
                                       checked={field.value?.includes(item)}
                                       onCheckedChange={(checked) => {
                                         checked
@@ -128,7 +128,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                       }}
                                     />
                                   </FormControl>
-                                  <FormLabel className="text-sm font-normal">
+                                  <FormLabel className="text-sm font-normal hover:cursor-pointer">
                                     {_.startCase(item)}
                                   </FormLabel>
                                 </FormItem>
@@ -165,7 +165,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                 >
                                   <FormControl>
                                     <Checkbox
-                                      className="rounded border-slate-300"
+                                      className="rounded border-slate-300 hover:border-2"
                                       checked={field.value?.includes(item)}
                                       onCheckedChange={(checked) => {
                                         checked
@@ -181,7 +181,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                       }}
                                     />
                                   </FormControl>
-                                  <FormLabel className="text-sm font-normal">
+                                  <FormLabel className="text-sm font-normal hover:cursor-pointer">
                                     {_.startCase(item)}
                                   </FormLabel>
                                 </FormItem>
@@ -218,7 +218,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                 >
                                   <FormControl>
                                     <Checkbox
-                                      className="rounded border-slate-300"
+                                      className="rounded border-slate-300 hover:border-2"
                                       checked={field.value?.includes(
                                         item.value
                                       )}
@@ -236,7 +236,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                                       }}
                                     />
                                   </FormControl>
-                                  <FormLabel className="text-sm font-normal">
+                                  <FormLabel className="text-sm font-normal hover:cursor-pointer">
                                     {item.label}
                                   </FormLabel>
                                 </FormItem>
