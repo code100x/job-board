@@ -11,7 +11,7 @@ export const NavItem = ({
 }: {
   path: string;
   label: string;
-  roleRequired?: string;
+  roleRequired?: string[];
   isPrivate?: boolean;
 }) => {
   const session = useSession();
@@ -22,7 +22,12 @@ export const NavItem = ({
   if (!session.data?.user && isPrivate) {
     return;
   }
-  if (session && roleRequired && session.data?.user.role !== roleRequired) {
+  if (
+    session &&
+    roleRequired &&
+    session.data?.user.role &&
+    !roleRequired.includes(session.data?.user.role)
+  ) {
     return;
   }
 

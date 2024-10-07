@@ -89,6 +89,7 @@ enum WorkMode {
 enum Role {
   USER
   ADMIN
+  HR
 }
 
 enum EmployementType {
