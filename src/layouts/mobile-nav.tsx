@@ -166,7 +166,7 @@ const Item = ({
 }: {
   path: string;
   label: string;
-  roleRequired?: string;
+  roleRequired?: string[];
   isPrivate?: boolean;
 }) => {
   const session = useSession();
@@ -177,7 +177,12 @@ const Item = ({
   if (!session.data?.user && isPrivate) {
     return;
   }
-  if (session && roleRequired && session.data?.user.role !== roleRequired)
+  if (
+    session &&
+    roleRequired &&
+    session.data?.user.role &&
+    !roleRequired.includes(session.data?.user.role)
+  )
     return;
   return (
     <li className="my-1 dark:hover:bg-slate-800 hover:bg-slate-50 p-2 rounded-lg">
