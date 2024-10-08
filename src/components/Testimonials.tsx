@@ -14,7 +14,10 @@ const tweetIds = [
 
 export default function Testimonials() {
   return (
-    <div className="flex justify-center items-center min-h-fit max-w-[90vw] sm:max-w-[100vw]  overflow-hidden flex-col">
+    <div
+      id="testimonials"
+      className="flex justify-center items-center min-h-fit max-w-[90vw] sm:max-w-[100vw] overflow-hidden flex-col"
+    >
       <div className="w-full h-fit flex flex-col items-center">
         <h2 className="font-bold text-2xl md:text-4xl">Testimonials</h2>
         <p className="text-sm md:text-base py-2 font-semibold text-[#64748B] dark:text-[#94A3B8]">
