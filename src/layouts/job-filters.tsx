@@ -21,7 +21,6 @@ import {
   FormLabel,
   FormMessage,
 } from '../components/ui/form';
-import { Separator } from '../components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import useSetQueryParams from '@/hooks/useSetQueryParams';
@@ -55,6 +54,16 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
     return cities;
   }
 
+  function clearFilters() {
+    form.reset({
+      page: DEFAULT_PAGE,
+      workmode: [],
+      EmpType: [],
+      salaryrange: [],
+      city: [],
+    });
+  }
+
   useEffect(() => {
     fetchCityFilters();
   }, []);
@@ -71,13 +80,18 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
         'rounded-lg  bg-background  min-w-[290px]  p-6 h-fit  top-20'
       )}
     >
-      <div className="flex items-center justify-between">
-        <h3 className="font-medium text-base text-primary-text">All Filters</h3>
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="font-bold text-xl">All Filters</h3>
+        <button
+          className="font-medium text-gray-600 dark:text-gray-300"
+          onClick={clearFilters}
+        >
+          Clear Filters
+        </button>
       </div>
-      <Separator className="my-6" />
       <Form {...form}>
-        <form className=" flex flex-col gap-3">
-          <ScrollArea className={cn('h-fit pr-4')}>
+        <form className=" flex flex-col gap-3 mt-6">
+          <ScrollArea className={cn('h-fit')}>
             <Accordion
               type="multiple"
               className="w-full"
@@ -91,7 +105,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
             >
               <AccordionItem value="Employment-type">
                 <AccordionTrigger className="text-primary-text pt-0 hover:no-underline">
-                  Employment type
+                  Employment Type
                 </AccordionTrigger>
                 <AccordionContent>
                   <FormField

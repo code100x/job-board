@@ -12,7 +12,7 @@ import Image from 'next/image';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
-import { ADMIN_ROLE } from '@/config/app.config';
+import { ADMIN_ROLE, HR_ROLE } from '@/config/app.config';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -76,7 +76,8 @@ const Header = () => {
                     <Skeleton className="h-4 w-[60px]" key={index} />
                   ))
                 : session.data?.user
-                  ? session.data?.user.role === ADMIN_ROLE
+                  ? session.data?.user.role === ADMIN_ROLE ||
+                    session.data?.user.role === HR_ROLE
                     ? adminNavbar.map((item) => (
                         <NavItem {...item} key={item.id} />
                       ))

@@ -8,7 +8,11 @@ export async function middleware(req: NextRequest) {
   if (!token && pathname === '/create') {
     return NextResponse.redirect(new URL('/signin', req.url));
   }
-  if (pathname === '/create' && token?.role !== 'ADMIN') {
+  if (
+    pathname === '/create' &&
+    token?.role !== 'ADMIN' &&
+    token?.role !== 'HR'
+  ) {
     return NextResponse.redirect(new URL('/', req.url));
   }
   return NextResponse.next();

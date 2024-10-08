@@ -25,14 +25,14 @@ export const adminNavbar = [
     id: 2,
     label: 'Manage Jobs',
     path: APP_PATHS.MANAGE_JOBS,
-    roleRequired: 'ADMIN',
+    roleRequired: ['ADMIN', 'HR'],
     icon: PackageSearch,
   },
   {
     id: 3,
     label: 'Post a job',
     path: APP_PATHS.POST_JOB,
-    roleRequired: 'ADMIN',
+    roleRequired: ['ADMIN', 'HR'],
     icon: PackageSearch,
   },
 ];
