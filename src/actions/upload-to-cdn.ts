@@ -14,7 +14,7 @@ export async function uploadFileAction(formData: FormData) {
     if (!file) {
       return { error: 'File is required', status: 400 };
     }
-    const uploadUrl = `${CDN_BASE_UPLOAD_URL}/${uniqueFileName}`;
+    const uploadUrl = `${CDN_BASE_UPLOAD_URL}/${uniqueFileName}.webp`;
     const fileBuffer = Buffer.from(await file.arrayBuffer());
 
     const response = await fetch(uploadUrl, {
@@ -28,7 +28,7 @@ export async function uploadFileAction(formData: FormData) {
     if (response.ok) {
       return {
         message: 'File uploaded successfully',
-        url: `${CDN_BASE_ACCESS_URL}/${uniqueFileName}`,
+        url: `${CDN_BASE_ACCESS_URL}/${uniqueFileName}.webp`,
       };
     } else {
       return { error: 'Failed to upload file', status: response.status };
