@@ -31,11 +31,7 @@ import {
 } from './pagination-client';
 import APP_PATHS from '@/config/path.config';
 import { PaginationPages } from './ui/paginator';
-import {
-  approveJob,
-  deleteJobById,
-  getAllJobsForAdmin,
-} from '@/actions/job.action';
+import { approveJob, deleteJobById, getAllJobs } from '@/actions/job.action';
 import ApproveJobDialog from './ApproveJobDialog';
 
 type props = {
@@ -52,7 +48,11 @@ const JobManagementTable = ({ jobs, searchParams, initialJobs }: props) => {
     try {
       const result = await deleteJobById({ id: JobId });
       if (result.status) {
-        setDispJobs((prevJobs) => prevJobs.filter((job) => job.id !== JobId));
+        setDispJobs((prevJobs) =>
+          prevJobs.map((job) =>
+            job.id === JobId ? { ...job, deleted: true } : job
+          )
+        );
         toast({ title: result.message });
       }
     } catch (error: any) {
@@ -82,7 +82,7 @@ const JobManagementTable = ({ jobs, searchParams, initialJobs }: props) => {
   };
 
   const refreshJobs = async () => {
-    const refreshedJobs = await getAllJobsForAdmin(searchParams);
+    const refreshedJobs = await getAllJobs(searchParams);
     if (refreshedJobs.status && Array.isArray(refreshedJobs.additional?.jobs)) {
       setDispJobs(refreshedJobs.additional?.jobs);
     }
@@ -99,7 +99,7 @@ const JobManagementTable = ({ jobs, searchParams, initialJobs }: props) => {
   const totalPages =
     Math.ceil((jobs.additional?.totalJobs || 0) / JOBS_PER_PAGE) ||
     DEFAULT_PAGE;
-  const currentPage = parseInt(searchParams.page?.toString()) || DEFAULT_PAGE;
+  const currentPage = searchParams.page || DEFAULT_PAGE;
   return (
     <>
       <div className="flex flex-col items-center justify-center gap-12">
@@ -121,9 +121,15 @@ const JobManagementTable = ({ jobs, searchParams, initialJobs }: props) => {
                 <TableCell>{job?.city}</TableCell>
                 <TableCell>
                   {job.isVerifiedJob ? (
-                    <span className="bg-green-400 p-1 rounded-md text-secondary px-3 tracking-wide">
-                      Approved
-                    </span>
+                    job.deleted ? (
+                      <span className="bg-red-400 p-1 rounded-md text-secondary px-3 tracking-wide">
+                        Deleted
+                      </span>
+                    ) : (
+                      <span className="bg-green-400 p-1 rounded-md text-secondary px-3 tracking-wide">
+                        Approved
+                      </span>
+                    )
                   ) : (
                     <ApproveJobDialog
                       title="Approve this Job?"

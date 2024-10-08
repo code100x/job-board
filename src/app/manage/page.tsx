@@ -15,7 +15,7 @@ const ManageJob = async ({
 }) => {
   const parsedData = JobQuerySchema.safeParse(searchParams);
   const server = await getServerSession(options);
-  if (!server?.user || !server) {
+  if (!server?.user) {
     redirect('/api/auth/signin');
   } else if (server.user.role !== 'ADMIN') {
     redirect('/jobs');

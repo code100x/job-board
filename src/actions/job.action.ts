@@ -29,6 +29,7 @@ import {
   getAllRecommendedJobs,
   getJobType,
 } from '@/types/jobs.types';
+import { withAdminServerAction } from '@/lib/admin';
 
 type additional = {
   isVerifiedJob: boolean;
@@ -102,10 +103,10 @@ export const createJob = withSession<
   return new SuccessResponse(message, 201, additonal).serialize();
 });
 
-export const getAllJobs = withServerActionAsyncCatcher<
+export const getAllJobs = withSession<
   JobQuerySchemaType,
   ServerActionReturnType<getAllJobsAdditonalType>
->(async (data) => {
+>(async (session, data) => {
   if (data?.workmode && !Array.isArray(data?.workmode)) {
     data.workmode = Array.of(data?.workmode);
   }
@@ -119,13 +120,18 @@ export const getAllJobs = withServerActionAsyncCatcher<
     data.city = Array.of(data?.city);
   }
   const result = JobQuerySchema.parse(data);
+  const isAdmin = session.user.role === 'ADMIN';
   const { filterQueries, orderBy, pagination } = getJobFilters(result);
   const queryJobsPromise = prisma.job.findMany({
     ...pagination,
     orderBy: [orderBy],
     where: {
-      isVerifiedJob: true,
-      ...filterQueries,
+      ...(isAdmin
+        ? { ...filterQueries }
+        : {
+            isVerifiedJob: true,
+            ...filterQueries,
+          }),
     },
     select: {
       id: true,
@@ -147,6 +153,7 @@ export const getAllJobs = withServerActionAsyncCatcher<
       postedAt: true,
       companyLogo: true,
       isVerifiedJob: true,
+      deleted: true,
     },
   });
   const totalJobsPromise = prisma.job.count({
@@ -375,9 +382,12 @@ export const deleteJobById = withServerActionAsyncCatcher<
 >(async (data) => {
   const result = deleteJobByIdSchema.parse(data);
   const { id } = result;
-  const deletedJob = await prisma.job.delete({
+  const deletedJob = await prisma.job.update({
     where: {
       id: id,
+    },
+    data: {
+      deleted: true,
     },
   });
   const deletedJobID = deletedJob.id;
@@ -386,15 +396,15 @@ export const deleteJobById = withServerActionAsyncCatcher<
   }).serialize();
 });
 
-export const approveJob = withSession<
+export const approveJob = withAdminServerAction<
   ApproveJobSchemaType,
   ServerActionReturnType<ApprovedJobID>
 >(async (session, data) => {
-  if (session.user.role === 'USER') {
-    throw new Error('Unauth Access');
+  const result = ApproveJobSchema.safeParse(data);
+  if (!result.success) {
+    throw new Error(result.error.errors.toLocaleString());
   }
-  const result = ApproveJobSchema.parse(data);
-  const { id } = result;
+  const { id } = result.data;
   await prisma.job.update({
     where: {
       id: id,
@@ -404,66 +414,4 @@ export const approveJob = withSession<
     },
   });
   return new SuccessResponse('Job Approved', 200, { jobId: id }).serialize();
-});
-
-export const getAllJobsForAdmin = withSession<
-  //not the ideal action we should make getAllJobs() better so we can have option to display verified and unverified jobs by Inputs
-  JobQuerySchemaType,
-  ServerActionReturnType<getAllJobsAdditonalType>
->(async (session, data) => {
-  if (session.user.role === 'USER') {
-    throw new Error('UnAuth Access');
-  }
-  if (data?.workmode && !Array.isArray(data?.workmode)) {
-    data.workmode = Array.of(data?.workmode);
-  }
-  if (data?.salaryrange && !Array.isArray(data?.salaryrange)) {
-    data.salaryrange = Array.of(data?.salaryrange);
-  }
-  if (data?.city && !Array.isArray(data?.city)) {
-    data.city = Array.of(data?.city);
-  }
-  const result = JobQuerySchema.parse(data);
-  const { filterQueries, orderBy, pagination } = getJobFilters(result);
-  const queryJobsPromise = prisma.job.findMany({
-    ...pagination,
-    orderBy: [orderBy],
-    where: {
-      ...filterQueries,
-    },
-    select: {
-      id: true,
-      type: true,
-      title: true,
-      description: true,
-      companyName: true,
-      city: true,
-      companyBio: true,
-      hasExperiencerange: true,
-      minExperience: true,
-      maxExperience: true,
-      skills: true,
-      address: true,
-      workMode: true,
-      category: true,
-      minSalary: true,
-      maxSalary: true,
-      postedAt: true,
-      companyLogo: true,
-      isVerifiedJob: true,
-    },
-  });
-  const totalJobsPromise = prisma.job.count({
-    where: {
-      ...filterQueries,
-    },
-  });
-  const [jobs, totalJobs] = await Promise.all([
-    queryJobsPromise,
-    totalJobsPromise,
-  ]);
-  return new SuccessResponse('All jobs fetched successfully', 200, {
-    jobs,
-    totalJobs,
-  }).serialize();
 });

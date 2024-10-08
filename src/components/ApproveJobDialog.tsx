@@ -18,7 +18,7 @@ const ApproveJobDialog = ({
 }: {
   title: string;
   description: string;
-  handleClick: any;
+  handleClick: () => void;
 }) => {
   return (
     <>

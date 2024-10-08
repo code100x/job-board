@@ -1,10 +1,8 @@
-'use client';
 import React from 'react';
+import Link from 'next/link';
 import { Button } from './ui/button';
-import { useRouter } from 'next/navigation';
 
 const JobManagementHeader = () => {
-  const router = useRouter();
   return (
     <>
       <header className="pt-4 px-6 flex justify-between items-center">
@@ -15,12 +13,8 @@ const JobManagementHeader = () => {
           </span>
         </div>
         <div>
-          <Button
-            onClick={() => {
-              router.push('/create');
-            }}
-          >
-            Post new Job
+          <Button>
+            <Link href={'/create'}>Post new Job</Link>
           </Button>
         </div>
       </header>
