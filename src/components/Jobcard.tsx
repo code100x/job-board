@@ -7,6 +7,7 @@ import { JobType } from '@/types/jobs.types';
 import _ from 'lodash';
 import { cn } from '@/lib/utils';
 import { JobSkills } from './job-skills';
+
 export default function JobCard({
   job,
   className,
@@ -25,10 +26,10 @@ export default function JobCard({
     >
       <div className="flex w-full gap-3">
         <div className="size-16 relative">
-          {job.companyLogo && (
+          {job.company?.logo && (
             <Image
               className="size-full object-contain "
-              src={job.companyLogo || ''}
+              src={job.company.logo || ''}
               width={'500'}
               height={'500'}
               alt="company-logo"
@@ -40,7 +41,7 @@ export default function JobCard({
             {job.title}
           </h2>
           <div className="flex">
-            <p>{job.companyName + '.'} </p>
+            <p>{job.company?.name + '.'} </p>
             <p className="ml-2">{'Posted on ' + job.postedAt.toDateString()}</p>
           </div>
         </div>
