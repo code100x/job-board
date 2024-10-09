@@ -19,7 +19,7 @@ export const JobPostSchema = z
     category: z.string(),
     companyEmail: z.string().email('Invalid email').min(1, 'Email is required'),
     companyBio: z.string().min(1, 'Company Bio is required'),
-    companyLogo: z.string().url(),
+    companyLogo: z.string().min(1, 'Company Logo is Required'),
     hasSalaryRange: z.boolean().optional(),
     minSalary: z.coerce
       .number({ message: 'Min salary must be a number' })
