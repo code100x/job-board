@@ -8,8 +8,8 @@ datasource db {
 }
 
 model User {
-  id         String  @id @default(cuid())
-  name       String
+  id   String @id @default(cuid())
+  name String
 
   password   String?
   avatar     String?
@@ -19,41 +19,53 @@ model User {
 
   email         String    @unique
   emailVerified DateTime?
-  
-  oauthProvider   OauthProvider?  // Tracks OAuth provider (e.g., 'google')
-  oauthId String?
+
+  oauthProvider OauthProvider? // Tracks OAuth provider (e.g., 'google')
+  oauthId       String?
 
   blockedByAdmin DateTime?
-  
+  Company        Company[]
 }
 
 enum OauthProvider {
   GOOGLE
 }
 
-
 model VerificationToken {
-  token String
+  token      String
   identifier String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  type TokenType
-  @@unique([token,identifier])
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  type       TokenType
+
+  @@unique([token, identifier])
 }
 
-enum  TokenType {
+enum TokenType {
   EMAIL_VERIFICATION
   RESET_PASSWORD
+}
+
+model Company {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  bio       String
+  email     String
+  website   String?
+  logo      String
+  user      User     @relation(fields: [userId], references: [id])
+  jobs      Job[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Job {
   id                 String          @id @default(cuid())
   userId             String
+  companyId          String
   title              String
   description        String?
-  companyName        String          @map("company_name")
-  companyBio         String          @map("company_bio")
-  companyEmail       String          @map("company_email")
   category           String
   type               EmployementType
   workMode           WorkMode        @map("work_mode")
@@ -61,7 +73,6 @@ model Job {
   city               String
   address            String
   application        String
-  companyLogo        String
   skills             String[]
   hasSalaryRange     Boolean         @default(false) @map("has_salary_range")
   minSalary          Int?
@@ -72,6 +83,7 @@ model Job {
   isVerifiedJob      Boolean         @default(false) @map("is_verified_job")
   postedAt           DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
+  company            Company         @relation(fields: [companyId], references: [id])
   user               User            @relation(fields: [userId], references: [id])
 }
 
