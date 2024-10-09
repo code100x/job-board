@@ -38,16 +38,13 @@ export const createJob = withServerActionAsyncCatcher<
 
   const result = JobPostSchema.parse(data);
   const {
-    companyName,
+    companyId,
     skills,
-    companyBio,
-    companyEmail,
     type,
     category,
     application,
     city,
     address,
-    companyLogo,
     title,
     workMode,
     description,
@@ -58,18 +55,25 @@ export const createJob = withServerActionAsyncCatcher<
     maxExperience,
     minSalary,
   } = result;
+
+  const company = await prisma.company.findFirst({
+    where: { id: companyId, userId: auth.user.id },
+  });
+
+  if (!company) {
+    throw new ErrorHandler('Company not found or not authorized', 'NOT_FOUND');
+  }
+
   await prisma.job.create({
     data: {
       userId: auth.user.id,
+      companyId: company.id,
       title,
       description,
       hasExperiencerange,
       minExperience,
       maxExperience,
       skills,
-      companyName,
-      companyBio,
-      companyEmail,
       type,
       category,
       application,
@@ -78,7 +82,6 @@ export const createJob = withServerActionAsyncCatcher<
       maxSalary,
       city,
       address,
-      companyLogo,
       workMode,
       isVerifiedJob: false,
     },
@@ -118,9 +121,8 @@ export const getAllJobs = withServerActionAsyncCatcher<
       type: true,
       title: true,
       description: true,
-      companyName: true,
+      companyId: true,
       city: true,
-      companyBio: true,
       hasExperiencerange: true,
       minExperience: true,
       maxExperience: true,
@@ -131,7 +133,14 @@ export const getAllJobs = withServerActionAsyncCatcher<
       minSalary: true,
       maxSalary: true,
       postedAt: true,
-      companyLogo: true,
+      company: {
+        select: {
+          id: true,
+          name: true,
+          bio: true,
+          logo: true,
+        },
+      },
     },
   });
   const totalJobsPromise = prisma.job.count({
@@ -173,8 +182,7 @@ export const getRecommendedJobs = withServerActionAsyncCatcher<
       type: true,
       title: true,
       description: true,
-      companyName: true,
-      companyBio: true,
+      companyId: true,
       city: true,
       address: true,
       category: true,
@@ -185,7 +193,14 @@ export const getRecommendedJobs = withServerActionAsyncCatcher<
       maxSalary: true,
       postedAt: true,
       skills: true,
-      companyLogo: true,
+      company: {
+        select: {
+          id: true,
+          name: true,
+          bio: true,
+          logo: true,
+        },
+      },
     },
   });
 
@@ -203,8 +218,7 @@ export const getRecommendedJobs = withServerActionAsyncCatcher<
         type: true,
         title: true,
         description: true,
-        companyName: true,
-        companyBio: true,
+        companyId: true,
         city: true,
         address: true,
         workMode: true,
@@ -212,7 +226,6 @@ export const getRecommendedJobs = withServerActionAsyncCatcher<
         skills: true,
         maxSalary: true,
         postedAt: true,
-        companyLogo: true,
         minExperience: true,
         maxExperience: true,
         category: true,
@@ -243,11 +256,8 @@ export const getJobById = withServerActionAsyncCatcher<
       id: true,
       title: true,
       description: true,
-      companyName: true,
-      companyBio: true,
-      companyEmail: true,
+      companyId: true,
       type: true,
-      companyLogo: true,
       category: true,
       city: true,
       hasExperiencerange: true,
@@ -261,6 +271,14 @@ export const getJobById = withServerActionAsyncCatcher<
       maxSalary: true,
       postedAt: true,
       application: true,
+      company: {
+        select: {
+          id: true,
+          name: true,
+          bio: true,
+          logo: true,
+        },
+      },
     },
   });
   return new SuccessResponse(`${id} Job fetched successfully`, 200, {
@@ -290,8 +308,14 @@ export const getRecentJobs = async () => {
         id: true,
         title: true,
         description: true,
-        companyBio: true,
-        companyName: true,
+        company: {
+          select: {
+            id: true,
+            name: true,
+            bio: true,
+            logo: true,
+          },
+        },
         city: true,
         address: true,
         workMode: true,
@@ -302,7 +326,6 @@ export const getRecentJobs = async () => {
         maxExperience: true,
         skills: true,
         postedAt: true,
-        companyLogo: true,
         type: true,
         application: true,
       },
@@ -339,7 +362,25 @@ export const updateJob = withServerActionAsyncCatcher<
   // Update the job
   job = await prisma.job.update({
     where: { id: parsedId.id },
-    data: { ...result, isVerifiedJob: false },
+    data: {
+      title: result.title,
+      description: result.description,
+      companyId: result.companyId,
+      type: result.type,
+      category: result.category,
+      application: result.application,
+      city: result.city,
+      address: result.address,
+      workMode: result.workMode,
+      skills: result.skills,
+      hasSalaryRange: result.hasSalaryRange,
+      minSalary: result.minSalary,
+      maxSalary: result.maxSalary,
+      hasExperiencerange: result.hasExperiencerange,
+      minExperience: result.minExperience,
+      maxExperience: result.maxExperience,
+      isVerifiedJob: false,
+    },
   });
 
   const additonal = { isVerifiedJob: false, jobId: job.id };
