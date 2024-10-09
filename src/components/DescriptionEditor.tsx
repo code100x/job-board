@@ -48,16 +48,19 @@ const DescriptionEditor: React.FC<DescriptionEditorProps> = ({
   ];
 
   return (
-    <ReactQuill
-      theme="snow"
-      modules={modules}
-      formats={formats}
-      value={description}
-      style={{ width: '100%' }}
-      onChange={handleChange}
-      placeholder={placeholder}
-      className="text-white bg-gray-800  job-description-editor text-wrap max-w-[537px]"
-    />
+    <div data-text-editor={fieldName}>
+      <ReactQuill
+        theme="snow"
+        modules={modules}
+        formats={formats}
+        value={description}
+        style={{ width: '100%' }}
+        onChange={handleChange}
+        placeholder={placeholder}
+        bounds={`[data-text-editor="${fieldName}"]`}
+        className="text-white bg-gray-800  job-description-editor text-wrap max-w-[537px]"
+      />
+    </div>
   );
 };
 

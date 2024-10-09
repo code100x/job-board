@@ -1,5 +1,11 @@
 /* eslint-disable no-console */
-import { PrismaClient, Currency, EmployementType, Role, WorkMode } from '@prisma/client';
+import {
+  PrismaClient,
+  Currency,
+  EmployementType,
+  Role,
+  WorkMode,
+} from '@prisma/client';
 import { faker } from '@faker-js/faker';
 import bcrypt from 'bcryptjs';
 
@@ -8,6 +14,7 @@ const prisma = new PrismaClient();
 const users = [
   { id: '1', name: 'Jack', email: 'user@gmail.com' },
   { id: '2', name: 'Admin', email: 'admin@gmail.com', role: Role.ADMIN },
+  { id: '3', name: 'Hr', email: 'hr@gmail.com', role: Role.HR },
 ];
 
 let jobs = [
@@ -24,7 +31,6 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    application: 'apply@techcorp.com',
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
@@ -47,7 +53,7 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.office,
     currency: Currency.USD,
-    application: 'jobs@innovatech.com',
+
     hasExperiencerange: false,
     companyLogo: '',
     hasSalaryRange: false,
@@ -68,7 +74,6 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.hybrid,
     currency: Currency.USD,
-    application: 'careers@globalsolutions.com',
     hasExperiencerange: true,
     minExperience: 3,
     maxExperience: 4,
@@ -92,7 +97,6 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    application: 'apply@devopsltd.com',
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
@@ -116,7 +120,6 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.hybrid,
     currency: Currency.USD,
-    application: 'careers@productiveminds.com',
     hasExperiencerange: false,
     companyLogo: '',
     hasSalaryRange: true,
@@ -138,7 +141,6 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.office,
     currency: Currency.USD,
-    application: 'apply@datainsights.com',
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
@@ -162,7 +164,6 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    application: 'jobs@creativedesigns.com',
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
@@ -185,7 +186,6 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.hybrid,
     currency: Currency.USD,
-    application: 'apply@appinnovators.com',
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
@@ -207,7 +207,6 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.office,
     currency: Currency.USD,
-    application: 'careers@cloudworks.com',
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
@@ -230,7 +229,6 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    application: 'jobs@securetech.com',
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
@@ -253,10 +251,10 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    application: 'apply@qasolutions.com',
     companyLogo: '',
     hasSalaryRange: true,
     hasExperiencerange: false,
+    minSalary: 25000,
     maxSalary: 50000,
     isVerifiedJob: true,
   },
@@ -273,7 +271,6 @@ let jobs = [
     type: EmployementType.Contract,
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    application: 'careers@writetech.com',
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
@@ -299,7 +296,7 @@ async function seedUsers() {
             name: u.name,
             password: hashedPassword,
             role: u.role || Role.USER,
-            // emailVerified: new Date(), //-- emailVerified field does not exists.
+            emailVerified: new Date(),
           },
         });
         console.log(`User created or updated: ${u.email}`);
@@ -315,14 +312,12 @@ async function seedUsers() {
 
 async function seedJobs() {
   try {
-
     const existingUsers = await prisma.user.findMany({
       select: { id: true },
     });
-    const existingUserIds = new Set(existingUsers.map(user => user.id));
+    const existingUserIds = new Set(existingUsers.map((user) => user.id));
 
-   
-    const validJobs = jobs.filter(job => existingUserIds.has(job.userId));
+    const validJobs = jobs.filter((job) => existingUserIds.has(job.userId));
 
     await Promise.all(
       validJobs.map(async (j) =>
@@ -340,13 +335,13 @@ async function seedJobs() {
             type: j.type,
             workMode: j.workMode,
             currency: j.currency,
-            application: j.application,
+            application: 'https://x.com/100xDevs',
             city: faker.location.city(),
             address: faker.location.city(),
             hasExperiencerange: j.hasExperiencerange,
             minExperience: j.minExperience,
             maxExperience: j.maxExperience,
-            companyLogo: '/spotify.png',
+            companyLogo: '/main.svg',
             hasSalaryRange: j.hasSalaryRange,
             minSalary: j.minSalary,
             maxSalary: j.maxSalary,

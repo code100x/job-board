@@ -1,31 +1,22 @@
-FROM node:20-alpine AS base
-WORKDIR /usr/src/app
+FROM node:20-alpine AS deps
+WORKDIR /app
 COPY package*.json ./
-COPY ./prisma ./prisma
-RUN npm install && npx prisma generate
+RUN npm i
 
-FROM node:20-alpine AS development
-WORKDIR /usr/src/app
+FROM node:20-alpine AS builder
+WORKDIR /app
 COPY . .
-COPY --from=base /usr/src/app/node_modules ./node_modules
-CMD ["npm", "run", "dev:docker"]
+COPY --from=deps /app/node_modules ./node_modules
+RUN npx prisma generate
+RUN npm run build
 
-# WIP
-FROM node:20-alpine AS build
-ARG DATABASE_URL
-WORKDIR /usr/src/app
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN DATABASE_URL=$DATABASE_URL npx prisma generate
-RUN DATABASE_URL=$DATABASE_URL npm run build
-
-FROM node:20-alpine AS production
-WORKDIR /usr/src/app
-COPY --from=build /usr/src/app/.next ./.next
-COPY --from=build /usr/src/app/node_modules ./node_modules
-COPY --from=build /usr/src/app/public ./public
-COPY --from=build /usr/src/app/package.json ./package.json
-CMD ["npm", "run", "start"]
+FROM node:20-alpine AS runner
+WORKDIR /app
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/package.json ./
 
 EXPOSE 3000
+ENV PORT 3000
+CMD ["node", "server.js"]

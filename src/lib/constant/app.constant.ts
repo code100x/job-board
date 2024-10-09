@@ -25,18 +25,22 @@ export const adminNavbar = [
     id: 2,
     label: 'Manage Jobs',
     path: APP_PATHS.MANAGE_JOBS,
-    roleRequired: 'ADMIN',
+    roleRequired: ['ADMIN', 'HR'],
     icon: PackageSearch,
   },
   {
     id: 3,
     label: 'Post a job',
     path: APP_PATHS.POST_JOB,
-    roleRequired: 'ADMIN',
+    roleRequired: ['ADMIN', 'HR'],
     icon: PackageSearch,
   },
 ];
-
+export const userProfileNavbar = [
+  { id: 1, label: 'My Account', path: APP_PATHS.PROFILE },
+  { id: 2, label: 'Edit Profile', path: APP_PATHS.EDIT_PROFILE },
+  { id: 3, label: 'Account Settings', path: APP_PATHS.ACCOUNT_SETTINGS },
+];
 export const socials: {
   href: string;
   icon: IconProps['icon'];

@@ -1,6 +1,6 @@
 import { getJobById, getRecommendedJobs } from '@/actions/job.action';
 import { Job } from '@/components/job';
-import JobCard from '@/components/job-card';
+import JobCard from '@/components/job-card-rec';
 import { JobByIdSchemaType } from '@/lib/validators/jobs.validator';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
@@ -8,7 +8,6 @@ import { redirect } from 'next/navigation';
 
 const page = async ({ params }: { params: JobByIdSchemaType }) => {
   const job = await getJobById(params);
-
   if (!job.status) {
     return;
   }
@@ -47,7 +46,7 @@ const page = async ({ params }: { params: JobByIdSchemaType }) => {
         {/* job recommendations */}
         <aside className="col-span-1 rounded-md lg:col-span-2">
           <div className="sticky top-4">
-            <h1 className="text-xl font-semibold mb-4">Recommended for you</h1>
+            <h2 className="text-xl font-semibold mb-4">Recommended for you</h2>
             <main className="my-2 flex flex-col gap-4">
               {recommendedJobs &&
                 recommendedJobs.map((job, index) => {

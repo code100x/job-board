@@ -31,7 +31,6 @@ const options = {
 };
 
 async function fetchAuthTokenCronJob() {
-  console.log('Fetching updated Lightcast token at ' + new Date());
   try {
     const response = await fetch(url, options);
     if (!response.ok) {
