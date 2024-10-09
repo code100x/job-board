@@ -392,3 +392,13 @@ html {
   display: inline-block;
   transform: rotate(-2deg);
 }
+
+.react-tweet-theme {
+  height: 100%;
+}
+.tweet-container_article__0ERPK {
+  height: 100%;
+}
+html {
+  scroll-behavior: smooth;
+}
