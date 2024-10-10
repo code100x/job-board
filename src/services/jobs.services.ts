@@ -34,6 +34,7 @@ export function getJobFilters({
   limit,
 }: JobQuerySchemaType) {
   const filters = [
+    { approved: true },
     EmpType && { type: { in: EmpType } },
     workmode && { workMode: { in: workmode } },
     city && { city: { in: city } },

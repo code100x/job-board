@@ -15,7 +15,10 @@ type PaginatorProps = {
 };
 
 const AllJobs = async ({ searchParams }: PaginatorProps) => {
-  const jobs = await getAllJobs(searchParams);
+  const approvedSearchParams = { ...searchParams, approved: false };
+
+  const jobs = await getAllJobs(approvedSearchParams);
+
   if (!jobs.status || !jobs.additional) {
     return <div>Error {jobs.message}</div>;
   }

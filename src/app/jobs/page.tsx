@@ -16,6 +16,12 @@ const page = async ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
     redirect('/jobs');
   }
   const parsedSearchParams = parsedData.data;
+
+  const approvedSearchParams = {
+    ...parsedSearchParams,
+    approved: true,
+  };
+
   return (
     <div className="container grid sm:gap-6 gap-4 mt-12">
       <div className="grid gap-2">
@@ -27,19 +33,19 @@ const page = async ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
       </div>
       <div className="flex gap-6">
         <div className="hidden sm:block border  h-fit rounded-lg w-[310px] ">
-          <JobFilters searchParams={parsedSearchParams} />
+          <JobFilters searchParams={approvedSearchParams} />
         </div>
         <div className="grow">
-          <JobsHeader searchParams={parsedSearchParams} />
+          <JobsHeader searchParams={approvedSearchParams} />
           <Suspense
-            key={JSON.stringify(parsedSearchParams)}
+            key={JSON.stringify(approvedSearchParams)}
             fallback={
               <div className="flex justify-center items-center h-full gap-5 ">
                 <Loader />
               </div>
             }
           >
-            <AllJobs searchParams={parsedSearchParams} />
+            <AllJobs searchParams={approvedSearchParams} />
           </Suspense>
         </div>
       </div>
