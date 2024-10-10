@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 import 'react-quill/dist/quill.snow.css';
+import { cn } from '@/lib/utils';
 
 interface DescriptionEditorProps {
   fieldName: string;
@@ -58,7 +59,9 @@ const DescriptionEditor: React.FC<DescriptionEditorProps> = ({
         onChange={handleChange}
         placeholder={placeholder}
         bounds={`[data-text-editor="${fieldName}"]`}
-        className="text-white bg-gray-800  job-description-editor text-wrap max-w-[537px]"
+        className={cn(
+          'text-black dark:text-white bg-slate-50 dark:bg-gray-800  job-description-editor text-wrap max-w-[537px]'
+        )}
       />
     </div>
   );
