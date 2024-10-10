@@ -30,7 +30,8 @@ import _ from 'lodash';
 import { DEFAULT_PAGE } from '@/config/app.config';
 import { getCityFilters } from '@/actions/job.action';
 import { X } from 'lucide-react';
-
+import { useFilterCheck } from '@/hooks/useFilterCheck';
+import { AnimatePresence, motion } from 'framer-motion';
 const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   const [cityFilters, setCityFilters] = useState<string[]>([]);
 
@@ -47,6 +48,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   });
 
   const formValues = form.watch();
+  const isAnyFilterSelected = useFilterCheck(formValues);
 
   async function fetchCityFilters() {
     const cities = await getCityFilters();
@@ -82,12 +84,20 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
     >
       <div className="flex items-center justify-between mb-6">
         <h3 className="font-bold text-xl">All Filters</h3>
-        <button
-          className="font-medium text-gray-600 dark:text-gray-300"
-          onClick={clearFilters}
-        >
-          Clear Filters
-        </button>
+        <AnimatePresence>
+          {isAnyFilterSelected && (
+            <motion.button
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="font-medium text-gray-600 dark:text-gray-300"
+              onClick={clearFilters}
+            >
+              Clear Filters
+            </motion.button>
+          )}
+        </AnimatePresence>
       </div>
       <Form {...form}>
         <form className=" flex flex-col gap-3 mt-6">
