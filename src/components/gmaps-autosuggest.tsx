@@ -7,9 +7,11 @@ export type TgmapsAddress = { city: string; fullAddress: string };
 export default function GmapsAutocompleteAddress({
   form,
   innerRef,
+  fieldProps,
 }: {
   form: any;
   innerRef: any;
+  fieldProps: any;
 }) {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -31,6 +33,7 @@ export default function GmapsAutocompleteAddress({
     const { name, formatted_address } = autocomplete.getPlace();
     form.setValue('city', name);
     form.setValue('address', formatted_address);
+    form.trigger(['city', 'address']);
   }
 
   function initializeGmaps() {
@@ -53,11 +56,13 @@ export default function GmapsAutocompleteAddress({
       />
 
       <Input
+        {...fieldProps}
         ref={inputRef}
         id="autocomplete"
         type="text"
         className="w-full bg-gray-800 border-none text-white"
         placeholder="Where is the job located?"
+        onChangeCapture={() => form.setValue('city', '')}
       />
     </>
   );

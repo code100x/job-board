@@ -4,11 +4,14 @@ import { WorkMode, EmployementType, Currency } from '@prisma/client';
 export const JobPostSchema = z
   .object({
     title: z.string().min(1, 'Title is required'),
-    description: z.string().min(1, 'Description is required'),
+    description: z.string().min(2, 'Description is required'),
     companyName: z.string().min(1, 'Company Name is required'),
     city: z.string().min(1, 'City Name is required'),
-    address: z.string().min(1, 'Address is required'),
-    application: z.string().min(1, 'Application link is required'),
+    address: z.string().min(1, 'Location is required'),
+    application: z
+      .string()
+      .min(1, 'Application link is required')
+      .url('Invalid Application URL'),
     type: z.nativeEnum(EmployementType, {
       message: 'Employment Type is Required',
     }),
@@ -17,8 +20,8 @@ export const JobPostSchema = z
     }),
     skills: z.array(z.string()).optional(),
     category: z.string(),
-    companyEmail: z.string().email('Invalid email').min(1, 'Email is required'),
-    companyBio: z.string().min(1, 'Company Bio is required'),
+    companyEmail: z.string().min(1, 'Email is required').email('Invalid email'),
+    companyBio: z.string().min(2, 'Company Bio is required'),
     companyLogo: z.string().url(),
     hasSalaryRange: z.boolean().optional(),
     minSalary: z.coerce
@@ -43,23 +46,35 @@ export const JobPostSchema = z
     }),
   })
   .superRefine((data, ctx) => {
+    if (data.address && !data.city) {
+      ctx.addIssue({
+        message: 'Location is not valid',
+        path: ['address'],
+        code: z.ZodIssueCode.custom,
+      });
+    }
+
     if (data.hasSalaryRange) {
       if (!data.minSalary) {
-        return ctx.addIssue({
+        ctx.addIssue({
           message: 'Minimum Salary is required ',
           path: ['minSalary'],
           code: z.ZodIssueCode.custom,
         });
       }
       if (!data.maxSalary) {
-        return ctx.addIssue({
+        ctx.addIssue({
           message: 'Maximum Salary is required ',
           path: ['maxSalary'],
           code: z.ZodIssueCode.custom,
         });
       }
-      if (data.maxSalary <= data.minSalary) {
-        return ctx.addIssue({
+      if (
+        data.minSalary &&
+        data.maxSalary &&
+        data.maxSalary <= data.minSalary
+      ) {
+        ctx.addIssue({
           message:
             'Minimum Salary cannot be greater than or equal to Maximum Salary',
           path: ['minSalary'],
@@ -70,21 +85,25 @@ export const JobPostSchema = z
 
     if (data.hasExperiencerange) {
       if (!data.minExperience) {
-        return ctx.addIssue({
+        ctx.addIssue({
           message: 'Minimum Experience is required ',
           path: ['minExperience'],
           code: z.ZodIssueCode.custom,
         });
       }
       if (!data.maxExperience) {
-        return ctx.addIssue({
+        ctx.addIssue({
           message: 'Maximum Experience is required ',
           path: ['maxExperience'],
           code: z.ZodIssueCode.custom,
         });
       }
-      if (data.minExperience >= data.maxExperience) {
-        return ctx.addIssue({
+      if (
+        data.minExperience &&
+        data.maxExperience &&
+        data.minExperience >= data.maxExperience
+      ) {
+        ctx.addIssue({
           message:
             'Minimum Experience cannot be greater than or equal to Maximum Experience',
           path: ['minExperience'],

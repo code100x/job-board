@@ -43,6 +43,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import APP_PATHS from '@/config/path.config';
 import { SkillsCombobox } from './skills-combobox';
+import { cn } from '@/lib/utils';
 
 const PostJobForm = () => {
   const session = useSession();
@@ -64,7 +65,7 @@ const PostJobForm = () => {
       companyEmail: '',
       city: '',
       address: '',
-      companyLogo: '',
+      companyLogo: 'https://www.example.com',
       currency: 'USD',
       hasExperiencerange: true,
       minExperience: 0,
@@ -101,9 +102,11 @@ const PostJobForm = () => {
 
   const [file, setFile] = useState<File | null>(null);
   const [previewImg, setPreviewImg] = useState<string | null>(null);
+  const [logoError, setLogoError] = useState(false);
 
   const handleDescriptionChange = (fieldName: any, value: String) => {
     form.setValue(fieldName, value);
+    form.trigger([fieldName]);
   };
 
   const submitImage = async (file: File | null) => {
@@ -117,12 +120,12 @@ const PostJobForm = () => {
       formData.append('uniqueFileName', uniqueFileName);
 
       const res = await uploadFileAction(formData);
-      if (!res) {
+      if (!res.status) {
         throw new Error('Failed to upload image');
       }
 
-      const uploadRes = res;
-      return uploadRes.url;
+      const url = res.additional?.url || 'https://www.example.com';
+      return url;
     } catch (error) {
       console.error('Image upload failed:', error);
     }
@@ -141,6 +144,7 @@ const PostJobForm = () => {
       }
       setPreviewImg(reader.result as string);
     };
+    setLogoError(false);
     reader.readAsDataURL(selectedFile);
     if (selectedFile) {
       setFile(selectedFile);
@@ -149,7 +153,6 @@ const PostJobForm = () => {
 
   const handleFormSubmit = async (data: JobPostSchemaType) => {
     try {
-      data.companyLogo = (await submitImage(file)) ?? 'https://www.example.com';
       const response = await createJob(data);
 
       if (!response.status) {
@@ -185,13 +188,12 @@ const PostJobForm = () => {
     string[]
   >([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!watchHasSalaryRange) {
       form.clearErrors(['minSalary', 'maxSalary']);
       form.setValue('minSalary', 0);
       form.setValue('maxSalary', 0);
     }
-    form.setValue('companyLogo', '/main.svg');
   }, [watchHasSalaryRange, form]);
 
   if (session.status === 'loading') return null;
@@ -222,7 +224,22 @@ const PostJobForm = () => {
       <div className="flex-col w-full justify-center">
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(handleFormSubmit)}
+            onSubmit={form.handleSubmit(
+              async (data) => {
+                try {
+                  const imageUrl = await submitImage(file);
+                  if (imageUrl) {
+                    await handleFormSubmit({ ...data, companyLogo: imageUrl });
+                  }
+                } catch (error) {
+                  console.error(
+                    'Error during image upload or form submission:',
+                    error
+                  );
+                }
+              },
+              () => setLogoError(!file)
+            )}
             className="flex flex-col max-w-full"
           >
             <div className="bg-gray-900 w-full text-gray-300 p-6 rounded-lg space-y-7">
@@ -233,7 +250,7 @@ const PostJobForm = () => {
                 name="title"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-medium">Job title*</FormLabel>
+                    <FormLabel className="font-medium">Job Title*</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -241,6 +258,7 @@ const PostJobForm = () => {
                         placeholder="What's the job?"
                       />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -506,14 +524,25 @@ const PostJobForm = () => {
                   )}
                 </div>
               </div>
-
-              <div className="space-y-2">
-                <FormLabel className="font-medium">Location</FormLabel>
-                <DynamicGmapsAutoSuggest
-                  innerRef={gmapsInputRef}
-                  form={form}
-                ></DynamicGmapsAutoSuggest>
-              </div>
+              <FormField
+                control={form.control}
+                name="address"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <div className="space-y-0.5">
+                      <FormLabel className="font-medium">Location*</FormLabel>
+                    </div>
+                    <FormControl>
+                      <DynamicGmapsAutoSuggest
+                        innerRef={gmapsInputRef}
+                        form={form}
+                        fieldProps={field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="application"
@@ -529,6 +558,7 @@ const PostJobForm = () => {
                         placeholder="Please enter a URL or Link for application"
                       />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -538,17 +568,32 @@ const PostJobForm = () => {
                 form={form}
               ></SkillsCombobox>
             </div>
-            <div className="bg-gray-900 w-full p-6 rounded-lg space-y-4 mx-auto my-6">
-              <h2 className="text-sm text-white capitalize">Job description</h2>
-              <div className="bg-gray-800 rounded-xl mt-2 overflow-hidden">
-                <DescriptionEditor
-                  fieldName="description"
-                  initialValue={form.getValues('description')}
-                  onDescriptionChange={handleDescriptionChange}
-                  placeholder={'Tell us about your job'}
-                />
-              </div>
+
+            <div className="bg-gray-900 text-gray-300 w-full p-6 rounded-lg space-y-4 mx-auto my-6">
+              <FormField
+                control={form.control}
+                name="description"
+                render={() => (
+                  <FormItem className="flex-1">
+                    <div className="space-y-0.5">
+                      <FormLabel className="font-medium text-sm">
+                        Job Description*
+                      </FormLabel>
+                    </div>
+                    <FormControl>
+                      <DescriptionEditor
+                        fieldName="description"
+                        initialValue={''}
+                        onDescriptionChange={handleDescriptionChange}
+                        placeholder={'Tell us about your job'}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
+
             <div className="bg-gray-900 w-full p-6 rounded-lg  mx-auto text-gray-300">
               <h2 className="text-lg font-semibold mb-4 text-gray-300">
                 Company
@@ -558,7 +603,10 @@ const PostJobForm = () => {
               <div className="flex flex-col items-center mb-6">
                 <div className="relative">
                   <div
-                    className="w-20 h-20 bg-gray-700 border border-dashed border-gray-500 rounded-md flex items-center justify-center cursor-pointer mb-2"
+                    className={cn(
+                      'w-20 h-20 bg-gray-700 duration-1000 transition-colors border border-dashed border-gray-500 rounded-md flex items-center justify-center cursor-pointer mb-2',
+                      logoError && ' border-red-500'
+                    )}
                     onClick={handleClick}
                   >
                     {previewImg ? (
@@ -591,13 +639,21 @@ const PostJobForm = () => {
                   accept="image/*"
                   onChange={handleFileChange}
                 />
-                <p className="text-sm text-gray-500 text-center">
-                  Click the avatar to change or upload your company logo
-                </p>
+                {!file && (
+                  <p className="text-sm text-gray-500 text-center">
+                    Click the avatar to change or upload your company logo
+                  </p>
+                )}
+
+                {logoError && (
+                  <p className="text-sm text-red-500">
+                    Company logo is required
+                  </p>
+                )}
               </div>
 
               {/* Company Name and Email Fields */}
-              <div className="flex flex-col md:flex-row gap-4 mb-4">
+              <div className="flex flex-col md:flex-row gap-4 mb-4 text-gray-300">
                 <div className="flex-1">
                   <FormField
                     control={form.control}
@@ -614,6 +670,7 @@ const PostJobForm = () => {
                             placeholder="What's your company called?"
                           />
                         </FormControl>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -634,23 +691,37 @@ const PostJobForm = () => {
                             placeholder="Enter your email address"
                           />
                         </FormControl>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm mb-1 text-gray-400">
-                  Company bio
-                </label>
-                <div className="bg-gray-800 rounded-xl mt-2 overflow-hidden">
-                  <DescriptionEditor
-                    fieldName="companyBio"
-                    initialValue={form.getValues('companyBio')}
-                    onDescriptionChange={handleDescriptionChange}
-                    placeholder={'Tell us about your company'}
-                  />
-                </div>
+                <FormField
+                  control={form.control}
+                  name="companyBio"
+                  render={() => (
+                    <FormItem className="flex-1">
+                      <div className="space-y-0.5">
+                        <FormLabel className="font-medium text-sm">
+                          Company Bio*
+                        </FormLabel>
+                      </div>
+                      <FormControl>
+                        <div className="bg-gray-800 rounded-xl mt-2 overflow-hidden">
+                          <DescriptionEditor
+                            fieldName="companyBio"
+                            initialValue={''}
+                            onDescriptionChange={handleDescriptionChange}
+                            placeholder={'Tell us about your company'}
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
             </div>
             <div className="w-full flex justify-end items-center my-4 ">

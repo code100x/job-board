@@ -23,9 +23,10 @@ const DescriptionEditor: React.FC<DescriptionEditorProps> = ({
     setDescription(initialValue || '');
   }, [initialValue]);
 
-  const handleChange = (content: string) => {
+  // @ts-ignore
+  const handleChange = (content: string, _delta, _source, editor) => {
     setDescription(content);
-    onDescriptionChange(fieldName, content); // Pass the content back to the parent form
+    onDescriptionChange(fieldName, editor.getText());
   };
 
   const modules = {
@@ -46,7 +47,6 @@ const DescriptionEditor: React.FC<DescriptionEditorProps> = ({
     'bullet',
     'link',
   ];
-
   return (
     <div data-text-editor={fieldName}>
       <ReactQuill
