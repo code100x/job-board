@@ -23,6 +23,7 @@ export const JobPostSchema = z
     }),
     skills: z.array(z.string()).optional(),
     category: z.string(),
+
     hasSalaryRange: z.boolean().optional(),
     minSalary: z.coerce
       .number({ message: 'Min salary must be a number' })
