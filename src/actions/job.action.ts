@@ -106,7 +106,7 @@ export const getAllJobs = withServerActionAsyncCatcher<
   }
   const result = JobQuerySchema.parse(data);
   const { filterQueries, orderBy, pagination } = getJobFilters(result);
-  const queryJobsPromise = prisma.job.findMany({
+  const queryJobsPromise = await prisma.job.findMany({
     ...pagination,
     orderBy: [orderBy],
     where: {
@@ -134,7 +134,7 @@ export const getAllJobs = withServerActionAsyncCatcher<
       companyLogo: true,
     },
   });
-  const totalJobsPromise = prisma.job.count({
+  const totalJobsPromise = await prisma.job.count({
     where: {
       isVerifiedJob: true,
       ...filterQueries,
