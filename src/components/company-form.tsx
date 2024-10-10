@@ -1,3 +1,4 @@
+'use client';
 import { X } from 'lucide-react';
 import Image from 'next/image';
 import { useRef, useState } from 'react';
@@ -12,11 +13,17 @@ import {
 } from '@/lib/validators/companies.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { uploadFileAction } from '@/actions/upload-to-cdn';
+import { toast } from './ui/use-toast';
+import { createCompany } from '@/actions/company.actions';
 
 type Props = {};
+
 export const CompanyForm = ({}: Props) => {
-  // const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [previewImg, setPreviewImg] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
   const companyLogoImg = useRef<HTMLImageElement>(null);
+
   const form = useForm<CompanySchemaType>({
     resolver: zodResolver(CompanySchema),
     defaultValues: {
@@ -24,13 +31,12 @@ export const CompanyForm = ({}: Props) => {
       email: '',
       website: '',
       bio: '',
-      logo: '',
+      logo: 'https://www.example.com',
     },
   });
 
   const handleClick = () => {
     const fileInput = document.getElementById('fileInput') as HTMLInputElement;
-
     if (fileInput) {
       fileInput.click();
     }
@@ -38,40 +44,47 @@ export const CompanyForm = ({}: Props) => {
 
   const clearLogoImage = () => {
     const fileInput = document.getElementById('fileInput') as HTMLInputElement;
-
     if (fileInput) {
       fileInput.value = '';
     }
     setPreviewImg(null);
-    // setFile(null);
   };
-  const [previewImg, setPreviewImg] = useState<string | null>(null);
 
   const submitImage = async (file: File | null) => {
     if (!file) return;
-
-    const formData = new FormData();
-    formData.append('file', file);
+    setIsUploading(true);
 
     try {
+      const formData = new FormData();
       const uniqueFileName = `${Date.now()}-${file.name}`;
+      formData.append('file', file);
       formData.append('uniqueFileName', uniqueFileName);
 
       const res = await uploadFileAction(formData);
+
       if (!res) {
         throw new Error('Failed to upload image');
       }
 
-      const uploadRes = res;
-      return uploadRes.url;
+      setIsUploading(false);
+      return res.url;
     } catch (error) {
+      setIsUploading(false);
       console.error('Image upload failed:', error);
     }
   };
+
   const handleFileChange = async (e: any) => {
     const selectedFile = e.target.files[0];
-    if (!selectedFile) {
-      return;
+    if (!selectedFile) return;
+
+    // Basic file validation
+    if (!selectedFile.type.startsWith('image/')) {
+      return toast({
+        title: 'Invalid file type',
+        description: 'Please select an image file',
+        variant: 'destructive',
+      });
     }
 
     const reader = new FileReader();
@@ -82,23 +95,54 @@ export const CompanyForm = ({}: Props) => {
       setPreviewImg(reader.result as string);
     };
     reader.readAsDataURL(selectedFile);
-    // if (selectedFile) {
-    //   setFile(selectedFile);
-    // }
+    setFile(selectedFile);
   };
-  const handleDescriptionChange = (fieldName: any, value: String) => {
+
+  const handleDescriptionChange = (fieldName: any, value: string) => {
     form.setValue(fieldName, value);
   };
+
+  const handleFormSubmit = async (data: CompanySchemaType) => {
+    try {
+      data.logo = (await submitImage(file)) ?? 'https://www.example.com';
+      const response = await createCompany(data);
+
+      if (!response.status) {
+        return toast({
+          title: response.msg || 'Error',
+          variant: 'destructive',
+        });
+      }
+
+      toast({
+        title: response.msg || 'Company created successfully',
+        variant: 'success',
+      });
+
+      setPreviewImg(null);
+      setFile(null);
+      form.reset(form.formState.defaultValues);
+    } catch (_error) {
+      toast({
+        title: 'Something went wrong while creating the company',
+        description: 'Internal server error',
+        variant: 'destructive',
+      });
+    }
+  };
+
   return (
     <Form {...form}>
-      <form className="w-full rounded-lg  mx-auto text-gray-300">
-        {/* Logo Upload Section */}
+      <form
+        onSubmit={form.handleSubmit(handleFormSubmit)}
+        className="w-full rounded-lg mx-auto text-gray-300"
+      >
         <div className="flex flex-col items-center mb-6">
           <div className="relative">
             <label
               htmlFor="fileInput"
               className="w-20 h-20 bg-gray-700 border border-dashed border-gray-500 rounded-md flex items-center justify-center cursor-pointer mb-2"
-              // onClick={handleClick}
+              onClick={handleClick}
             >
               {previewImg ? (
                 <Image
@@ -117,7 +161,7 @@ export const CompanyForm = ({}: Props) => {
               <button
                 type="button"
                 onClick={clearLogoImage}
-                className="absolute top-0 right-0 w-5 h-5 bg-red-500 rounded-full items-center flex justify-center cursor-pointer translate-x-1/2 -translate-y-1/2"
+                className="absolute top-0 right-0 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center cursor-pointer translate-x-1/2 -translate-y-1/2"
               >
                 <X size="16" />
               </button>
@@ -175,20 +219,24 @@ export const CompanyForm = ({}: Props) => {
             />
           </div>
         </div>
-        <div>
-          <label className="block text-sm mb-1 text-gray-400">
+
+        {/* Company Bio */}
+        <div className="mb-4">
+          <FormLabel className="block text-sm mb-1 text-gray-400">
             Company bio
-          </label>
+          </FormLabel>
           <div className="bg-gray-800 rounded-xl mt-2 overflow-hidden">
             <DescriptionEditor
               fieldName="bio"
               initialValue={form.getValues('bio')}
               onDescriptionChange={handleDescriptionChange}
-              placeholder={'Tell us about your company'}
+              placeholder="Tell us about your company"
             />
           </div>
         </div>
-        <div className="flex-1">
+
+        {/* Company Website */}
+        <div className="flex-1 mb-4">
           <FormField
             control={form.control}
             name="website"
@@ -206,12 +254,17 @@ export const CompanyForm = ({}: Props) => {
             )}
           />
         </div>
+
+        {/* Submit Button */}
         <div className="flex justify-end">
           <button
             type="submit"
+            disabled={form.formState.isSubmitting || isUploading}
             className="bg-blue-500 text-white px-4 py-2 rounded-md"
           >
-            Save
+            {form.formState.isSubmitting || isUploading
+              ? 'Please wait...'
+              : 'Save'}
           </button>
         </div>
       </form>
