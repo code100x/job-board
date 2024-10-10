@@ -1,8 +1,10 @@
 export type CompanyType = {
+  id: string;
   name: string;
   email: string;
   website: string | null;
   bio: string;
+  createdAt: Date;
   logo: string;
 };
 export type CompanyByIdSchemaType = {

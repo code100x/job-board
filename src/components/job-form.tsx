@@ -30,7 +30,6 @@ import DescriptionEditor from './DescriptionEditor';
 import { Switch } from './ui/switch';
 import { Label } from './ui/label';
 import dynamic from 'next/dynamic';
-import { uploadFileAction } from '@/actions/upload-to-cdn';
 
 const DynamicGmapsAutoSuggest = dynamic(() => import('./gmaps-autosuggest'), {
   ssr: false,
@@ -54,6 +53,8 @@ import { CompanyForm } from './company-form';
 
 const PostJobForm = () => {
   const session = useSession();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   const router = useRouter();
   useEffect(() => {
     if (session.status !== 'loading' && session.status === 'unauthenticated')
@@ -556,7 +557,7 @@ const PostJobForm = () => {
                 <Separator className="w-1/2" /> OR{' '}
                 <Separator className="w-1/2" />
               </div>
-              <Dialog>
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger className="flex w-full justify-end underline">
                   Manually fill company details
                 </DialogTrigger>
@@ -568,7 +569,7 @@ const PostJobForm = () => {
                       </h2>
                     </DialogTitle>
                   </DialogHeader>
-                  <CompanyForm />
+                  <CompanyForm setIsDialogOpen={setIsDialogOpen} />
                 </DialogContent>
               </Dialog>
             </div>

@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
+    "seed": "node --loader ts-node/esm prisma/seed.ts",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -54,6 +55,7 @@
     "@types/lodash": "^4.17.7",
     "@types/uuid": "^10.0.0",
     "@uidotdev/usehooks": "^2.4.1",
+    "100xdevs-job-board": "file:",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",

@@ -1,7 +1,7 @@
 'use client';
 import { X } from 'lucide-react';
 import Image from 'next/image';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { FaFileUpload } from 'react-icons/fa';
 import { Form, FormControl, FormField, FormItem, FormLabel } from './ui/form';
 import { Input } from './ui/input';
@@ -14,24 +14,37 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { uploadFileAction } from '@/actions/upload-to-cdn';
 import { toast } from './ui/use-toast';
-import { createCompany } from '@/actions/company.actions';
+import { updateCompany } from '@/actions/company.actions'; // Assuming you have an update action
+import { CompanyType } from '@/types/company.types';
+import { Button } from './ui/button';
 
-export const CompanyForm = ({ setIsDialogOpen }: any) => {
+type Props = {
+  companyData: CompanyType;
+  setIsDialogOpen: (open: boolean) => void;
+};
+
+export const UpdateCompanyForm = ({ companyData, setIsDialogOpen }: Props) => {
   const [file, setFile] = useState<File | null>(null);
   const [previewImg, setPreviewImg] = useState<string | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
   const companyLogoImg = useRef<HTMLImageElement>(null);
 
   const form = useForm<CompanySchemaType>({
     resolver: zodResolver(CompanySchema),
     defaultValues: {
-      name: '',
-      email: '',
-      website: '',
-      bio: '',
-      logo: 'https://www.example.com',
+      name: companyData.name || '',
+      email: companyData.email || '',
+      website: companyData.website || '',
+      bio: companyData.bio || '',
+      logo: companyData.logo || 'https://www.example.com',
     },
   });
+
+  // Set existing logo as preview image
+  useEffect(() => {
+    if (companyData.logo) {
+      setPreviewImg(companyData.logo);
+    }
+  }, [companyData.logo]);
 
   const handleClick = () => {
     const fileInput = document.getElementById('fileInput') as HTMLInputElement;
@@ -49,8 +62,7 @@ export const CompanyForm = ({ setIsDialogOpen }: any) => {
   };
 
   const submitImage = async (file: File | null) => {
-    if (!file) return;
-    setIsUploading(true);
+    if (!file) return companyData.logo;
 
     try {
       const formData = new FormData();
@@ -64,10 +76,8 @@ export const CompanyForm = ({ setIsDialogOpen }: any) => {
         throw new Error('Failed to upload image');
       }
 
-      setIsUploading(false);
       return res.url;
     } catch (error) {
-      setIsUploading(false);
       console.error('Image upload failed:', error);
     }
   };
@@ -102,8 +112,8 @@ export const CompanyForm = ({ setIsDialogOpen }: any) => {
 
   const handleFormSubmit = async (data: CompanySchemaType) => {
     try {
-      data.logo = (await submitImage(file)) ?? 'https://www.example.com';
-      const response = await createCompany(data);
+      data.logo = (await submitImage(file)) ?? companyData.logo; // Use new logo or fallback to existing one
+      const response = await updateCompany(companyData.id, data); // Pass the company ID to the update function
 
       if (!response.status) {
         return toast({
@@ -113,7 +123,7 @@ export const CompanyForm = ({ setIsDialogOpen }: any) => {
       }
 
       toast({
-        title: response.msg || 'Company created successfully',
+        title: response.msg || 'Company updated successfully',
         variant: 'success',
       });
 
@@ -123,7 +133,7 @@ export const CompanyForm = ({ setIsDialogOpen }: any) => {
       setIsDialogOpen(false);
     } catch (_error) {
       toast({
-        title: 'Something went wrong while creating the company',
+        title: 'Something went wrong while updating the company',
         description: 'Internal server error',
         variant: 'destructive',
       });
@@ -255,16 +265,10 @@ export const CompanyForm = ({ setIsDialogOpen }: any) => {
         </div>
 
         {/* Submit Button */}
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            disabled={form.formState.isSubmitting || isUploading}
-            className="bg-blue-500 text-white px-4 py-2 rounded-md"
-          >
-            {form.formState.isSubmitting || isUploading
-              ? 'Please wait...'
-              : 'Save'}
-          </button>
+        <div className="text-center">
+          <Button type="submit" disabled={form.formState.isSubmitting}>
+            {form.formState.isSubmitting ? 'Please wait...' : 'Update Job'}
+          </Button>
         </div>
       </form>
     </Form>

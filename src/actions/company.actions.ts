@@ -23,6 +23,7 @@ export const getAllCompanies = async () => {
       website: true,
       bio: true,
       logo: true,
+      createdAt: true,
     },
   });
   return {
