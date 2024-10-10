@@ -8,7 +8,7 @@ import {
   CompanyUpdateSchema,
   CompanyUpdateSchemaType,
 } from '@/lib/validators/companies.validator';
-import { CompanySchemaType } from '@/types/company.types';
+import { CompanySchemaType } from '@/lib/validators/companies.validator';
 
 export const getAllCompanies = async () => {
   const auth = await getServerSession(authOptions);
