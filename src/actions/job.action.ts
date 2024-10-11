@@ -30,6 +30,7 @@ import {
   getJobType,
 } from '@/types/jobs.types';
 import { withAdminServerAction } from '@/lib/admin';
+import { revalidatePath } from 'next/cache';
 
 type additional = {
   isVerifiedJob: boolean;
@@ -391,6 +392,7 @@ export const deleteJobById = withServerActionAsyncCatcher<
     },
   });
   const deletedJobID = deletedJob.id;
+  revalidatePath('/manage');
   return new SuccessResponse('Job Deleted successfully', 200, {
     deletedJobID,
   }).serialize();
@@ -413,5 +415,6 @@ export const approveJob = withAdminServerAction<
       isVerifiedJob: true,
     },
   });
+  revalidatePath('/manage');
   return new SuccessResponse('Job Approved', 200, { jobId: id }).serialize();
 });

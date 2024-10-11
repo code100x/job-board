@@ -2,6 +2,7 @@
 import React from 'react';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -37,13 +38,15 @@ const ApproveJobDialog = ({
             <DialogDescription>{description}</DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button
-              className="mt-2"
-              variant={'secondary'}
-              onClick={handleClick}
-            >
-              Approve
-            </Button>
+            <DialogClose>
+              <Button
+                className="mt-2"
+                variant={'secondary'}
+                onClick={handleClick}
+              >
+                Approve
+              </Button>
+            </DialogClose>
           </DialogFooter>
         </DialogContent>
       </Dialog>

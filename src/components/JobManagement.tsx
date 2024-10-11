@@ -16,11 +16,7 @@ const JobManagement = async ({
   return (
     <div className="pt-2 px-6 mt-10">
       <JobManagementHeader />
-      <JobManagementTable
-        jobs={jobs}
-        searchParams={searchParams}
-        initialJobs={jobs.additional?.jobs!!}
-      />
+      <JobManagementTable jobs={jobs} searchParams={searchParams} />
     </div>
   );
 };
