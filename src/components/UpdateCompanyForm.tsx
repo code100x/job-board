@@ -17,6 +17,7 @@ import { toast } from './ui/use-toast';
 import { updateCompany } from '@/actions/company.actions'; // Assuming you have an update action
 import { CompanyType } from '@/types/company.types';
 import { Button } from './ui/button';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   companyData: CompanyType;
@@ -24,6 +25,7 @@ type Props = {
 };
 
 export const UpdateCompanyForm = ({ companyData, setIsDialogOpen }: Props) => {
+  const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
   const [previewImg, setPreviewImg] = useState<string | null>(null);
   const companyLogoImg = useRef<HTMLImageElement>(null);
@@ -86,7 +88,6 @@ export const UpdateCompanyForm = ({ companyData, setIsDialogOpen }: Props) => {
     const selectedFile = e.target.files[0];
     if (!selectedFile) return;
 
-    // Basic file validation
     if (!selectedFile.type.startsWith('image/')) {
       return toast({
         title: 'Invalid file type',
@@ -121,7 +122,7 @@ export const UpdateCompanyForm = ({ companyData, setIsDialogOpen }: Props) => {
           variant: 'destructive',
         });
       }
-
+      router.push('/manage/company');
       toast({
         title: response.msg || 'Company updated successfully',
         variant: 'success',

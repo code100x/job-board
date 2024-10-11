@@ -17,12 +17,15 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { UpdateCompanyForm } from './UpdateCompanyForm';
 import { toast } from './ui/use-toast';
 import { deleteCompany } from '@/actions/company.actions';
+import { usePathname, useRouter } from 'next/navigation';
 
 export default function CompanyTable({
   company: companies,
 }: {
   company: CompanyType[];
 }) {
+  const router = useRouter();
+  const pathName = usePathname();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -39,7 +42,7 @@ export default function CompanyTable({
           variant: 'destructive',
         });
       }
-
+      router.push(pathName);
       toast({
         title: response.msg || 'Company deleted successfully',
         variant: 'success',

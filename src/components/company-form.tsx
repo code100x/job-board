@@ -15,8 +15,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { uploadFileAction } from '@/actions/upload-to-cdn';
 import { toast } from './ui/use-toast';
 import { createCompany } from '@/actions/company.actions';
+import { usePathname, useRouter } from 'next/navigation';
 
 export const CompanyForm = ({ setIsDialogOpen }: any) => {
+  const router = useRouter();
+  const pathname = usePathname();
   const [file, setFile] = useState<File | null>(null);
   const [previewImg, setPreviewImg] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -111,7 +114,7 @@ export const CompanyForm = ({ setIsDialogOpen }: any) => {
           variant: 'destructive',
         });
       }
-
+      router.push(pathname);
       toast({
         title: response.msg || 'Company created successfully',
         variant: 'success',
