@@ -5,13 +5,14 @@ services:
       target: development # Change this to production for prod builds (WIP)
     container_name: job-board-app
     environment:
-      - DATABASE_URL=$DATABASE_URL
-      - AUTH_SECRET=$AUTH_SECRET
+      DATABASE_URL: ${DATABASE_URL}
+      AUTH_SECRET: ${NEXTAUTH_SECRET}
     ports:
       - "3000:3000"
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+    command: sh -c "npm run db:seed && npm run dev"
     depends_on:
       db:
         condition: service_healthy
@@ -29,7 +30,7 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -38,10 +39,11 @@ services:
     container_name: prisma-studio
     image: timothyjmiller/prisma-studio:latest
     restart: unless-stopped
-    env_file:
-     - .env
+    environment:
+      POSTGRES_URL: ${DATABASE_URL}
     depends_on:
       - app
+      - db
     ports:
       - 5555:5555
 
