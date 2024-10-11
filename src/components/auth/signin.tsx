@@ -52,6 +52,7 @@ export const Signin = () => {
       const searchParams = new URLSearchParams(window.location.search);
       const redirect = searchParams.get('next') || APP_PATHS.HOME;
       router.push(redirect);
+      router.refresh();
     } catch (_error) {
       return toast({
         title: 'Internal server error',
