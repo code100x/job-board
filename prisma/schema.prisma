@@ -63,6 +63,9 @@ model Job {
   application        String
   companyLogo        String
   skills             String[]
+  expired            Boolean         @default(false)
+  hasExpiryDate      Boolean         @default(false) @map("has_expiry_date")
+  expiryDate         DateTime?
   hasSalaryRange     Boolean         @default(false) @map("has_salary_range")
   minSalary          Int?
   maxSalary          Int?

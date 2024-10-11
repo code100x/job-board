@@ -72,6 +72,8 @@ const PostJobForm = () => {
       workMode: 'remote',
       type: EmployementType.Full_time,
       category: 'design',
+      hasExpiryDate: true,
+      expiryDate: undefined,
       hasSalaryRange: true,
       minSalary: 0,
       maxSalary: 0,
@@ -180,6 +182,7 @@ const PostJobForm = () => {
   };
   const watchHasSalaryRange = form.watch('hasSalaryRange');
   const watchHasExperienceRange = form.watch('hasExperiencerange');
+  const watchHasExpiryDate = form.watch('hasExpiryDate');
 
   const [comboBoxSelectedValues, setComboBoxSelectedValues] = useState<
     string[]
@@ -506,6 +509,59 @@ const PostJobForm = () => {
                   )}
                 </div>
               </div>
+
+              <FormField
+                control={form.control}
+                name="hasExpiryDate"
+                render={({ field }) => (
+                  <FormItem className="flex items-center space-y-0 gap-2">
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        className="data-[state=checked]:bg-gray-300 data-[state=unchecked]:bg-gray-400"
+                      />
+                    </FormControl>
+
+                    <FormLabel className="mt-0">
+                      Does this job posting have an expiry date?
+                    </FormLabel>
+                  </FormItem>
+                )}
+              />
+
+              {watchHasExpiryDate && (
+                <div className="flex gap-4">
+                  <FormField
+                    control={form.control}
+                    name="expiryDate"
+                    render={({ field }) => (
+                      <FormItem className="flex-1">
+                        <div className="space-y-0.5">
+                          <FormLabel>Expiry Date</FormLabel>
+                        </div>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            type="date"
+                            className=" w-2/5- bg-gray-800 border-gray-400"
+                            placeholder="Select expiry date"
+                            value={
+                              field.value
+                                ? field.value.toISOString().split('T')[0]
+                                : ''
+                            }
+                            onChange={(e) =>
+                              field.onChange(new Date(e.target.value))
+                            }
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              )}
 
               <div className="space-y-2">
                 <FormLabel className="font-medium">Location</FormLabel>
