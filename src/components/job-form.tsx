@@ -638,10 +638,14 @@ const PostJobForm = () => {
             </div>
             <div
               className={cn(
-                'bg-gray-900 w-full p-6 rounded-lg  mx-auto text-gray-400 dark:text-gray-300'
+                'bg-slate-100 dark:bg-gray-900 w-full p-6 rounded-lg  mx-auto text-gray-400 dark:text-gray-300'
               )}
             >
-              <h2 className={cn('text-lg font-semibold mb-4 text-gray-300')}>
+              <h2
+                className={cn(
+                  'text-lg font-semibold mb-4 text-gray-800 dark:text-gray-300'
+                )}
+              >
                 Company
               </h2>
 
@@ -649,7 +653,7 @@ const PostJobForm = () => {
                 <div className={cn('relative')}>
                   <div
                     className={cn(
-                      'w-20 h-20 bg-gray-700 border border-dashed border-gray-500 rounded-md flex items-center justify-center cursor-pointer mb-2'
+                      'w-20 h-20 bg-gray-300 dark:bg-gray-700 border border-dashed border-gray-500 rounded-md flex items-center justify-center cursor-pointer mb-2'
                     )}
                     onClick={handleClick}
                   >
@@ -663,7 +667,9 @@ const PostJobForm = () => {
                         height={80}
                       />
                     ) : (
-                      <FaFileUpload className={cn('text-white text-2xl')} />
+                      <FaFileUpload
+                        className={cn('text-gray-500 dark:text-white text-2xl')}
+                      />
                     )}
                   </div>
                   {previewImg && (
@@ -687,7 +693,11 @@ const PostJobForm = () => {
                   accept="image/*"
                   onChange={handleFileChange}
                 />
-                <p className={cn('text-sm text-gray-500 text-center')}>
+                <p
+                  className={cn(
+                    'text-sm text-gray-700 dark:text-gray-500 text-center'
+                  )}
+                >
                   Click the avatar to change or upload your company logo
                 </p>
               </div>
@@ -700,7 +710,11 @@ const PostJobForm = () => {
                     name="companyName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className={cn('font-medium')}>
+                        <FormLabel
+                          className={cn(
+                            'font-medium text-gray-700 dark:text-gray-200'
+                          )}
+                        >
                           Company name*
                         </FormLabel>
                         <FormControl>
@@ -722,7 +736,11 @@ const PostJobForm = () => {
                     name="companyEmail"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className={cn('font-medium')}>
+                        <FormLabel
+                          className={cn(
+                            'font-medium text-gray-700 dark:text-gray-200'
+                          )}
+                        >
                           Company email*
                         </FormLabel>
                         <FormControl>
@@ -740,11 +758,17 @@ const PostJobForm = () => {
                 </div>
               </div>
               <div>
-                <label className={cn('block text-sm mb-1 text-gray-400')}>
+                <label
+                  className={cn(
+                    'block text-sm mb-1 text-gray-700 dark:text-gray-400'
+                  )}
+                >
                   Company bio
                 </label>
                 <div
-                  className={cn('bg-gray-800 rounded-xl mt-2 overflow-hidden')}
+                  className={cn(
+                    'bg-slate-200 dark:bg-gray-800 rounded-xl mt-2 overflow-hidden'
+                  )}
                 >
                   <DescriptionEditor
                     fieldName="companyBio"
