@@ -512,7 +512,7 @@ const PostJobForm = () => {
               <div className="flex flex-col-2 gap-2">
                 <div className="flex flex-col gap-2">
                   <div className="">
-                    <Label>Experience Range in Years</Label>
+                    <Label>Expiry date</Label>
                   </div>
                   <div>
                     <FormField
