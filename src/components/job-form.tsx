@@ -509,59 +509,64 @@ const PostJobForm = () => {
                   )}
                 </div>
               </div>
+              <div className="flex flex-col-2 gap-2">
+                <div className="flex flex-col gap-2">
+                  <div className="">
+                    <Label>Experience Range in Years</Label>
+                  </div>
+                  <div>
+                    <FormField
+                      control={form.control}
+                      name="hasExpiryDate"
+                      render={({ field }) => (
+                        <FormItem className="flex items-center space-y-0 gap-2">
+                          <FormControl>
+                            <Switch
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                              className="data-[state=checked]:bg-gray-300 data-[state=unchecked]:bg-gray-400"
+                            />
+                          </FormControl>
 
-              <FormField
-                control={form.control}
-                name="hasExpiryDate"
-                render={({ field }) => (
-                  <FormItem className="flex items-center space-y-0 gap-2">
-                    <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        className="data-[state=checked]:bg-gray-300 data-[state=unchecked]:bg-gray-400"
+                          <FormLabel className="mt-0">
+                            Does this job posting have an expiry date?
+                          </FormLabel>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  {watchHasExpiryDate && (
+                    <div className="flex gap-4">
+                      <FormField
+                        control={form.control}
+                        name="expiryDate"
+                        render={({ field }) => (
+                          <FormItem className="flex-1">
+                            <div className="space-y-0.5"></div>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                type="date"
+                                className=" w-2/5- bg-gray-800 border-gray-400"
+                                placeholder="Select expiry date"
+                                value={
+                                  field.value
+                                    ? field.value.toISOString().split('T')[0]
+                                    : ''
+                                }
+                                onChange={(e) =>
+                                  field.onChange(new Date(e.target.value))
+                                }
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
-                    </FormControl>
-
-                    <FormLabel className="mt-0">
-                      Does this job posting have an expiry date?
-                    </FormLabel>
-                  </FormItem>
-                )}
-              />
-
-              {watchHasExpiryDate && (
-                <div className="flex gap-4">
-                  <FormField
-                    control={form.control}
-                    name="expiryDate"
-                    render={({ field }) => (
-                      <FormItem className="flex-1">
-                        <div className="space-y-0.5">
-                          <FormLabel>Expiry Date</FormLabel>
-                        </div>
-                        <FormControl>
-                          <Input
-                            {...field}
-                            type="date"
-                            className=" w-2/5- bg-gray-800 border-gray-400"
-                            placeholder="Select expiry date"
-                            value={
-                              field.value
-                                ? field.value.toISOString().split('T')[0]
-                                : ''
-                            }
-                            onChange={(e) =>
-                              field.onChange(new Date(e.target.value))
-                            }
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
 
               <div className="space-y-2">
                 <FormLabel className="font-medium">Location</FormLabel>
