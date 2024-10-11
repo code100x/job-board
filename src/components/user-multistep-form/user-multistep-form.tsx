@@ -22,6 +22,7 @@ import { useState } from 'react';
 import { useToast } from '../ui/use-toast';
 import { validateUserBoarding } from '@/actions/user.profile.actions';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 const forms = [
   {
@@ -62,6 +63,7 @@ export default function VerticalLinearStepper() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
   const { toast } = useToast();
+  const { data: session, update } = useSession();
 
   const handleFinish = async () => {
     try {
@@ -76,7 +78,12 @@ export default function VerticalLinearStepper() {
         title: response.message,
         variant: 'success',
       });
-      router.push('/jobs');
+      await update({
+        ...session,
+        user: {
+          onBoard: true,
+        },
+      });
       router.refresh();
     } catch (_error) {
       toast({

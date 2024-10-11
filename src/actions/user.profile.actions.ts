@@ -251,3 +251,69 @@ export const addUserResume = async (resume: string) => {
     return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
   }
 };
+
+export const getUserExperience = async () => {
+  const auth = await getServerSession(authOptions);
+
+  if (!auth || !auth?.user?.id)
+    throw new ErrorHandler('Not Authorized', 'UNAUTHORIZED');
+  try {
+    const res = await prisma.experience.findMany({
+      where: {
+        userId: auth.user.id,
+      },
+    });
+    return new SuccessResponse(
+      'Experience SuccessFully Fetched',
+      200,
+      res
+    ).serialize();
+  } catch (_error) {
+    return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
+  }
+};
+export const getUserProjects = async () => {
+  const auth = await getServerSession(authOptions);
+
+  if (!auth || !auth?.user?.id)
+    throw new ErrorHandler('Not Authorized', 'UNAUTHORIZED');
+  try {
+    const res = await prisma.project.findMany({
+      where: {
+        userId: auth.user.id,
+      },
+    });
+    return new SuccessResponse(
+      'Project SuccessFully Fetched',
+      200,
+      res
+    ).serialize();
+  } catch (_error) {
+    return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
+  }
+};
+
+export const getUserDetails = async () => {
+  const auth = await getServerSession(authOptions);
+
+  if (!auth || !auth?.user?.id)
+    throw new ErrorHandler('Not Authorized', 'UNAUTHORIZED');
+  try {
+    const res = await prisma.user.findFirst({
+      where: {
+        id: auth.user.id,
+      },
+      select: {
+        skills: true,
+        resume: true,
+      },
+    });
+    return new SuccessResponse(
+      'Project SuccessFully Fetched',
+      200,
+      res
+    ).serialize();
+  } catch (_error) {
+    return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
+  }
+};

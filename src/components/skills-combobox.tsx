@@ -66,7 +66,10 @@ export function SkillsCombobox({
   }, [debouncedComboboxValues]);
 
   React.useEffect(() => {
-    form.setValue('skills', comboBoxSelectedValues);
+    (form as UseFormReturn<addSkillsSchemaType>).setValue(
+      'skills',
+      comboBoxSelectedValues
+    );
   }, [comboBoxSelectedValues, form]);
   return (
     <>
