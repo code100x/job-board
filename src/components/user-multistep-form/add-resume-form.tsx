@@ -4,6 +4,7 @@ import { X } from 'lucide-react';
 import { Button } from '../ui/button';
 import { useToast } from '../ui/use-toast';
 import { uploadFileAction } from '@/actions/upload-to-cdn';
+import { addUserResume } from '@/actions/user.profile.actions';
 
 export const AddResume = () => {
   const resumeFileRef = useRef<HTMLInputElement>(null);
@@ -65,17 +66,24 @@ export const AddResume = () => {
           variant: 'destructive',
         });
       }
-
-      if (res.message) {
-        toast({
-          title: res.message,
-          variant: 'success',
-        });
-      } else if (res.error) {
-        toast({
+      if (res.error) {
+        return toast({
           title: 'Upload Failed',
           description: `Error: ${res.error}`,
           variant: 'destructive',
+        });
+      }
+      if (res.message) {
+        const response = await addUserResume(res.url);
+        if (!response.status) {
+          return toast({
+            title: response.message || 'Error',
+            variant: 'destructive',
+          });
+        }
+        return toast({
+          title: response.message,
+          variant: 'success',
         });
       }
     } catch (error) {

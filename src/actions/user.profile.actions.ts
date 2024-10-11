@@ -231,3 +231,23 @@ export const validateUserBoarding = async () => {
     return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
   }
 };
+export const addUserResume = async (resume: string) => {
+  const auth = await getServerSession(authOptions);
+
+  if (!auth || !auth?.user?.id)
+    throw new ErrorHandler('Not Authorized', 'UNAUTHORIZED');
+
+  try {
+    await prisma.user.update({
+      where: {
+        id: auth.user.id,
+      },
+      data: {
+        resume: resume,
+      },
+    });
+    return new SuccessResponse('Resume SuccessFully Uploaded', 200).serialize();
+  } catch (_error) {
+    return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
+  }
+};
