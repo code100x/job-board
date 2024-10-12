@@ -36,7 +36,7 @@ export const EditProfilePicture = () => {
       formData.append('file', file);
       // const fileName = file.name;
       // formData.append('uniqueFileName', fileName);
-      uploadFileAction(formData).then((response) => {
+      uploadFileAction(formData, 'webp').then((response) => {
         if (response.error) {
           toast({
             title: response.error,
