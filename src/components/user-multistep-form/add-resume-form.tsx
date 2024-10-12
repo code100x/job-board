@@ -58,7 +58,7 @@ export const AddResume = () => {
       const uniqueFileName = `${Date.now()}-${file.name}`;
       formData.append('uniqueFileName', uniqueFileName);
 
-      const res = await uploadFileAction(formData);
+      const res = await uploadFileAction(formData, 'pdf');
       if (!res) {
         return toast({
           title: 'Internal Server Error',
