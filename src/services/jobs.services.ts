@@ -64,6 +64,7 @@ export function getJobFilters({
     postedat: 'postedAt',
     maxsalary: 'maxSalary',
     viewcount: 'viewCount',
+    applycount: 'applyCount',
   };
   const [sort, sortOrder] = sortby.split('_');
   let orderBy: Prisma.JobOrderByWithAggregationInput = {};

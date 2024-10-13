@@ -8,6 +8,7 @@ import { Briefcase, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import { Twitter } from 'lucide-react';
 import Linkify from 'linkify-react';
+import { incrementApplyCount } from '@/actions/job.action';
 const options = {
   defaultProtocol: 'https',
   target: '_blank',
@@ -92,7 +93,10 @@ export const Job = ({ job }: { job: JobType }) => {
         </div>
 
         <div className="mt-4 flex gap-2">
-          <Link href={job.application ? job.application : ''}>
+          <Link
+            href={job.application ? job.application : ''}
+            onClick={() => incrementApplyCount({ id: job.id })}
+          >
             <Button className="justify-self-start px-6 dark:text-white py-2 w-fit h-fit">
               Apply Now
             </Button>

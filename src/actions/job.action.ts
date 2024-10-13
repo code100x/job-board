@@ -371,3 +371,25 @@ export const incrementViewCount = withServerActionAsyncCatcher<
     message: 'View count incremented successfully',
   };
 });
+
+// violates KISS, suggest alternatives to implement
+export const incrementApplyCount = withServerActionAsyncCatcher<
+  JobByIdSchemaType,
+  ServerActionReturnType<SuccessResponse>
+>(async (data) => {
+  const { id } = JobByIdSchema.parse(data);
+  await prisma.job.update({
+    where: { id },
+    data: {
+      applyCount: {
+        increment: 1,
+      },
+    },
+  });
+
+  return {
+    status: true,
+    code: 200,
+    message: 'Apply count incremented successfully',
+  };
+});
