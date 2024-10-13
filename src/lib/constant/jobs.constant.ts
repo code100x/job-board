@@ -1,8 +1,8 @@
 export enum SortByEnums {
   POSTEDAT_ASC = 'postedat_asc',
   POSTEDAT_DESC = 'postedat_desc',
-  SALARY_ASC = 'salary_asc',
-  SALARY_DESC = 'salary_desc',
+  MAXSALARY_ASC = 'maxsalary_asc',
+  MAXSALARY_DESC = 'maxsalary_desc',
 }
 export const filters = {
   salaryRange: [
@@ -48,11 +48,11 @@ export const jobSorting = [
   {
     id: 3,
     label: 'Lowest Salary',
-    value: 'salary_asc',
+    value: 'maxsalary_asc',
   },
   {
     id: 4,
     label: 'Highest Salary',
-    value: 'salary_desc',
+    value: 'maxsalary_desc',
   },
 ];

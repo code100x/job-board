@@ -62,24 +62,14 @@ export function getJobFilters({
   };
   const sortFieldMapping: { [key: string]: string } = {
     postedat: 'postedAt',
-    salary: 'maxSalary',
+    maxsalary: 'maxSalary',
   };
   const [sort, sortOrder] = sortby.split('_');
   let orderBy: Prisma.JobOrderByWithAggregationInput = {};
   if (sortby) {
-    // const [sort, sortOrder] = sortby.split('_');
-    // handle both ascending and descending cases
-    if (sort === 'salary') {
-      orderBy = {
-        maxSalary: sortOrder,
-        // nulls: 'last',
-      };
-    } else {
-      // For other fields like postedat
-      orderBy = {
-        [sortFieldMapping[sort]]: sortOrder,
-      };
-    }
+    orderBy = {
+      [sortFieldMapping[sort]]: sortOrder,
+    };
   }
   const pagination = {
     skip: 0,
