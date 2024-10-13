@@ -67,12 +67,10 @@ export function getJobFilters({
     applycount: 'applyCount',
   };
   const [sort, sortOrder] = sortby.split('_');
-  let orderBy: Prisma.JobOrderByWithAggregationInput = {};
-  if (sortby) {
-    orderBy = {
-      [sortFieldMapping[sort]]: sortOrder,
-    };
-  }
+  const orderBy: Prisma.JobOrderByWithAggregationInput = sortby
+    ? { [sortFieldMapping[sort]]: sortOrder }
+    : {};
+
   const pagination = {
     skip: 0,
     take: limit || JOBS_PER_PAGE,
