@@ -1,4 +1,8 @@
-import { getJobById, getRecommendedJobs } from '@/actions/job.action';
+import {
+  getJobById,
+  getRecommendedJobs,
+  incrementViewCount,
+} from '@/actions/job.action';
 import { Job } from '@/components/job';
 import JobCard from '@/components/job-card-rec';
 import { JobByIdSchemaType } from '@/lib/validators/jobs.validator';
@@ -7,6 +11,8 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 const page = async ({ params }: { params: JobByIdSchemaType }) => {
+  await incrementViewCount(params);
+
   const job = await getJobById(params);
   if (!job.status) {
     return;

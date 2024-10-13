@@ -356,6 +356,8 @@ async function seedJobs() {
               'SQL',
             ],
             isVerifiedJob: j.isVerifiedJob,
+            viewCount: 0,
+            applyCount: 0,
           },
           update: {},
         })

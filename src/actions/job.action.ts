@@ -350,3 +350,24 @@ export const updateJob = withServerActionAsyncCatcher<
     additonal
   ).serialize();
 });
+
+export const incrementViewCount = withServerActionAsyncCatcher<
+  JobByIdSchemaType,
+  ServerActionReturnType<SuccessResponse>
+>(async (data) => {
+  const { id } = JobByIdSchema.parse(data);
+  await prisma.job.update({
+    where: { id },
+    data: {
+      viewCount: {
+        increment: 1,
+      },
+    },
+  });
+
+  return {
+    status: true,
+    code: 200,
+    message: 'View count incremented successfully',
+  };
+});
