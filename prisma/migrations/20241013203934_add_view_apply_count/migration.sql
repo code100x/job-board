@@ -1,6 +1,0 @@
--- AlterEnum
-ALTER TYPE "Role" ADD VALUE 'HR';
-
--- AlterTable
-ALTER TABLE "Job" ADD COLUMN     "applyCount" INTEGER NOT NULL DEFAULT 0,
-ADD COLUMN     "viewCount" INTEGER NOT NULL DEFAULT 0;

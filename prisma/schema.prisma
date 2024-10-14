@@ -73,8 +73,6 @@ model Job {
   postedAt           DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
   user               User            @relation(fields: [userId], references: [id])
-  viewCount          Int             @default(0) // For job card clicks
-  applyCount         Int             @default(0) // for apply button clicks
 }
 
 enum Currency {

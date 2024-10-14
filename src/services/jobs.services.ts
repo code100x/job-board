@@ -63,8 +63,6 @@ export function getJobFilters({
   const sortFieldMapping: { [key: string]: string } = {
     postedat: 'postedAt',
     maxsalary: 'maxSalary',
-    viewcount: 'viewCount',
-    applycount: 'applyCount',
   };
   const [sort, sortOrder] = sortby.split('_');
   const orderBy: Prisma.JobOrderByWithAggregationInput = sortby
