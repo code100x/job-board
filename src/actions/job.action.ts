@@ -170,6 +170,7 @@ export const getRecommendedJobs = withServerActionAsyncCatcher<
     where: {
       category: category,
       id: { not: id },
+      isVerifiedJob: true,
       expired: false,
     },
     orderBy: {
@@ -295,7 +296,10 @@ export const getCityFilters = async () => {
 export const getRecentJobs = async () => {
   try {
     const recentJobs = await prisma.job.findMany({
-      where: { expired: false },
+      where: {
+        isVerifiedJob: true,
+        expired: false,
+      },
       orderBy: {
         postedAt: 'desc',
       },
