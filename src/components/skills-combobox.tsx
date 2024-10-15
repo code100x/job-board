@@ -9,6 +9,7 @@ import { UseFormReturn } from 'react-hook-form';
 import { JobPostSchemaType } from '@/lib/validators/jobs.validator';
 import _ from 'lodash';
 import { X } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export function SkillsCombobox({
   form,
@@ -69,7 +70,7 @@ export function SkillsCombobox({
   }, [comboBoxSelectedValues, form]);
   return (
     <>
-      <div className="flex flex-col gap-2">
+      <div className={cn('flex flex-col gap-2')}>
         <FormLabel className="font-medium">Skills Required</FormLabel>
         <Combobox
           comboBoxSelectedValues={comboBoxSelectedValues}
@@ -84,12 +85,14 @@ export function SkillsCombobox({
         {comboBoxSelectedValues.map((item, index) => (
           <div key={index} className="flex items-csele space-y-0 group">
             <div
-              className={`font-medium text-xs cursor-pointer flex gap-1 text-center justify-start py-2 px-4 rounded-full borderpr-1 bg-blue-100 dark:bg-blue-500 dark:bg-opacity-10 bg-opacity-90 text-blue-700 dark:text-blue-400 border-blue-800 dark:border-blue-400 '}`}
+              className={cn(
+                `font-medium text-xs cursor-pointer flex gap-1 text-center justify-start py-2 px-4 rounded-full borderpr-1 bg-blue-100 dark:bg-blue-500 dark:bg-opacity-10 bg-opacity-90 text-blue-700 dark:text-blue-400 border-blue-800 dark:border-blue-400`
+              )}
             >
               {_.startCase(item.toLowerCase())}
               {
                 <Button
-                  className="p-0 h-fit bg-tranparent"
+                  className={cn('p-0 h-fit bg-tranparent')}
                   onClick={() => {
                     setComboBoxSelectedValues((prev) => {
                       const foundIndex = prev.findIndex((val) => val === item);
