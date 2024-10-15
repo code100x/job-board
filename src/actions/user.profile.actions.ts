@@ -122,6 +122,6 @@ export const deleteUser = async (email: string) => {
     });
     return { success: 'Your account has been successfully deleted.' };
   } catch (error) {
-    return { error: error };
+    return { error: (error as Error).message || 'Some Error Occured' };
   }
 };
