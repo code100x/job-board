@@ -5,11 +5,13 @@ import { Button } from '../ui/button';
 import { useToast } from '../ui/use-toast';
 import { uploadFileAction } from '@/actions/upload-to-cdn';
 import { addUserResume } from '@/actions/user.profile.actions';
+import { LoadingSpinner } from '../loading-spinner';
 
 export const AddResume = () => {
   const resumeFileRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleClick = () => {
     if (resumeFileRef.current) {
@@ -55,6 +57,7 @@ export const AddResume = () => {
     formData.append('file', file);
 
     try {
+      setIsLoading(true);
       const uniqueFileName = `${Date.now()}-${file.name}`;
       formData.append('uniqueFileName', uniqueFileName);
 
@@ -86,14 +89,15 @@ export const AddResume = () => {
           variant: 'success',
         });
       }
-    } catch (error) {
-      console.error('Image upload failed:', error);
-      toast({
+    } catch (_error) {
+      return toast({
         title: 'Upload Error',
         description:
           'An error occurred while uploading the file. Please try again.',
         variant: 'destructive',
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -137,9 +141,13 @@ export const AddResume = () => {
       <p className="text-sm text-gray-500 text-center mt-2">
         Allowed file types: PDF, DOC, DOCX
       </p>
-      <Button className="mt-4 w-full" onClick={onSubmit}>
-        Submit
-      </Button>
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : (
+        <Button className="mt-4 w-full" onClick={onSubmit}>
+          Submit
+        </Button>
+      )}
     </div>
   );
 };

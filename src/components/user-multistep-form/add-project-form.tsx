@@ -17,6 +17,8 @@ import { Button } from '../ui/button';
 import { Textarea } from '../ui/textarea';
 import { useToast } from '../ui/use-toast';
 import { addUserProjects } from '@/actions/user.profile.actions';
+import { useState } from 'react';
+import { LoadingSpinner } from '../loading-spinner';
 
 export const AddProject = () => {
   const form = useForm<projectSchemaType>({
@@ -28,13 +30,13 @@ export const AddProject = () => {
       projectLiveLink: '',
     },
   });
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { toast } = useToast();
 
   const onSubmit = async (data: projectSchemaType) => {
     try {
+      setIsLoading(true);
       const response = await addUserProjects(data);
-
       if (!response.status) {
         return toast({
           title: response.message || 'Error',
@@ -52,6 +54,8 @@ export const AddProject = () => {
         description: 'Internal server error',
         variant: 'destructive',
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -108,9 +112,15 @@ export const AddProject = () => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="mt-4">
-          Submit
-        </Button>
+        {isLoading ? (
+          <div className="mt-4">
+            <LoadingSpinner />
+          </div>
+        ) : (
+          <Button type="submit" className="mt-4">
+            Submit
+          </Button>
+        )}
       </form>
     </Form>
   );

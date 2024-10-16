@@ -49,8 +49,19 @@ export const projectSchema = z.object({
     .string()
     .min(20, { message: 'Summary must be at least 20 characters' })
     .max(255, { message: 'Summary cannot exceed 255 characters' }),
-  projectLiveLink: z.string().url().optional(),
-  projectGithub: z.string({ message: 'Github Link is required' }).url(),
+  projectLiveLink: z
+    .string()
+    .url({ message: 'Invalid URL format' })
+    .refine((url) => url.startsWith('https://'), {
+      message: 'URL must be a https request',
+    })
+    .optional(),
+  projectGithub: z
+    .string({ message: 'Github Link is required' })
+    .url({ message: 'Invalid URL format' })
+    .refine((url) => url.startsWith('https://github.com/'), {
+      message: 'URL must be a GitHub link starting with "https://github.com/"',
+    }),
 });
 
 export type projectSchemaType = z.infer<typeof projectSchema>;

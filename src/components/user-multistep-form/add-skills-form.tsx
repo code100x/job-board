@@ -10,11 +10,13 @@ import {
 } from '@/lib/validators/user.profile.validator';
 import { useToast } from '../ui/use-toast';
 import { addUserSkills } from '@/actions/user.profile.actions';
+import { LoadingSpinner } from '../loading-spinner';
 
 export const AddSkills = () => {
   const [comboBoxSelectedValues, setComboBoxSelectedValues] = useState<
     string[]
   >([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const form = useForm<addSkillsSchemaType>({
     resolver: zodResolver(addSkillsSchema),
@@ -25,8 +27,8 @@ export const AddSkills = () => {
   const { toast } = useToast();
   const onSubmit = async (data: addSkillsSchemaType) => {
     try {
+      setIsLoading(true);
       const response = await addUserSkills(data);
-
       if (!response.status) {
         return toast({
           title: response.message || 'Error',
@@ -46,6 +48,8 @@ export const AddSkills = () => {
         description: 'Internal server error',
         variant: 'destructive',
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -57,9 +61,15 @@ export const AddSkills = () => {
           setComboBoxSelectedValues={setComboBoxSelectedValues}
           form={form}
         ></SkillsCombobox>
-        <Button type="submit" className="mt-4">
-          Submit
-        </Button>
+        {isLoading ? (
+          <div className="mt-4">
+            <LoadingSpinner />{' '}
+          </div>
+        ) : (
+          <Button type="submit" className="mt-4">
+            Submit
+          </Button>
+        )}
       </form>
     </Form>
   );

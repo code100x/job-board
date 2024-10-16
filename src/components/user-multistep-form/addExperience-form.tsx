@@ -28,6 +28,8 @@ import {
 } from '@/lib/validators/user.profile.validator';
 import { addUserExperience } from '@/actions/user.profile.actions';
 import { useToast } from '../ui/use-toast';
+import { LoadingSpinner } from '../loading-spinner';
+import { useState } from 'react';
 
 export const AddExperience = () => {
   const form = useForm<expFormSchemaType>({
@@ -46,9 +48,11 @@ export const AddExperience = () => {
   });
 
   const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onSubmit = async (data: expFormSchemaType) => {
     try {
+      setIsLoading(true);
       const response = await addUserExperience(data);
       if (!response.status) {
         return toast({
@@ -67,6 +71,8 @@ export const AddExperience = () => {
         description: 'Internal server error',
         variant: 'destructive',
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -259,10 +265,15 @@ export const AddExperience = () => {
               </FormItem>
             )}
           />
-
-          <Button type="submit" className="w-full">
-            Submit
-          </Button>
+          {isLoading ? (
+            <div className="mt-4">
+              <LoadingSpinner />{' '}
+            </div>
+          ) : (
+            <Button type="submit" className="w-full">
+              Submit
+            </Button>
+          )}
         </form>
       </Form>
     </div>
