@@ -15,6 +15,13 @@ export async function middleware(req: NextRequest) {
   ) {
     return NextResponse.redirect(new URL('/', req.url));
   }
+  if (
+    pathname !== '/create-profile' &&
+    token?.role === 'USER' &&
+    !token.onBoard
+  ) {
+    return NextResponse.redirect(new URL('/create-profile', req.url));
+  }
   return NextResponse.next();
 }
 

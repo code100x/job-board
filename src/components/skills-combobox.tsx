@@ -9,6 +9,7 @@ import { UseFormReturn } from 'react-hook-form';
 import { JobPostSchemaType } from '@/lib/validators/jobs.validator';
 import _ from 'lodash';
 import { X } from 'lucide-react';
+import { addSkillsSchemaType } from '@/lib/validators/user.profile.validator';
 
 export function SkillsCombobox({
   form,
@@ -16,7 +17,7 @@ export function SkillsCombobox({
   setComboBoxSelectedValues,
 }: {
   comboBoxSelectedValues: string[];
-  form: UseFormReturn<JobPostSchemaType>;
+  form: UseFormReturn<JobPostSchemaType> | UseFormReturn<addSkillsSchemaType>;
   setComboBoxSelectedValues: React.Dispatch<React.SetStateAction<string[]>>;
 }) {
   const [comboBoxInputValue, setComboBoxInputValue] = useState('');
@@ -65,7 +66,10 @@ export function SkillsCombobox({
   }, [debouncedComboboxValues]);
 
   React.useEffect(() => {
-    form.setValue('skills', comboBoxSelectedValues);
+    (form as UseFormReturn<addSkillsSchemaType>).setValue(
+      'skills',
+      comboBoxSelectedValues
+    );
   }, [comboBoxSelectedValues, form]);
   return (
     <>

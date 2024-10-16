@@ -14,7 +14,8 @@ const ProfilePage = () => {
   useEffect(() => {
     if (session.status !== 'loading' && session.status === 'unauthenticated')
       router.push(`${APP_PATHS.SIGNIN}?redirectTo=/create`);
-  }, [session.status]);
+  }, [session.status, router]);
+
   return (
     <div className="md:container flex flex-col w-full">
       <div className="flex justify-between items-start mb-4 w-full">
