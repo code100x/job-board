@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { WorkMode, EmployementType, Currency } from '@prisma/client';
+import { SortByEnums } from '../constant/jobs.constant';
 
 export const JobPostSchema = z
   .object({
@@ -133,7 +134,7 @@ export const JobQuerySchema = z.object({
       }
       return val;
     }),
-  sortby: z.enum(['postedat_asc', 'postedat_desc']).default('postedat_desc'),
+  sortby: z.nativeEnum(SortByEnums).default(SortByEnums.POSTEDAT_ASC),
   page: z.coerce
     .number({ message: 'page must be a number' })
     .optional()
