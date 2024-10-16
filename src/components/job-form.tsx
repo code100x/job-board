@@ -128,12 +128,19 @@ const PostJobForm = () => {
     }
   };
 
-  const handleFileChange = async (e: any) => {
-    const selectedFile = e.target.files[0];
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files ? e.target.files[0] : null;
     if (!selectedFile) {
       return;
     }
-
+    if (!selectedFile.type.includes('image')) {
+      toast({
+        title:
+          'Invalid file format. Please upload an image file (e.g., .png, .jpg, .jpeg, .svg ) for the company logo',
+        variant: 'destructive',
+      });
+      return;
+    }
     const reader = new FileReader();
     reader.onload = () => {
       if (companyLogoImg.current) {
