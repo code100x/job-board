@@ -25,7 +25,12 @@ import {
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { useToast } from './ui/use-toast';
-import { Calendar, LucideRocket, MailOpenIcon, X } from 'lucide-react';
+import {
+  Calendar as CalendarIcon,
+  LucideRocket,
+  MailOpenIcon,
+  X,
+} from 'lucide-react';
 import DescriptionEditor from './DescriptionEditor';
 import Image from 'next/image';
 import { FaFileUpload } from 'react-icons/fa';
@@ -33,6 +38,7 @@ import { Switch } from './ui/switch';
 import { Label } from './ui/label';
 import dynamic from 'next/dynamic';
 import { uploadFileAction } from '@/actions/upload-to-cdn';
+import { format } from 'date-fns';
 
 const DynamicGmapsAutoSuggest = dynamic(() => import('./gmaps-autosuggest'), {
   ssr: false,
@@ -43,6 +49,8 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import APP_PATHS from '@/config/path.config';
 import { SkillsCombobox } from './skills-combobox';
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+import { Calendar } from '@/components/ui/calendar';
 
 const PostJobForm = () => {
   const session = useSession();
@@ -72,6 +80,8 @@ const PostJobForm = () => {
       workMode: 'remote',
       type: EmployementType.Full_time,
       category: 'design',
+      hasExpiryDate: true,
+      expiryDate: undefined,
       hasSalaryRange: true,
       minSalary: 0,
       maxSalary: 0,
@@ -187,6 +197,7 @@ const PostJobForm = () => {
   };
   const watchHasSalaryRange = form.watch('hasSalaryRange');
   const watchHasExperienceRange = form.watch('hasExperiencerange');
+  const watchHasExpiryDate = form.watch('hasExpiryDate');
 
   const [comboBoxSelectedValues, setComboBoxSelectedValues] = useState<
     string[]
@@ -207,7 +218,7 @@ const PostJobForm = () => {
     <div className="flex flex-col items-center w-[30rem] gap-y-10 justify-center mb-20">
       <div className="w-full md:justify-center mt-4 flex flex-col md:flex-row gap-2">
         <div className="bg-gray-800/90 backdrop-blur-sm p-4 rounded-lg text-center text-white w-full md:w-48">
-          <Calendar className="w-8 h-8 mb-3 mx-auto text-green-500" />
+          <CalendarIcon className="w-8 h-8 mb-3 mx-auto text-green-500" />
           <p className="text-base font-semibold mb-1">Posted for</p>
           <p className="text-gray-400 text-sm">30 days</p>
         </div>
@@ -513,7 +524,76 @@ const PostJobForm = () => {
                   )}
                 </div>
               </div>
+              <div className="flex flex-col gap-2">
+                <Label>Expiry date</Label>
+                <FormField
+                  control={form.control}
+                  name="hasExpiryDate"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center space-y-0 gap-2">
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          className="data-[state=checked]:bg-gray-300 data-[state=unchecked]:bg-gray-400"
+                        />
+                      </FormControl>
+                      <FormLabel className="mt-0">
+                        Does this job posting have an expiry date?
+                      </FormLabel>
+                    </FormItem>
+                  )}
+                />
 
+                {watchHasExpiryDate && (
+                  <div className="flex gap-4">
+                    <FormField
+                      control={form.control}
+                      name="expiryDate"
+                      render={({ field }) => (
+                        <FormItem className="flex-1">
+                          <div className="space-y-0.5"></div>
+                          <FormControl>
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <Button
+                                  variant="outline"
+                                  className={`w-[240px] pl-3 text-left font-normal bg-gray-800 
+                                      `} // No color change on hover
+                                >
+                                  {field.value ? (
+                                    format(new Date(field.value), 'PPP')
+                                  ) : (
+                                    <span>Pick a date</span>
+                                  )}
+                                  <span className="ml-auto">📅</span>
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent
+                                className="w-auto p-0"
+                                align="start"
+                              >
+                                <Calendar
+                                  mode="single"
+                                  aria-selected={field.value}
+                                  onSelect={(date: any) => {
+                                    field.onChange(date); // Update the field value with the selected date
+                                  }}
+                                  aria-disabled={(date: any) =>
+                                    date > new Date() ||
+                                    date < new Date('1900-01-01')
+                                  }
+                                />
+                              </PopoverContent>
+                            </Popover>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                )}
+              </div>
               <div className="space-y-2">
                 <FormLabel className="font-medium">Location</FormLabel>
                 <DynamicGmapsAutoSuggest

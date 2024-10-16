@@ -53,6 +53,8 @@ export const createJob = withServerActionAsyncCatcher<
     description,
     hasSalaryRange,
     hasExperiencerange,
+    hasExpiryDate,
+    expiryDate,
     maxSalary,
     minExperience,
     maxExperience,
@@ -65,6 +67,8 @@ export const createJob = withServerActionAsyncCatcher<
       description,
       hasExperiencerange,
       minExperience,
+      expiryDate,
+      hasExpiryDate,
       maxExperience,
       skills,
       companyName,
@@ -111,6 +115,7 @@ export const getAllJobs = withServerActionAsyncCatcher<
     orderBy: [orderBy],
     where: {
       isVerifiedJob: true,
+      expired: false,
       ...filterQueries,
     },
     select: {
@@ -124,6 +129,8 @@ export const getAllJobs = withServerActionAsyncCatcher<
       hasExperiencerange: true,
       minExperience: true,
       maxExperience: true,
+      hasExpiryDate: true,
+      expiryDate: true,
       skills: true,
       address: true,
       workMode: true,
@@ -164,6 +171,7 @@ export const getRecommendedJobs = withServerActionAsyncCatcher<
       category: category,
       id: { not: id },
       isVerifiedJob: true,
+      expired: false,
     },
     orderBy: {
       postedAt: 'desc',
@@ -194,6 +202,7 @@ export const getRecommendedJobs = withServerActionAsyncCatcher<
     const fallbackJobs = await prisma.job.findMany({
       where: {
         id: { not: id },
+        expired: false,
       },
       orderBy: {
         postedAt: 'desc',
@@ -239,7 +248,7 @@ export const getJobById = withServerActionAsyncCatcher<
   const result = JobByIdSchema.parse(data);
   const { id } = result;
   const job = await prisma.job.findFirst({
-    where: { id },
+    where: { id, expired: false },
     select: {
       id: true,
       title: true,
@@ -252,6 +261,8 @@ export const getJobById = withServerActionAsyncCatcher<
       category: true,
       city: true,
       hasExperiencerange: true,
+      expiryDate: true,
+      hasExpiryDate: true,
       minExperience: true,
       maxExperience: true,
       skills: true,
@@ -272,6 +283,7 @@ export const getJobById = withServerActionAsyncCatcher<
 export const getCityFilters = async () => {
   const response = await prisma.job.findMany({
     select: {
+      expired: false,
       city: true,
     },
   });
@@ -284,8 +296,9 @@ export const getCityFilters = async () => {
 export const getRecentJobs = async () => {
   try {
     const recentJobs = await prisma.job.findMany({
-       where: {
+      where: {
         isVerifiedJob: true,
+        expired: false,
       },
       orderBy: {
         postedAt: 'desc',
@@ -354,3 +367,19 @@ export const updateJob = withServerActionAsyncCatcher<
     additonal
   ).serialize();
 });
+
+export async function updateExpiredJobs() {
+  const currentDate = new Date();
+
+  await prisma.job.updateMany({
+    where: {
+      hasExpiryDate: true,
+      expiryDate: {
+        lt: currentDate,
+      },
+    },
+    data: {
+      expired: true,
+    },
+  });
+}
