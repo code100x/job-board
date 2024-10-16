@@ -15,7 +15,7 @@ export const JobSkills = ({ skills }: JobSkillsProps) => {
         <SkillTag key={index} skill={skill} />
       ))}
       {remainingSkillsCount > 0 && (
-        <div className="bg-slate-500 bg-opacity-10 text-slate-500 dark:text-slate-400 font-medium text-sm rounded-full px-2">
+        <div className="bg-slate-500 bg-opacity-10 text-slate-500 dark:text-slate-400 font-medium text-sm rounded-full p-2">
           +{remainingSkillsCount} more
         </div>
       )}
@@ -23,12 +23,12 @@ export const JobSkills = ({ skills }: JobSkillsProps) => {
   );
 };
 const NoSkills = () => (
-  <div className="mt-3 bg-slate-500 flex justify-start items-center gap-3 bg-opacity-10 text-slate-500 dark:text-slate-400 font-medium text-sm rounded-full px-2">
+  <div className="mt-3 bg-slate-500 flex justify-start items-center gap-3 bg-opacity-10 text-slate-500 dark:text-slate-400 font-medium text-sm rounded-full">
     <icons.alert size={12} /> No skills provided
   </div>
 );
 const SkillTag = ({ skill }: { skill: string }) => (
-  <div className="bg-slate-500 bg-opacity-10 text-slate-500 dark:text-slate-400 font-medium text-sm rounded-full px-2">
+  <div className="bg-slate-500 bg-opacity-10 text-slate-500 dark:text-slate-400 font-medium text-sm rounded-full p-2">
     {skill}
   </div>
 );

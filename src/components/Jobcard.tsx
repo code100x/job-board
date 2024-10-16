@@ -41,12 +41,14 @@ export default function JobCard({
           </h2>
           <div className="flex">
             <p>{job.companyName + '.'} </p>
-            <p className="ml-2">{'Posted on ' + job.postedAt.toDateString()}</p>
+            <p className="ml-2">
+              {'• Posted on ' + job.postedAt.toDateString()}
+            </p>
           </div>
         </div>
       </div>
       <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-        <div className="p-2 bg-blue-100 dark:bg-blue-500 dark:bg-opacity-10 bg-opacity-90 text-blue-500 dark:text-blue-400 rounded">
+        <div className="p-2 bg-blue-100 dark:bg-blue-500 dark:bg-opacity-10 bg-opacity-90 text-blue-500 dark:text-blue-400 rounded-sm">
           {_.startCase(job.type)}
         </div>
         <span className="flex items-center gap-0.5">
