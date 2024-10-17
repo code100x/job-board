@@ -17,16 +17,112 @@ const users = [
   { id: '3', name: 'Hr', email: 'hr@gmail.com', role: Role.HR },
 ];
 
+const companies = [
+  {
+    id: '1',
+    name: 'Tech Corp',
+    bio: 'Leading tech solutions provider specializing in innovative web development.',
+    email: 'contact@techcorp.com',
+    userId: '1',
+    logo: '',
+  },
+  {
+    id: '2',
+    name: 'Innovatech',
+    bio: 'Innovatech specializes in backend systems and cloud-based solutions.',
+    email: 'careers@innovatech.com',
+    userId: '2',
+    logo: '',
+  },
+  {
+    id: '3',
+    userId: '1',
+    name: 'Global Solutions',
+    bio: 'Global Solutions offers comprehensive IT services for businesses worldwide.',
+    email: 'recruitment@globalsolutions.com',
+    logo: '',
+  },
+  {
+    id: '4',
+    userId: '2',
+    name: 'DevOps Ltd.',
+    bio: 'DevOps Ltd. specializes in automation and cloud infrastructure management.',
+    email: 'jobs@devopsltd.com',
+
+    logo: '',
+  },
+  {
+    id: '5',
+    userId: '1',
+    name: 'Productive Minds',
+    bio: 'Productive Minds helps businesses achieve their goals through strategic product management.',
+    email: 'hr@productiveminds.com',
+    logo: '',
+  },
+  {
+    id: '6',
+    userId: '2',
+    name: 'Data Insights',
+    bio: 'Data Insights provides data-driven solutions to empower businesses.',
+    email: 'recruitment@datainsights.com',
+    logo: '',
+  },
+  {
+    id: '7',
+    userId: '1',
+    name: 'Creative Designs',
+    bio: 'Creative Designs excels in crafting intuitive and visually appealing user interfaces.',
+    email: 'careers@creativedesigns.com',
+    logo: '',
+  },
+  {
+    id: '8',
+    userId: '2',
+    name: 'App Innovators',
+    bio: 'App Innovators is a leader in mobile application development and innovation.',
+    email: 'careers@appinnovators.com',
+    logo: '',
+  },
+  {
+    id: '9',
+    userId: '1',
+    name: 'Cloud Works',
+    bio: 'Cloud Works provides cutting-edge cloud computing solutions.',
+    email: 'hr@cloudworks.com',
+    logo: '',
+  },
+  {
+    id: '10',
+    userId: '2',
+    name: 'SecureTech',
+    bio: 'SecureTech specializes in cybersecurity solutions for modern businesses.',
+    email: 'security@securetech.com',
+    logo: '',
+  },
+  {
+    id: '11',
+    userId: '1',
+    name: 'QA Solutions',
+    bio: 'QA Solutions ensures top-notch quality assurance services for software.',
+    email: 'contact@qasolutions.com',
+    logo: '',
+  },
+  {
+    id: '12',
+    userId: '2',
+    name: 'WriteTech',
+    bio: 'WriteTech specializes in high-quality technical writing services.',
+    email: 'hr@writetech.com',
+    logo: '',
+  },
+];
+
 let jobs = [
   {
     id: '1',
     userId: '1',
     title: 'Frontend Developer',
     description: 'Develop and maintain web applications.',
-    companyName: 'Tech Corp',
-    companyBio:
-      'Leading tech solutions provider specializing in innovative web development.',
-    companyEmail: 'contact@techcorp.com',
     category: 'development',
     type: EmployementType.Full_time,
     workMode: WorkMode.remote,
@@ -34,23 +130,19 @@ let jobs = [
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
-    companyLogo: '',
     hasSalaryRange: true,
     hasExpiryDate: true,
     expiryDate: new Date(new Date().setDate(new Date().getDate() + 49)),
     minSalary: 60000,
     maxSalary: 80000,
     isVerifiedJob: true,
+    companyId: '1',
   },
   {
     id: '2',
     userId: '2',
     title: 'Backend Developer',
     description: 'Build and maintain server-side logic.',
-    companyName: 'Innovatech',
-    companyBio:
-      'Innovatech specializes in backend systems and cloud-based solutions.',
-    companyEmail: 'careers@innovatech.com',
     category: 'development',
     type: EmployementType.Full_time,
     workMode: WorkMode.office,
@@ -58,21 +150,17 @@ let jobs = [
     hasExpiryDate: true,
     expiryDate: new Date(new Date().setDate(new Date().getDate() + 49)),
     hasExperiencerange: false,
-    companyLogo: '',
     hasSalaryRange: false,
     minSalary: null,
     maxSalary: null,
     isVerifiedJob: false,
+    companyId: '2',
   },
   {
     id: '3',
     userId: '1',
     title: 'Full Stack Developer',
     description: 'Develop both client-side and server-side software.',
-    companyName: 'Global Solutions',
-    companyBio:
-      'Global Solutions offers comprehensive IT services for businesses worldwide.',
-    companyEmail: 'recruitment@globalsolutions.com',
     category: 'development',
     type: EmployementType.Full_time,
     workMode: WorkMode.hybrid,
@@ -81,11 +169,11 @@ let jobs = [
     hasExperiencerange: true,
     minExperience: 3,
     maxExperience: 4,
-    companyLogo: '',
     hasSalaryRange: true,
     minSalary: 90000,
     maxSalary: 120000,
     isVerifiedJob: true,
+    companyId: '3',
   },
   {
     id: '4',
@@ -93,10 +181,6 @@ let jobs = [
     title: 'DevOps Engineer',
     description:
       'Automate and streamline the company’s operations and processes.',
-    companyName: 'DevOps Ltd.',
-    companyBio:
-      'DevOps Ltd. specializes in automation and cloud infrastructure management.',
-    companyEmail: 'jobs@devopsltd.com',
     category: 'development',
     type: EmployementType.Full_time,
     workMode: WorkMode.remote,
@@ -106,11 +190,12 @@ let jobs = [
     maxExperience: 2,
     hasExpiryDate: true,
     expiryDate: new Date(new Date().setDate(new Date().getDate() + 49)),
-    companyLogo: '',
     hasSalaryRange: true,
     minSalary: 50000,
     maxSalary: 70000,
     isVerifiedJob: true,
+    companyId: '4',
+
   },
   {
     id: '5',
@@ -118,10 +203,6 @@ let jobs = [
     title: 'Product Manager',
     description:
       'Oversee product development and ensure the success of the product.',
-    companyName: 'Productive Minds',
-    companyBio:
-      'Productive Minds helps businesses achieve their goals through strategic product management.',
-    companyEmail: 'hr@productiveminds.com',
     category: 'management',
     type: EmployementType.Full_time,
     workMode: WorkMode.hybrid,
@@ -129,11 +210,12 @@ let jobs = [
     hasExpiryDate: true,
     expiryDate: new Date(new Date().setDate(new Date().getDate() + 49)),
     hasExperiencerange: false,
-    companyLogo: '',
     hasSalaryRange: true,
     minSalary: 110000,
     maxSalary: 150000,
     isVerifiedJob: true,
+    companyId: '5',
+
   },
   {
     id: '6',
@@ -141,10 +223,6 @@ let jobs = [
     title: 'Data Scientist',
     description:
       'Analyze and interpret complex data to help the company make informed decisions.',
-    companyName: 'Data Insights',
-    companyBio:
-      'Data Insights provides data-driven solutions to empower businesses.',
-    companyEmail: 'recruitment@datainsights.com',
     category: 'development',
     type: EmployementType.Full_time,
     workMode: WorkMode.office,
@@ -152,13 +230,14 @@ let jobs = [
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
-    companyLogo: '',
     hasExpiryDate: true,
     expiryDate: new Date(new Date().setDate(new Date().getDate() + 49)),
     hasSalaryRange: true,
     minSalary: 80000,
     maxSalary: 100000,
     isVerifiedJob: false,
+    companyId: '6',
+
   },
   {
     id: '7',
@@ -166,10 +245,6 @@ let jobs = [
     title: 'UX/UI Designer',
     description:
       'Design user-friendly interfaces for web and mobile applications.',
-    companyName: 'Creative Designs',
-    companyBio:
-      'Creative Designs excels in crafting intuitive and visually appealing user interfaces.',
-    companyEmail: 'careers@creativedesigns.com',
     category: 'design',
     type: EmployementType.Full_time,
     workMode: WorkMode.remote,
@@ -178,21 +253,17 @@ let jobs = [
     hasExpiryDate: false,
     minExperience: 1,
     maxExperience: 2,
-    companyLogo: '',
     hasSalaryRange: true,
     minSalary: 70000,
     maxSalary: 90000,
     isVerifiedJob: false,
+    companyId: '7',
   },
   {
     id: '8',
     userId: '2',
     title: 'Mobile App Developer',
     description: 'Develop and maintain mobile applications.',
-    companyName: 'App Innovators',
-    companyBio:
-      'App Innovators is a leader in mobile application development and innovation.',
-    companyEmail: 'careers@appinnovators.com',
     category: 'development',
     type: EmployementType.Full_time,
     workMode: WorkMode.hybrid,
@@ -202,20 +273,17 @@ let jobs = [
     expiryDate: new Date(new Date().setDate(new Date().getDate() + 49)),
     minExperience: 1,
     maxExperience: 2,
-    companyLogo: '',
     hasSalaryRange: false,
     minSalary: null,
     maxSalary: null,
     isVerifiedJob: true,
+    companyId: '8',
   },
   {
     id: '9',
     userId: '1',
     title: 'Cloud Engineer',
     description: 'Design and manage cloud-based systems and services.',
-    companyName: 'Cloud Works',
-    companyBio: 'Cloud Works provides cutting-edge cloud computing solutions.',
-    companyEmail: 'hr@cloudworks.com',
     category: 'development',
     type: EmployementType.Full_time,
     workMode: WorkMode.office,
@@ -224,21 +292,17 @@ let jobs = [
     hasExpiryDate: false,
     minExperience: 1,
     maxExperience: 2,
-    companyLogo: '',
     hasSalaryRange: true,
     minSalary: 100000,
     maxSalary: 130000,
     isVerifiedJob: true,
+    companyId: '9',
   },
   {
     id: '10',
     userId: '2',
     title: 'Security Analyst',
     description: 'Ensure the security and integrity of company systems.',
-    companyName: 'SecureTech',
-    companyBio:
-      'SecureTech specializes in cybersecurity solutions for modern businesses.',
-    companyEmail: 'security@securetech.com',
     category: 'support',
     type: EmployementType.Full_time,
     workMode: WorkMode.remote,
@@ -246,44 +310,36 @@ let jobs = [
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
-    companyLogo: '',
     hasExpiryDate: true,
     expiryDate: new Date(new Date().setDate(new Date().getDate() + 49)),
     hasSalaryRange: true,
     minSalary: 75000,
     maxSalary: 95000,
     isVerifiedJob: false,
+    companyId: '10',
   },
   {
     id: '11',
     userId: '1',
     title: 'QA Engineer',
     description: 'Ensure the quality of software products.',
-    companyName: 'QA Solutions',
-    companyBio:
-      'QA Solutions ensures top-notch quality assurance services for software.',
-    companyEmail: 'contact@qasolutions.com',
     category: 'support',
     type: EmployementType.Full_time,
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    companyLogo: '',
     hasSalaryRange: true,
     hasExpiryDate: false,
     hasExperiencerange: false,
     minSalary: 25000,
     maxSalary: 50000,
     isVerifiedJob: true,
+    companyId: '11',
   },
   {
     id: '12',
     userId: '2',
     title: 'Technical Writer',
     description: 'Create and manage technical documentation.',
-    companyName: 'WriteTech',
-    companyBio:
-      'WriteTech specializes in high-quality technical writing services.',
-    companyEmail: 'hr@writetech.com',
     category: 'writing',
     type: EmployementType.Contract,
     workMode: WorkMode.remote,
@@ -293,11 +349,11 @@ let jobs = [
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
-    companyLogo: '',
     hasSalaryRange: false,
     minSalary: null,
     maxSalary: null,
     isVerifiedJob: true,
+    companyId: '12',
   },
 ];
 
@@ -329,6 +385,30 @@ async function seedUsers() {
   }
 }
 
+async function seedCompanies() {
+  try {
+    await Promise.all(
+      companies.map(async (c) =>
+        prisma.company.upsert({
+          where: { id: c.id },
+          create: {
+            id: c.id,
+            name: c.name,
+            bio: c.bio,
+            email: c.email,
+            userId: c.userId,
+            logo: '/main.svg',
+          },
+          update: {},
+        })
+      )
+    );
+    console.log('✅ Company seed completed successfully');
+  } catch (error) {
+    console.error('Error seeding companies:', error);
+  }
+}
+
 async function seedJobs() {
   try {
     const existingUsers = await prisma.user.findMany({
@@ -347,9 +427,6 @@ async function seedJobs() {
             userId: j.userId,
             title: j.title,
             description: j.description,
-            companyName: j.companyName,
-            companyBio: j.companyBio,
-            companyEmail: j.companyEmail,
             category: j.category,
             type: j.type,
             workMode: j.workMode,
@@ -362,7 +439,6 @@ async function seedJobs() {
             expiryDate: j.expiryDate,
             minExperience: j.minExperience,
             maxExperience: j.maxExperience,
-            companyLogo: '/main.svg',
             hasSalaryRange: j.hasSalaryRange,
             minSalary: j.minSalary,
             maxSalary: j.maxSalary,
@@ -377,6 +453,8 @@ async function seedJobs() {
               'SQL',
             ],
             isVerifiedJob: j.isVerifiedJob,
+            companyId: j.companyId,
+
           },
           update: {},
         })
@@ -390,6 +468,7 @@ async function seedJobs() {
 
 async function main() {
   await seedUsers();
+  await seedCompanies();
   await seedJobs();
 }
 

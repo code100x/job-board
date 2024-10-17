@@ -27,10 +27,10 @@ export const Job = ({ job }: { job: JobType }) => {
       <section className="grid gap-5 border-2 shadow-sm p-6 w-full bg-gradient-to-b from-[#F1F5F9] to-white dark:from-darkBgSecondary dark:to-darkBgTertiary rounded-lg">
         <div className="flex gap-4 items-center">
           <div className="w-[4rem] h-[4rem]  rounded-md">
-            {job.companyLogo && (
+            {job.company?.logo && (
               <Image
                 className="size-full object-cover "
-                src={job.companyLogo || ''}
+                src={job.company.logo || ''}
                 width={'500'}
                 height={'500'}
                 alt="company-logo"
@@ -40,7 +40,7 @@ export const Job = ({ job }: { job: JobType }) => {
           <div className="flex flex-col gap-2">
             <h1 className="font-bold text-2xl">{job.title}</h1>
             <div className="text-xs flex gap-1 font-medium items-center text-gray-500">
-              <span>{job.companyName}</span>•
+              <span>{job.company?.name}</span>•
               <span>{'Posted on ' + job.postedAt.toDateString()}</span>
             </div>
           </div>
@@ -124,10 +124,10 @@ export const Job = ({ job }: { job: JobType }) => {
       {/* about company */}
       <section className="border-2 bg-[#F1F5F9] dark:bg-[#0F172A] h-auto max-h-[15rem] overflow-y-auto p-6 rounded-xl">
         <h2 className="font-extrabold px-4 py-1 w-fit text-white bg-blue-500 dark:bg-opacity-20 rounded-lg text-xl ">
-          About {job.companyName}
+          About {job.company?.name}
         </h2>
         <div
-          dangerouslySetInnerHTML={{ __html: job.companyBio ?? '' }}
+          dangerouslySetInnerHTML={{ __html: job.company?.bio ?? '' }}
           className="my-4 dark:text-neutral-200"
         ></div>
       </section>

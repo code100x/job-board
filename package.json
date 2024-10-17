@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
+    "seed": "node --loader ts-node/esm prisma/seed.ts",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
