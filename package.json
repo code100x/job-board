@@ -60,6 +60,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
+    "date-fns": "^2.30.0",
     "dayjs": "^1.11.13",
     "framer-motion": "^11.9.0",
     "jiti": "^1.21.6",
@@ -73,6 +74,7 @@
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.15",
     "react": "^18",
+    "react-day-picker": "^8.10.1",
     "react-dom": "^18",
     "react-hook-form": "^7.52.2",
     "react-icons": "^5.2.1",
@@ -88,6 +90,7 @@
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.16.10",
+    "@types/node-cron": "^3.0.11",
     "@types/nodemailer": "^6.4.16",
     "@types/react": "^18",
     "@types/react-dom": "^18",
