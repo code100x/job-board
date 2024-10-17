@@ -18,3 +18,12 @@ export const UserPasswordSchema = z.object({
 });
 
 export type UserPasswordSchemaType = z.infer<typeof UserPasswordSchema>;
+
+export const UserProfileDestroySchema = z.object({
+  random: z
+    .string({ message: 'Required' })
+    .min(1, { message: 'Min 1 char long' })
+    .max(8, { message: "Can't be more long" }),
+});
+
+export type UserProfileDestroyType = z.infer<typeof UserProfileDestroySchema>;
