@@ -190,7 +190,6 @@ let jobs = [
     maxExperience: 2,
     hasExpiryDate: true,
     expiryDate: new Date(new Date().setDate(new Date().getDate() + 49)),
-    companyLogo: '',
     hasSalaryRange: true,
     minSalary: 50000,
     maxSalary: 70000,
@@ -231,7 +230,6 @@ let jobs = [
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
-    companyLogo: '',
     hasExpiryDate: true,
     expiryDate: new Date(new Date().setDate(new Date().getDate() + 49)),
     hasSalaryRange: true,
@@ -312,7 +310,6 @@ let jobs = [
     hasExperiencerange: true,
     minExperience: 1,
     maxExperience: 2,
-    companyLogo: '',
     hasExpiryDate: true,
     expiryDate: new Date(new Date().setDate(new Date().getDate() + 49)),
     hasSalaryRange: true,
@@ -471,8 +468,8 @@ async function seedJobs() {
 
 async function main() {
   await seedUsers();
-  await seedJobs();
   await seedCompanies();
+  await seedJobs();
 }
 
 main();
