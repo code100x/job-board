@@ -43,7 +43,7 @@ export function Combobox({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between bg-gray-800 border-none text-white"
+          className="w-full justify-between dark:bg-gray-800 border-none dark:text-white"
         >
           Search skillset ...
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />

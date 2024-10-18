@@ -307,10 +307,15 @@
 }
 
 /* Custom styles for Quill editor */
-.ql-toolbar.ql-snow {
+html.dark.ql-toolbar.ql-snow {
   border: none !important;
   background-color: #1f2937 !important;
   border-bottom: 1px solid #374151 !important;
+}
+
+.ql-toolbar.ql-snow{
+  border: none !important;
+  border-bottom: 1px solid #a9aaac !important;
 }
 
 .ql-container.ql-snow {
