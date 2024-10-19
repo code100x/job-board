@@ -76,7 +76,7 @@ export const CompanyForm = ({ setIsDialogOpen }: any) => {
   };
 
   const handleFileChange = async (e: any) => {
-    const selectedFile = e.target.files[0];
+    const selectedFile = e.target.files?.[0];
     if (!selectedFile) return;
 
     // Basic file validation
@@ -88,6 +88,8 @@ export const CompanyForm = ({ setIsDialogOpen }: any) => {
       });
     }
 
+    setFile(selectedFile);
+
     const reader = new FileReader();
     reader.onload = () => {
       if (companyLogoImg.current) {
@@ -95,8 +97,8 @@ export const CompanyForm = ({ setIsDialogOpen }: any) => {
       }
       setPreviewImg(reader.result as string);
     };
+
     reader.readAsDataURL(selectedFile);
-    setFile(selectedFile);
   };
 
   const handleDescriptionChange = (fieldName: any, value: string) => {

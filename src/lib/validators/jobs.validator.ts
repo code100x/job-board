@@ -5,12 +5,6 @@ import { SortByEnums } from '../constant/jobs.constant';
 export const JobPostSchema = z
   .object({
     companyId: z.string().min(1, 'Company id is required'),
-    company: z.object({
-      id: z.string().min(1, 'Company id is required'),
-      name: z.string().min(1, 'Company name is required'),
-      bio: z.string().min(1, 'Company bio is required'),
-      logo: z.string().min(1, 'Company logo is required'),
-    }),
     title: z.string().min(1, 'Title is required'),
     description: z.string().min(1, 'Description is required'),
     city: z.string().min(1, 'City Name is required'),

@@ -626,22 +626,35 @@ const PostJobForm = () => {
               <h2 className="text-lg font-semibold mb-4 dark:text-gray-300">
                 Company
               </h2>
-              <FormControl>
-                <Select>
-                  <SelectTrigger className="bg-gray-800 border-none text-white">
-                    <SelectValue placeholder="Select a company that you have already posted job for" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {companies.map((company, index) => {
-                      return (
-                        <SelectItem key={index} value={company.id}>
-                          {company.name}
-                        </SelectItem>
-                      );
-                    })}
-                  </SelectContent>
-                </Select>
-              </FormControl>
+              <FormField
+                control={form.control}
+                name="companyId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-medium">
+                      Select a Company*
+                    </FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <SelectTrigger className="bg-gray-800 border-none text-white">
+                          <SelectValue placeholder="Select a company that you have already posted a job for" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {companies.map((company, index) => (
+                            <SelectItem key={index} value={company.id}>
+                              {company.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
               <div className="flex gap-3 w-full p-6 mx-auto justify-center items-center">
                 <Separator className="w-1/2" /> OR{' '}
                 <Separator className="w-1/2" />
