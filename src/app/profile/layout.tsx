@@ -11,11 +11,11 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (session.status !== 'loading' && session.status === 'unauthenticated')
       router.push(`${APP_PATHS.SIGNIN}?redirectTo=/profile`);
-  }, [session.status]);
+  }, [session.status, router]);
   return (
     <div className="container flex max-md:flex-col md:gap-5 w-full relative">
       <Sidebar />
-      <div className="flex px-2 w-full overflow-y-auto md:max-h-[73vh] lg:h-full md:border md:rounded-xl md:pt-6 ">
+      <div className="flex px-2 w-full overflow-y-auto md:max-h-[73vh] lg:h-full md:border md:rounded-xl md:pt-6 no-scrollbar">
         {children}
       </div>
     </div>

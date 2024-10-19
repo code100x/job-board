@@ -15,5 +15,6 @@ const APP_PATHS = {
   PROFILE: '/profile',
   EDIT_PROFILE: '/profile/edit',
   ACCOUNT_SETTINGS: '/profile/settings',
+  BOOKMARK: '/profile/bookmarks',
 };
 export default APP_PATHS;
