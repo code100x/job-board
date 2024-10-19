@@ -88,7 +88,8 @@ export const DeleteAccountDialog = () => {
           Delete Account
         </Button>
       </DialogTrigger>
-      <DialogContent>
+
+      <DialogContent hideCloseButton>
         <DialogHeader className="text-start">
           <DialogTitle>
             Are you sure you want to delete your account?
@@ -97,14 +98,16 @@ export const DeleteAccountDialog = () => {
             This action cannot be undone. This will permanently delete your
             account and all associated data.
             <form className="mt-6" onSubmit={handleSubmit(handleDeleteAccount)}>
-              <label className="text-gray-200" htmlFor="random">
+              <label className="text-black dark:text-gray-200" htmlFor="random">
                 Type{' '}
-                <span className="text-white font-bold">{randomString}</span>
+                <span className="text-black dark:text-white font-bold">
+                  {randomString}
+                </span>
               </label>
               <input
                 {...register('random')}
                 id="random"
-                className=" mt-2 p-2 rounded-md text-white p-4 rounded-md  w-full bg-inputBg outline-none"
+                className=" mt-2 p-2 rounded-md font-bold p-4 rounded-md  w-full bg-gray-200 dark:bg-black outline-none text-black dark:text-white"
                 onPaste={(e: ClipboardEvent<HTMLInputElement>) =>
                   e.preventDefault()
                 }
@@ -124,7 +127,7 @@ export const DeleteAccountDialog = () => {
                 </Button>
 
                 <div
-                  className="bg-transparent text-white hover:bg-transparent border-2 border-slate-500 py-2 px-4 cursor-pointer rounded-md"
+                  className="bg-gray-200 dark:bg-transparent text-black dark:text-white hover:bg-gray-200  hover:dark:bg-transparent border-2  dark:border-slate-500 py-2 px-4 cursor-pointer rounded-md"
                   onClick={() => setModalOpen(false)}
                 >
                   <p>No</p>
