@@ -2,7 +2,9 @@
 
 import { v4 as uuidv4 } from 'uuid';
 
-export async function uploadFileAction(formData: FormData) {
+type FileType = 'webp' | 'pdf';
+
+export async function uploadFileAction(formData: FormData, fileType: FileType) {
   const CDN_BASE_UPLOAD_URL = process.env.CDN_BASE_UPLOAD_URL!;
   const CDN_BASE_ACCESS_URL = process.env.CDN_BASE_ACCESS_URL!;
   const CDN_API_KEY = process.env.CDN_API_KEY!;
@@ -14,7 +16,7 @@ export async function uploadFileAction(formData: FormData) {
     if (!file) {
       return { error: 'File is required', status: 400 };
     }
-    const uploadUrl = `${CDN_BASE_UPLOAD_URL}/${uniqueFileName}.webp`;
+    const uploadUrl = `${CDN_BASE_UPLOAD_URL}/${uniqueFileName}.${fileType}`;
     const fileBuffer = Buffer.from(await file.arrayBuffer());
 
     const response = await fetch(uploadUrl, {
@@ -28,7 +30,7 @@ export async function uploadFileAction(formData: FormData) {
     if (response.ok) {
       return {
         message: 'File uploaded successfully',
-        url: `${CDN_BASE_ACCESS_URL}/${uniqueFileName}.webp`,
+        url: `${CDN_BASE_ACCESS_URL}/${uniqueFileName}.${fileType}`,
       };
     } else {
       return { error: 'Failed to upload file', status: response.status };

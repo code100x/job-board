@@ -13,7 +13,7 @@ const prisma = new PrismaClient();
 
 const users = [
   { id: '1', name: 'Jack', email: 'user@gmail.com' },
-  { id: '2', name: 'Admin', email: 'admin@gmail.com', role: Role.ADMIN },
+  { id: '2', name: 'Admin', email: 'admin@gmail.com', role: Role.ADMIN , onBoard : true },
   { id: '3', name: 'Hr', email: 'hr@gmail.com', role: Role.HR },
 ];
 
