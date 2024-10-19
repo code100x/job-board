@@ -24,7 +24,7 @@ import {
 } from '@/lib/validators/user.profile.validator';
 
 import { deleteUser } from '@/actions/user.profile.actions';
-import { Trash } from 'lucide-react';
+import { Trash, X } from 'lucide-react';
 import { FaSpinner } from 'react-icons/fa';
 
 export const DeleteAccountDialog = () => {
@@ -90,6 +90,12 @@ export const DeleteAccountDialog = () => {
       </DialogTrigger>
 
       <DialogContent hideCloseButton>
+        <div className="flex justify-end">
+          <X
+            className="cursor-pointer size-4"
+            onClick={() => setModalOpen(false)}
+          />
+        </div>
         <DialogHeader className="text-start">
           <DialogTitle>
             Are you sure you want to delete your account?
