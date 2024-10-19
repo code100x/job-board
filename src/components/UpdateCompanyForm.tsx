@@ -72,7 +72,7 @@ export const UpdateCompanyForm = ({ companyData, setIsDialogOpen }: Props) => {
       formData.append('file', file);
       formData.append('uniqueFileName', uniqueFileName);
 
-      const res = await uploadFileAction(formData);
+      const res = await uploadFileAction(formData, 'webp');
 
       if (!res) {
         throw new Error('Failed to upload image');
