@@ -100,7 +100,7 @@ export const DeleteAccountDialog = () => {
             <form className="mt-6" onSubmit={handleSubmit(handleDeleteAccount)}>
               <label className="text-black dark:text-gray-200" htmlFor="random">
                 Type{' '}
-                <span className="text-black dark:text-white font-bold">
+                <span className="bg-gray-300 dark:bg-gray-800 text-black dark:text-white font-mono px-2 py-1 rounded">
                   {randomString}
                 </span>
               </label>
