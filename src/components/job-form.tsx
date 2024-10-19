@@ -58,7 +58,7 @@ const PostJobForm = () => {
   useEffect(() => {
     if (session.status !== 'loading' && session.status === 'unauthenticated')
       router.push(`${APP_PATHS.SIGNIN}?redirectTo=/create`);
-  }, [session.status]);
+  }, [session.status, router]);
 
   const { toast } = useToast();
   const companyLogoImg = useRef<HTMLImageElement>(null);
@@ -126,7 +126,7 @@ const PostJobForm = () => {
       const uniqueFileName = `${Date.now()}-${file.name}`;
       formData.append('uniqueFileName', uniqueFileName);
 
-      const res = await uploadFileAction(formData);
+      const res = await uploadFileAction(formData, 'webp');
       if (!res) {
         throw new Error('Failed to upload image');
       }

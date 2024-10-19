@@ -15,5 +15,9 @@ const APP_PATHS = {
   PROFILE: '/profile',
   EDIT_PROFILE: '/profile/edit',
   ACCOUNT_SETTINGS: '/profile/settings',
+  PROJECTS: '/profile/projects',
+  RESUME: '/profile/resume',
+  EXPERIENCE: '/profile/experience',
+  SKILLS: '/profile/skills',
 };
 export default APP_PATHS;
