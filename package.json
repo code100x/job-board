@@ -30,6 +30,7 @@
     "seed": "node --import 'data:text/javascript,import { register } from \"node:module\"; import { pathToFileURL } from \"node:url\"; register(\"ts-node/esm\", pathToFileURL(\"./\"));' prisma/seed.ts"
   },
   "dependencies": {
+    "100xdevs-job-board": "file:",
     "@aws-sdk/client-s3": "^3.645.0",
     "@aws-sdk/s3-request-presigner": "^3.645.0",
     "@emotion/react": "^11.13.3",
@@ -58,7 +59,6 @@
     "@types/lodash": "^4.17.7",
     "@types/uuid": "^10.0.0",
     "@uidotdev/usehooks": "^2.4.1",
-    "100xdevs-job-board": "file:",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -76,6 +76,7 @@
     "nextjs-toploader": "^3.7.15",
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.15",
+    "randomstring": "^1.3.0",
     "react": "^18",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18",
@@ -95,6 +96,7 @@
     "@types/node": "^20.16.10",
     "@types/node-cron": "^3.0.11",
     "@types/nodemailer": "^6.4.16",
+    "@types/randomstring": "^1.3.0",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@typescript-eslint/eslint-plugin": "^8.1.0",
