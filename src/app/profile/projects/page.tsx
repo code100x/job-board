@@ -1,11 +1,11 @@
 'use client';
-import { AccountSettings } from '@/components/profile/AccountSettings';
+import { UserProjects } from '@/components/profile/UserProject';
 import APP_PATHS from '@/config/path.config';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 
-const AccountSettingsPage = () => {
+export default function AccountProjectPage() {
   const router = useRouter();
   const session = useSession();
   useEffect(() => {
@@ -13,13 +13,8 @@ const AccountSettingsPage = () => {
       router.push(`${APP_PATHS.SIGNIN}?redirectTo=/profile`);
   }, [session.status, router]);
   return (
-    <div className="md:container flex flex-col w-full">
-      <div className="flex justify-between items-center mb-4">
-        <span>Account Settings</span>
-      </div>
-      <AccountSettings />
+    <div className="overflow-x-hidden">
+      <UserProjects />
     </div>
   );
-};
-
-export default AccountSettingsPage;
+}

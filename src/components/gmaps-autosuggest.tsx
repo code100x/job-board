@@ -56,7 +56,7 @@ export default function GmapsAutocompleteAddress({
         ref={inputRef}
         id="autocomplete"
         type="text"
-        className="w-full bg-gray-800 border-none text-white"
+        className="w-full dark:bg-gray-800 border-none dark:text-white"
         placeholder="Where is the job located?"
       />
     </>

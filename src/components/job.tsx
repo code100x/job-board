@@ -6,22 +6,13 @@ import { Button } from './ui/button';
 import Image from 'next/image';
 import { Briefcase, MapPin } from 'lucide-react';
 import Link from 'next/link';
-import { Twitter } from 'lucide-react';
 import Linkify from 'linkify-react';
+import { ShareJobDialog } from './ShareJobDialog';
 const options = {
   defaultProtocol: 'https',
   target: '_blank',
 };
 export const Job = ({ job }: { job: JobType }) => {
-  const shareOnTwitter = () => {
-    const tweetText = encodeURIComponent(
-      'Check out this job posting @100xDevs: ' + job.title
-    );
-    const tweetUrl = encodeURIComponent(window.location.href);
-    const twitterUrl = `https://twitter.com/intent/tweet?text=${tweetText}&url=${tweetUrl}`;
-    window.open(twitterUrl, '_blank');
-  };
-
   return (
     <aside className="col-span-1 flex flex-col gap-6 lg:col-span-4 ">
       <section className="grid gap-5 border-2 shadow-sm p-6 w-full bg-gradient-to-b from-[#F1F5F9] to-white dark:from-darkBgSecondary dark:to-darkBgTertiary rounded-lg">
@@ -97,14 +88,7 @@ export const Job = ({ job }: { job: JobType }) => {
               Apply Now
             </Button>
           </Link>
-          <Button
-            variant="outline"
-            size="sm"
-            className="justify-self-start px-6 dark:text-white py-2 w-fit h-fit gap-2 flex "
-            onClick={shareOnTwitter}
-          >
-            Share on <Twitter size={16} />
-          </Button>
+          <ShareJobDialog job={job} />
         </div>
       </section>
 
