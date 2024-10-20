@@ -1,6 +1,3 @@
--- AlterEnum
-ALTER TYPE "Role" ADD VALUE 'HR';
-
 -- DropForeignKey
 ALTER TABLE "Job" DROP CONSTRAINT "Job_userId_fkey";
 

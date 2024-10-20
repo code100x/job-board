@@ -29,6 +29,11 @@ import { revalidatePath } from 'next/cache';
 type additional = {
   isVerifiedJob: boolean;
 };
+
+const reloadBookmarkPage = (path: string) => {
+  revalidatePath(path, 'page');
+};
+
 export const createJob = withServerActionAsyncCatcher<
   JobPostSchemaType,
   ServerActionReturnType<additional>
@@ -461,6 +466,8 @@ export async function CheckForBookmark(jobId: string) {
         'BAD_REQUEST'
       );
 
+    reloadBookmarkPage('/jobs');
+
     const isBookmarked = await prisma.bookmark.findFirst({
       where: {
         jobId: jobId,
@@ -480,9 +487,6 @@ export async function CheckForBookmark(jobId: string) {
     };
   }
 }
-const reloadBookmarkPage = () => {
-  revalidatePath('/jobs');
-};
 
 export async function GetBookmarkByUserId() {
   try {
@@ -492,6 +496,8 @@ export async function GetBookmarkByUserId() {
       throw new ErrorHandler('Not Authrised', 'UNAUTHORIZED');
 
     const userId = auth.user.id;
+
+    reloadBookmarkPage('/profile/bookmarks');
 
     const getUserBookmarks = await prisma.bookmark.findMany({
       where: {
@@ -528,7 +534,7 @@ export async function GetBookmarkByUserId() {
 
     if (!getUserBookmarks || getUserBookmarks.length === 0)
       throw new Error('No Bookmarked Job found');
-    reloadBookmarkPage();
+
     return {
       status: 200,
       message: 'Bookmarks fetched ',
