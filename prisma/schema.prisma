@@ -104,7 +104,7 @@ model Project {
   projectSummary  String
   projectLiveLink String?
   projectGithub   String
-  stack           ProjectStack
+  stack           ProjectStack @default(OTHERS)
   userId          String
   user            User         @relation(fields: [userId], references: [id])
 }

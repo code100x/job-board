@@ -128,9 +128,23 @@ export const AddProject = () => {
             <FormItem>
               <FormLabel>Project Stack</FormLabel>
               <FormControl>
-                <Select {...field}>
+                <Select
+                  {...field}
+                  onValueChange={(value) =>
+                    form.setValue(
+                      'stack',
+                      value as
+                        | 'GO'
+                        | 'PYTHON'
+                        | 'MERN_NEXTJS'
+                        | 'AI_GPT_APIS'
+                        | 'JAVA'
+                        | 'OTHERS'
+                    )
+                  }
+                >
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Theme" />
+                    <SelectValue placeholder="Others" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="GO">Go</SelectItem>
