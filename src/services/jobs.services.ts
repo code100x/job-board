@@ -66,7 +66,7 @@ export function getJobFilters({
   };
   const [sort, sortOrder] = sortby.split('_');
   const orderBy: Prisma.JobOrderByWithAggregationInput = sortby
-    ? { [sortFieldMapping[sort]]: sortOrder }
+    ? { [sortFieldMapping[sort]]: { sort: sortOrder, nulls: 'last' } }
     : {};
 
   const pagination = {
