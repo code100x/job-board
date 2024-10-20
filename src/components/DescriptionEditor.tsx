@@ -58,7 +58,7 @@ const DescriptionEditor: React.FC<DescriptionEditorProps> = ({
         onChange={handleChange}
         placeholder={placeholder}
         bounds={`[data-text-editor="${fieldName}"]`}
-        className="text-white bg-gray-800  job-description-editor text-wrap max-w-[537px]"
+        className="dark:text-white dark:bg-gray-800 bg-gray-200  job-description-editor text-wrap max-w-[537px]"
       />
     </div>
   );

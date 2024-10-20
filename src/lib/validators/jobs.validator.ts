@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { WorkMode, EmployementType, Currency } from '@prisma/client';
+import { SortByEnums } from '../constant/jobs.constant';
 
 export const JobPostSchema = z
   .object({
@@ -38,6 +39,10 @@ export const JobPostSchema = z
       .number({ message: 'Max Experience must be a number' })
       .nonnegative()
       .optional(),
+    hasExpiryDate: z.boolean(),
+    expiryDate: z.coerce
+      .date({ message: 'Expiry date is required' })
+      .optional(),
     workMode: z.nativeEnum(WorkMode, {
       message: 'Work mode is required',
     }),
@@ -63,6 +68,23 @@ export const JobPostSchema = z
           message:
             'Minimum Salary cannot be greater than or equal to Maximum Salary',
           path: ['minSalary'],
+          code: z.ZodIssueCode.custom,
+        });
+      }
+    }
+
+    if (data.hasExpiryDate) {
+      if (!data.expiryDate) {
+        return ctx.addIssue({
+          message: 'Expiry date is required ',
+          path: ['expiryDate'],
+          code: z.ZodIssueCode.custom,
+        });
+      }
+      if (data.expiryDate <= new Date()) {
+        return ctx.addIssue({
+          message: 'Expiry date cannot be in the past',
+          path: ['expiryDate'],
           code: z.ZodIssueCode.custom,
         });
       }
@@ -133,7 +155,7 @@ export const JobQuerySchema = z.object({
       }
       return val;
     }),
-  sortby: z.enum(['postedat_asc', 'postedat_desc']).default('postedat_desc'),
+  sortby: z.nativeEnum(SortByEnums).default(SortByEnums.POSTEDAT_ASC),
   page: z.coerce
     .number({ message: 'page must be a number' })
     .optional()
