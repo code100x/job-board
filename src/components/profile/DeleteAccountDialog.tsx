@@ -113,7 +113,7 @@ export const DeleteAccountDialog = () => {
               <input
                 {...register('random')}
                 id="random"
-                className=" mt-2 p-2 rounded-md font-bold p-4 rounded-md  w-full bg-gray-200 dark:bg-black outline-none text-black dark:text-white"
+                className=" mt-2 p-2 rounded-md font-bold  w-full bg-gray-200 dark:bg-black outline-none text-black dark:text-white"
                 onPaste={(e: ClipboardEvent<HTMLInputElement>) =>
                   e.preventDefault()
                 }
