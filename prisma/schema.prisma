@@ -99,14 +99,15 @@ model Experience {
 }
 
 model Project {
-  id              Int          @id @default(autoincrement())
-  projectName     String
-  projectSummary  String
-  projectLiveLink String?
-  projectGithub   String
-  stack           ProjectStack @default(OTHERS)
-  userId          String
-  user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id               Int          @id @default(autoincrement())
+  projectName      String
+  projectThumbnail String?
+  projectSummary   String
+  projectLiveLink  String?
+  projectGithub    String
+  stack            ProjectStack @default(OTHERS)
+  userId           String
+  user             User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum ProjectStack {
