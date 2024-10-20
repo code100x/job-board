@@ -10,6 +10,8 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card';
+import AddMore from './AddMoreModal';
+import { AddProject } from '../user-multistep-form/add-project-form';
 
 export function UserProjects() {
   const { toast } = useToast();
@@ -43,38 +45,43 @@ export function UserProjects() {
   }
 
   return (
-    <div className="space-y-2 mb-2">
-      {projects.map((item: Project) => (
-        <Card
-          key={item.id}
-          className=" border-2 hover:bg-slate-100 dark:hover:bg-slate-900 text-black dark:text-white transition-shadow duration-300"
-        >
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold">
-              {item.projectName}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="">
-            <p className="mb-4">{item.projectSummary}</p>
-          </CardContent>
-          <CardFooter className="flex justify-between">
-            {item.projectLiveLink && (
+    <>
+      <AddMore>
+        <AddProject />
+      </AddMore>
+      <div className="space-y-2 mb-2">
+        {projects.map((item: Project) => (
+          <Card
+            key={item.id}
+            className=" border-2 hover:bg-slate-100 dark:hover:bg-slate-900 text-black dark:text-white transition-shadow duration-300"
+          >
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold">
+                {item.projectName}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="">
+              <p className="mb-4">{item.projectSummary}</p>
+            </CardContent>
+            <CardFooter className="flex justify-between">
+              {item.projectLiveLink && (
+                <Link
+                  href={item.projectLiveLink}
+                  className="text-blue-500 hover:underline"
+                >
+                  Live Project
+                </Link>
+              )}
               <Link
-                href={item.projectLiveLink}
+                href={item.projectGithub}
                 className="text-blue-500 hover:underline"
               >
-                Live Project
+                GitHub Repository
               </Link>
-            )}
-            <Link
-              href={item.projectGithub}
-              className="text-blue-500 hover:underline"
-            >
-              GitHub Repository
-            </Link>
-          </CardFooter>
-        </Card>
-      ))}
-    </div>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+    </>
   );
 }

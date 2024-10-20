@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 
+import AddMore from './AddMoreModal';
+import { AddSkills } from '../user-multistep-form/add-skills-form';
+
 export function UserSkills() {
   const [skills, setSkills] = useState<string[]>();
   useEffect(() => {
@@ -14,15 +17,20 @@ export function UserSkills() {
   }
 
   return (
-    <div className="flex gap-4">
-      {skills.map((item, index) => (
-        <div
-          key={index}
-          className="bg-blue-300 p-2 rounded-sm dark:bg-blue-800"
-        >
-          {item}
-        </div>
-      ))}
-    </div>
+    <>
+      <AddMore>
+        <AddSkills />
+      </AddMore>
+      <div className="flex gap-4">
+        {skills.map((item, index) => (
+          <div
+            key={index}
+            className="bg-blue-300 p-2 rounded-sm dark:bg-blue-800"
+          >
+            {item}
+          </div>
+        ))}
+      </div>
+    </>
   );
 }

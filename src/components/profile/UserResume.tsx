@@ -1,6 +1,8 @@
 import { File } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import AddMore from './AddMoreModal';
+import { AddResume } from '../user-multistep-form/add-resume-form';
 
 export function UserResume() {
   const [resumeLink, setResumeLink] = useState<string | null>(null);
@@ -15,16 +17,21 @@ export function UserResume() {
   }
 
   return (
-    <div>
-      <Link
-        href={resumeLink.toString()}
-        className="text-blue-500 hover:underline"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <File className="h-40 w-40" />
-        <h1 className="text-white text-2xl text-center">Click here</h1>
-      </Link>
-    </div>
+    <>
+      <AddMore>
+        <AddResume />
+      </AddMore>
+      <div>
+        <Link
+          href={resumeLink.toString()}
+          className="text-blue-500 hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <File className="h-40 w-40" />
+          <h1 className="text-white text-2xl text-center">Click here</h1>
+        </Link>
+      </div>
+    </>
   );
 }
