@@ -19,6 +19,13 @@ import { useToast } from '../ui/use-toast';
 import { addUserProjects } from '@/actions/user.profile.actions';
 import { useState } from 'react';
 import { LoadingSpinner } from '../loading-spinner';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/select';
 
 export const AddProject = () => {
   const form = useForm<projectSchemaType>({
@@ -28,6 +35,7 @@ export const AddProject = () => {
       projectSummary: '',
       projectGithub: '',
       projectLiveLink: '',
+      stack: 'OTHERS',
     },
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -112,6 +120,32 @@ export const AddProject = () => {
             </FormItem>
           )}
         />
+
+        <FormField
+          control={form.control}
+          name="stack"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Project Stack</FormLabel>
+              <FormControl>
+                <Select {...field}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Theme" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="GO">Go</SelectItem>
+                    <SelectItem value="PYTHON">Python</SelectItem>
+                    <SelectItem value="MERN_NEXTJS">MERN/NextJS</SelectItem>
+                    <SelectItem value="AI_GPT_APIS">AI/GPT APIs</SelectItem>
+                    <SelectItem value="JAVA">Java</SelectItem>
+                    <SelectItem value="OTHERS">Others</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
         {isLoading ? (
           <div className="mt-4">
             <LoadingSpinner />
