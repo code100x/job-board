@@ -68,3 +68,12 @@ export type projectSchemaType = z.infer<typeof projectSchema>;
 export type expFormSchemaType = z.infer<typeof expFormSchema>;
 export type addSkillsSchemaType = z.infer<typeof addSkillsSchema>;
 export type UserPasswordSchemaType = z.infer<typeof UserPasswordSchema>;
+
+export const UserProfileDestroySchema = z.object({
+  random: z
+    .string({ message: 'Required' })
+    .min(1, { message: 'Min 1 char long' })
+    .max(8, { message: "Can't be more long" }),
+});
+
+export type UserProfileDestroyType = z.infer<typeof UserProfileDestroySchema>;
