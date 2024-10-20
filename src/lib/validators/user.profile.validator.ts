@@ -44,6 +44,7 @@ export const expFormSchema = z.object({
     .max(255, { message: 'Description cannot exceed 255 characters' }),
 });
 export const projectSchema = z.object({
+  projectThumbnail: z.string().optional(),
   projectName: z.string().min(1, 'Project name is required'),
   projectSummary: z
     .string()
