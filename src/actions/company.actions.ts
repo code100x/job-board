@@ -12,6 +12,8 @@ import { CompanySchemaType } from '@/lib/validators/companies.validator';
 
 export const getAllCompanies = async () => {
   const auth = await getServerSession(authOptions);
+  if (!auth || !auth?.user?.id)
+    throw new ErrorHandler('Not Authorized', 'UNAUTHORIZED');
   const companies = await prisma.company.findMany({
     where: {
       userId: auth?.user.id,
