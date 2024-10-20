@@ -13,7 +13,10 @@ export default function AccountResumePage() {
       router.push(`${APP_PATHS.SIGNIN}?redirectTo=/profile`);
   }, [session.status, router]);
   return (
-    <div>
+    <div className="md:container flex flex-col w-full gap-4">
+      <div className="flex justify-between items-center">
+        <span>Skills</span>
+      </div>
       <UserSkills />
     </div>
   );
