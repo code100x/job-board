@@ -62,6 +62,14 @@ export const projectSchema = z.object({
     .refine((url) => url.startsWith('https://github.com/'), {
       message: 'URL must be a GitHub link starting with "https://github.com/"',
     }),
+  stack: z.enum([
+    'GO',
+    'PYTHON',
+    'MERN_NEXTJS',
+    'AI_GPT_APIS',
+    'JAVA',
+    'OTHERS',
+  ]),
 });
 
 export type projectSchemaType = z.infer<typeof projectSchema>;
