@@ -53,7 +53,14 @@ export default function BookmarkPage() {
           ) : (
             <div className="h-full overflow-y-scroll no-scrollbar flex flex-col gap-8 my-3">
               {bookmarkedJobs?.map(({ job }, index) => {
-                return <JobCard job={job} key={index} className="w-full" />;
+                return (
+                  <JobCard
+                    job={job}
+                    key={index}
+                    className="w-full"
+                    isBookmarked={true}
+                  />
+                );
               })}
             </div>
           )}

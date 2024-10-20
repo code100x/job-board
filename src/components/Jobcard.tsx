@@ -8,30 +8,30 @@ import { JobType } from '@/types/jobs.types';
 import _ from 'lodash';
 import { cn } from '@/lib/utils';
 import { JobSkills } from './job-skills';
-import { CheckForBookmark, toggleBookmarkAction } from '@/actions/job.action';
+import { toggleBookmarkAction } from '@/actions/job.action';
 import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useToast } from './ui/use-toast';
 import { useRouter } from 'next/navigation';
 import BookmarkCardSkeleton from './BookmarkCardSkeletion';
 
 export default function JobCard({
   job,
-
+  isBookmarked,
   className,
 }: {
   job: JobType;
-
+  isBookmarked: boolean;
   className?: string;
 }) {
   const router = useRouter();
   const session = useSession();
 
+  const [bookmarked, setBookmarked] = useState<boolean>(isBookmarked || false);
+
   const user = session.data?.user;
 
   const { toast } = useToast();
-
-  const [bookmarked, setBookmarked] = useState(false);
 
   async function handleBookmarkClick(e: React.MouseEvent) {
     e.preventDefault();
@@ -46,24 +46,14 @@ export default function JobCard({
       });
     } catch (error) {
       setBookmarked(false);
+      isBookmarked = false;
+
       toast({
         variant: 'destructive',
         title: (error as Error).message,
       });
     }
   }
-
-  useEffect(() => {
-    const checkForBookmarkedPost = async () => {
-      const response = await CheckForBookmark(job.id);
-      if (response.status !== 200) {
-        return setBookmarked(false);
-      }
-      setBookmarked(true);
-    };
-
-    checkForBookmarkedPost();
-  }, []);
 
   const handleCardClick = () => {
     router.push(`/jobs/${job.id}`);

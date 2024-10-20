@@ -24,14 +24,9 @@ import {
   getAllRecommendedJobs,
   getJobType,
 } from '@/types/jobs.types';
-import { revalidatePath } from 'next/cache';
 
 type additional = {
   isVerifiedJob: boolean;
-};
-
-const reloadBookmarkPage = (path: string) => {
-  revalidatePath(path, 'page');
 };
 
 export const createJob = withServerActionAsyncCatcher<
@@ -420,7 +415,7 @@ export async function toggleBookmarkAction(userId: string, jobId: string) {
 
       return {
         status: 201,
-        message: 'Bookmakr Deleted Successfully',
+        message: 'Bookmark Deleted Successfully',
         data: deletedBookmark,
       };
     }
@@ -446,48 +441,6 @@ export async function toggleBookmarkAction(userId: string, jobId: string) {
   }
 }
 
-export async function CheckForBookmark(jobId: string) {
-  try {
-    const auth = await getServerSession(authOptions);
-    if (!auth || !auth?.user?.id)
-      throw new ErrorHandler('Not Authrised', 'UNAUTHORIZED');
-
-    if (!jobId) throw new Error('Post is missing');
-
-    const userId = auth.user.id;
-
-    const checkForUser = await prisma.user.findFirst({
-      where: { id: userId },
-    });
-
-    if (!checkForUser)
-      throw new ErrorHandler(
-        'User with this email does not exist',
-        'BAD_REQUEST'
-      );
-
-    reloadBookmarkPage('/jobs');
-
-    const isBookmarked = await prisma.bookmark.findFirst({
-      where: {
-        jobId: jobId,
-        userId: userId,
-      },
-    });
-    if (!isBookmarked) throw new Error('Post is not Bookmarked');
-
-    return {
-      status: 200,
-      message: 'Post is Bookmarked',
-    };
-  } catch (error) {
-    return {
-      status: 404,
-      message: (error as Error).message,
-    };
-  }
-}
-
 export async function GetBookmarkByUserId() {
   try {
     const auth = await getServerSession(authOptions);
@@ -496,8 +449,6 @@ export async function GetBookmarkByUserId() {
       throw new ErrorHandler('Not Authrised', 'UNAUTHORIZED');
 
     const userId = auth.user.id;
-
-    reloadBookmarkPage('/profile/bookmarks');
 
     const getUserBookmarks = await prisma.bookmark.findMany({
       where: {
@@ -539,6 +490,45 @@ export async function GetBookmarkByUserId() {
       status: 200,
       message: 'Bookmarks fetched ',
       data: getUserBookmarks,
+    };
+  } catch (error) {
+    return {
+      status: 404,
+      message: (error as Error).message,
+      data: null,
+    };
+  }
+}
+
+export async function GetUserBookmarksId() {
+  try {
+    const auth = await getServerSession(authOptions);
+
+    if (!auth || !auth?.user?.id)
+      throw new ErrorHandler('Not Authrised', 'UNAUTHORIZED');
+
+    const userId = auth.user.id;
+
+    const getUserBookmarks = await prisma.user.findFirst({
+      where: {
+        id: userId,
+      },
+
+      select: {
+        bookmark: {
+          select: {
+            jobId: true,
+          },
+        },
+      },
+    });
+
+    if (!getUserBookmarks) throw new Error('No Bookmarked Job found');
+
+    return {
+      status: 200,
+      message: 'Bookmarks fetched ',
+      data: getUserBookmarks.bookmark,
     };
   } catch (error) {
     return {
