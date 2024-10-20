@@ -115,7 +115,7 @@ const PostJobForm = () => {
   };
   React.useEffect(() => {
     fetchCompanies();
-  }, []);
+  }, [companies]);
   const handleDescriptionChange = (fieldName: any, value: String) => {
     form.setValue(fieldName, value);
   };

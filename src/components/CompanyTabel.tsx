@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Table,
   TableBody,
@@ -17,12 +17,18 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { UpdateCompanyForm } from './UpdateCompanyForm';
 import { toast } from './ui/use-toast';
 import { deleteCompany } from '@/actions/company.actions';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import APP_PATHS from '@/config/path.config';
 
 export default function CompanyTable({
   company: companies,
 }: {
   company: CompanyType[];
 }) {
+  const session = useSession();
+  const router = useRouter();
+
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -53,7 +59,10 @@ export default function CompanyTable({
       });
     }
   };
-
+  useEffect(() => {
+    if (session.status !== 'loading' && session.status === 'unauthenticated')
+      router.push(`${APP_PATHS.SIGNIN}?redirectTo=/manage/companies`);
+  }, [session.status, router]);
   return (
     <div className="mt-10 flex flex-col items-center">
       <div className="container mx-auto py-10">
