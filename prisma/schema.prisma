@@ -95,7 +95,7 @@ model Experience {
   endDate           DateTime?
   description       String
   userId            String
-  user              User            @relation(fields: [userId], references: [id])
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Project {
@@ -106,7 +106,7 @@ model Project {
   projectGithub   String
   stack           ProjectStack @default(OTHERS)
   userId          String
-  user            User         @relation(fields: [userId], references: [id])
+  user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum ProjectStack {
