@@ -44,6 +44,7 @@ export const expFormSchema = z.object({
     .max(255, { message: 'Description cannot exceed 255 characters' }),
 });
 export const projectSchema = z.object({
+  projectThumbnail: z.string().optional(),
   projectName: z.string().min(1, 'Project name is required'),
   projectSummary: z
     .string()
@@ -62,6 +63,15 @@ export const projectSchema = z.object({
     .refine((url) => url.startsWith('https://github.com/'), {
       message: 'URL must be a GitHub link starting with "https://github.com/"',
     }),
+  stack: z.enum([
+    'GO',
+    'PYTHON',
+    'MERN',
+    'NEXTJS',
+    'AI_GPT_APIS',
+    'SPRINGBOOT',
+    'OTHERS',
+  ]),
 });
 
 export type projectSchemaType = z.infer<typeof projectSchema>;

@@ -1,5 +1,13 @@
 'use client';
 import { UserSkills } from '@/components/profile/UserSkills';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { AddSkills } from '@/components/user-multistep-form/add-skills-form';
 import APP_PATHS from '@/config/path.config';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -13,7 +21,21 @@ export default function AccountResumePage() {
       router.push(`${APP_PATHS.SIGNIN}?redirectTo=/profile`);
   }, [session.status, router]);
   return (
-    <div>
+    <div className="md:container flex flex-col w-full gap-4">
+      <div className="flex md:justify-between justify-start items-center gap-5">
+        <span>Skills</span>
+        <Dialog>
+          <DialogTrigger>Add more</DialogTrigger>
+          <DialogContent className="max-w-md max-h-[90vh] flex flex-col p-0">
+            <DialogHeader className="p-6 pb-2">
+              <DialogTitle>Add Skills</DialogTitle>
+            </DialogHeader>
+            <div className="flex-grow overflow-y-auto px-6 pb-6">
+              <AddSkills />
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
       <UserSkills />
     </div>
   );
