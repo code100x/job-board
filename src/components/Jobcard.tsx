@@ -36,6 +36,7 @@ export default function JobCard({
   async function handleBookmarkClick(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
+    setBookmarked(true);
     try {
       const response = await toggleBookmarkAction(user?.id || '', job.id);
       if (response.status !== 200) throw new Error(response.message);
