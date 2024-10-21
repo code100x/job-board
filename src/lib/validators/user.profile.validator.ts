@@ -66,9 +66,10 @@ export const projectSchema = z.object({
   stack: z.enum([
     'GO',
     'PYTHON',
-    'MERN_NEXTJS',
+    'MERN',
+    'NEXTJS',
     'AI_GPT_APIS',
-    'JAVA',
+    'SPRINGBOOT',
     'OTHERS',
   ]),
 });
