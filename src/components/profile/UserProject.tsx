@@ -2,6 +2,7 @@ import { getUserProjects } from '@/actions/user.profile.actions';
 import { useEffect, useState } from 'react';
 import { useToast } from '../ui/use-toast';
 import { Project } from '@prisma/client';
+import icons from '@/lib/icons';
 import Link from 'next/link';
 import {
   Card,
@@ -10,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card';
-import { LucideGithub, SquareArrowOutUpRightIcon } from 'lucide-react';
+import { SquareArrowOutUpRightIcon } from 'lucide-react';
 
 export function UserProjects() {
   const { toast } = useToast();
@@ -41,7 +42,11 @@ export function UserProjects() {
   }, [toast]);
 
   if (!projects) {
-    return null;
+    return (
+      <div className="flex items-center justify-center h-full w-full">
+        <icons.loading className="animate-spin w-10 h-10" />
+      </div>
+    );
   }
 
   return (
@@ -94,12 +99,18 @@ export function UserProjects() {
                 href={item.projectGithub}
                 className="text-blue-500 hover:underline"
               >
-                <LucideGithub size={16} />
+                <icons.github />
               </Link>
             </div>
           </CardFooter>
         </Card>
       ))}
+      {projects.length === 0 && (
+        <div className="flex items-center justify-center col-span-4 h-full">
+          <icons.alert size={24} />
+          <span className="ml-2">No Projects Found</span>
+        </div>
+      )}
     </div>
   );
 }
