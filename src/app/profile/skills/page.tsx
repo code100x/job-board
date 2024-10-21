@@ -12,9 +12,5 @@ export default function AccountResumePage() {
     if (session.status !== 'loading' && session.status === 'unauthenticated')
       router.push(`${APP_PATHS.SIGNIN}?redirectTo=/profile`);
   }, [session.status, router]);
-  return (
-    <div>
-      <UserSkills />
-    </div>
-  );
+  return <UserSkills />;
 }

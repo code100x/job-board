@@ -55,7 +55,7 @@ export function UserExperience() {
             <CardHeader className="flex flex-wrap flex-row justify-between items-start ">
               <div>
                 <div className="flex flex-wrap gap-2 items-center">
-                  <RiVerifiedBadgeFill className="size-6" />
+                  <RiVerifiedBadgeFill className="size-4 md:size-6" />
                   <p className="text-lg lg:text-2xl font-semibold">
                     {item.designation}
                   </p>
@@ -69,8 +69,8 @@ export function UserExperience() {
               </div>
 
               <div className="flex flex-wrap gap-2 items-center">
-                <Calendar />
-                <p>
+                <Calendar className="size-4 md:size-6" />
+                <p className="text-sm md:text-md lg:text-lg">
                   {new Date(item.startDate).toLocaleDateString()}{' '}
                   {item.endDate
                     ? ` - ${new Date(item.endDate).toLocaleDateString()}`

@@ -12,6 +12,8 @@ import {
 } from '../ui/card';
 import AddMore from './AddMoreModal';
 import { AddProject } from '../user-multistep-form/add-project-form';
+import { FaGithub } from 'react-icons/fa';
+import { ArrowUpRight } from 'lucide-react';
 
 export function UserProjects() {
   const { toast } = useToast();
@@ -45,43 +47,38 @@ export function UserProjects() {
   }
 
   return (
-    <>
+    <div className="w-full">
       <AddMore>
         <AddProject />
       </AddMore>
-      <div className="space-y-2 mb-2">
+      <div className="space-y-2 mb-2 grid grid-cols-1 lg:grid-cols-2 gap-4">
         {projects.map((item: Project) => (
           <Card
             key={item.id}
             className=" border-2 hover:bg-slate-100 dark:hover:bg-slate-900 text-black dark:text-white transition-shadow duration-300"
           >
             <CardHeader>
-              <CardTitle className="text-lg font-semibold">
+              <CardTitle className="text-lg lg:text-2xl font-semibold">
                 {item.projectName}
               </CardTitle>
             </CardHeader>
             <CardContent className="">
-              <p className="mb-4">{item.projectSummary}</p>
+              <p>{item.projectSummary}</p>
             </CardContent>
-            <CardFooter className="flex justify-between">
+            <CardFooter className="flex gap-4 flex-wrap justify-end">
+              <Link href={item.projectGithub} className="text-blue-500 ">
+                <FaGithub className="size-6" />
+              </Link>
+
               {item.projectLiveLink && (
-                <Link
-                  href={item.projectLiveLink}
-                  className="text-blue-500 hover:underline"
-                >
-                  Live Project
+                <Link href={item.projectLiveLink} className="text-blue-500 ">
+                  <ArrowUpRight />
                 </Link>
               )}
-              <Link
-                href={item.projectGithub}
-                className="text-blue-500 hover:underline"
-              >
-                GitHub Repository
-              </Link>
             </CardFooter>
           </Card>
         ))}
       </div>
-    </>
+    </div>
   );
 }

@@ -22,7 +22,7 @@ export default function AddMore({ children }: { children: React.ReactNode }) {
         </DialogTrigger>
         <DialogContent className="max-w-md max-h-[90vh] flex flex-col p-0">
           <DialogHeader className="p-6 pb-2">
-            <DialogTitle>Add Experience</DialogTitle>
+            <DialogTitle>Add More</DialogTitle>
           </DialogHeader>
           <div className="flex-grow overflow-y-auto px-6 pb-6 no-scrollbar">
             {children}

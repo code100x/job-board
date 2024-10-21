@@ -17,7 +17,7 @@ export function UserSkills() {
   }
 
   return (
-    <>
+    <div className="w-full">
       <AddMore>
         <AddSkills />
       </AddMore>
@@ -31,6 +31,6 @@ export function UserSkills() {
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 }

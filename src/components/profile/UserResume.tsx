@@ -12,16 +12,12 @@ export function UserResume() {
     if (storedResume) setResumeLink(JSON.parse(storedResume));
   }, []);
 
-  if (!resumeLink) {
-    return null;
-  }
-
   return (
-    <>
+    <div className="w-full">
       <AddMore>
         <AddResume />
       </AddMore>
-      <div>
+      {resumeLink && (
         <Link
           href={resumeLink.toString()}
           className="text-blue-500 hover:underline"
@@ -31,7 +27,7 @@ export function UserResume() {
           <File className="h-40 w-40" />
           <h1 className="text-white text-2xl text-center">Click here</h1>
         </Link>
-      </div>
-    </>
+      )}
+    </div>
   );
 }
