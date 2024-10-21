@@ -8,8 +8,8 @@ datasource db {
 }
 
 model User {
-  id         String  @id @default(cuid())
-  name       String
+  id   String @id @default(cuid())
+  name String
 
   password   String?
   avatar     String?
@@ -29,24 +29,24 @@ model User {
   oauthId String?
 
   blockedByAdmin DateTime?
-  onBoard Boolean @default(false)
+  onBoard        Boolean   @default(false)
 }
 
 enum OauthProvider {
   GOOGLE
 }
 
-
 model VerificationToken {
-  token String
+  token      String
   identifier String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  type TokenType
-  @@unique([token,identifier])
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  type       TokenType
+
+  @@unique([token, identifier])
 }
 
-enum  TokenType {
+enum TokenType {
   EMAIL_VERIFICATION
   RESET_PASSWORD
 }
@@ -80,7 +80,7 @@ model Job {
   isVerifiedJob      Boolean         @default(false) @map("is_verified_job")
   postedAt           DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
-  user               User            @relation(fields: [userId], references: [id],onDelete: Cascade)
+  user               User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Experience {
