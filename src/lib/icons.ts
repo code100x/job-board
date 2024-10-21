@@ -5,6 +5,7 @@ import {
   FaLinkedin,
   FaTelegramPlane,
   FaYoutube,
+  FaSpinner,
 } from 'react-icons/fa';
 import {
   ArrowRight,
@@ -37,6 +38,7 @@ const icons = {
   github: FaGithub,
   instagram: FaInstagram,
   telergam: FaTelegramPlane,
+  loading: FaSpinner,
   copyright: Copyright,
   sun: Sun,
   moon: Moon,
