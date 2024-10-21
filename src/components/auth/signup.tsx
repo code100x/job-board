@@ -51,7 +51,7 @@ export const Signup = () => {
           variant: 'success',
         });
 
-        router.push(APP_PATHS.WELCOME);
+        router.push(APP_PATHS.ONBOARDING);
       }
     } catch {
       toast({
