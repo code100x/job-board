@@ -9,7 +9,7 @@ const EditProfilePage = () => {
   const router = useRouter();
   const session = useSession();
   useEffect(() => {
-    if (session.status !== 'loading' && session.status === 'unauthenticated')
+    if (session.status === 'unauthenticated')
       router.push(`${APP_PATHS.SIGNIN}?redirectTo=/profile`);
   }, [session.status, router]);
   const user = session.data?.user;
