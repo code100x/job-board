@@ -8,6 +8,7 @@ import AddMore from './AddMoreModal';
 import { AddExperience } from '../user-multistep-form/addExperience-form';
 import { Calendar } from 'lucide-react';
 import { RiVerifiedBadgeFill } from 'react-icons/ri';
+import icons from '@/lib/icons';
 
 export function UserExperience() {
   const { toast } = useToast();
@@ -38,7 +39,11 @@ export function UserExperience() {
   }, []);
 
   if (!experiences) {
-    return null;
+    return (
+      <div className="flex items-center justify-center h-full w-full">
+        <icons.loading className="animate-spin w-10 h-10" />
+      </div>
+    );
   }
 
   return (

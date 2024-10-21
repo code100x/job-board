@@ -8,8 +8,8 @@ datasource db {
 }
 
 model User {
-  id         String  @id @default(cuid())
-  name       String
+  id   String @id @default(cuid())
+  name String
 
   password   String?
   avatar     String?
@@ -19,34 +19,34 @@ model User {
 
   email         String    @unique
   emailVerified DateTime?
-  
-  skills        String[]
-  experience    Experience[]
-  project       Project[]
-  resume        String?
-  
-  oauthProvider   OauthProvider?  // Tracks OAuth provider (e.g., 'google')
-  oauthId String?
+
+  skills     String[]
+  experience Experience[]
+  project    Project[]
+  resume     String?
+
+  oauthProvider OauthProvider? // Tracks OAuth provider (e.g., 'google')
+  oauthId       String?
 
   blockedByAdmin DateTime?
-  onBoard Boolean @default(false)
+  onBoard        Boolean   @default(false)
 }
 
 enum OauthProvider {
   GOOGLE
 }
 
-
 model VerificationToken {
-  token String
+  token      String
   identifier String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  type TokenType
-  @@unique([token,identifier])
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  type       TokenType
+
+  @@unique([token, identifier])
 }
 
-enum  TokenType {
+enum TokenType {
   EMAIL_VERIFICATION
   RESET_PASSWORD
 }
@@ -80,12 +80,12 @@ model Job {
   isVerifiedJob      Boolean         @default(false) @map("is_verified_job")
   postedAt           DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
-  user               User            @relation(fields: [userId], references: [id],onDelete: Cascade)
+  user               User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Experience {
-  id                Int @id @default(autoincrement())
-  companyName       String 
+  id                Int             @id @default(autoincrement())
+  companyName       String
   designation       String
   EmploymentType    EmployementType
   address           String
@@ -93,19 +93,31 @@ model Experience {
   currentWorkStatus Boolean
   startDate         DateTime
   endDate           DateTime?
-  description       String  
-  userId            String 
-  user              User      @relation(fields: [userId] ,references: [id])
+  description       String
+  userId            String
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Project {
-  id              Int @id @default(autoincrement())
-  projectName     String 
-  projectSummary  String
-  projectLiveLink String?
-  projectGithub   String
-  userId          String
-  user            User @relation(fields: [userId] , references: [id])
+  id               Int          @id @default(autoincrement())
+  projectName      String
+  projectThumbnail String?
+  projectSummary   String
+  projectLiveLink  String?
+  projectGithub    String
+  stack            ProjectStack @default(OTHERS)
+  userId           String
+  user             User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum ProjectStack {
+  GO
+  PYTHON
+  MERN
+  NEXTJS
+  AI_GPT_APIS
+  SPRINGBOOT
+  OTHERS
 }
 
 enum Currency {
