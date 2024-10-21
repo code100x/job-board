@@ -1,33 +1,49 @@
+// signup.tsx
 'use client';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import APP_PATHS from '@/config/path.config';
-import {
-  SignupSchema,
-  SignupSchemaType,
-} from '@/lib/validators/auth.validator';
+import { Textarea } from '@/components/ui/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useForm, Controller } from 'react-hook-form';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '../ui/form';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
 import { useToast } from '../ui/use-toast';
 import { signUp } from '@/actions/auth.actions';
-import { DemarcationLine, GoogleOauthButton } from './social-auth';
-import { PasswordInput } from '../password-input';
+import APP_PATHS from '@/config/path.config';
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormControl,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { SignupSchema } from '@/lib/validators/auth.validator';
+import prisma from '@/config/prisma.config';
+import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { Label } from '../ui/label';
+
+const companySetupSchema = z.object({
+  companyName: z.string().min(1, 'Company name is required'),
+  companyWebsite: z.string().url('Invalid URL'),
+  description: z.string().min(10, 'Description must be at least 10 characters'),
+});
+
+type CompanySetupForm = z.infer<typeof companySetupSchema>;
+type SignupSchemaType = z.infer<typeof SignupSchema>;
 
 export const Signup = () => {
   const { toast } = useToast();
   const router = useRouter();
+  const [showCompanySetup, setShowCompanySetup] = useState(false);
+  const [isHr, setIsHr] = useState(false);
 
   const form = useForm<SignupSchemaType>({
     resolver: zodResolver(SignupSchema),
@@ -37,6 +53,14 @@ export const Signup = () => {
       password: '',
       role: 'USER',
     },
+  });
+
+  const {
+    register: companySetupForm,
+    handleSubmit: handleCompanySetupSubmit,
+    formState: { errors: companySetupErrors },
+  } = useForm<CompanySetupForm>({
+    resolver: zodResolver(companySetupSchema),
   });
 
   async function signupHandler(data: SignupSchemaType) {
@@ -52,8 +76,8 @@ export const Signup = () => {
           title: response.message || 'Signup successful! Welcome to 100xJobs!',
           variant: 'success',
         });
-        if (data.role === 'HR') {
-          router.push(APP_PATHS.ONBOARDING);
+        if (isHr) {
+          setShowCompanySetup(true);
         } else {
           router.push(APP_PATHS.HOME);
         }
@@ -65,6 +89,23 @@ export const Signup = () => {
       });
     }
   }
+
+  const handleCompanySetup = async () => {
+    try {
+      // Save company info to the database
+      await prisma.user.update({
+        where: { email: form.getValues('email') },
+        data: { onBoard: true },
+      });
+      setShowCompanySetup(false);
+      router.push(APP_PATHS.HOME);
+    } catch (error) {
+      toast({
+        title: `Error occcured: ${error}`,
+        variant: 'destructive',
+      });
+    }
+  };
 
   return (
     <>
@@ -106,35 +147,19 @@ export const Signup = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <PasswordInput field={field} placeholder="Password" />
+                  <Input type="password" {...field} placeholder="Password" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Controller
-            name="role"
-            control={form.control}
-            render={({ field }) => (
-              <div className="flex items-center space-x-2">
-                <Switch
-                  id="hr-mode"
-                  checked={field.value === 'HR'}
-                  onCheckedChange={(checked) =>
-                    field.onChange(checked ? 'HR' : 'USER')
-                  }
-                />
-                <Label htmlFor="hr-mode">I&apos;m an HR professional</Label>
-              </div>
-            )}
-          />
-          <div className="flex justify-end">
-            <Link
-              href={APP_PATHS.FORGOT_PASSWORD}
-              className="text-xs text-muted-foreground font-medium hover:underline"
-            >
-              Forgot your password?
-            </Link>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="hr-mode"
+              checked={isHr}
+              onCheckedChange={(checked) => setIsHr(checked)}
+            />
+            <Label htmlFor="hr-mode">I&apos;m an HR professional</Label>
           </div>
           <Button
             type="submit"
@@ -143,21 +168,56 @@ export const Signup = () => {
           >
             {form.formState.isSubmitting ? 'Please wait...' : 'Create Account'}
           </Button>
-          <DemarcationLine />
-          <GoogleOauthButton label="Sign up with Google" />
         </form>
       </Form>
-      <div className="flex items-center justify-center mt-6">
-        <span className="text-muted-foreground">
-          Already have an account?{' '}
-          <Link
-            href={APP_PATHS.SIGNIN}
-            className="text-muted-foreground font-semibold hover:underline"
+
+      <Dialog open={showCompanySetup} onOpenChange={setShowCompanySetup}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Set up your company profile</DialogTitle>
+          </DialogHeader>
+          <form
+            onSubmit={handleCompanySetupSubmit(handleCompanySetup)}
+            className="space-y-4"
           >
-            Sign In
-          </Link>
-        </span>
-      </div>
+            <Input
+              type="file"
+              accept="image/*"
+              placeholder="Upload Company Logo"
+            />
+            <Input
+              placeholder="Company Name"
+              {...companySetupForm('companyName')}
+            />
+            {companySetupErrors.companyName && (
+              <p className="text-red-500">
+                {companySetupErrors.companyName.message}
+              </p>
+            )}
+            <Input
+              placeholder="Company Website"
+              {...companySetupForm('companyWebsite')}
+            />
+            {companySetupErrors.companyWebsite && (
+              <p className="text-red-500">
+                {companySetupErrors.companyWebsite.message}
+              </p>
+            )}
+            <Textarea
+              placeholder="Description"
+              {...companySetupForm('description')}
+            />
+            {companySetupErrors.description && (
+              <p className="text-red-500">
+                {companySetupErrors.description.message}
+              </p>
+            )}
+            <Button type="submit" className="w-full">
+              Finish Setup
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
