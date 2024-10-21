@@ -4,9 +4,9 @@ import { SortByEnums } from '../constant/jobs.constant';
 
 export const JobPostSchema = z
   .object({
+    companyId: z.string().min(1, 'Company id is required'),
     title: z.string().min(1, 'Title is required'),
     description: z.string().min(1, 'Description is required'),
-    companyName: z.string().min(1, 'Company Name is required'),
     city: z.string().min(1, 'City Name is required'),
     address: z.string().min(1, 'Address is required'),
     application: z.string().min(1, 'Application link is required'),
@@ -18,9 +18,7 @@ export const JobPostSchema = z
     }),
     skills: z.array(z.string()).optional(),
     category: z.string(),
-    companyEmail: z.string().email('Invalid email').min(1, 'Email is required'),
-    companyBio: z.string().min(1, 'Company Bio is required'),
-    companyLogo: z.string().min(1, 'Company Logo is Required'),
+
     hasSalaryRange: z.boolean().optional(),
     minSalary: z.coerce
       .number({ message: 'Min salary must be a number' })

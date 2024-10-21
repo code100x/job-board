@@ -22,7 +22,7 @@ const shareOptions: ShareOption[] = [
     icon: <Twitter className="h-5 w-5" />,
     shareFunction: (job: JobType) => {
       const text = encodeURIComponent(
-        `Check out this job posting: ${job.title} at ${job.companyName}`
+        `Check out this job posting: ${job.title} at ${job.company?.name}`
       );
       const url = encodeURIComponent(window.location.href);
       window.open(
@@ -38,7 +38,7 @@ const shareOptions: ShareOption[] = [
       const url = encodeURIComponent(window.location.href);
       const title = encodeURIComponent(job.title);
       const summary = encodeURIComponent(
-        `Exciting opportunity: ${job.title} at ${job.companyName}. Check out the details!`
+        `Exciting opportunity: ${job.title} at ${job.company?.name}. Check out the details!`
       );
       window.open(
         `https://www.linkedin.com/sharing/share-offsite/?url=${url}&title=${title}&summary=${summary}`,
@@ -51,7 +51,7 @@ const shareOptions: ShareOption[] = [
     icon: <Share2 className="h-5 w-5" />, // Using Share2 as a placeholder, replace with WhatsApp icon if available
     shareFunction: (job: JobType) => {
       const text = encodeURIComponent(
-        `Check out this job posting: ${job.title} at ${job.companyName} - ${window.location.href}`
+        `Check out this job posting: ${job.title} at ${job.company?.name} - ${window.location.href}`
       );
       window.open(`https://wa.me/?text=${text}`, '_blank');
     },

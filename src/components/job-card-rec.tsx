@@ -11,10 +11,10 @@ export default function JobCard({ job }: { job: JobType }) {
       <div className="border-2 transition-all duration-115 ease-linear hover:bg-lightBgSecondary dark:hover:bg-darkBgSecondary flex flex-col gap-6 h-fit max-h-[10rem] p-4 rounded-xl">
         <div className="flex gap-4 items-center">
           <div className="w-[4rem] h-[4rem]  rounded-md">
-            {job.companyLogo && (
+            {job.company?.logo && (
               <Image
                 className="size-full object-contain"
-                src={job.companyLogo || ''}
+                src={job.company.logo || ''}
                 width={'500'}
                 height={'500'}
                 alt="company-logo"
@@ -24,7 +24,7 @@ export default function JobCard({ job }: { job: JobType }) {
           <div className="flex flex-col gap-2">
             <h2 className="font-bold">{job.title}</h2>
             <div className="text-xs flex gap-1 font-medium items-center text-gray-500">
-              <span>{job.companyName}</span>•
+              <span>{job.company?.name}</span>•
               <span>{'Posted on ' + job.postedAt.toDateString()}</span>
             </div>
           </div>

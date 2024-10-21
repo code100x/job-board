@@ -29,15 +29,11 @@ import {
   Calendar as CalendarIcon,
   LucideRocket,
   MailOpenIcon,
-  X,
 } from 'lucide-react';
 import DescriptionEditor from './DescriptionEditor';
-import Image from 'next/image';
-import { FaFileUpload } from 'react-icons/fa';
 import { Switch } from './ui/switch';
 import { Label } from './ui/label';
 import dynamic from 'next/dynamic';
-import { uploadFileAction } from '@/actions/upload-to-cdn';
 import { format } from 'date-fns';
 
 const DynamicGmapsAutoSuggest = dynamic(() => import('./gmaps-autosuggest'), {
@@ -49,11 +45,23 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import APP_PATHS from '@/config/path.config';
 import { SkillsCombobox } from './skills-combobox';
+import { getAllCompanies } from '@/actions/company.actions';
+import { Separator } from './ui/separator';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from './ui/dialog';
+import { CompanyForm } from './company-form';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Calendar } from '@/components/ui/calendar';
 
 const PostJobForm = () => {
   const session = useSession();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   const router = useRouter();
   useEffect(() => {
     if (session.status !== 'loading' && session.status === 'unauthenticated')
@@ -61,18 +69,15 @@ const PostJobForm = () => {
   }, [session.status, router]);
 
   const { toast } = useToast();
-  const companyLogoImg = useRef<HTMLImageElement>(null);
+  // const companyLogoImg = useRef<HTMLImageElement>(null);
   const form = useForm<JobPostSchemaType>({
     resolver: zodResolver(JobPostSchema),
     defaultValues: {
       title: '',
       description: '',
-      companyName: '',
-      companyBio: '',
-      companyEmail: '',
       city: '',
+      companyId: '',
       address: '',
-      companyLogo: '',
       currency: 'USD',
       hasExperiencerange: true,
       minExperience: 0,
@@ -91,82 +96,54 @@ const PostJobForm = () => {
 
   const gmapsInputRef = useRef<any>(null);
 
-  const handleClick = () => {
-    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+  const [companies, setCompanies] = useState<
+    {
+      id: string;
+      name: string;
+      email: string;
+      website: string | null;
+      bio: string;
+      logo: string;
+    }[]
+  >([]);
 
-    if (fileInput) {
-      fileInput.click();
+  const fetchCompanies = async () => {
+    const response = await getAllCompanies();
+    if (response.status) {
+      setCompanies(response?.data?.companies);
     }
   };
-
-  const clearLogoImage = () => {
-    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
-
-    if (fileInput) {
-      fileInput.value = '';
-    }
-    setPreviewImg(null);
-    setFile(null);
-  };
-
-  const [file, setFile] = useState<File | null>(null);
-  const [previewImg, setPreviewImg] = useState<string | null>(null);
-
+  React.useEffect(() => {
+    fetchCompanies();
+  }, []);
   const handleDescriptionChange = (fieldName: any, value: String) => {
     form.setValue(fieldName, value);
   };
 
-  const submitImage = async (file: File | null) => {
-    if (!file) return;
+  // const submitImage = async (file: File | null) => {
+  //   if (!file) return;
 
-    const formData = new FormData();
-    formData.append('file', file);
+  //   const formData = new FormData();
+  //   formData.append('file', file);
 
-    try {
-      const uniqueFileName = `${Date.now()}-${file.name}`;
-      formData.append('uniqueFileName', uniqueFileName);
+  //   try {
+  //     const uniqueFileName = `${Date.now()}-${file.name}`;
+  //     formData.append('uniqueFileName', uniqueFileName);
 
-      const res = await uploadFileAction(formData, 'webp');
-      if (!res) {
-        throw new Error('Failed to upload image');
-      }
+  //     const res = await uploadFileAction(formData);
+  //     if (!res) {
+  //       throw new Error('Failed to upload image');
+  //     }
 
-      const uploadRes = res;
-      return uploadRes.url;
-    } catch (error) {
-      console.error('Image upload failed:', error);
-    }
-  };
-
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files ? e.target.files[0] : null;
-    if (!selectedFile) {
-      return;
-    }
-    if (!selectedFile.type.includes('image')) {
-      toast({
-        title:
-          'Invalid file format. Please upload an image file (e.g., .png, .jpg, .jpeg, .svg ) for the company logo',
-        variant: 'destructive',
-      });
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (companyLogoImg.current) {
-        companyLogoImg.current.src = reader.result as string;
-      }
-      setPreviewImg(reader.result as string);
-    };
-    reader.readAsDataURL(selectedFile);
-    if (selectedFile) {
-      setFile(selectedFile);
-    }
-  };
+  //     const uploadRes = res;
+  //     return uploadRes.url;
+  //   } catch (error) {
+  //     console.error('Image upload failed:', error);
+  //   }
+  // };
 
   const handleFormSubmit = async (data: JobPostSchemaType) => {
     try {
-      data.companyLogo = (await submitImage(file)) ?? '/main.svg';
       const response = await createJob(data);
 
       if (!response.status) {
@@ -179,7 +156,6 @@ const PostJobForm = () => {
         title: response.message,
         variant: 'success',
       });
-      setPreviewImg(null);
 
       if (gmapsInputRef.current) {
         gmapsInputRef.current.reset();
@@ -209,7 +185,7 @@ const PostJobForm = () => {
       form.setValue('minSalary', 0);
       form.setValue('maxSalary', 0);
     }
-    form.setValue('companyLogo', '/main.svg');
+    // form.setValue('', '/main.svg');
   }, [watchHasSalaryRange, form]);
 
   if (session.status === 'loading') return null;
@@ -219,19 +195,27 @@ const PostJobForm = () => {
       <div className="w-full md:justify-center mt-4 flex flex-col md:flex-row gap-2">
         <div className="dark:bg-gray-800/90 bg-gray-100 backdrop-blur-sm p-4 rounded-lg text-center text-white w-full md:w-48">
           <CalendarIcon className="w-8 h-8 mb-3 mx-auto text-green-500" />
-          <p className="text-base font-semibold mb-1 dark:text-inherit text-gray-800">Posted for</p>
+          <p className="text-base font-semibold mb-1 dark:text-inherit text-gray-800">
+            Posted for
+          </p>
           <p className="dark:text-gray-400 text-gray-600 text-sm">30 days</p>
         </div>
 
         <div className="dark:bg-gray-800/90 bg-gray-100 backdrop-blur-sm p-4 rounded-lg text-center text-white w-full md:w-48">
           <MailOpenIcon className="w-8 h-8 mb-3 mx-auto text-purple-500" />
-          <p className="text-base font-semibold mb-1 dark:text-inherit text-gray-800">Emailed to</p>
-          <p className="dark:text-gray-400 text-gray-600 text-sm">17,000 subscribers</p>
+          <p className="text-base font-semibold mb-1 dark:text-inherit text-gray-800">
+            Emailed to
+          </p>
+          <p className="dark:text-gray-400 text-gray-600 text-sm">
+            17,000 subscribers
+          </p>
         </div>
 
         <div className="dark:bg-gray-800/90 bg-gray-100 backdrop-blur-sm p-4 rounded-lg text-center text-white w-full md:w-48">
           <LucideRocket className="w-8 h-8 mb-3 mx-auto text-orange-500" />
-          <p className="text-base font-semibold mb-1 dark:text-inherit text-gray-800">Reach</p>
+          <p className="text-base font-semibold mb-1 dark:text-inherit text-gray-800">
+            Reach
+          </p>
           <p className="dark:text-gray-400 text-gray-600 text-sm">
             500,000<span className="text-blue-500">+</span>
           </p>
@@ -626,7 +610,9 @@ const PostJobForm = () => {
               ></SkillsCombobox>
             </div>
             <div className="dark:bg-gray-900 bg-gray-100 w-full p-6 rounded-lg space-y-4 mx-auto my-6">
-              <h2 className="text-sm dark:text-white capitalize">Job description</h2>
+              <h2 className="text-sm dark:text-white capitalize">
+                Job description
+              </h2>
               <div className="dark:bg-gray-800 rounded-xl mt-2 overflow-hidden">
                 <DescriptionEditor
                   fieldName="description"
@@ -640,105 +626,54 @@ const PostJobForm = () => {
               <h2 className="text-lg font-semibold mb-4 dark:text-gray-300">
                 Company
               </h2>
+              <FormField
+                control={form.control}
+                name="companyId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-medium">
+                      Select a Company*
+                    </FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <SelectTrigger className="bg-gray-800 border-none text-white">
+                          <SelectValue placeholder="Select a company that you have already posted a job for" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {companies.map((company, index) => (
+                            <SelectItem key={index} value={company.id}>
+                              {company.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
-              {/* Logo Upload Section */}
-              <div className="flex flex-col items-center mb-6">
-                <div className="relative">
-                  <div
-                    className="w-20 h-20 dark:bg-gray-700 bg-gray-300 border border-dashed border-gray-500 rounded-md flex items-center justify-center cursor-pointer mb-2"
-                    onClick={handleClick}
-                  >
-                    {previewImg ? (
-                      <Image
-                        src={previewImg}
-                        ref={companyLogoImg}
-                        className="object-contain w-full h-full"
-                        alt="Company Logo"
-                        width={80}
-                        height={80}
-                      />
-                    ) : (
-                      <FaFileUpload className="text-white text-2xl" />
-                    )}
-                  </div>
-                  {previewImg && (
-                    <button
-                      type="button"
-                      onClick={clearLogoImage}
-                      className="absolute top-0 right-0 w-5 h-5 bg-red-500 rounded-full items-center flex justify-center cursor-pointer translate-x-1/2 -translate-y-1/2"
-                    >
-                      <X size="16" />
-                    </button>
-                  )}
-                </div>
-                <input
-                  id="fileInput"
-                  className="hidden"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                />
-                <p className="text-sm text-gray-500 text-center">
-                  Click the avatar to change or upload your company logo
-                </p>
+              <div className="flex gap-3 w-full p-6 mx-auto justify-center items-center">
+                <Separator className="w-1/2" /> OR{' '}
+                <Separator className="w-1/2" />
               </div>
-
-              {/* Company Name and Email Fields */}
-              <div className="flex flex-col md:flex-row gap-4 mb-4">
-                <div className="flex-1">
-                  <FormField
-                    control={form.control}
-                    name="companyName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="font-medium">
-                          Company name*
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            {...field}
-                            className="w-full dark:bg-gray-800 border-none dark:text-white"
-                            placeholder="What's your company called?"
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="flex-1">
-                  <FormField
-                    control={form.control}
-                    name="companyEmail"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="font-medium">
-                          Company email*
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            {...field}
-                            className="w-full dark:bg-gray-800 border-none dark:text-white"
-                            placeholder="Enter your email address"
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm mb-1 dark:text-gray-400">
-                  Company bio
-                </label>
-                <div className="dark:bg-gray-800 rounded-xl mt-2 overflow-hidden">
-                  <DescriptionEditor
-                    fieldName="companyBio"
-                    initialValue={form.getValues('companyBio')}
-                    onDescriptionChange={handleDescriptionChange}
-                    placeholder={'Tell us about your company'}
-                  />
-                </div>
-              </div>
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogTrigger className="flex w-full justify-end underline">
+                  Manually fill company details
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>
+                      <h2 className="text-lg font-semibold mb-4 text-gray-300">
+                        Company Details
+                      </h2>
+                    </DialogTitle>
+                  </DialogHeader>
+                  <CompanyForm setIsDialogOpen={setIsDialogOpen} />
+                </DialogContent>
+              </Dialog>
             </div>
             <div className="w-full flex justify-end items-center my-4 ">
               <Button type="submit" disabled={form.formState.isSubmitting}>
