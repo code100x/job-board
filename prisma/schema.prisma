@@ -113,9 +113,10 @@ model Project {
 enum ProjectStack {
   GO
   PYTHON
-  MERN_NEXTJS
+  MERN
+  NEXTJS
   AI_GPT_APIS
-  JAVA
+  SPRINGBOOT
   OTHERS
 }
 
