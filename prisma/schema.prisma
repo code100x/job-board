@@ -20,11 +20,16 @@ model User {
   email         String    @unique
   emailVerified DateTime?
   
+  skills        String[]
+  experience    Experience[]
+  project       Project[]
+  resume        String?
+  
   oauthProvider   OauthProvider?  // Tracks OAuth provider (e.g., 'google')
   oauthId String?
 
   blockedByAdmin DateTime?
-  
+  onBoard Boolean @default(false)
 }
 
 enum OauthProvider {
@@ -63,6 +68,9 @@ model Job {
   application        String
   companyLogo        String
   skills             String[]
+  expired            Boolean         @default(false)
+  hasExpiryDate      Boolean         @default(false) @map("has_expiry_date")
+  expiryDate         DateTime?
   hasSalaryRange     Boolean         @default(false) @map("has_salary_range")
   minSalary          Int?
   maxSalary          Int?
@@ -73,7 +81,32 @@ model Job {
   deleted            Boolean         @default(false)
   postedAt           DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
-  user               User            @relation(fields: [userId], references: [id])
+  user               User            @relation(fields: [userId], references: [id],onDelete: Cascade)
+}
+
+model Experience {
+  id                Int @id @default(autoincrement())
+  companyName       String 
+  designation       String
+  EmploymentType    EmployementType
+  address           String
+  workMode          WorkMode
+  currentWorkStatus Boolean
+  startDate         DateTime
+  endDate           DateTime?
+  description       String  
+  userId            String 
+  user              User      @relation(fields: [userId] ,references: [id])
+}
+
+model Project {
+  id              Int @id @default(autoincrement())
+  projectName     String 
+  projectSummary  String
+  projectLiveLink String?
+  projectGithub   String
+  userId          String
+  user            User @relation(fields: [userId] , references: [id])
 }
 
 enum Currency {
@@ -90,6 +123,7 @@ enum WorkMode {
 enum Role {
   USER
   ADMIN
+  HR
 }
 
 enum EmployementType {

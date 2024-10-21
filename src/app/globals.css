@@ -307,10 +307,15 @@
 }
 
 /* Custom styles for Quill editor */
-.ql-toolbar.ql-snow {
+html.dark.ql-toolbar.ql-snow {
   border: none !important;
   background-color: #1f2937 !important;
   border-bottom: 1px solid #374151 !important;
+}
+
+.ql-toolbar.ql-snow {
+  border: none !important;
+  border-bottom: 1px solid #a9aaac !important;
 }
 
 .ql-container.ql-snow {
@@ -391,4 +396,14 @@ html {
 .career-span {
   display: inline-block;
   transform: rotate(-2deg);
+}
+
+.react-tweet-theme {
+  height: 100%;
+}
+.tweet-container_article__0ERPK {
+  height: 100%;
+}
+html {
+  scroll-behavior: smooth;
 }

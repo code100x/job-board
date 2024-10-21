@@ -21,7 +21,6 @@ import {
   FormLabel,
   FormMessage,
 } from '../components/ui/form';
-import { Separator } from '../components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import useSetQueryParams from '@/hooks/useSetQueryParams';
@@ -31,7 +30,8 @@ import _ from 'lodash';
 import { DEFAULT_PAGE } from '@/config/app.config';
 import { getCityFilters } from '@/actions/job.action';
 import { X } from 'lucide-react';
-
+import { useFilterCheck } from '@/hooks/useFilterCheck';
+import { AnimatePresence, motion } from 'framer-motion';
 const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   const [cityFilters, setCityFilters] = useState<string[]>([]);
 
@@ -48,11 +48,22 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   });
 
   const formValues = form.watch();
+  const isAnyFilterSelected = useFilterCheck(formValues);
 
   async function fetchCityFilters() {
     const cities = await getCityFilters();
     setCityFilters(cities.additional.cities);
     return cities;
+  }
+
+  function clearFilters() {
+    form.reset({
+      page: DEFAULT_PAGE,
+      workmode: [],
+      EmpType: [],
+      salaryrange: [],
+      city: [],
+    });
   }
 
   useEffect(() => {
@@ -71,13 +82,26 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
         'rounded-lg  bg-background  min-w-[290px]  p-6 h-fit  top-20'
       )}
     >
-      <div className="flex items-center justify-between">
-        <h3 className="font-medium text-base text-primary-text">All Filters</h3>
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="font-bold text-xl">All Filters</h3>
+        <AnimatePresence>
+          {isAnyFilterSelected && (
+            <motion.button
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="font-medium text-gray-600 dark:text-gray-300"
+              onClick={clearFilters}
+            >
+              Clear Filters
+            </motion.button>
+          )}
+        </AnimatePresence>
       </div>
-      <Separator className="my-6" />
       <Form {...form}>
-        <form className=" flex flex-col gap-3">
-          <ScrollArea className={cn('h-fit pr-4')}>
+        <form className=" flex flex-col gap-3 mt-6">
+          <ScrollArea className={cn('h-fit')}>
             <Accordion
               type="multiple"
               className="w-full"
@@ -91,7 +115,7 @@ const JobFilters = ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
             >
               <AccordionItem value="Employment-type">
                 <AccordionTrigger className="text-primary-text pt-0 hover:no-underline">
-                  Employment type
+                  Employment Type
                 </AccordionTrigger>
                 <AccordionContent>
                   <FormField

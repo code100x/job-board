@@ -46,6 +46,7 @@ export const authOptions = {
             password: true,
             role: true,
             emailVerified: true,
+            onBoard: true,
           },
         });
 
@@ -70,6 +71,7 @@ export const authOptions = {
           email: email,
           isVerified: !!user.emailVerified,
           role: user.role,
+          onBoard: user.onBoard,
         };
       },
     }),
@@ -126,6 +128,8 @@ export const authOptions = {
         token.name = user.name;
         token.isVerified = user.isVerified;
         token.role = loggedInUser.role ? loggedInUser.role : user.role;
+        token.image = loggedInUser ? loggedInUser.avatar : user.image;
+        token.onBoard = loggedInUser.onBoard;
       }
       return token;
     },
@@ -135,6 +139,10 @@ export const authOptions = {
         session.user.id = token.id;
         session.user.isVerified = token.isVerified;
         session.user.role = token.role;
+        session.user.name = token.name as string;
+        session.user.email = token.email as string;
+        session.user.image = token.image as string;
+        session.user.onBoard = token.onBoard;
       }
       return session;
     },
