@@ -12,9 +12,5 @@ export default function AccountExperiencePage() {
     if (session.status !== 'loading' && session.status === 'unauthenticated')
       router.push(`${APP_PATHS.SIGNIN}?redirectTo=/profile`);
   }, [session.status, router]);
-  return (
-    <div>
-      <UserExperience />
-    </div>
-  );
+  return <UserExperience />;
 }
