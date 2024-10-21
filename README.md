@@ -86,7 +86,7 @@ Follow these steps to set up the repository locally and run it.
 ### Running the Project with Docker
 
 ```bash
-docker compose up --build
+docker compose up --watch
 ```
 
 ### Running the Project without Docker
