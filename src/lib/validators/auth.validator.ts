@@ -11,6 +11,7 @@ export const SignupSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   email: z.string().email('Email is invalid').min(1, 'Email is required'),
   password: z.string().min(1, 'Password is required'),
+  role: z.enum(['USER', 'HR']),
 });
 
 export type SignupSchemaType = z.infer<typeof SignupSchema>;

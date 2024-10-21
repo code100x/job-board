@@ -7,10 +7,9 @@ import {
   SignupSchemaType,
 } from '@/lib/validators/auth.validator';
 import { zodResolver } from '@hookform/resolvers/zod';
-
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import {
   Form,
   FormControl,
@@ -23,6 +22,8 @@ import { useToast } from '../ui/use-toast';
 import { signUp } from '@/actions/auth.actions';
 import { DemarcationLine, GoogleOauthButton } from './social-auth';
 import { PasswordInput } from '../password-input';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '../ui/label';
 
 export const Signup = () => {
   const { toast } = useToast();
@@ -34,6 +35,7 @@ export const Signup = () => {
       name: '',
       email: '',
       password: '',
+      role: 'USER',
     },
   });
 
@@ -50,12 +52,15 @@ export const Signup = () => {
           title: response.message || 'Signup successful! Welcome to 100xJobs!',
           variant: 'success',
         });
-
-        router.push(APP_PATHS.ONBOARDING);
+        if (data.role === 'HR') {
+          router.push(APP_PATHS.ONBOARDING);
+        } else {
+          router.push(APP_PATHS.HOME);
+        }
       }
     } catch {
       toast({
-        title: 'something went wrong',
+        title: 'Something went wrong',
         variant: 'destructive',
       });
     }
@@ -105,6 +110,22 @@ export const Signup = () => {
                 </FormControl>
                 <FormMessage />
               </FormItem>
+            )}
+          />
+          <Controller
+            name="role"
+            control={form.control}
+            render={({ field }) => (
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="hr-mode"
+                  checked={field.value === 'HR'}
+                  onCheckedChange={(checked) =>
+                    field.onChange(checked ? 'HR' : 'USER')
+                  }
+                />
+                <Label htmlFor="hr-mode">I&apos;m an HR professional</Label>
+              </div>
             )}
           />
           <div className="flex justify-end">
