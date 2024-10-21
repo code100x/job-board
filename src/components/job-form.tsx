@@ -219,19 +219,27 @@ const PostJobForm = () => {
       <div className="w-full md:justify-center mt-4 flex flex-col md:flex-row gap-2">
         <div className="dark:bg-gray-800/90 bg-gray-100 backdrop-blur-sm p-4 rounded-lg text-center text-white w-full md:w-48">
           <CalendarIcon className="w-8 h-8 mb-3 mx-auto text-green-500" />
-          <p className="text-base font-semibold mb-1 dark:text-inherit text-gray-800">Posted for</p>
+          <p className="text-base font-semibold mb-1 dark:text-inherit text-gray-800">
+            Posted for
+          </p>
           <p className="dark:text-gray-400 text-gray-600 text-sm">30 days</p>
         </div>
 
         <div className="dark:bg-gray-800/90 bg-gray-100 backdrop-blur-sm p-4 rounded-lg text-center text-white w-full md:w-48">
           <MailOpenIcon className="w-8 h-8 mb-3 mx-auto text-purple-500" />
-          <p className="text-base font-semibold mb-1 dark:text-inherit text-gray-800">Emailed to</p>
-          <p className="dark:text-gray-400 text-gray-600 text-sm">17,000 subscribers</p>
+          <p className="text-base font-semibold mb-1 dark:text-inherit text-gray-800">
+            Emailed to
+          </p>
+          <p className="dark:text-gray-400 text-gray-600 text-sm">
+            17,000 subscribers
+          </p>
         </div>
 
         <div className="dark:bg-gray-800/90 bg-gray-100 backdrop-blur-sm p-4 rounded-lg text-center text-white w-full md:w-48">
           <LucideRocket className="w-8 h-8 mb-3 mx-auto text-orange-500" />
-          <p className="text-base font-semibold mb-1 dark:text-inherit text-gray-800">Reach</p>
+          <p className="text-base font-semibold mb-1 dark:text-inherit text-gray-800">
+            Reach
+          </p>
           <p className="dark:text-gray-400 text-gray-600 text-sm">
             500,000<span className="text-blue-500">+</span>
           </p>
@@ -626,7 +634,9 @@ const PostJobForm = () => {
               ></SkillsCombobox>
             </div>
             <div className="dark:bg-gray-900 bg-gray-100 w-full p-6 rounded-lg space-y-4 mx-auto my-6">
-              <h2 className="text-sm dark:text-white capitalize">Job description</h2>
+              <h2 className="text-sm dark:text-white capitalize">
+                Job description
+              </h2>
               <div className="dark:bg-gray-800 rounded-xl mt-2 overflow-hidden">
                 <DescriptionEditor
                   fieldName="description"

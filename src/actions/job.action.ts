@@ -1,9 +1,14 @@
 'use server';
 import prisma from '@/config/prisma.config';
 import { withServerActionAsyncCatcher } from '@/lib/async-catch';
+import { withSession } from '@/lib/session';
 import { ErrorHandler } from '@/lib/error';
 import { SuccessResponse } from '@/lib/success';
 import {
+  ApproveJobSchema,
+  ApproveJobSchemaType,
+  deleteJobByIdSchema,
+  DeleteJobByIdSchemaType,
   JobByIdSchema,
   JobByIdSchemaType,
   JobPostSchema,
@@ -24,11 +29,22 @@ import {
   getAllRecommendedJobs,
   getJobType,
 } from '@/types/jobs.types';
+import { withAdminServerAction } from '@/lib/admin';
+import { revalidatePath } from 'next/cache';
 
 type additional = {
   isVerifiedJob: boolean;
 };
-export const createJob = withServerActionAsyncCatcher<
+
+type deletedJob = {
+  deletedJobID: string;
+}; //TODO: Convert it to generic type that returns JobID Only;
+
+type ApprovedJobID = {
+  jobId: string;
+};
+
+export const createJob = withSession<
   JobPostSchemaType,
   ServerActionReturnType<additional>
 >(async (data) => {
@@ -92,10 +108,10 @@ export const createJob = withServerActionAsyncCatcher<
   return new SuccessResponse(message, 201, additonal).serialize();
 });
 
-export const getAllJobs = withServerActionAsyncCatcher<
+export const getAllJobs = withSession<
   JobQuerySchemaType,
   ServerActionReturnType<getAllJobsAdditonalType>
->(async (data) => {
+>(async (session, data) => {
   if (data?.workmode && !Array.isArray(data?.workmode)) {
     data.workmode = Array.of(data?.workmode);
   }
@@ -109,14 +125,19 @@ export const getAllJobs = withServerActionAsyncCatcher<
     data.city = Array.of(data?.city);
   }
   const result = JobQuerySchema.parse(data);
+  const isAdmin = session.user.role === 'ADMIN';
   const { filterQueries, orderBy, pagination } = getJobFilters(result);
   const queryJobsPromise = prisma.job.findMany({
     ...pagination,
     orderBy: [orderBy],
     where: {
-      isVerifiedJob: true,
-      expired: false,
-      ...filterQueries,
+      ...(isAdmin
+        ? { ...filterQueries }
+        : {
+            isVerifiedJob: true,
+            ...filterQueries,
+            expired: false,
+          }),
     },
     select: {
       id: true,
@@ -139,6 +160,8 @@ export const getAllJobs = withServerActionAsyncCatcher<
       maxSalary: true,
       postedAt: true,
       companyLogo: true,
+      isVerifiedJob: true,
+      deleted: true,
     },
   });
   const totalJobsPromise = prisma.job.count({
@@ -194,6 +217,7 @@ export const getRecommendedJobs = withServerActionAsyncCatcher<
       maxSalary: true,
       postedAt: true,
       skills: true,
+      isVerifiedJob: true,
       companyLogo: true,
     },
   });
@@ -225,6 +249,7 @@ export const getRecommendedJobs = withServerActionAsyncCatcher<
         companyLogo: true,
         minExperience: true,
         maxExperience: true,
+        isVerifiedJob: true,
         category: true,
       },
     });
@@ -272,6 +297,7 @@ export const getJobById = withServerActionAsyncCatcher<
       minSalary: true,
       maxSalary: true,
       postedAt: true,
+      isVerifiedJob: true,
       application: true,
     },
   });
@@ -368,6 +394,47 @@ export const updateJob = withServerActionAsyncCatcher<
   ).serialize();
 });
 
+export const deleteJobById = withServerActionAsyncCatcher<
+  DeleteJobByIdSchemaType,
+  ServerActionReturnType<deletedJob>
+>(async (data) => {
+  const result = deleteJobByIdSchema.parse(data);
+  const { id } = result;
+  const deletedJob = await prisma.job.update({
+    where: {
+      id: id,
+    },
+    data: {
+      deleted: true,
+    },
+  });
+  const deletedJobID = deletedJob.id;
+  revalidatePath('/manage');
+  return new SuccessResponse('Job Deleted successfully', 200, {
+    deletedJobID,
+  }).serialize();
+});
+
+export const approveJob = withAdminServerAction<
+  ApproveJobSchemaType,
+  ServerActionReturnType<ApprovedJobID>
+>(async (session, data) => {
+  const result = ApproveJobSchema.safeParse(data);
+  if (!result.success) {
+    throw new Error(result.error.errors.toLocaleString());
+  }
+  const { id } = result.data;
+  await prisma.job.update({
+    where: {
+      id: id,
+    },
+    data: {
+      isVerifiedJob: true,
+    },
+  });
+  revalidatePath('/manage');
+  return new SuccessResponse('Job Approved', 200, { jobId: id }).serialize();
+});
 export async function updateExpiredJobs() {
   const currentDate = new Date();
 

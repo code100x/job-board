@@ -16,7 +16,9 @@ export type JobType = {
   description: string | null;
   companyName: string;
   postedAt: Date;
+  isVerifiedJob?: Boolean;
   application?: string;
+  deleted?: Boolean;
 };
 export type getAllJobsAdditonalType = {
   jobs: JobType[];
