@@ -259,9 +259,10 @@ export const AddProject = () => {
                       value as
                         | 'GO'
                         | 'PYTHON'
-                        | 'MERN_NEXTJS'
+                        | 'MERN'
+                        | 'NEXTJS'
                         | 'AI_GPT_APIS'
-                        | 'JAVA'
+                        | 'SPRINGBOOT'
                         | 'OTHERS'
                     )
                   }
@@ -272,9 +273,10 @@ export const AddProject = () => {
                   <SelectContent>
                     <SelectItem value="GO">Go</SelectItem>
                     <SelectItem value="PYTHON">Python</SelectItem>
-                    <SelectItem value="MERN_NEXTJS">MERN/NextJS</SelectItem>
+                    <SelectItem value="MERN">MERN</SelectItem>
+                    <SelectItem value="NEXTJS">NextJS</SelectItem>
                     <SelectItem value="AI_GPT_APIS">AI/GPT APIs</SelectItem>
-                    <SelectItem value="JAVA">Java</SelectItem>
+                    <SelectItem value="SPRINGBOOT">Springboot</SelectItem>
                     <SelectItem value="OTHERS">Others</SelectItem>
                   </SelectContent>
                 </Select>
