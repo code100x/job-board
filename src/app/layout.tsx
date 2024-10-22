@@ -6,6 +6,7 @@ import type { Metadata } from 'next';
 import NextTopLoader from 'nextjs-toploader';
 import './globals.css';
 import localFont from 'next/font/local';
+import Pwa from '@/components/Pwa';
 
 const satoshi = localFont({
   display: 'swap',
@@ -19,6 +20,8 @@ const satoshi = localFont({
 export const metadata: Metadata = {
   title: '100xJobs',
   description: 'Get your dream job',
+  manifest: './app/mainfest.json',
+  keywords: ['jobs', 'job portal', 'remote job', 'saas'],
 };
 
 export default async function RootLayout({
@@ -41,6 +44,7 @@ export default async function RootLayout({
           <main className="grow grid p-4">{children}</main>
           <Footer />
         </Providers>
+        <Pwa />
         {/* Commenting this out for temp basis */}
         {/* <ScrollToTop />  */}
       </body>

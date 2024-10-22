@@ -28,7 +28,13 @@
     "esm": true,
     "experimentalSpecifierResolution": "node"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "public/generate-vapidKey.js",
+    "generate-vapidKey.js"
+  ],
   "exclude": ["node_modules"]
 }
-

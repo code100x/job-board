@@ -1,5 +1,6 @@
 import { fileURLToPath } from 'node:url';
 import createJiti from 'jiti';
+import withPWA from 'next-pwa';
 
 if (process.env.SKIP_ENV_CHECK !== 'true') {
   const jiti = createJiti(fileURLToPath(import.meta.url));
@@ -34,9 +35,16 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'www.example.com',
-      }
+      },
     ],
   },
 };
 
-export default nextConfig; // ES module export
+const pwaConfig = withPWA({
+  dest: 'public',
+  register: true,
+  skipWaiting: true,
+  importScripts: ['/worker.js'],
+});
+
+export default pwaConfig(nextConfig); // ES module export
