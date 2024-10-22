@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "seed": "node --loader ts-node/esm prisma/seed.ts",
     "start": "next start",
     "lint": "next lint",
     "dev:docker": "npm run db:seed & next dev",
@@ -59,7 +58,6 @@
     "@types/lodash": "^4.17.7",
     "@types/uuid": "^10.0.0",
     "@uidotdev/usehooks": "^2.4.1",
-    "100xdevs-job-board": "file:",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -102,6 +100,7 @@
     "@types/react-dom": "^18",
     "@typescript-eslint/eslint-plugin": "^8.1.0",
     "@typescript-eslint/parser": "^8.1.0",
+    "100xdevs-job-board": "file:",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
     "husky": "^9.1.4",
