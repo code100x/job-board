@@ -407,3 +407,6 @@ html {
 html {
   scroll-behavior: smooth;
 }
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
