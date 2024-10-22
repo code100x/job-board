@@ -24,7 +24,7 @@ const JobDialog = ({ job }: { job: JobType }) => {
       const result = await toggleDeleteJobById({ id: job.id });
       toast({
         title: result.message,
-        variant: result.status ? 'default' : 'destructive',
+        variant: 'default',
       });
       setDialogOpen(false);
     } catch (error) {
