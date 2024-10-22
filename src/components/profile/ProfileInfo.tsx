@@ -15,6 +15,7 @@ import APP_PATHS from '@/config/path.config';
 import { getNameInitials } from '@/lib/utils';
 import Link from 'next/link';
 import Icon from '../ui/icon';
+import icons from '@/lib/icons';
 import { userSocialSchemaType } from '@/lib/validators/user.profile.validator';
 import { getUserSocials } from '@/actions/user.profile.actions';
 import SocialUsername from '@/lib/social-usernames';
@@ -60,7 +61,10 @@ export const ProfileInfo = () => {
                 href={social.link}
                 target="_blank"
               >
-                <Icon name={social.platform} icon={social.platform} />
+                <Icon
+                  name={social.platform}
+                  icon={social.platform as keyof typeof icons}
+                />
                 <span>{SocialUsername(social.platform, social.link)}</span>
               </Link>
             ))

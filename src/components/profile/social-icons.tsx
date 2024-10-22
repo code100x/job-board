@@ -13,12 +13,18 @@ const icons: { [key: string]: React.ComponentType } = {
   linkedin: FaLinkedin,
   github: FaGithub,
   instagram: FaInstagram,
-  telergam: FaTelegramPlane,
+  telegram: FaTelegramPlane,
 };
 
-const Icon = ({ name }: { name: keyof typeof icons }) => {
-  const Icon = icons[name];
-  return <Icon />;
+type Platform = keyof typeof icons;
+
+interface IconProps {
+  name: Platform;
+}
+
+const Icon = ({ name }: IconProps) => {
+  const SelectedIcon = icons[name];
+  return <SelectedIcon />;
 };
 
 export default Icon;
