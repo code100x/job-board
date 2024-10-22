@@ -89,6 +89,7 @@ export const AddSocials = ({ socials }: Props) => {
               title: 'Socials deleted successfully',
               variant: 'success',
             });
+            window.location.reload();
           } else {
             toast({
               title: res.message || 'Internal server error',

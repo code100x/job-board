@@ -79,6 +79,7 @@ const NavItem = ({ path, label }: { path: string; label: string }) => {
   if (!session) return;
   return (
     <Link
+      prefetch
       href={path}
       aria-selected={pathname === path}
       className={`flex justify-start items-center gap-2 hover:bg-slate-200 hover:border-l-blue-600 hover:border-l-2 dark:hover:bg-slate-800 px-3 py-2 transition-colors hover:text-foreground/80 font-medium text-sm  ${pathname === path && 'bg-slate-200 border-l-blue-500 border-l-2 dark:bg-slate-800'}`}
