@@ -73,12 +73,11 @@ export const projectSchema = z.object({
     'OTHERS',
   ]),
 });
-
-export type projectSchemaType = z.infer<typeof projectSchema>;
-export type expFormSchemaType = z.infer<typeof expFormSchema>;
-export type addSkillsSchemaType = z.infer<typeof addSkillsSchema>;
-export type UserPasswordSchemaType = z.infer<typeof UserPasswordSchema>;
-
+export const userSocialSchema = z.object({
+  id: z.string().optional(),
+  platform: z.string().min(1, { message: 'Name is required' }),
+  link: z.string().url({ message: 'Invalid URL format' }),
+});
 export const UserProfileDestroySchema = z.object({
   random: z
     .string({ message: 'Required' })
@@ -86,4 +85,9 @@ export const UserProfileDestroySchema = z.object({
     .max(8, { message: "Can't be more long" }),
 });
 
+export type projectSchemaType = z.infer<typeof projectSchema>;
+export type expFormSchemaType = z.infer<typeof expFormSchema>;
+export type addSkillsSchemaType = z.infer<typeof addSkillsSchema>;
+export type UserPasswordSchemaType = z.infer<typeof UserPasswordSchema>;
 export type UserProfileDestroyType = z.infer<typeof UserProfileDestroySchema>;
+export type userSocialSchemaType = z.infer<typeof userSocialSchema>;
