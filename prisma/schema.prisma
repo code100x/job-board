@@ -20,16 +20,25 @@ model User {
   email         String    @unique
   emailVerified DateTime?
 
-  skills     String[]
-  experience Experience[]
-  project    Project[]
-  resume     String?
-
+  skills        String[]
+  experience    Experience[]
+  project       Project[]
+  resume        String?
+  socials       Socials[]
+  
   oauthProvider OauthProvider? // Tracks OAuth provider (e.g., 'google')
   oauthId       String?
 
   blockedByAdmin DateTime?
   onBoard        Boolean   @default(false)
+}
+
+model Socials {
+  id       String @id @default(cuid())
+  userId   String
+  platform String
+  link     String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum OauthProvider {
