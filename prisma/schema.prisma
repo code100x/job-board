@@ -29,8 +29,9 @@ model User {
   oauthId       String?
 
   blockedByAdmin DateTime?
- onBoard        Boolean   @default(false)
- bookmark           Bookmark[]  
+  onBoard        Boolean   @default(false)
+  bookmark       Bookmark[]  
+  notifications  Notifications[]  
 }
 
 enum OauthProvider {
@@ -120,6 +121,13 @@ model Project {
   stack            ProjectStack @default(OTHERS)
   userId           String
   user             User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Notifications {
+  id            String   @id @default(uuid())
+  subscription  String
+  userId        String
+  user          User    @relation(fields: [userId],references: [id],onDelete: Cascade)
 }
 
 enum ProjectStack {

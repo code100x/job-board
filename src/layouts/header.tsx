@@ -26,6 +26,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import icons from '@/lib/icons';
+import NotificationRequest from '@/components/Notification';
 export const CompanyLogo = () => {
   return (
     <div
@@ -102,6 +103,17 @@ const Header = () => {
                 </button>
               )}
             </div>
+
+            <div className="mx-4 md:mx-0 md:mr-4">
+              {session.status === 'loading' ? (
+                <Skeleton className="h-8 w-8 rounded-full" />
+              ) : session.status === 'authenticated' ? (
+                <>
+                  <NotificationRequest />
+                </>
+              ) : null}
+            </div>
+
             <div className="hidden md:block">
               {session.status === 'loading' ? (
                 <Skeleton className="h-8 w-8 rounded-full" />

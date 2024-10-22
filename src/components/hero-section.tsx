@@ -1,8 +1,14 @@
+'use client';
+
 import Image from 'next/image';
 import { trustedCompanies } from '@/lib/constant/app.constant';
-import Link from 'next/link';
+// import Link from 'next/link';
 import PWAInstallButton from './PwaInstallBtn';
+import { sendNotificationAction } from '@/actions/notification';
 const HeroSection = () => {
+  async function handleNotificationPush() {
+    await sendNotificationAction();
+  }
   return (
     <>
       <section className="relative container min-w-full pb-10 h-fit py-10 dark:bg-hero-bg-dark bg-hero-bg-light object-contain">
@@ -27,8 +33,15 @@ const HeroSection = () => {
             </div>
             <div className="md:w-4/6 w-full flex md:flex-row flex-col  items-center justify-center my-4">
               <PWAInstallButton />
-              <button className="md:w-fit w-full rounded-lg py-2 px-3 border text-sm md:ml-3 md:my-0 my-3 dark:text-[#94A3B8] text-[#64748B] font-medium dark:hover:bg-slate-900 hover:bg-slate-100">
+              {/* <button className="md:w-fit w-full rounded-lg py-2 px-3 border text-sm md:ml-3 md:my-0 my-3 dark:text-[#94A3B8] text-[#64748B] font-medium dark:hover:bg-slate-900 hover:bg-slate-100">
                 <Link href={'#testimonials'}>View Testimonials</Link>
+              </button> */}
+
+              <button
+                className="md:w-fit w-full rounded-lg py-2 px-3 border text-sm md:ml-3 md:my-0 my-3 dark:text-[#94A3B8] text-[#64748B] font-medium dark:hover:bg-slate-900 hover:bg-slate-100"
+                onClick={handleNotificationPush}
+              >
+                Send Notification
               </button>
             </div>
           </div>
