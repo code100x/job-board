@@ -458,3 +458,157 @@ export async function updateExpiredJobs() {
     },
   });
 }
+
+export async function toggleBookmarkAction(userId: string, jobId: string) {
+  try {
+    if (!userId || !jobId) throw new Error('User or Post is missing');
+
+    const checkForUser = await prisma.user.findFirst({
+      where: { id: userId },
+    });
+
+    if (!checkForUser)
+      throw new ErrorHandler(
+        'User with this email does not exist',
+        'BAD_REQUEST'
+      );
+
+    const checkForBookmark = await prisma.bookmark.findFirst({
+      where: {
+        jobId: jobId,
+        userId: userId,
+      },
+    });
+
+    if (checkForBookmark) {
+      const deletedBookmark = await prisma.bookmark.delete({
+        where: {
+          id: checkForBookmark.id,
+        },
+      });
+
+      return {
+        status: 201,
+        message: 'Bookmark Deleted Successfully',
+        data: deletedBookmark,
+      };
+    }
+
+    const createNewBookmark = await prisma.bookmark.create({
+      data: {
+        jobId: jobId,
+        userId: userId,
+      },
+    });
+
+    return {
+      status: 200,
+      message: 'Bookmarked Successfully',
+      data: createNewBookmark,
+    };
+  } catch (error) {
+    return {
+      status: 404,
+      message: (error as Error).message,
+      data: null,
+    };
+  }
+}
+
+export async function GetBookmarkByUserId() {
+  try {
+    const auth = await getServerSession(authOptions);
+
+    if (!auth || !auth?.user?.id)
+      throw new ErrorHandler('Not Authrised', 'UNAUTHORIZED');
+
+    const userId = auth.user.id;
+
+    const getUserBookmarks = await prisma.bookmark.findMany({
+      where: {
+        userId: userId,
+      },
+
+      select: {
+        job: {
+          select: {
+            id: true,
+            type: true,
+            title: true,
+            description: true,
+            companyName: true,
+            city: true,
+            companyBio: true,
+            hasExperiencerange: true,
+            minExperience: true,
+            maxExperience: true,
+            hasExpiryDate: true,
+            expiryDate: true,
+            skills: true,
+            address: true,
+            workMode: true,
+            category: true,
+            minSalary: true,
+            maxSalary: true,
+            postedAt: true,
+            companyLogo: true,
+          },
+        },
+      },
+    });
+
+    if (!getUserBookmarks || getUserBookmarks.length === 0)
+      throw new Error('No Bookmarked Job found');
+
+    return {
+      status: 200,
+      message: 'Bookmarks fetched ',
+      data: getUserBookmarks,
+    };
+  } catch (error) {
+    return {
+      status: 404,
+      message: (error as Error).message,
+      data: null,
+    };
+  }
+}
+
+export async function GetUserBookmarksId() {
+  try {
+    const auth = await getServerSession(authOptions);
+
+    if (!auth || !auth?.user?.id)
+      throw new ErrorHandler('Not Authrised', 'UNAUTHORIZED');
+
+    const userId = auth.user.id;
+
+    const getUserBookmarks = await prisma.user.findFirst({
+      where: {
+        id: userId,
+      },
+
+      select: {
+        bookmark: {
+          select: {
+            jobId: true,
+          },
+        },
+      },
+    });
+
+    if (!getUserBookmarks) throw new Error('No Bookmarked Job found');
+
+    return {
+      status: 200,
+      message: 'Bookmarks fetched ',
+      data: getUserBookmarks.bookmark,
+    };
+  } catch (error) {
+    return {
+      status: 404,
+      message: (error as Error).message,
+      data: null,
+    };
+  }
+}
