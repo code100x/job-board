@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -13,11 +13,24 @@ import { Input } from '@/components/ui/input';
 import APP_PATHS from '@/config/path.config';
 
 import { getNameInitials } from '@/lib/utils';
-import icons from '@/lib/icons';
 import Link from 'next/link';
+import Icon from '../ui/icon';
+import { userSocialSchemaType } from '@/lib/validators/user.profile.validator';
+import { getUserSocials } from '@/actions/user.profile.actions';
+import SocialUsername from '@/lib/social-usernames';
 export const ProfileInfo = () => {
   const router = useRouter();
   const session = useSession();
+  const [socials, setSocials] = useState<userSocialSchemaType[]>([]);
+  const fetchUserSocials = async () => {
+    const res = await getUserSocials();
+    if (res.status) {
+      setSocials(res.additional?.socials || []);
+    }
+  };
+  useEffect(() => {
+    fetchUserSocials();
+  }, [socials]);
 
   useEffect(() => {
     if (session.status !== 'loading' && session.status === 'unauthenticated')
@@ -38,13 +51,24 @@ export const ProfileInfo = () => {
         <div className="flex justify-between items-center mb-3">
           <span>Socials</span>
         </div>
-        <div className="grid grid-cols-4">
-          <div className="col-span-1 flex items-center justify-start gap-2">
-            <icons.github />
-            <Link href={'https://github.com/curiouscoder00'} target="_blank">
-              @curiouscoder00
-            </Link>
-          </div>
+        <div className="flex flex-wrap items-center justify-start gap-2">
+          {socials.length > 0 ? (
+            socials.map((social, index) => (
+              <Link
+                key={index}
+                className="flex items-center justify-start gap-2 dark:bg-slate-900 hover:dark:bg-slate-800 bg-slate-200 hover:bg-slate-300 p-1 rounded-lg px-3"
+                href={social.link}
+                target="_blank"
+              >
+                <Icon name={social.platform} icon={social.platform} />
+                <span>{SocialUsername(social.platform, social.link)}</span>
+              </Link>
+            ))
+          ) : (
+            <div className="flex items-center justify-center w-full gap-2">
+              <span>No socials added yet</span>
+            </div>
+          )}
         </div>
       </div>
       <div className="flex flex-col gap-4 p-4 border rounded-md w-full min-h-[40vh]">

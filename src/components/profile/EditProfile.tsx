@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -17,9 +17,10 @@ import { Button } from '../ui/button';
 import {
   UserProfileSchema,
   UserProfileSchemaType,
+  userSocialSchemaType,
 } from '@/lib/validators/user.profile.validator';
 
-import { updateUser } from '@/actions/user.profile.actions';
+import { getUserSocials, updateUser } from '@/actions/user.profile.actions';
 import { useToast } from '../ui/use-toast';
 
 import {
@@ -42,6 +43,7 @@ import {
 
 import Loader from '../loader';
 import { DeleteAccountDialog } from './DeleteAccountDialog';
+import { AddSocials } from './AddSocials';
 
 type Props = {
   name: string;
@@ -54,7 +56,7 @@ export const EditProfile = ({ name, email }: Props) => {
   const { toast } = useToast();
 
   const [isPending, startTransition] = useTransition();
-
+  const [socials, setSocials] = useState<userSocialSchemaType[]>([]);
   const user = session.data?.user;
   const form = useForm<UserProfileSchemaType>({
     resolver: zodResolver(UserProfileSchema),
@@ -96,6 +98,16 @@ export const EditProfile = ({ name, email }: Props) => {
       });
     }
   };
+
+  const fetchUserSocials = async () => {
+    const res = await getUserSocials();
+    if (res.status) {
+      setSocials(res.additional?.socials || []);
+    }
+  };
+  useEffect(() => {
+    fetchUserSocials();
+  }, [socials]);
 
   useEffect(() => {
     if (session.status !== 'loading' && session.status === 'unauthenticated')
@@ -180,6 +192,34 @@ export const EditProfile = ({ name, email }: Props) => {
           </div>
         </form>
       </Form>
+      <div className="flex flex-col gap-3 p-4 border rounded-md w-full">
+        <div className="flex justify-between items-center mb-3">
+          <span>Add Socials</span>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="ghost">Add</Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-md">
+              <DialogHeader>
+                <DialogTitle>Add Socials</DialogTitle>
+                <DialogDescription>
+                  Add your social media links to your profile.
+                </DialogDescription>
+              </DialogHeader>
+              <AddSocials />
+            </DialogContent>
+          </Dialog>
+        </div>
+        {socials.length > 0 ? (
+          socials.map((social, index) => (
+            <AddSocials key={index} socials={social} />
+          ))
+        ) : (
+          <div className="flex items-center justify-center w-full gap-2">
+            <span>No socials added yet</span>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
