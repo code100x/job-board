@@ -5,6 +5,7 @@ import {
   expFormSchemaType,
   projectSchemaType,
   UserProfileSchemaType,
+  userSocialSchemaType,
 } from '@/lib/validators/user.profile.validator';
 import bcryptjs from 'bcryptjs';
 import { authOptions } from '@/lib/authOptions';
@@ -317,3 +318,83 @@ export const getUserDetails = async () => {
     return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
   }
 };
+
+export const getUserSocials = async () => {
+  const auth = await getServerSession(authOptions);
+  if (!auth || !auth?.user?.id)
+    throw new ErrorHandler('Not Authorized', 'UNAUTHORIZED');
+  try {
+    const res = await prisma.user.findFirst({
+      where: {
+        id: auth.user.id,
+      },
+      select: {
+        socials: true,
+      },
+    });
+    return new SuccessResponse(
+      'Socials SuccessFully Fetched',
+      200,
+      res
+    ).serialize();
+  } catch (_error) {
+    return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
+  }
+};
+
+export const addUserSocials = withServerActionAsyncCatcher<
+  userSocialSchemaType,
+  ServerActionReturnType
+>(async (data) => {
+  const auth = await getServerSession(authOptions);
+
+  if (!auth || !auth?.user?.id)
+    throw new ErrorHandler('Not Authorized', 'UNAUTHORIZED');
+
+  try {
+    await prisma.socials.create({
+      data: {
+        ...data,
+        userId: auth.user.id,
+      },
+    });
+    return new SuccessResponse('Project updated successfully', 200).serialize();
+  } catch (_error) {
+    return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
+  }
+});
+
+export const deleteUserSocials = withServerActionAsyncCatcher<
+  { socialId: string },
+  ServerActionReturnType
+>(async ({ socialId }) => {
+  const auth = await getServerSession(authOptions);
+
+  if (!auth || !auth?.user?.id)
+    throw new ErrorHandler('Not Authorized', 'UNAUTHORIZED');
+  await prisma.socials.delete({
+    where: {
+      id: socialId,
+    },
+  });
+  return new SuccessResponse('Socials deleted successfully', 200).serialize();
+});
+
+export const updateUserSocials = withServerActionAsyncCatcher<
+  { socialId: string; data: userSocialSchemaType },
+  ServerActionReturnType
+>(async ({ socialId, data }) => {
+  const auth = await getServerSession(authOptions);
+
+  if (!auth || !auth?.user?.id)
+    throw new ErrorHandler('Not Authorized', 'UNAUTHORIZED');
+  await prisma.socials.update({
+    where: {
+      id: socialId,
+    },
+    data: {
+      ...data,
+    },
+  });
+  return new SuccessResponse('Socials updated successfully', 200).serialize();
+});
