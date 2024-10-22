@@ -402,28 +402,50 @@ export const updateJob = withServerActionAsyncCatcher<
   ).serialize();
 });
 
-export const deleteJobById = withServerActionAsyncCatcher<
+export const toggleDeleteJobById = withServerActionAsyncCatcher<
   DeleteJobByIdSchemaType,
   ServerActionReturnType<deletedJob>
 >(async (data) => {
   const result = deleteJobByIdSchema.parse(data);
   const { id } = result;
-  const deletedJob = await prisma.job.update({
+
+  // Fetch the current job's deleted status
+  const job = await prisma.job.findUnique({
+    where: {
+      id: id,
+    },
+    select: {
+      deleted: true, // Only retrieve the `deleted` field
+    },
+  });
+
+  if (!job) {
+    throw new Error('Job not found');
+  }
+
+  // Toggle the deleted status
+  const updatedJob = await prisma.job.update({
     where: {
       id: id,
     },
     data: {
-      deleted: true,
+      deleted: !job.deleted, // Toggle the deleted status
     },
   });
-  const deletedJobID = deletedJob.id;
+
+  const action = updatedJob.deleted ? 'Deleted' : 'Undeleted';
+  const deletedJobID = updatedJob.id;
+
+  // Revalidate the path after update
   revalidatePath('/manage');
-  return new SuccessResponse('Job Deleted successfully', 200, {
+
+  // Return a success response based on the action
+  return new SuccessResponse(`Job ${action} successfully`, 200, {
     deletedJobID,
   }).serialize();
 });
 
-export const approveJob = withAdminServerAction<
+export const toggleApproveJob = withAdminServerAction<
   ApproveJobSchemaType,
   ServerActionReturnType<ApprovedJobID>
 >(async (session, data) => {
@@ -431,18 +453,32 @@ export const approveJob = withAdminServerAction<
   if (!result.success) {
     throw new Error(result.error.errors.toLocaleString());
   }
+
   const { id } = result.data;
+
+  const job = await prisma.job.findUnique({
+    where: { id: id },
+    select: { isVerifiedJob: true },
+  });
+
+  if (!job) {
+    throw new Error('Job not found');
+  }
+
   await prisma.job.update({
     where: {
       id: id,
     },
     data: {
-      isVerifiedJob: true,
+      isVerifiedJob: !job.isVerifiedJob,
     },
   });
+
   revalidatePath('/manage');
-  return new SuccessResponse('Job Approved', 200, { jobId: id }).serialize();
+  const message = job.isVerifiedJob ? 'Job Unapproved' : 'Job Approved';
+  return new SuccessResponse(message, 200, { jobId: id }).serialize();
 });
+
 export async function updateExpiredJobs() {
   const currentDate = new Date();
 

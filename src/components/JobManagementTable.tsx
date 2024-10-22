@@ -6,18 +6,12 @@ import {
   TableHeader,
   TableRow,
 } from './ui/table';
-import { Edit, X } from 'lucide-react';
+import { Edit } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+
 import { getAllJobsAdditonalType } from '@/types/jobs.types';
 import { ServerActionReturnType } from '@/types/api.types';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+
 import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
 import { DEFAULT_PAGE, JOBS_PER_PAGE } from '@/config/app.config';
 import { Pagination, PaginationContent, PaginationItem } from './ui/pagination';
@@ -27,8 +21,8 @@ import {
 } from './pagination-client';
 import APP_PATHS from '@/config/path.config';
 import { PaginationPages } from './ui/paginator';
-import ApproveJobButton from './approveJobButton';
-import RemoveJobButton from './removeJobButton';
+import DeleteDialog from './DeleteDialog';
+import ToggleApproveJobButton from './ToggleApproveJobButton';
 
 type props = {
   searchParams: JobQuerySchemaType;
@@ -64,18 +58,10 @@ const JobManagementTable = ({ jobs, searchParams }: props) => {
                 <TableCell>{job?.workMode}</TableCell>
                 <TableCell>{job?.city}</TableCell>
                 <TableCell>
-                  {job.isVerifiedJob ? (
-                    job.deleted ? (
-                      <span className="bg-red-400 p-1 rounded-md text-secondary px-3 tracking-wide">
-                        Deleted
-                      </span>
-                    ) : (
-                      <span className="bg-green-400 p-1 rounded-md text-secondary px-3 tracking-wide">
-                        Approved
-                      </span>
-                    )
+                  {job.deleted ? (
+                    <Badge className="bg-red-600 text-white">Deleted</Badge>
                   ) : (
-                    <ApproveJobButton jobId={job.id} />
+                    <ToggleApproveJobButton job={job} />
                   )}
                 </TableCell>
                 <TableCell className="text-right w-full flex justify-end">
@@ -83,23 +69,7 @@ const JobManagementTable = ({ jobs, searchParams }: props) => {
                     <Edit />
                   </span>
                   <span role="button">
-                    <Dialog>
-                      <DialogTrigger>
-                        <X />
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Are you absolutely sure?</DialogTitle>
-                          <DialogDescription>
-                            This action cannot be undone. This will Delete the
-                            Selected JOB.
-                          </DialogDescription>
-                        </DialogHeader>
-                        <DialogFooter>
-                          <RemoveJobButton jobId={job.id} />
-                        </DialogFooter>
-                      </DialogContent>
-                    </Dialog>
+                    <DeleteDialog job={job} />
                   </span>
                 </TableCell>
               </TableRow>
