@@ -415,7 +415,8 @@ export const toggleDeleteJobById = withServerActionAsyncCatcher<
       id: id,
     },
     select: {
-      deleted: true, // Only retrieve the `deleted` field
+      deleted: true,
+      deletedAt: true,
     },
   });
 
@@ -423,23 +424,24 @@ export const toggleDeleteJobById = withServerActionAsyncCatcher<
     throw new Error('Job not found');
   }
 
-  // Toggle the deleted status
+  const isNowDeleted = !job.deleted;
+  const deletedAt = isNowDeleted ? new Date() : null;
+
   const updatedJob = await prisma.job.update({
     where: {
       id: id,
     },
     data: {
-      deleted: !job.deleted, // Toggle the deleted status
+      deleted: isNowDeleted,
+      deletedAt: deletedAt,
     },
   });
 
   const action = updatedJob.deleted ? 'Deleted' : 'Undeleted';
   const deletedJobID = updatedJob.id;
 
-  // Revalidate the path after update
   revalidatePath('/manage');
 
-  // Return a success response based on the action
   return new SuccessResponse(`Job ${action} successfully`, 200, {
     deletedJobID,
   }).serialize();
@@ -494,6 +496,18 @@ export async function updateExpiredJobs() {
     },
   });
 }
+export const deleteOldDeltedJobs = async () => {
+  const twoWeeksAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000);
+
+  await prisma.job.deleteMany({
+    where: {
+      deleted: true,
+      deletedAt: {
+        lte: twoWeeksAgo,
+      },
+    },
+  });
+};
 
 export async function toggleBookmarkAction(userId: string, jobId: string) {
   try {
