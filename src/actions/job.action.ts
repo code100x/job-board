@@ -135,6 +135,7 @@ export const getAllJobs = withSession<
         ? { ...filterQueries }
         : {
             isVerifiedJob: true,
+            deleted: false,
             ...filterQueries,
             expired: false,
           }),
@@ -195,6 +196,7 @@ export const getRecommendedJobs = withServerActionAsyncCatcher<
       id: { not: id },
       isVerifiedJob: true,
       expired: false,
+      deleted: false,
     },
     orderBy: {
       postedAt: 'desc',
@@ -227,6 +229,7 @@ export const getRecommendedJobs = withServerActionAsyncCatcher<
       where: {
         id: { not: id },
         expired: false,
+        deleted: false,
       },
       orderBy: {
         postedAt: 'desc',
@@ -273,7 +276,7 @@ export const getJobById = withServerActionAsyncCatcher<
   const result = JobByIdSchema.parse(data);
   const { id } = result;
   const job = await prisma.job.findFirst({
-    where: { id, expired: false },
+    where: { id, expired: false, deleted: false },
     select: {
       id: true,
       title: true,
@@ -308,8 +311,12 @@ export const getJobById = withServerActionAsyncCatcher<
 
 export const getCityFilters = async () => {
   const response = await prisma.job.findMany({
-    select: {
+    where: {
+      isVerifiedJob: true,
       expired: false,
+      deleted: false,
+    },
+    select: {
       city: true,
     },
   });
@@ -324,6 +331,7 @@ export const getRecentJobs = async () => {
     const recentJobs = await prisma.job.findMany({
       where: {
         isVerifiedJob: true,
+        deleted: false,
         expired: false,
       },
       orderBy: {
