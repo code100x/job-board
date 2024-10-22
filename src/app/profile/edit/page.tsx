@@ -1,4 +1,5 @@
 'use client';
+import { AddSocials } from '@/components/profile/AddSocials';
 import { EditProfile } from '@/components/profile/EditProfile';
 import APP_PATHS from '@/config/path.config';
 import { useSession } from 'next-auth/react';
@@ -20,6 +21,7 @@ const EditProfilePage = () => {
         <span>Edit Profile</span>
       </div>
       <EditProfile name={user?.name || ''} email={user?.email || ''} />
+      <AddSocials name={user?.name || ''} email={user?.email || ''} />
     </div>
   );
 };

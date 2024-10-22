@@ -34,7 +34,7 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="container flex max-md:flex-col md:gap-5 w-full relative">
       <Sidebar />
-      <div className="flex px-2 w-full overflow-y-auto md:max-h-[73vh] lg:h-full md:border md:rounded-xl md:pt-6 ">
+      <div className="flex px-2 w-full overflow-y-auto md:max-h-[73vh] lg:h-full md:border md:rounded-xl md:pt-6 no-scrollbar">
         {children}
       </div>
     </div>
