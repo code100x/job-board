@@ -29,8 +29,10 @@ model User {
   oauthId       String?
 
   blockedByAdmin DateTime?
- onBoard        Boolean   @default(false)
+  onBoard        Boolean   @default(false)
  bookmark           Bookmark[]  
+ companyId String?     @unique  
+  company   Company? @relation(fields: [companyId], references: [id])  
 }
 
 enum OauthProvider {
@@ -120,6 +122,14 @@ model Project {
   stack            ProjectStack @default(OTHERS)
   userId           String
   user             User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Company {
+  id               String          @id @default(cuid())
+  companyName      String
+  companyLogo      String?
+  companyBio       String
+  user             User? 
 }
 
 enum ProjectStack {
