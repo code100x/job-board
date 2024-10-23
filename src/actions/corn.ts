@@ -1,6 +1,6 @@
 // lib/cron.ts
 import cron from 'node-cron';
-import { updateExpiredJobs } from './job.action';
+import { deleteOldDeltedJobs, updateExpiredJobs } from './job.action';
 
 let cronJobInitialized = false;
 
@@ -12,6 +12,7 @@ export const startCronJob = () => {
     cron.schedule('0 0 * * *', async () => {
       try {
         await updateExpiredJobs();
+        await deleteOldDeltedJobs();
       } catch (error) {
         console.error('Error updating expired jobs:', error);
       }
