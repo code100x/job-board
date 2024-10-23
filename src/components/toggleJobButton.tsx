@@ -1,14 +1,15 @@
 'use client';
 import React from 'react';
 import { Button } from './ui/button';
-import { deleteJobById } from '@/actions/job.action';
 import { useToast } from './ui/use-toast';
+import { toggleDeleteJobById } from '@/actions/job.action';
+import { JobType } from '@/types/jobs.types';
 
-const RemoveJobButton = ({ jobId }: { jobId: string }) => {
+const ToggleDelete = ({ job }: { job: JobType }) => {
   const { toast } = useToast();
-  const handleDelete = async () => {
+  const handelToggle = async () => {
     try {
-      const result = await deleteJobById({ id: jobId });
+      const result = await toggleDeleteJobById({ id: job.id });
       if (result.status) {
         toast({ title: result.message, variant: 'default' });
       } else {
@@ -21,11 +22,11 @@ const RemoveJobButton = ({ jobId }: { jobId: string }) => {
   };
   return (
     <>
-      <Button className="mt-2" variant={'destructive'} onClick={handleDelete}>
+      <Button className="mt-2" variant={'destructive'} onClick={handelToggle}>
         Delete
       </Button>
     </>
   );
 };
 
-export default RemoveJobButton;
+export default ToggleDelete;
