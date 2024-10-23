@@ -1,17 +1,11 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { useToast } from '../ui/use-toast';
 import { signUp } from '@/actions/auth.actions';
@@ -24,27 +18,21 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { SignupSchema } from '@/lib/validators/auth.validator';
-import prisma from '@/config/prisma.config';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-
-const companySetupSchema = z.object({
-  companyName: z.string().min(1, 'Company name is required'),
-  companyWebsite: z.string().url('Invalid URL'),
-  description: z.string().min(10, 'Description must be at least 10 characters'),
-});
-
-type CompanySetupForm = z.infer<typeof companySetupSchema>;
-type SignupSchemaType = z.infer<typeof SignupSchema>;
+import {
+  CompanyInfoSchema,
+  SignupSchema,
+  SignupData,
+  CompanyInfo,
+} from '@/lib/validators/auth.validator';
 
 export const Signup = () => {
   const { toast } = useToast();
   const router = useRouter();
-  const [showCompanySetup, setShowCompanySetup] = useState(false);
   const [isHr, setIsHr] = useState(false);
 
-  const form = useForm<SignupSchemaType>({
+  const form = useForm<SignupData>({
     resolver: zodResolver(SignupSchema),
     defaultValues: {
       name: '',
@@ -54,17 +42,35 @@ export const Signup = () => {
     },
   });
 
-  const {
-    register: companySetupForm,
-    handleSubmit: handleCompanySetupSubmit,
-    formState: { errors: companySetupErrors },
-  } = useForm<CompanySetupForm>({
-    resolver: zodResolver(companySetupSchema),
+  const companyForm = useForm<CompanyInfo>({
+    resolver: zodResolver(CompanyInfoSchema),
+    defaultValues: {
+      name: '',
+      website: '',
+      description: '',
+    },
   });
 
-  async function signupHandler(data: SignupSchemaType) {
+  async function signupHandler(data: Omit<SignupData, 'companyInfo'>) {
     try {
-      const response = await signUp(data);
+      const signupData: SignupData = {
+        ...data,
+        role: isHr ? 'HR' : 'USER',
+      };
+
+      if (isHr) {
+        const companyData = companyForm.getValues();
+        if (companyData.name) {
+          signupData.companyInfo = {
+            name: companyData.name,
+            website: companyData.website,
+            description: companyData.description,
+          };
+        }
+      }
+
+      const response = await signUp(signupData);
+
       if (!response.status) {
         toast({
           title: response.message || 'Something went wrong',
@@ -75,37 +81,15 @@ export const Signup = () => {
           title: response.message || 'Signup successful! Welcome to 100xJobs!',
           variant: 'success',
         });
-        if (isHr) {
-          setShowCompanySetup(true);
-        } else {
-          router.push(APP_PATHS.HOME);
-        }
+        router.push(APP_PATHS.HOME);
       }
-    } catch {
+    } catch (error) {
       toast({
-        title: 'Something went wrong',
+        title: `something went wrong ${error}`,
         variant: 'destructive',
       });
     }
   }
-
-  const handleCompanySetup = async () => {
-    try {
-      // Save company info to the database
-      ('use server');
-      await prisma.user.update({
-        where: { email: form.getValues('email') },
-        data: { onBoard: true },
-      });
-      setShowCompanySetup(false);
-      router.push(APP_PATHS.HOME);
-    } catch (error) {
-      toast({
-        title: `Error occcured: ${error}`,
-        variant: 'destructive',
-      });
-    }
-  };
 
   return (
     <>
@@ -161,6 +145,54 @@ export const Signup = () => {
             />
             <Label htmlFor="hr-mode">I&apos;m an HR professional</Label>
           </div>
+
+          {isHr && (
+            <div className="space-y-4">
+              <FormField
+                control={companyForm.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Company Name</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Company Name" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={companyForm.control}
+                name="website"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Company Website</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="https://example.com" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={companyForm.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Company Description</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        placeholder="Tell us about your company"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          )}
+
           <Button
             type="submit"
             disabled={form.formState.isSubmitting}
@@ -170,54 +202,6 @@ export const Signup = () => {
           </Button>
         </form>
       </Form>
-
-      <Dialog open={showCompanySetup} onOpenChange={setShowCompanySetup}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Set up your company profile</DialogTitle>
-          </DialogHeader>
-          <form
-            onSubmit={handleCompanySetupSubmit(handleCompanySetup)}
-            className="space-y-4"
-          >
-            <Input
-              type="file"
-              accept="image/*"
-              placeholder="Upload Company Logo"
-            />
-            <Input
-              placeholder="Company Name"
-              {...companySetupForm('companyName')}
-            />
-            {companySetupErrors.companyName && (
-              <p className="text-red-500">
-                {companySetupErrors.companyName.message}
-              </p>
-            )}
-            <Input
-              placeholder="Company Website"
-              {...companySetupForm('companyWebsite')}
-            />
-            {companySetupErrors.companyWebsite && (
-              <p className="text-red-500">
-                {companySetupErrors.companyWebsite.message}
-              </p>
-            )}
-            <Textarea
-              placeholder="Description"
-              {...companySetupForm('description')}
-            />
-            {companySetupErrors.description && (
-              <p className="text-red-500">
-                {companySetupErrors.description.message}
-              </p>
-            )}
-            <Button type="submit" className="w-full">
-              Finish Setup
-            </Button>
-          </form>
-        </DialogContent>
-      </Dialog>
     </>
   );
 };
