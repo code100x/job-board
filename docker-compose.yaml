@@ -1,17 +1,27 @@
 services:
   app:
     build:
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
       target: development # Change this to production for prod builds (WIP)
     container_name: job-board-app
     environment:
       - DATABASE_URL=$DATABASE_URL
       - AUTH_SECRET=$AUTH_SECRET
+      - CHOKIDAR_USEPOLLING=true
+    env_file:
+      - ./.env
     ports:
       - "3000:3000"
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
+      - "5555:5555"
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /app/src
+          ignore:
+            - node_modules
+        - action: rebuild
+          path: ./package.json
     depends_on:
       db:
         condition: service_healthy
@@ -29,21 +39,10 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
       interval: 10s
       timeout: 5s
       retries: 5
-
-  prisma-studio:
-    container_name: prisma-studio
-    image: timothyjmiller/prisma-studio:latest
-    restart: unless-stopped
-    env_file:
-     - .env
-    depends_on:
-      - app
-    ports:
-      - 5555:5555
 
 volumes:
   postgres-data:
