@@ -10,12 +10,6 @@ const vapidKeys = {
   privateKey: process.env.VAPID_PRIVATE_KEY,
 };
 
-webpush.setVapidDetails(
-  'mailto:example@yourdomain.org',
-  vapidKeys.publicKey as string,
-  vapidKeys.privateKey as string
-);
-
 //Handling the db add logic for subscription
 
 export async function AddUserSubscription(subscription: string) {
@@ -116,6 +110,12 @@ export async function sendNotificationAction(
     });
 
     if (!allUser || allUser.length <= 0) throw new Error('No other user found');
+
+    webpush.setVapidDetails(
+      'mailto:example@yourdomain.org',
+      vapidKeys.publicKey as string,
+      vapidKeys.privateKey as string
+    );
 
     for (let data of allUser) {
       await webpush.sendNotification(

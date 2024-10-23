@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { trustedCompanies } from '@/lib/constant/app.constant';
-import PWAInstallButton from './PwaInstallBtn';
+
 import Link from 'next/link';
 
 const HeroSection = () => {
@@ -29,7 +29,9 @@ const HeroSection = () => {
               </p>
             </div>
             <div className="md:w-4/6 w-full flex md:flex-row flex-col  items-center justify-center my-4">
-              <PWAInstallButton />
+              <button className=" md:w-fit w-full rounded-lg py-2 px-3 bg-[#3259E8] text-sm text-[#FFFF] font-medium hover:bg-[#3e63e9]">
+                <Link href={'/jobs'}>Explore Jobs</Link>
+              </button>
               <button className="md:w-fit w-full rounded-lg py-2 px-3 border text-sm md:ml-3 md:my-0 my-3 dark:text-[#94A3B8] text-[#64748B] font-medium dark:hover:bg-slate-900 hover:bg-slate-100">
                 <Link href={'#testimonials'}>View Testimonials</Link>
               </button>
