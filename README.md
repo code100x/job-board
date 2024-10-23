@@ -42,7 +42,9 @@ Follow these steps to set up the repository locally and run it.
    # Database
    #
    DATABASE_URL="postgres://postgres:password@localhost:5432/postgres"
-
+   # 
+   # Use Below if you are using docker
+   # DATABASE_URL="postgresql://postgres:postgres@job-board-db:5432/job-board-db"
    #
    # AUTH
    #
