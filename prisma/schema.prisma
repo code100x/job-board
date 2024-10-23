@@ -29,8 +29,8 @@ model User {
   oauthId       String?
 
   blockedByAdmin DateTime?
- onBoard        Boolean   @default(false)
- bookmark           Bookmark[]  
+  onBoard        Boolean    @default(false)
+  bookmark       Bookmark[]
 }
 
 enum OauthProvider {
@@ -80,20 +80,20 @@ model Job {
   maxExperience      Int?
   isVerifiedJob      Boolean         @default(false) @map("is_verified_job")
   deleted            Boolean         @default(false)
+  deletedAt          DateTime?
   postedAt           DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
   user               User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  bookmark           Bookmark[] 
+  bookmark           Bookmark[]
 }
 
 model Bookmark {
-  id      String @id @default(uuid())
-  jobId   String 
-  userId  String
-  job     Job    @relation(fields: [jobId],references: [id],onDelete: Cascade)
-  user    User   @relation(fields: [userId],references: [id],onDelete: Cascade)
+  id     String @id @default(uuid())
+  jobId  String
+  userId String
+  job    Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
-
 
 model Experience {
   id                Int             @id @default(autoincrement())
