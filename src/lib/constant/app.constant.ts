@@ -39,7 +39,8 @@ export const adminNavbar = [
 export const userProfileNavbar = [
   { id: 1, label: 'My Account', path: APP_PATHS.PROFILE },
   { id: 2, label: 'Edit Profile', path: APP_PATHS.EDIT_PROFILE },
-  { id: 3, label: 'Account Settings', path: APP_PATHS.ACCOUNT_SETTINGS },
+  { id: 3, label: 'Saved Jobs', path: APP_PATHS.BOOKMARK },
+  { id: 4, label: 'Account Settings', path: APP_PATHS.ACCOUNT_SETTINGS },
   { id: 4, label: 'Experience', path: APP_PATHS.EXPERIENCE },
   { id: 5, label: 'Projects', path: APP_PATHS.PROJECTS },
   { id: 6, label: 'Skills', path: APP_PATHS.SKILLS },

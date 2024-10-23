@@ -313,7 +313,7 @@ html.dark.ql-toolbar.ql-snow {
   border-bottom: 1px solid #374151 !important;
 }
 
-.ql-toolbar.ql-snow{
+.ql-toolbar.ql-snow {
   border: none !important;
   border-bottom: 1px solid #a9aaac !important;
 }
@@ -406,4 +406,8 @@ html {
 }
 html {
   scroll-behavior: smooth;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }

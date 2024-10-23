@@ -1,4 +1,3 @@
-
 -- DropForeignKey
 ALTER TABLE "Job" DROP CONSTRAINT "Job_userId_fkey";
 
