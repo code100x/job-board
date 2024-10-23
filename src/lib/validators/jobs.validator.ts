@@ -17,6 +17,7 @@ export const JobPostSchema = z
       message: 'Curreny is required',
     }),
     skills: z.array(z.string()).optional(),
+    companyId: z.string(),
     category: z.string(),
     companyEmail: z.string().email('Invalid email').min(1, 'Email is required'),
     companyBio: z.string().min(1, 'Company Bio is required'),
@@ -30,7 +31,7 @@ export const JobPostSchema = z
       .number({ message: 'Max salary must be a number' })
       .nonnegative()
       .optional(),
-    hasExperiencerange: z.boolean(),
+    hasExperienceRange: z.boolean(),
     minExperience: z.coerce
       .number({ message: 'Min Experience must be a number' })
       .nonnegative()
@@ -90,7 +91,7 @@ export const JobPostSchema = z
       }
     }
 
-    if (data.hasExperiencerange) {
+    if (data.hasExperienceRange) {
       if (!data.minExperience) {
         return ctx.addIssue({
           message: 'Minimum Experience is required ',

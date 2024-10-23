@@ -68,7 +68,8 @@ export const createJob = withSession<
     workMode,
     description,
     hasSalaryRange,
-    hasExperiencerange,
+    hasExperienceRange,
+    companyId,
     hasExpiryDate,
     expiryDate,
     maxSalary,
@@ -81,7 +82,8 @@ export const createJob = withSession<
       userId: auth.user.id,
       title,
       description,
-      hasExperiencerange,
+      hasExperienceRange,
+      companyId,
       minExperience,
       expiryDate,
       hasExpiryDate,
@@ -148,7 +150,7 @@ export const getAllJobs = withSession<
       companyName: true,
       city: true,
       companyBio: true,
-      hasExperiencerange: true,
+      hasExperienceRange: true,
       minExperience: true,
       maxExperience: true,
       hasExpiryDate: true,
@@ -288,7 +290,7 @@ export const getJobById = withServerActionAsyncCatcher<
       companyLogo: true,
       category: true,
       city: true,
-      hasExperiencerange: true,
+      hasExperienceRange: true,
       expiryDate: true,
       hasExpiryDate: true,
       minExperience: true,
@@ -416,7 +418,7 @@ export const toggleDeleteJobById = withServerActionAsyncCatcher<
     },
     select: {
       deleted: true,
-      deletedAt: true,
+      //   deletedAt: true,
     },
   });
 
@@ -425,7 +427,7 @@ export const toggleDeleteJobById = withServerActionAsyncCatcher<
   }
 
   const isNowDeleted = !job.deleted;
-  const deletedAt = isNowDeleted ? new Date() : null;
+  //   const deletedAt = isNowDeleted ? new Date() : null;
 
   const updatedJob = await prisma.job.update({
     where: {
@@ -433,7 +435,7 @@ export const toggleDeleteJobById = withServerActionAsyncCatcher<
     },
     data: {
       deleted: isNowDeleted,
-      deletedAt: deletedAt,
+      //   deletedAt: deletedAt,
     },
   });
 
@@ -497,14 +499,14 @@ export async function updateExpiredJobs() {
   });
 }
 export const deleteOldDeltedJobs = async () => {
-  const twoWeeksAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000);
+  //   const twoWeeksAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000);
 
   await prisma.job.deleteMany({
     where: {
       deleted: true,
-      deletedAt: {
-        lte: twoWeeksAgo,
-      },
+      //   deletedAt: {
+      //     lte: twoWeeksAgo,
+      //   },
     },
   });
 };
@@ -589,7 +591,7 @@ export async function GetBookmarkByUserId() {
             companyName: true,
             city: true,
             companyBio: true,
-            hasExperiencerange: true,
+            hasExperienceRange: true,
             minExperience: true,
             maxExperience: true,
             hasExpiryDate: true,
