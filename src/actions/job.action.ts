@@ -31,6 +31,7 @@ import {
 } from '@/types/jobs.types';
 import { withAdminServerAction } from '@/lib/admin';
 import { revalidatePath } from 'next/cache';
+import { sendNotificationAction } from '@/actions/notification';
 
 type additional = {
   isVerifiedJob: boolean;
@@ -467,14 +468,27 @@ export const toggleApproveJob = withAdminServerAction<
     throw new Error('Job not found');
   }
 
-  await prisma.job.update({
+  const updatedJob = await prisma.job.update({
     where: {
       id: id,
     },
     data: {
       isVerifiedJob: !job.isVerifiedJob,
     },
+    select: {
+      id: true,
+      isVerifiedJob: true,
+    },
   });
+
+  if (updatedJob.isVerifiedJob) {
+    await sendNotificationAction(
+      'New Posting Alert',
+      'New Job is recently posted by 100xdevs , come fast and apply before other applys.',
+      `/jobs/${updatedJob.id}`,
+      '/main.png'
+    );
+  }
 
   revalidatePath('/manage');
   const message = job.isVerifiedJob ? 'Job Unapproved' : 'Job Approved';

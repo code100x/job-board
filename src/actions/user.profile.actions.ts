@@ -317,3 +317,28 @@ export const getUserDetails = async () => {
     return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
   }
 };
+
+export const getUserSubscription = async () => {
+  const auth = await getServerSession(authOptions);
+
+  if (!auth || !auth?.user?.id)
+    throw new ErrorHandler('Not Authorized', 'UNAUTHORIZED');
+  try {
+    const res = await prisma.notifications.findFirst({
+      where: {
+        userId: auth.user.id,
+      },
+    });
+    return {
+      status: 200,
+      message: 'Subscription Retrieved',
+      data: res,
+    };
+  } catch (error) {
+    return {
+      status: 400,
+      message: (error as Error).message,
+      data: null,
+    };
+  }
+};
