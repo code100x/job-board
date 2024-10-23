@@ -36,6 +36,7 @@ model User {
 model Company {
   id          String    @id @default(cuid())
   name        String
+  logo        String?
   website     String?
   description String?
   jobs        Job[]

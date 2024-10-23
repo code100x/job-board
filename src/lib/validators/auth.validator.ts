@@ -11,6 +11,7 @@ export const companySetupSchema = z.object({
   companyName: z.string().min(1, 'Company name is required'),
   companyWebsite: z.string().url('Invalid URL'),
   description: z.string().min(10, 'Description must be at least 10 characters'),
+  logo: z.string().optional(),
 });
 
 // Define the company info schema
@@ -18,6 +19,7 @@ export const CompanyInfoSchema = z.object({
   name: z.string(),
   website: z.string().optional(),
   description: z.string().optional(),
+  logo: z.string().optional(),
 });
 
 // Extend the base signup schema

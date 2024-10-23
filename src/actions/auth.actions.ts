@@ -72,6 +72,7 @@ export const signUp = withServerActionAsyncCatcher<
               name: _data.companyInfo.name,
               website: _data.companyInfo.website || '',
               description: _data.companyInfo.description || '',
+              logo: _data.companyInfo.logo || '',
               userId: user.id,
             },
           });
@@ -84,6 +85,7 @@ export const signUp = withServerActionAsyncCatcher<
               title: 'Company Profile',
               companyName: _data.companyInfo.name,
               companyBio: _data.companyInfo.description || '',
+              companyLogo: _data.companyInfo.logo || '',
               companyEmail: baseData.email,
               category: 'Company',
               type: 'Full_time',
@@ -91,7 +93,6 @@ export const signUp = withServerActionAsyncCatcher<
               city: '',
               address: '',
               application: '',
-              companyLogo: '',
               skills: [],
             },
           });

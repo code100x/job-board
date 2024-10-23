@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,6 +32,7 @@ export const Signup = () => {
   const { toast } = useToast();
   const router = useRouter();
   const [isHr, setIsHr] = useState(false);
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
 
   const form = useForm<SignupData>({
     resolver: zodResolver(SignupSchema),
@@ -50,6 +52,17 @@ export const Signup = () => {
       description: '',
     },
   });
+
+  const handleLogoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setLogoPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   async function signupHandler(data: Omit<SignupData, 'companyInfo'>) {
     try {
@@ -190,6 +203,28 @@ export const Signup = () => {
                   </FormItem>
                 )}
               />
+              <FormItem>
+                <FormLabel>Company Logo</FormLabel>
+                <FormControl>
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleLogoChange}
+                  />
+                </FormControl>
+                {logoPreview && (
+                  <div className="mt-2">
+                    <Image
+                      src={logoPreview}
+                      alt="Company Logo Preview"
+                      width={100}
+                      height={100}
+                      className="object-contain"
+                    />
+                  </div>
+                )}
+                <FormMessage />
+              </FormItem>
             </div>
           )}
 
