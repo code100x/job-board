@@ -6,6 +6,8 @@
   "scope": "/",
   "theme_color": "#8fff70",
   "background_color": "#191a1a",
+  "orientation": "any",
+  "display": "standalone",
   "icons": [
     {
       "src": "windows11/SmallTile.scale-100.png",
@@ -455,7 +457,5 @@
       "src": "ios/1024.png",
       "sizes": "1024x1024"
     }
-  ],
-  "orientation": "any",
-  "display": "standalone"
+  ]
 }

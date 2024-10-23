@@ -1,19 +1,12 @@
-//Registering the sw.js -- nextpwa not registering
-
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js').then((registration) =>
-    registration.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: 'cgdjg',
-    })
-  );
-}
-
 //Installing the sw.js
 
 const installEvent = () => {
-  self.addEventListener('install', () => {
-    console.log('service worker installed');
+  self.addEventListener('install', (event) => {
+    event.waitUntil(
+      caches.open('v1').then((cache) => {
+        return cache.addAll(['/', '/offline', '/manifest.json']);
+      })
+    );
   });
 };
 installEvent();
@@ -22,7 +15,7 @@ installEvent();
 
 const activateEvent = () => {
   self.addEventListener('activate', () => {
-    console.log('service worker activated');
+    return true;
   });
 };
 activateEvent();
@@ -30,12 +23,15 @@ activateEvent();
 //handling the push manager
 
 self.addEventListener('push', async (e) => {
-  const { message, body, icon } = JSON.parse(e.data.text());
+  const { message, body, icon, route } = JSON.parse(e.data.text());
 
   e.waitUntil(
     self.registration.showNotification(message, {
       body,
-      icon,
+      icon: icon || '/main.png',
+      badge: '/main.png',
+      vibrate: [100, 50, 100],
+      data: { route },
     })
   );
 });
@@ -43,8 +39,8 @@ self.addEventListener('push', async (e) => {
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
 
-  // This looks to see if the current window is already open and
-  // focuses if it is
+  const route = event.notification.data.route;
+
   event.waitUntil(
     clients
       .matchAll({
@@ -52,9 +48,11 @@ self.addEventListener('notificationclick', (event) => {
       })
       .then((clientList) => {
         for (const client of clientList) {
-          if (client.url === '/' && 'focus' in client) return client.focus();
+          if (client.url === '/' && 'focus' in client)
+            return client.focu(route ? route : '/jobs');
         }
-        if (clients.openWindow) return clients.openWindow('/');
+        if (clients.openWindow)
+          return clients.openWindow(route ? route : '/jobs');
       })
   );
 });

@@ -20,7 +20,7 @@ const satoshi = localFont({
 export const metadata: Metadata = {
   title: '100xJobs',
   description: 'Get your dream job',
-  manifest: './app/mainfest.json',
+  manifest: '/manifest.json',
   keywords: ['jobs', 'job portal', 'remote job', 'saas'],
 };
 

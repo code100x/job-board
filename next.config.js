@@ -43,8 +43,10 @@ const nextConfig = {
 const pwaConfig = withPWA({
   dest: 'public',
   register: true,
-  skipWaiting: true,
   importScripts: ['/worker.js'],
+  // disable: process.env.NODE_ENV === 'development',
+  publicExcludes: ['!noprecache/**/*'],
+  buildExcludes: [/middleware-manifest.json$/],
 });
 
 export default pwaConfig(nextConfig); // ES module export

@@ -95,24 +95,39 @@ export async function DeleteUserSubscription() {
 
 //Handling the push notification
 
-export async function sendNotificationAction() {
+export async function sendNotificationAction(
+  message: string,
+  body: string,
+  route: string,
+  icon: string
+) {
   try {
-    const data = await prisma.notifications.findFirst({
+    const user = await getServerSession(authOptions);
+    const userId = user?.user.id;
+
+    if (!userId) throw new Error('User not loggedIn');
+
+    const allUser = await prisma.notifications.findMany({
       where: {
-        userId: '1',
+        userId: {
+          not: userId,
+        },
       },
     });
 
-    if (!data) throw new Error('No user found');
+    if (!allUser || allUser.length <= 0) throw new Error('No other user found');
 
-    await webpush.sendNotification(
-      JSON.parse(data.subscription),
-      JSON.stringify({
-        message: 'Ankit',
-        // icon,
-        body: 'hello form 100x devs',
-      })
-    );
+    for (let data of allUser) {
+      await webpush.sendNotification(
+        JSON.parse(data.subscription),
+        JSON.stringify({
+          message,
+          icon,
+          body,
+          route,
+        })
+      );
+    }
 
     return {
       status: 200,

@@ -3,6 +3,7 @@ import { approveJob } from '@/actions/job.action';
 import React from 'react';
 import ApproveJobDialog from './ApproveJobDialog';
 import { useToast } from './ui/use-toast';
+import { sendNotificationAction } from '@/actions/notification';
 
 const ApproveJobButton = ({ jobId }: { jobId: string }) => {
   const { toast } = useToast();
@@ -11,6 +12,13 @@ const ApproveJobButton = ({ jobId }: { jobId: string }) => {
       const result = await approveJob({ id: jobId });
       if (result.status) {
         toast({ title: result.message, variant: 'success' });
+
+        await sendNotificationAction(
+          'New Posting Alert',
+          'New Job is recently posted by 100xdevs , come fast and apply before other applys.',
+          `/jobs/${jobId}`,
+          '/main.png'
+        );
       } else {
         toast({ variant: 'destructive', title: result.message });
       }
