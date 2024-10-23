@@ -20,21 +20,32 @@ import { cookies } from 'next/headers';
 import { SuccessResponse } from '@/lib/success';
 import { isTokenExpiredUtil } from '@/lib/utils';
 import { TokenType } from '@prisma/client';
+type ExtendedSignupType = SignupSchemaType & {
+  companyInfo?: {
+    name: string;
+    website?: string;
+    description?: string;
+  };
+};
+
 export const signUp = withServerActionAsyncCatcher<
-  SignupSchemaType,
+  ExtendedSignupType,
   ServerActionReturnType
 >(async (_data) => {
-  const data = SignupSchema.parse(_data);
+  const baseData = SignupSchema.parse(_data);
 
   const userExist = await prisma.user.findFirst({
-    where: { email: data.email },
+    where: { email: baseData.email },
   });
 
   if (userExist)
-    throw new ErrorHandler('User with this email already exist', 'BAD_REQUEST');
+    throw new ErrorHandler(
+      'User with this email already exists',
+      'BAD_REQUEST'
+    );
 
   const hashedPassword = await bcryptjs.hash(
-    data.password,
+    baseData.password,
     PASSWORD_HASH_SALT_ROUNDS
   );
 
@@ -42,8 +53,50 @@ export const signUp = withServerActionAsyncCatcher<
     await prisma.$transaction(
       async (txn) => {
         const user = await txn.user.create({
-          data: { ...data, password: hashedPassword },
+          data: {
+            name: baseData.name,
+            email: baseData.email,
+            password: hashedPassword,
+            role: baseData.role,
+            isVerified: false,
+            skills: [],
+            onBoard: false,
+          },
         });
+
+        // If HR role and company info provided, create company-related data
+        if (baseData.role === 'HR' && _data.companyInfo) {
+          // Create the company entry
+          const company = await txn.company.create({
+            data: {
+              name: _data.companyInfo.name,
+              website: _data.companyInfo.website || '',
+              description: _data.companyInfo.description || '',
+              logo: _data.companyInfo.logo || '',
+              userId: user.id,
+            },
+          });
+
+          // Create a job entry associated with the company
+          await txn.job.create({
+            data: {
+              userId: user.id,
+              companyId: company.id, // Linking the job with the company
+              title: 'Company Profile',
+              companyName: _data.companyInfo.name,
+              companyBio: _data.companyInfo.description || '',
+              companyLogo: _data.companyInfo.logo || '',
+              companyEmail: baseData.email,
+              category: 'Company',
+              type: 'Full_time',
+              workMode: 'office',
+              city: '',
+              address: '',
+              application: '',
+              skills: [],
+            },
+          });
+        }
 
         const verificationToken = await txn.verificationToken.create({
           data: {
@@ -55,13 +108,13 @@ export const signUp = withServerActionAsyncCatcher<
 
         const confirmationLink = `${process.env.NEXTAUTH_URL}${APP_PATHS.VERIFY_EMAIL}/${verificationToken.token}`;
         await sendConfirmationEmail(
-          data.email,
+          baseData.email,
           confirmationLink,
           'EMAIL_VERIFICATION'
         );
 
         cookies().set(PENDING_EMAIL_VERIFICATION_USER_ID, user.id, {
-          maxAge: 5 * 60, // 5 minutes
+          maxAge: 5 * 60,
           httpOnly: true,
           secure: process.env.NODE_ENV === 'production',
         });
@@ -78,7 +131,8 @@ export const signUp = withServerActionAsyncCatcher<
       'User registered successfully. A verification link has been sent to your email.',
       201
     ).serialize();
-  } catch (_err) {
+  } catch (err) {
+    console.error('Signup error:', err);
     throw new ErrorHandler(
       'Registration Failed, please try again!',
       'INTERNAL_SERVER_ERROR'
