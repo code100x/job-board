@@ -20,8 +20,6 @@ import { cookies } from 'next/headers';
 import { SuccessResponse } from '@/lib/success';
 import { isTokenExpiredUtil } from '@/lib/utils';
 import { TokenType } from '@prisma/client';
-// Extended signup type to include company info
-// Extended signup type to include company info
 type ExtendedSignupType = SignupSchemaType & {
   companyInfo?: {
     name: string;
@@ -34,7 +32,6 @@ export const signUp = withServerActionAsyncCatcher<
   ExtendedSignupType,
   ServerActionReturnType
 >(async (_data) => {
-  // Parse and validate the signup data
   const baseData = SignupSchema.parse(_data);
 
   const userExist = await prisma.user.findFirst({
@@ -55,7 +52,6 @@ export const signUp = withServerActionAsyncCatcher<
   try {
     await prisma.$transaction(
       async (txn) => {
-        // Create the user
         const user = await txn.user.create({
           data: {
             name: baseData.name,
@@ -86,7 +82,7 @@ export const signUp = withServerActionAsyncCatcher<
               userId: user.id,
               companyId: company.id, // Linking the job with the company
               title: 'Company Profile',
-              companyName: _data.companyInfo.name, // You can remove this if unnecessary now
+              companyName: _data.companyInfo.name,
               companyBio: _data.companyInfo.description || '',
               companyEmail: baseData.email,
               category: 'Company',
@@ -101,7 +97,6 @@ export const signUp = withServerActionAsyncCatcher<
           });
         }
 
-        // Create verification token
         const verificationToken = await txn.verificationToken.create({
           data: {
             identifier: user.id,
