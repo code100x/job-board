@@ -201,7 +201,7 @@ async function seedJobs() {
             application: 'https://x.com/100xDevs',
             city: faker.location.city(),
             address: faker.location.city(),
-            hasExperienceRange: j.hasExperienceRange,
+            hasExperiencerange: j.hasExperienceRange,
             hasExpiryDate: j.hasExpiryDate,
             expiryDate: j.expiryDate,
             minExperience: j.minExperience,

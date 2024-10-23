@@ -31,7 +31,7 @@ export const JobPostSchema = z
       .number({ message: 'Max salary must be a number' })
       .nonnegative()
       .optional(),
-    hasExperienceRange: z.boolean(),
+    hasExperiencerange: z.boolean(),
     minExperience: z.coerce
       .number({ message: 'Min Experience must be a number' })
       .nonnegative()
@@ -91,7 +91,7 @@ export const JobPostSchema = z
       }
     }
 
-    if (data.hasExperienceRange) {
+    if (data.hasExperiencerange) {
       if (!data.minExperience) {
         return ctx.addIssue({
           message: 'Minimum Experience is required ',

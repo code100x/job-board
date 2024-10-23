@@ -86,7 +86,7 @@ model Job {
   hasSalaryRange     Boolean         @default(false) @map("has_salary_range")
   minSalary          Int?
   maxSalary          Int?
-  hasExperienceRange Boolean         @default(false) @map("has_experience_range")
+  hasExperiencerange Boolean         @default(false) @map("has_experience_range")
   minExperience      Int?
   maxExperience      Int?
   isVerifiedJob      Boolean         @default(false) @map("is_verified_job")
@@ -123,13 +123,25 @@ model Experience {
 }
 
 model Project {
-  id              Int @id @default(autoincrement())
-  projectName     String
-  projectSummary  String
-  projectLiveLink String?
-  projectGithub   String
-  userId          String
-  user            User @relation(fields: [userId], references: [id])
+  id               Int          @id @default(autoincrement())
+  projectName      String
+  projectThumbnail String?
+  projectSummary   String
+  projectLiveLink  String?
+  projectGithub    String
+  stack            ProjectStack @default(OTHERS)
+  userId           String
+  user             User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum ProjectStack {
+  GO
+  PYTHON
+  MERN
+  NEXTJS
+  AI_GPT_APIS
+  SPRINGBOOT
+  OTHERS
 }
 
 enum Currency {
