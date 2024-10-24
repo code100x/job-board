@@ -13,7 +13,13 @@ const prisma = new PrismaClient();
 
 const users = [
   { id: '1', name: 'Jack', email: 'user@gmail.com' },
-  { id: '2', name: 'Admin', email: 'admin@gmail.com', role: Role.ADMIN, onBoard: true },
+  {
+    id: '2',
+    name: 'Admin',
+    email: 'admin@gmail.com',
+    role: Role.ADMIN,
+    onBoard: true,
+  },
   { id: '3', name: 'Hr', email: 'hr@gmail.com', role: Role.HR },
 ];
 
@@ -63,7 +69,6 @@ let jobs = [
     minSalary: null,
     maxSalary: null,
     isVerifiedJob: false,
-
   },
   {
     id: '3',
@@ -87,7 +92,7 @@ let jobs = [
     minSalary: 90000,
     maxSalary: 120000,
     isVerifiedJob: true,
-    deleted: true
+    deleted: true,
   },
   {
     id: '4',
@@ -136,7 +141,7 @@ let jobs = [
     minSalary: 110000,
     maxSalary: 150000,
     isVerifiedJob: true,
-    deleted: true
+    deleted: true,
   },
   {
     id: '6',
@@ -162,7 +167,6 @@ let jobs = [
     minSalary: 80000,
     maxSalary: 100000,
     isVerifiedJob: false,
-
   },
   {
     id: '7',
@@ -187,8 +191,7 @@ let jobs = [
     minSalary: 70000,
     maxSalary: 90000,
     isVerifiedJob: false,
-    delted: true
-
+    delted: true,
   },
   {
     id: '8',
@@ -213,8 +216,7 @@ let jobs = [
     minSalary: null,
     maxSalary: null,
     isVerifiedJob: true,
-    deleted: true
-
+    deleted: true,
   },
   {
     id: '9',
@@ -237,7 +239,6 @@ let jobs = [
     minSalary: 100000,
     maxSalary: 130000,
     isVerifiedJob: true,
-
   },
   {
     id: '10',
@@ -262,7 +263,6 @@ let jobs = [
     minSalary: 75000,
     maxSalary: 95000,
     isVerifiedJob: false,
-
   },
   {
     id: '11',
@@ -284,7 +284,6 @@ let jobs = [
     minSalary: 25000,
     maxSalary: 50000,
     isVerifiedJob: true,
-
   },
   {
     id: '12',
@@ -309,7 +308,7 @@ let jobs = [
     minSalary: null,
     maxSalary: null,
     isVerifiedJob: true,
-    delted: false
+    delted: false,
   },
 ];
 
