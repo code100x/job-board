@@ -20,6 +20,6 @@ const APP_PATHS = {
   RESUME: '/profile/resume',
   EXPERIENCE: '/profile/experience',
   SKILLS: '/profile/skills',
-  ADD_HR: '/add-hr',
+  ADD_HR: '/hr/add-hr',
 };
 export default APP_PATHS;
