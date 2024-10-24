@@ -25,11 +25,7 @@ const ManageJob = async ({
     redirect('/jobs');
   }
   const searchParamss = parsedData.data;
-  return (
-    <div className="container">
-      <JobManagement searchParams={searchParamss} />
-    </div>
-  );
+  return <JobManagement searchParams={searchParamss} />;
 };
 
 export default ManageJob;
