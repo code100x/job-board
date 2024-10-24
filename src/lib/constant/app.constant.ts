@@ -7,7 +7,6 @@ import google from '../../../public/google.svg';
 import medium from '../../../public/medium.svg';
 import framer from '../../../public/framer.svg';
 import coinbase from '../../../public/coinbase.svg';
-
 export const GITHUB_REPO = 'https://github.com/code100x/job-board';
 
 export const nonUserNavbar = [
