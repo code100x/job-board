@@ -13,7 +13,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from './ui/dialog';
-import { ArchiveRestore, Trash } from 'lucide-react';
+import { ArchiveRestore, Trash2 } from 'lucide-react';
 
 const JobDialog = ({ job }: { job: JobType }) => {
   const [dialogOpen, setDialogOpen] = useState(false); // State to manage dialog visibility
@@ -42,7 +42,9 @@ const JobDialog = ({ job }: { job: JobType }) => {
             role="button"
             onClick={() => setDialogOpen(true)}
           >
-            <ArchiveRestore /> {/* Icon for restoring the job */}
+            <Button variant="ghost" size="icon">
+              <ArchiveRestore className="h-7 w-5 text-green-500" />
+            </Button>
           </span>
         ) : (
           <span
@@ -50,7 +52,9 @@ const JobDialog = ({ job }: { job: JobType }) => {
             role="button"
             onClick={() => setDialogOpen(true)}
           >
-            <Trash /> {/* Icon for deleting the job */}
+            <Button variant="ghost" size="icon">
+              <Trash2 className="h-7 w-5 text-red-500" />
+            </Button>
           </span>
         )}
       </DialogTrigger>
