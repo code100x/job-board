@@ -70,7 +70,7 @@ const JobManagementTable = ({ jobs, searchParams }: props) => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4">
-            <Select className="w-full sm:w-auto">
+            <Select>
               <SelectTrigger className="border-gray-800 dark:border-gray-600 text-gray-900 dark:bg-gray-800 dark:text-gray-100">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
@@ -82,7 +82,7 @@ const JobManagementTable = ({ jobs, searchParams }: props) => {
               </SelectContent>
             </Select>
 
-            <Select className="w-full sm:w-auto">
+            <Select>
               <SelectTrigger className="dark:bg-gray-800 dark:text-gray-100 border-gray-800 dark:border-gray-600 text-gray-900">
                 <SelectValue placeholder="Latest Jobs" />
               </SelectTrigger>
