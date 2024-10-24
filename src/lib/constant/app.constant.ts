@@ -16,8 +16,13 @@ export const nonUserNavbar = [
 ];
 
 export const userNavbar = [
-  { id: 1, label: 'Explore jobs', path: APP_PATHS.JOBS },
-  { id: 2, label: 'Contact us', path: APP_PATHS.CONTACT_US },
+  { id: 1, label: 'Manage jobs', path: APP_PATHS.ADMIN_MANAGE_JOBS },
+  {
+    id: 2,
+    label: 'Manage Recruiters',
+    path: APP_PATHS.ADMIN_MANAGE_RECRUITERS,
+  },
+  { id: 2, label: 'Payment History', path: APP_PATHS.ADMIN_PAYMENT_HISTORY },
 ];
 export const adminNavbar = [
   { id: 1, label: 'Explore jobs', path: APP_PATHS.JOBS },
