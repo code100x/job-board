@@ -1,9 +1,9 @@
 import { getUserExperience } from '@/actions/user.profile.actions';
-import { useEffect, useState } from 'react';
-import { useToast } from '../ui/use-toast';
+import icons from '@/lib/icons';
 import { Experience } from '@prisma/client';
 import _ from 'lodash';
-import icons from '@/lib/icons';
+import { useEffect, useState } from 'react';
+import { useToast } from '../ui/use-toast';
 export function UserExperience() {
   const { toast } = useToast();
   const [experiences, setExperiences] = useState<Experience[] | undefined>();
@@ -41,7 +41,7 @@ export function UserExperience() {
   }
 
   return (
-    <div className="space-y-2 mb-2">
+    <div className="space-y-2 mb-2 ">
       {experiences.map((item: Experience) => (
         <div
           key={item.id}

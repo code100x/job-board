@@ -79,7 +79,7 @@ export const AddExperience = () => {
   const WatchCurrentWorkStatus = form.watch('currentWorkStatus');
 
   return (
-    <div className="p-2 max-w-md ">
+    <div className="p-2 max-w-md  ">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
