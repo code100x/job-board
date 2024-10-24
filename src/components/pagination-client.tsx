@@ -19,9 +19,9 @@ const PaginationPreviousButton = ({
           page: (currentPage - PAGE_INCREMENT).toString(),
         })
       }
+      className=" border dark:bg-slate-400 dark:bg-opacity-5 dark:text-white text-black bg-slate-600 bg-opacity-15   "
       aria-disabled={currentPage - PAGE_INCREMENT < PAGE_INCREMENT}
       role="button"
-      className="aria-disabled:pointer-events-none aria-disabled:text-gray-400 dark:bg-neutral-900 rounded-full bg-neutral-100"
     />
   );
 };
@@ -43,8 +43,8 @@ const PaginationNextButton = ({
           page: (currentPage + PAGE_INCREMENT).toString(),
         })
       }
+      className=" border dark:bg-slate-400 dark:bg-opacity-5 dark:text-white text-black bg-slate-600 bg-opacity-15"
       aria-disabled={currentPage > totalPages - PAGE_INCREMENT}
-      className="aria-disabled:pointer-events-none aria-disabled:text-gray-400 dark:bg-neutral-900 rounded-full bg-neutral-100"
     />
   );
 };

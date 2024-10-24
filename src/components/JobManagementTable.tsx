@@ -1,5 +1,3 @@
-'use client';
-import { useState, useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -41,51 +39,13 @@ type props = {
 };
 
 const JobManagementTable = ({ jobs, searchParams }: props) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
-  const [sortOrder, setSortOrder] = useState('latest');
-  const [filteredJobs, setFilteredJobs] = useState(jobs.additional.jobs || []);
+  // const [searchTerm, setSearchTerm] = useState('');
+  // const [statusFilter, setStatusFilter] = useState('');
+  // const [sortOrder, setSortOrder] = useState('latest');
 
-  useEffect(() => {
-    let filtered = jobs.additional?.jobs || [];
-
-    // Filter by search term (company or title)
-    if (searchTerm) {
-      filtered = filtered.filter(
-        (job) =>
-          job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          job.companyName.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    // Filter by status
-    if (statusFilter) {
-      filtered = filtered.filter((job) => {
-        if (statusFilter === 'active') return !job.expired && !job.deleted;
-        if (statusFilter === 'closed') return job.expired;
-        if (statusFilter === 'deleted') return job.deleted;
-        return true;
-      });
-    }
-
-    // Sort jobs: Sort by title alphabetically
-
-    // Additional sort options if needed
-    if (sortOrder === 'latest') {
-      filtered.sort(
-        (a, b) =>
-          new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime()
-      );
-    } else if (sortOrder === 'oldest') {
-      filtered.sort(
-        (a, b) =>
-          new Date(a.postedAt).getTime() - new Date(b.postedAt).getTime()
-      );
-    }
-
-    // filtered.sort((a, b) => a.title.localeCompare(b.title));
-    setFilteredJobs(filtered);
-  }, [searchTerm, statusFilter, sortOrder, jobs]);
+  if (!jobs.status) {
+    return <div>Error {jobs.message}</div>;
+  }
 
   const totalPages =
     Math.ceil((jobs.additional?.totalJobs || 0) / JOBS_PER_PAGE) ||
@@ -94,33 +54,30 @@ const JobManagementTable = ({ jobs, searchParams }: props) => {
 
   return (
     <>
-      <div className="min-h-screen w-4/5 mx-auto text-gray-100 p-8">
+      <div className="min-h-screen w-4/5 mx-auto p-8  text-gray-900 dark:text-gray-100">
         <div className="flex justify-between mb-6">
           <h1 className="text-2xl font-bold mb-6">Manage Jobs</h1>
           <Link href={'/create'}>
             <Button className="display-inline-flex">
-              <Plus className="mr-2" /> Create Job
+              <Plus className="mr-2" /> Post New Job
             </Button>
           </Link>
         </div>
         <div className="flex justify-between mb-6">
           {/* Search Input */}
-
           <div className="relative w-1/3">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-400" />
             <Input
-              className="pl-10 border-gray-800 text-gray-100 placeholder-gray-400"
+              className="pl-10 border-gray-800 dark:border-gray-600 text-gray-900 dark:bg-gray-800 dark:text-gray-100 placeholder-gray-400"
               placeholder="Search jobs by company or title...."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
 
           {/* Filters */}
           <div className="flex gap-4">
             {/* Status Filter */}
-            <Select onValueChange={(value) => setStatusFilter(value)}>
-              <SelectTrigger className="w-[180px] border-gray-800 text-gray-100">
+            <Select>
+              <SelectTrigger className=" border-gray-800 dark:border-gray-600 text-gray-900 dark:bg-gray-800 dark:text-gray-100">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
@@ -132,8 +89,8 @@ const JobManagementTable = ({ jobs, searchParams }: props) => {
             </Select>
 
             {/* Sort Order */}
-            <Select onValueChange={(value) => setSortOrder(value)}>
-              <SelectTrigger className="w-[180px] bg-gray-900 border-gray-800 text-gray-100">
+            <Select>
+              <SelectTrigger className="  dark:bg-gray-800 dark:text-gray-100 border-gray-800 dark:border-gray-600 text-gray-900 ">
                 <SelectValue placeholder="Latest Jobs" />
               </SelectTrigger>
               <SelectContent>
@@ -145,9 +102,9 @@ const JobManagementTable = ({ jobs, searchParams }: props) => {
         </div>
 
         {/* Jobs Table */}
-        <div className="rounded-md border overflow-hidden">
+        <div className="rounded-md border overflow-hidden dark:border-gray-600">
           <Table>
-            <TableHeader className="bg-gray-900 border-b border-gray-800">
+            <TableHeader className="bg-gray-100  dark:bg-gray-800 border-b border-gray-800 dark:border-gray-600">
               <TableRow>
                 <TableHead>Job Title</TableHead>
                 <TableHead>Company Name</TableHead>
@@ -160,83 +117,78 @@ const JobManagementTable = ({ jobs, searchParams }: props) => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredJobs.length ? (
-                filteredJobs.map((job) => (
-                  <TableRow key={job.id}>
-                    <TableCell className="px-2 py-2">{job.title}</TableCell>
-                    <TableCell className="px-2 py-2">
-                      {job.companyName}
-                    </TableCell>
-                    <TableCell className="px-2 py-2">{job.category}</TableCell>
-                    <TableCell className="px-2 py-2">{job.type}</TableCell>
-                    <TableCell className="px-2 py-2">
-                      {new Date(job.postedAt).toLocaleDateString()}
-                    </TableCell>
-                    <TableCell className="px-2 py-2">
-                      <span
-                        className={`px-2 py-2 rounded-full text-xs ${
-                          job.deleted
-                            ? 'bg-red-500 bg-opacity-40 text-red-200'
-                            : !job.expired
-                              ? 'bg-green-900 bg-opacity-30 text-green-300'
-                              : 'bg-yellow-900 bg-opacity-30 text-yellow-300'
-                        }`}
-                      >
-                        {job.deleted
-                          ? 'Deleted'
-                          : job.expired
-                            ? 'Closed'
-                            : 'Active'}
-                      </span>
-                    </TableCell>
-                    <TableCell className="px-2 py-2">
-                      <ToggleApproveJobButton job={job} />
-                    </TableCell>
-                    <TableCell className="px-2 py-2">
-                      <DeleteDialog job={job} />
-                    </TableCell>
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={8} className="text-center py-4">
-                    No jobs found.
+              {jobs.additional?.jobs.map((job) => (
+                <TableRow key={job.id}>
+                  <TableCell className="px-2 py-2">{job.title}</TableCell>
+                  <TableCell className="px-2 py-2">{job.companyName}</TableCell>
+                  <TableCell className="px-2 py-2">{job.category}</TableCell>
+                  <TableCell className="px-2 py-2">{job.type}</TableCell>
+                  <TableCell className="px-2 py-2">
+                    {new Date(job.postedAt).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell className="px-2 py-2">
+                    <span
+                      className={`px-2 py-2 rounded-full text-xs font-bold 
+                                                  ${
+                                                    job.deleted
+                                                      ? 'bg-red-300 dark:bg-red-600 dark:bg-opacity-30 bg-opacity-30 text-red-700 dark:text-red-200'
+                                                      : job.expired
+                                                        ? 'bg-yellow-100 dark:bg-yellow-600 bg-opacity-50 dark:bg-opacity-30 text-yellow-700 dark:text-yellow-200'
+                                                        : 'bg-green-100 dark:bg-green-600 bg-opacity-50 dark:bg-opacity-30 text-green-700 dark:text-green-200'
+                                                  }`}
+                    >
+                      {job.deleted
+                        ? 'Deleted'
+                        : job.expired
+                          ? 'Closed'
+                          : 'Active'}
+                    </span>
+                  </TableCell>
+                  <TableCell className="px-2 py-2">
+                    <ToggleApproveJobButton job={job} />
+                  </TableCell>
+                  <TableCell className="px-2 py-2">
+                    <DeleteDialog job={job} />
                   </TableCell>
                 </TableRow>
-              )}
+              ))}
             </TableBody>
           </Table>
         </div>
         <div className=" mt-6">
-          <Pagination>
-            <PaginationContent>
-              {totalPages ? (
-                <PaginationItem>
-                  <PaginationPreviousButton
-                    searchParams={searchParams}
-                    currentPage={currentPage}
-                    baseUrl={APP_PATHS.JOBS}
-                  />
-                </PaginationItem>
-              ) : null}
-              <PaginationPages
-                searchParams={searchParams}
-                currentPage={currentPage}
-                totalPages={totalPages}
-                baseUrl={APP_PATHS.JOBS}
-              />
-              {totalPages ? (
-                <PaginationItem>
-                  <PaginationNextButton
+          <div className="mt-6 flex justify-start">
+            <div className="ml-8">
+              <Pagination>
+                <PaginationContent>
+                  {totalPages ? (
+                    <PaginationItem>
+                      <PaginationPreviousButton
+                        searchParams={searchParams}
+                        currentPage={currentPage}
+                        baseUrl={APP_PATHS.JOBS}
+                      />
+                    </PaginationItem>
+                  ) : null}
+                  <PaginationPages
                     searchParams={searchParams}
                     currentPage={currentPage}
                     totalPages={totalPages}
                     baseUrl={APP_PATHS.JOBS}
                   />
-                </PaginationItem>
-              ) : null}
-            </PaginationContent>
-          </Pagination>
+                  {totalPages ? (
+                    <PaginationItem>
+                      <PaginationNextButton
+                        searchParams={searchParams}
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        baseUrl={APP_PATHS.JOBS}
+                      />
+                    </PaginationItem>
+                  ) : null}
+                </PaginationContent>
+              </Pagination>
+            </div>
+          </div>
         </div>
       </div>
     </>
