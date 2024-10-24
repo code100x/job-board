@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -7,8 +6,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Twitter, Linkedin, Share2 } from 'lucide-react';
 import { JobType } from '@/types/jobs.types';
+import { Linkedin, Share2, Twitter } from 'lucide-react';
+import React from 'react';
 
 interface ShareOption {
   name: string;
@@ -70,7 +70,7 @@ export const ShareJobDialog = ({ job }: { job: JobType }) => {
           Share Job <Share2 size={16} />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="  w-4/5 sm:w-[400px]  rounded-2xl ">
         <DialogHeader>
           <DialogTitle>Share Job</DialogTitle>
         </DialogHeader>

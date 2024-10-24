@@ -26,7 +26,7 @@ export default function AccountProjectPage() {
         <span>Projects</span>
         <Dialog>
           <DialogTrigger>Add more</DialogTrigger>
-          <DialogContent className="max-w-md max-h-[90vh] flex flex-col p-0">
+          <DialogContent className="w-4/5 sm:w-[400px] max-h-[90vh] flex flex-col p-0 rounded-xl">
             <DialogHeader className="p-6 pb-2">
               <DialogTitle>Add Project</DialogTitle>
             </DialogHeader>
