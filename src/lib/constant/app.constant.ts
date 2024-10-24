@@ -7,7 +7,6 @@ import google from '../../../public/google.svg';
 import medium from '../../../public/medium.svg';
 import framer from '../../../public/framer.svg';
 import coinbase from '../../../public/coinbase.svg';
-
 export const GITHUB_REPO = 'https://github.com/code100x/job-board';
 
 export const nonUserNavbar = [
@@ -33,6 +32,13 @@ export const adminNavbar = [
     label: 'Post a job',
     path: APP_PATHS.POST_JOB,
     roleRequired: ['ADMIN', 'HR'],
+    icon: PackageSearch,
+  },
+  {
+    id: 4,
+    label: 'Add Hr',
+    path: APP_PATHS.ADD_HR,
+    roleRequired: ['ADMIN'],
     icon: PackageSearch,
   },
 ];
