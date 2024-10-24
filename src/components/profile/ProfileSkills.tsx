@@ -2,14 +2,9 @@
 import { Info } from 'lucide-react';
 import React, { useState } from 'react';
 import { Button } from '../ui/button';
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from '@/components/ui/sheet';
-import { AddSkills } from '../user-multistep-form/add-skills-form';
+import SheetWrapper from './sheets/SheetWrapper';
+import { SHEETS } from '@/lib/constant/profile.constant';
+import { SkillsForm } from './forms/SkillsForm';
 
 const ProfileSkills = () => {
   const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
@@ -37,20 +32,14 @@ const ProfileSkills = () => {
           Add your skills
         </Button>
       </div>
-      <Sheet open={isSheetOpen} onOpenChange={handleClose}>
-        <SheetContent className="flex flex-col pb-0">
-          <SheetHeader>
-            <SheetTitle className="text-2xl">Add Your Skills</SheetTitle>
-            <SheetDescription>
-              Showcase your strongest skills to make your profile stand out to
-              recruiters.
-            </SheetDescription>
-          </SheetHeader>
-          <div className="mt-5 flex-1 relative">
-            <AddSkills />
-          </div>
-        </SheetContent>
-      </Sheet>
+      <SheetWrapper
+        isOpen={isSheetOpen}
+        handleClose={handleClose}
+        title={SHEETS.skills.title}
+        description={SHEETS.skills.description}
+      >
+        <SkillsForm handleClose={handleClose} />
+      </SheetWrapper>
     </>
   );
 };
