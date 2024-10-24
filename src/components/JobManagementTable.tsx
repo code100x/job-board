@@ -39,10 +39,6 @@ type props = {
 };
 
 const JobManagementTable = ({ jobs, searchParams }: props) => {
-  // const [searchTerm, setSearchTerm] = useState('');
-  // const [statusFilter, setStatusFilter] = useState('');
-  // const [sortOrder, setSortOrder] = useState('latest');
-
   if (!jobs.status) {
     return <div>Error {jobs.message}</div>;
   }
@@ -54,18 +50,18 @@ const JobManagementTable = ({ jobs, searchParams }: props) => {
 
   return (
     <>
-      <div className="min-h-screen w-4/5 mx-auto p-8  text-gray-900 dark:text-gray-100">
-        <div className="flex justify-between mb-6">
-          <h1 className="text-2xl font-bold mb-6">Manage Jobs</h1>
+      <div className="min-h-screen w-full max-w-7xl mx-auto p-4 sm:p-8 text-gray-900 dark:text-gray-100">
+        <div className="flex flex-col sm:flex-row justify-between mb-6">
+          <h1 className="text-2xl font-bold mb-4 sm:mb-0">Manage Jobs</h1>
           <Link href={'/create'}>
-            <Button className="display-inline-flex">
+            <Button className="flex items-center">
               <Plus className="mr-2" /> Post New Job
             </Button>
           </Link>
         </div>
-        <div className="flex justify-between mb-6">
-          {/* Search Input */}
-          <div className="relative w-1/3">
+
+        <div className="flex flex-col sm:flex-row justify-between mb-6">
+          <div className="relative w-full sm:w-1/3 mb-4 sm:mb-0">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-400" />
             <Input
               className="pl-10 border-gray-800 dark:border-gray-600 text-gray-900 dark:bg-gray-800 dark:text-gray-100 placeholder-gray-400"
@@ -73,11 +69,9 @@ const JobManagementTable = ({ jobs, searchParams }: props) => {
             />
           </div>
 
-          {/* Filters */}
-          <div className="flex gap-4">
-            {/* Status Filter */}
-            <Select>
-              <SelectTrigger className=" border-gray-800 dark:border-gray-600 text-gray-900 dark:bg-gray-800 dark:text-gray-100">
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Select className="w-full sm:w-auto">
+              <SelectTrigger className="border-gray-800 dark:border-gray-600 text-gray-900 dark:bg-gray-800 dark:text-gray-100">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
@@ -88,9 +82,8 @@ const JobManagementTable = ({ jobs, searchParams }: props) => {
               </SelectContent>
             </Select>
 
-            {/* Sort Order */}
-            <Select>
-              <SelectTrigger className="  dark:bg-gray-800 dark:text-gray-100 border-gray-800 dark:border-gray-600 text-gray-900 ">
+            <Select className="w-full sm:w-auto">
+              <SelectTrigger className="dark:bg-gray-800 dark:text-gray-100 border-gray-800 dark:border-gray-600 text-gray-900">
                 <SelectValue placeholder="Latest Jobs" />
               </SelectTrigger>
               <SelectContent>
@@ -101,10 +94,9 @@ const JobManagementTable = ({ jobs, searchParams }: props) => {
           </div>
         </div>
 
-        {/* Jobs Table */}
         <div className="rounded-md border overflow-hidden dark:border-gray-600">
           <Table>
-            <TableHeader className="bg-gray-100  dark:bg-gray-800 border-b border-gray-800 dark:border-gray-600">
+            <TableHeader className="bg-gray-100 dark:bg-gray-800 border-b border-gray-800 dark:border-gray-600">
               <TableRow>
                 <TableHead>Job Title</TableHead>
                 <TableHead>Company Name</TableHead>
@@ -155,39 +147,38 @@ const JobManagementTable = ({ jobs, searchParams }: props) => {
             </TableBody>
           </Table>
         </div>
-        <div className=" mt-6">
-          <div className="mt-6 flex justify-start">
-            <div className="ml-8">
-              <Pagination>
-                <PaginationContent>
-                  {totalPages ? (
-                    <PaginationItem>
-                      <PaginationPreviousButton
-                        searchParams={searchParams}
-                        currentPage={currentPage}
-                        baseUrl={APP_PATHS.JOBS}
-                      />
-                    </PaginationItem>
-                  ) : null}
-                  <PaginationPages
-                    searchParams={searchParams}
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    baseUrl={APP_PATHS.JOBS}
-                  />
-                  {totalPages ? (
-                    <PaginationItem>
-                      <PaginationNextButton
-                        searchParams={searchParams}
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        baseUrl={APP_PATHS.JOBS}
-                      />
-                    </PaginationItem>
-                  ) : null}
-                </PaginationContent>
-              </Pagination>
-            </div>
+
+        <div className="mt-6">
+          <div className="flex justify-center sm:justify-start">
+            <Pagination>
+              <PaginationContent>
+                {totalPages ? (
+                  <PaginationItem>
+                    <PaginationPreviousButton
+                      searchParams={searchParams}
+                      currentPage={currentPage}
+                      baseUrl={APP_PATHS.JOBS}
+                    />
+                  </PaginationItem>
+                ) : null}
+                <PaginationPages
+                  searchParams={searchParams}
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  baseUrl={APP_PATHS.JOBS}
+                />
+                {totalPages ? (
+                  <PaginationItem>
+                    <PaginationNextButton
+                      searchParams={searchParams}
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      baseUrl={APP_PATHS.JOBS}
+                    />
+                  </PaginationItem>
+                ) : null}
+              </PaginationContent>
+            </Pagination>
           </div>
         </div>
       </div>

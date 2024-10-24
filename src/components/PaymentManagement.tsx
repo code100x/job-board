@@ -28,21 +28,21 @@ import {
 
 const PaymentManagement = ({ payments }: { payments: PaymentType[] }) => {
   return (
-    <div className="min-h-screen w-4/5 mx-auto p-8 text-gray-900  dark:text-gray-100 ">
-      <div className="flex justify-between mb-6">
-        <h1 className="text-2xl font-bold mb-6">Payment History</h1>
+    <div className="min-h-screen w-full max-w-6xl mx-auto p-4 text-gray-900 dark:text-gray-100">
+      <div className="flex flex-col md:flex-row justify-between mb-6">
+        <h1 className="text-2xl font-bold mb-4 md:mb-0">Payment History</h1>
       </div>
-      <div className="flex justify-between mb-6">
-        <div className="relative w-1/3">
+      <div className="flex flex-col md:flex-row justify-between mb-6">
+        <div className="relative w-full md:w-1/3 mb-4 md:mb-0">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-gray-400" />
           <Input
             className="pl-10 border-gray-300 text-gray-900 placeholder-gray-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-white"
             placeholder="Search payments....."
           />
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-4 w-full md:w-auto">
           <Select>
-            <SelectTrigger className="w-[180px] bg-gray-200 border-gray-300 text-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100">
+            <SelectTrigger className="w-full md:w-[180px] bg-gray-200 border-gray-300 text-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100">
               <SelectValue placeholder="Latest Payment" />
             </SelectTrigger>
             <SelectContent>
@@ -53,8 +53,7 @@ const PaymentManagement = ({ payments }: { payments: PaymentType[] }) => {
         </div>
       </div>
 
-      {/* Jobs Table */}
-      <div className="rounded-md border overflow-hidden dark:border-gray-700">
+      <div className="rounded-md border overflow-x-auto dark:border-gray-700">
         <Table>
           <TableHeader className="bg-gray-200 border-b border-gray-300 dark:bg-gray-800 dark:border-gray-700">
             <TableRow>
@@ -94,7 +93,7 @@ const PaymentManagement = ({ payments }: { payments: PaymentType[] }) => {
       </div>
 
       <div className="mt-6 flex justify-start">
-        <div className="">
+        <div>
           <Pagination>
             <PaginationContent>
               <PaginationItem>
