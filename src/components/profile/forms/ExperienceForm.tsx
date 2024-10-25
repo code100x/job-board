@@ -27,23 +27,68 @@ import _ from 'lodash';
 import { EmployementType, WorkMode } from '@prisma/client';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
-const ExperienceForm = ({ handleClose }: { handleClose: () => void }) => {
+import {
+  addUserExperience,
+  editExperience,
+} from '@/actions/user.profile.actions';
+import { useToast } from '@/components/ui/use-toast';
+import { ExperienceType } from '@/types/user.types';
+const ExperienceForm = ({
+  handleClose,
+  selecetedExperience,
+}: {
+  handleClose: () => void;
+  selecetedExperience: ExperienceType | null;
+}) => {
   const form = useForm<expFormSchemaType>({
     resolver: zodResolver(expFormSchema),
     defaultValues: {
-      companyName: '',
-      designation: '',
-      EmploymentType: 'Full_time',
-      address: '',
-      workMode: 'office',
-      currentWorkStatus: false,
-      startDate: undefined,
-      endDate: undefined,
-      description: '',
+      companyName: selecetedExperience?.companyName || '',
+      designation: selecetedExperience?.designation || '',
+      EmploymentType: selecetedExperience?.EmploymentType || 'Full_time',
+      address: selecetedExperience?.address || '',
+      workMode: selecetedExperience?.workMode || 'office',
+      currentWorkStatus: selecetedExperience?.currentWorkStatus || false,
+      startDate: selecetedExperience?.startDate || undefined,
+      endDate: selecetedExperience?.endDate || undefined,
+      description: selecetedExperience?.description || '',
     },
   });
   const WatchCurrentWorkStatus = form.watch('currentWorkStatus');
-  const onSubmit = () => {};
+  const { toast } = useToast();
+
+  const onSubmit = async (data: expFormSchemaType) => {
+    try {
+      let response;
+      if (selecetedExperience?.id) {
+        response = await editExperience({
+          data: data,
+          id: selecetedExperience?.id,
+        });
+      } else {
+        response = await addUserExperience(data);
+      }
+
+      if (!response.status) {
+        return toast({
+          title: response.message || 'Error',
+          variant: 'destructive',
+        });
+      }
+      toast({
+        title: response.message,
+        variant: 'success',
+      });
+
+      handleFormClose();
+    } catch (_error) {
+      toast({
+        title: 'Something went wrong while Adding Skills',
+        description: 'Internal server error',
+        variant: 'destructive',
+      });
+    }
+  };
 
   const handleFormClose = () => {
     form.reset();
@@ -248,15 +293,21 @@ const ExperienceForm = ({ handleClose }: { handleClose: () => void }) => {
           </div>
           <div className="py-4 flex gap-4 justify-end">
             <Button
-              type="reset"
               onClick={handleFormClose}
               variant={'outline'}
-              className="mt-0 text-white rounded-[8px]"
+              className="mt-0 text-slate-500 dark:text-white rounded-[8px]"
+              type="reset"
             >
               Cancel
             </Button>
-            <Button type="submit" className="mt-0 text-white rounded-[8px]">
-              Add Project
+            <Button
+              disabled={form.formState.isSubmitting}
+              type="submit"
+              className="mt-0 text-white rounded-[8px]"
+            >
+              {form.formState.isSubmitting
+                ? 'Please wait ...'
+                : `${selecetedExperience?.id ? 'Update Experience' : 'Add Experience'}`}
             </Button>
           </div>
         </form>

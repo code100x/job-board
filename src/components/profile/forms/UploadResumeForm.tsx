@@ -10,6 +10,8 @@ import { useForm } from 'react-hook-form';
 import { Form, FormLabel } from '@/components/ui/form';
 import { CirclePlus, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { addUserResume } from '@/actions/user.profile.actions';
+import { uploadFileAction } from '@/actions/upload-to-cdn';
 
 const UploadResumeForm = ({ handleClose }: { handleClose: () => void }) => {
   const [file, setFiles] = useState<File | null>(null);
@@ -38,14 +40,55 @@ const UploadResumeForm = ({ handleClose }: { handleClose: () => void }) => {
   const form = useForm<ProfileResumeType>({
     resolver: zodResolver(profileResumeSchema),
     defaultValues: {
-      resume: '',
+      resume: '/main.svg',
     },
   });
+  const submitFile = async (file: File | null) => {
+    if (!file) return;
 
-  // function onSubmit(values: ProfileResumeType) {
-  //   console.log(values)
-  // }
-  function onSubmit() {}
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const uniqueFileName = `${Date.now()}-${file.name}`;
+      formData.append('uniqueFileName', uniqueFileName);
+
+      const res = await uploadFileAction(formData, 'pdf');
+      if (!res) {
+        throw new Error('Failed to upload resume');
+      }
+
+      const uploadRes = res;
+      return uploadRes.url;
+    } catch (error) {
+      console.error('Image upload failed:', error);
+    }
+  };
+
+  async function onSubmit(data: ProfileResumeType) {
+    try {
+      data.resume = (await submitFile(file)) ?? '/main.svg';
+      const response = await addUserResume(data.resume);
+
+      if (!response.status) {
+        return toast({
+          title: response.message || 'Error',
+          variant: 'destructive',
+        });
+      }
+      toast({
+        title: response.message,
+        variant: 'success',
+      });
+      handleFormClose();
+    } catch (_error) {
+      toast({
+        title: 'Something went wrong will creating HR',
+        description: 'Internal server error',
+        variant: 'destructive',
+      });
+    }
+  }
 
   const handleFormClose = () => {
     form.reset();
@@ -62,7 +105,7 @@ const UploadResumeForm = ({ handleClose }: { handleClose: () => void }) => {
             <FormLabel>Upload resume</FormLabel>
             <div
               {...getRootProps()}
-              className={`w-full h-44 flex justify-center items-center flex-col bg-slate-900 rounded-[8px] border border-transparent text-center mt-2 ${isDragActive && 'animate-pulse border-white'}`}
+              className={`w-full h-44 flex justify-center items-center flex-col bg-slate-100 dark:bg-slate-900 rounded-[8px] border border-transparent text-center mt-2 ${isDragActive && 'animate-pulse border-white'}`}
             >
               <input {...getInputProps()} />
               {!file && (
@@ -94,12 +137,17 @@ const UploadResumeForm = ({ handleClose }: { handleClose: () => void }) => {
             <Button
               onClick={handleFormClose}
               variant={'outline'}
-              className="mt-0 text-white rounded-[8px]"
+              className="mt-0 text-slate-500 dark:text-white rounded-[8px]"
+              type="reset"
             >
               Cancel
             </Button>
-            <Button type="submit" className="mt-0 text-white rounded-[8px]">
-              Add Resume
+            <Button
+              disabled={form.formState.isSubmitting}
+              type="submit"
+              className="mt-0 text-white rounded-[8px]"
+            >
+              {form.formState.isSubmitting ? 'Please wait ...' : 'Add Resume'}
             </Button>
           </div>
         </form>

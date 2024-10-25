@@ -1,3 +1,4 @@
+// next.config.js
 import { fileURLToPath } from 'node:url';
 import createJiti from 'jiti';
 
@@ -20,12 +21,11 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'job-board.b-cdn.net', // Change this to your CDN domain
+        hostname: 'job-board.b-cdn.net',
       },
       {
         protocol: 'https',
         hostname: 'lh3.googleusercontent.com',
-        // Change this to your CDN domain
       },
       {
         protocol: 'https',
@@ -34,9 +34,13 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'www.example.com',
-      }
+      },
+      {
+        protocol: 'https',
+        hostname: 'devsharmapull.b-cdn.net', // Add your new domain here
+      },
     ],
   },
 };
 
-export default nextConfig; // ES module export
+export default nextConfig;

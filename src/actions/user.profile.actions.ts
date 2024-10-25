@@ -1,9 +1,15 @@
 'use server';
 import prisma from '@/config/prisma.config';
 import {
+  aboutMeSchema,
+  AboutMeSchemaType,
   addSkillsSchemaType,
   expFormSchemaType,
-  projectSchemaType,
+  profileEducationType,
+  ProfileProjectType,
+  profileSchema,
+  ProfileSchemaType,
+  // projectSchemaType,
   UserProfileSchemaType,
 } from '@/lib/validators/user.profile.validator';
 import bcryptjs from 'bcryptjs';
@@ -13,6 +19,7 @@ import { ErrorHandler } from '@/lib/error';
 import { withServerActionAsyncCatcher } from '@/lib/async-catch';
 import { ServerActionReturnType } from '@/types/api.types';
 import { SuccessResponse } from '@/lib/success';
+import { withSession } from '@/lib/session';
 
 export const updateUser = async (
   email: string,
@@ -178,16 +185,37 @@ export const addUserExperience = withServerActionAsyncCatcher<
       },
     });
     return new SuccessResponse(
-      'Experience updated successfully',
+      'Experience added successfully',
       200
     ).serialize();
   } catch (_error) {
     return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
   }
 });
+export const addUserEducation = withServerActionAsyncCatcher<
+  profileEducationType,
+  ServerActionReturnType
+>(async (data) => {
+  const auth = await getServerSession(authOptions);
+
+  if (!auth || !auth?.user?.id)
+    throw new ErrorHandler('Not Authorized', 'UNAUTHORIZED');
+
+  try {
+    await prisma.education.create({
+      data: {
+        ...data,
+        userId: auth.user.id,
+      },
+    });
+    return new SuccessResponse('Education added successfully', 200).serialize();
+  } catch (_error) {
+    return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
+  }
+});
 
 export const addUserProjects = withServerActionAsyncCatcher<
-  projectSchemaType,
+  ProfileProjectType,
   ServerActionReturnType
 >(async (data) => {
   const auth = await getServerSession(authOptions);
@@ -244,6 +272,7 @@ export const addUserResume = async (resume: string) => {
       },
       data: {
         resume: resume,
+        resumeUpdateDate: new Date(),
       },
     });
     return new SuccessResponse('Resume SuccessFully Uploaded', 200).serialize();
@@ -313,6 +342,254 @@ export const getUserDetails = async () => {
       200,
       res
     ).serialize();
+  } catch (_error) {
+    return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
+  }
+};
+
+export const getUserDetailsWithId = async (id: string) => {
+  try {
+    const res = await prisma.user.findFirst({
+      where: {
+        id: id,
+      },
+      select: {
+        username: true,
+        name: true,
+        id: true,
+        skills: true,
+        education: true,
+        experience: true,
+        email: true,
+        contactEmail: true,
+        resume: true,
+        avatar: true,
+        aboutMe: true,
+        project: true,
+        resumeUpdateDate: true,
+      },
+    });
+    if (!res) throw new ErrorHandler('User Not Found', 'NOT_FOUND');
+    return new SuccessResponse(
+      'User SuccessFully Fetched',
+      200,
+      res
+    ).serialize();
+  } catch (_error) {
+    return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
+  }
+};
+
+export const updateUserDetails = withSession<
+  ProfileSchemaType,
+  ServerActionReturnType<any>
+>(async (session, userData) => {
+  if (!session || !session?.user?.id) {
+    throw new ErrorHandler('Not Authrised', 'UNAUTHORIZED');
+  }
+  const { success, data } = profileSchema.safeParse(userData);
+  if (!success) {
+    throw new ErrorHandler('Invalid Data', 'BAD_REQUEST');
+  }
+
+  if (data) {
+    await prisma.user.update({
+      where: {
+        id: session.user.id,
+      },
+      data: {
+        name: data.name,
+        username: data.username,
+        email: data.email,
+        contactEmail: data.contactEmail,
+        aboutMe: data.aboutMe,
+        avatar: data.avatar,
+      },
+    });
+  }
+
+  return new SuccessResponse(
+    'User profile updated successfully.',
+    200
+  ).serialize();
+});
+
+export const updateAboutMe = withSession<
+  AboutMeSchemaType,
+  ServerActionReturnType<any>
+>(async (session, userData) => {
+  if (!session || !session?.user?.id) {
+    throw new ErrorHandler('Not Authrised', 'UNAUTHORIZED');
+  }
+  const { success, data } = aboutMeSchema.safeParse(userData);
+  if (!success) {
+    throw new ErrorHandler('Invalid Data', 'BAD_REQUEST');
+  }
+
+  if (data) {
+    await prisma.user.update({
+      where: {
+        id: session.user.id,
+      },
+      data: {
+        aboutMe: data.aboutMe,
+      },
+    });
+  }
+
+  return new SuccessResponse('Successfully updated About Me.', 200).serialize();
+});
+
+export const deleteResume = async () => {
+  const auth = await getServerSession(authOptions);
+
+  if (!auth || !auth?.user?.id)
+    throw new ErrorHandler('Not Authorized', 'UNAUTHORIZED');
+  try {
+    // todo: delete file form cdn
+    await prisma.user.update({
+      where: {
+        id: auth.user.id,
+      },
+      data: {
+        resume: null,
+        resumeUpdateDate: null,
+      },
+    });
+    return new SuccessResponse('Resume Deleted Successfully', 200).serialize();
+  } catch (_error) {
+    return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
+  }
+};
+export const deleteProject = async (projectId: number) => {
+  const auth = await getServerSession(authOptions);
+
+  if (!auth || !auth?.user?.id)
+    throw new ErrorHandler('Not Authorized', 'UNAUTHORIZED');
+  try {
+    // todo: delete image file form cdn
+    await prisma.project.delete({
+      where: {
+        id: projectId,
+      },
+    });
+    return new SuccessResponse('Project Deleted Successfully', 200).serialize();
+  } catch (_error) {
+    return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
+  }
+};
+
+export const editProject = withServerActionAsyncCatcher<
+  { data: ProfileProjectType; id: number },
+  ServerActionReturnType
+>(async ({ data, id }) => {
+  const auth = await getServerSession(authOptions);
+
+  if (!auth || !auth?.user?.id)
+    throw new ErrorHandler('Not Authorized', 'UNAUTHORIZED');
+
+  try {
+    await prisma.project.update({
+      where: {
+        id: id,
+        userId: auth.user.id,
+      },
+      data: {
+        ...data,
+      },
+    });
+    return new SuccessResponse('Project updated successfully', 200).serialize();
+  } catch (_error) {
+    return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
+  }
+});
+export const editExperience = withServerActionAsyncCatcher<
+  { data: expFormSchemaType; id: number },
+  ServerActionReturnType
+>(async ({ data, id }) => {
+  const auth = await getServerSession(authOptions);
+
+  if (!auth || !auth?.user?.id)
+    throw new ErrorHandler('Not Authorized', 'UNAUTHORIZED');
+
+  try {
+    await prisma.experience.update({
+      where: {
+        id: id,
+        userId: auth.user.id,
+      },
+      data: {
+        ...data,
+      },
+    });
+    return new SuccessResponse(
+      'Experience updated successfully',
+      200
+    ).serialize();
+  } catch (_error) {
+    return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
+  }
+});
+export const editEducation = withServerActionAsyncCatcher<
+  { data: profileEducationType; id: number },
+  ServerActionReturnType
+>(async ({ data, id }) => {
+  const auth = await getServerSession(authOptions);
+
+  if (!auth || !auth?.user?.id)
+    throw new ErrorHandler('Not Authorized', 'UNAUTHORIZED');
+
+  try {
+    await prisma.education.update({
+      where: {
+        id: id,
+        userId: auth.user.id,
+      },
+      data: {
+        ...data,
+      },
+    });
+    return new SuccessResponse(
+      'Experience updated successfully',
+      200
+    ).serialize();
+  } catch (_error) {
+    return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
+  }
+});
+
+export const deleteExperience = async (experienceId: number) => {
+  const auth = await getServerSession(authOptions);
+
+  if (!auth || !auth?.user?.id)
+    throw new ErrorHandler('Not Authorized', 'UNAUTHORIZED');
+  try {
+    // todo: delete image file form cdn
+    await prisma.experience.delete({
+      where: {
+        id: experienceId,
+        userId: auth.user.id,
+      },
+    });
+    return new SuccessResponse('Project Deleted Successfully', 200).serialize();
+  } catch (_error) {
+    return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
+  }
+};
+export const deleteEducation = async (educationId: number) => {
+  const auth = await getServerSession(authOptions);
+
+  if (!auth || !auth?.user?.id)
+    throw new ErrorHandler('Not Authorized', 'UNAUTHORIZED');
+  try {
+    // todo: delete image file form cdn
+    await prisma.education.delete({
+      where: {
+        id: educationId,
+        userId: auth.user.id,
+      },
+    });
+    return new SuccessResponse('Project Deleted Successfully', 200).serialize();
   } catch (_error) {
     return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
   }

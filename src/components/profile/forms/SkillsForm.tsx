@@ -12,16 +12,21 @@ import { SkillsCombobox } from '@/components/skills-combobox';
 import { LoadingSpinner } from '@/components/loading-spinner';
 import { Button } from '@/components/ui/button';
 
-export const SkillsForm = ({ handleClose }: { handleClose: () => void }) => {
-  const [comboBoxSelectedValues, setComboBoxSelectedValues] = useState<
-    string[]
-  >([]);
+export const SkillsForm = ({
+  handleClose,
+  skills,
+}: {
+  handleClose: () => void;
+  skills: string[];
+}) => {
+  const [comboBoxSelectedValues, setComboBoxSelectedValues] =
+    useState<string[]>(skills);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const form = useForm<addSkillsSchemaType>({
     resolver: zodResolver(addSkillsSchema),
     defaultValues: {
-      skills: [],
+      skills: skills,
     },
   });
   const { toast } = useToast();
@@ -40,8 +45,7 @@ export const SkillsForm = ({ handleClose }: { handleClose: () => void }) => {
         variant: 'success',
       });
 
-      form.reset(form.formState.defaultValues);
-      setComboBoxSelectedValues([]);
+      handleFormClose();
     } catch (_error) {
       toast({
         title: 'Something went wrong while Adding Skills',
@@ -54,23 +58,48 @@ export const SkillsForm = ({ handleClose }: { handleClose: () => void }) => {
     }
   };
 
+  const handleFormClose = () => {
+    form.reset();
+    form.clearErrors();
+    setComboBoxSelectedValues([]);
+    handleClose();
+  };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <SkillsCombobox
-          comboBoxSelectedValues={comboBoxSelectedValues}
-          setComboBoxSelectedValues={setComboBoxSelectedValues}
-          form={form}
-        ></SkillsCombobox>
-        {isLoading ? (
-          <div className="mt-4">
-            <LoadingSpinner />{' '}
-          </div>
-        ) : (
-          <Button type="submit" className="mt-4">
-            Submit
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex h-full flex-col justify-between"
+      >
+        <div>
+          <SkillsCombobox
+            comboBoxSelectedValues={comboBoxSelectedValues}
+            setComboBoxSelectedValues={setComboBoxSelectedValues}
+            form={form}
+          ></SkillsCombobox>
+          {isLoading && (
+            <div className="mt-4">
+              <LoadingSpinner />{' '}
+            </div>
+          )}
+        </div>
+        <div className="py-4 flex gap-4 justify-end">
+          <Button
+            onClick={handleFormClose}
+            variant={'outline'}
+            className="mt-0 text-slate-500 dark:text-white rounded-[8px]"
+            type="reset"
+          >
+            Cancel
           </Button>
-        )}
+          <Button
+            disabled={form.formState.isSubmitting}
+            type="submit"
+            className="mt-0 text-white rounded-[8px]"
+          >
+            {form.formState.isSubmitting ? 'Please wait ...' : 'Save Changes'}
+          </Button>
+        </div>
       </form>
     </Form>
   );

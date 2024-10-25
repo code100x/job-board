@@ -1,8 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import {
-  DegreeEnum,
-  FieldOfStudyEnum,
   profileEducationSchema,
   profileEducationType,
 } from '@/lib/validators/user.profile.validator';
@@ -25,16 +23,29 @@ import {
 } from '@/components/ui/select';
 import _ from 'lodash';
 import { Button } from '@/components/ui/button';
+import { EducationType } from '@/types/user.types';
+import {
+  addUserEducation,
+  editEducation,
+} from '@/actions/user.profile.actions';
+import { useToast } from '@/components/ui/use-toast';
+import { DegreeType, FieldOfStudyType } from '@prisma/client';
 
-const EducationForm = ({ handleClose }: { handleClose: () => void }) => {
+const EducationForm = ({
+  handleClose,
+  selectedEducation,
+}: {
+  handleClose: () => void;
+  selectedEducation: EducationType | null;
+}) => {
   const form = useForm<profileEducationType>({
     resolver: zodResolver(profileEducationSchema),
     defaultValues: {
-      instituteName: '',
-      degree: DegreeEnum.BTech,
-      fieldOfStudy: FieldOfStudyEnum.CS,
-      startDate: undefined,
-      endDate: undefined,
+      instituteName: selectedEducation?.instituteName || '',
+      degree: selectedEducation?.degree || 'BTech',
+      fieldOfStudy: selectedEducation?.fieldOfStudy || 'CS',
+      startDate: selectedEducation?.startDate || undefined,
+      endDate: selectedEducation?.endDate || undefined,
     },
   });
 
@@ -44,7 +55,40 @@ const EducationForm = ({ handleClose }: { handleClose: () => void }) => {
     handleClose();
   };
 
-  const onSubmit = () => {};
+  const { toast } = useToast();
+
+  const onSubmit = async (data: profileEducationType) => {
+    try {
+      let response;
+      if (selectedEducation?.id) {
+        response = await editEducation({
+          data: data,
+          id: selectedEducation?.id,
+        });
+      } else {
+        response = await addUserEducation(data);
+      }
+
+      if (!response.status) {
+        return toast({
+          title: response.message || 'Error',
+          variant: 'destructive',
+        });
+      }
+      toast({
+        title: response.message,
+        variant: 'success',
+      });
+
+      handleFormClose();
+    } catch (_error) {
+      toast({
+        title: 'Something went wrong while Adding Skills',
+        description: 'Internal server error',
+        variant: 'destructive',
+      });
+    }
+  };
 
   return (
     <div className="flex-1 relative">
@@ -82,7 +126,7 @@ const EducationForm = ({ handleClose }: { handleClose: () => void }) => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {Object.values(DegreeEnum).map((type) => (
+                      {Object.values(DegreeType).map((type) => (
                         <SelectItem key={type} value={type}>
                           {_.startCase(type)}
                         </SelectItem>
@@ -109,7 +153,7 @@ const EducationForm = ({ handleClose }: { handleClose: () => void }) => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {Object.values(FieldOfStudyEnum).map((type) => (
+                      {Object.values(FieldOfStudyType).map((type) => (
                         <SelectItem key={type} value={type}>
                           {_.startCase(type)}
                         </SelectItem>
@@ -173,15 +217,21 @@ const EducationForm = ({ handleClose }: { handleClose: () => void }) => {
           </div>
           <div className="py-4 flex gap-4 justify-end">
             <Button
-              type="reset"
               onClick={handleFormClose}
               variant={'outline'}
-              className="mt-0 text-white rounded-[8px]"
+              className="mt-0 text-slate-500 dark:text-white rounded-[8px]"
+              type="reset"
             >
               Cancel
             </Button>
-            <Button type="submit" className="mt-0 text-white rounded-[8px]">
-              Add Education
+            <Button
+              disabled={form.formState.isSubmitting}
+              type="submit"
+              className="mt-0 text-white rounded-[8px]"
+            >
+              {form.formState.isSubmitting
+                ? 'Please wait ...'
+                : `${selectedEducation?.id ? 'Update Education' : 'Add Education'}`}
             </Button>
           </div>
         </form>

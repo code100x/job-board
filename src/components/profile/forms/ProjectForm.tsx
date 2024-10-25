@@ -20,10 +20,29 @@ import { CirclePlus, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
+import { addUserProjects, editProject } from '@/actions/user.profile.actions';
+import { submitImage } from '@/lib/utils';
+import { ProjectType } from '@/types/user.types';
 
-const ProjectForm = ({ handleClose }: { handleClose: () => void }) => {
+const ProjectForm = ({
+  handleClose,
+  selectedProject,
+}: {
+  handleClose: () => void;
+  selectedProject: ProjectType | null;
+}) => {
   const [file, setFiles] = useState<File | null>(null);
-  const [previewImg, setPreviewImg] = useState<null | string>(null);
+  const [previewImg, setPreviewImg] = useState<null | string>(
+    selectedProject?.projectThumbnail || null
+  );
 
   const { toast } = useToast();
 
@@ -50,25 +69,56 @@ const ProjectForm = ({ handleClose }: { handleClose: () => void }) => {
   const form = useForm<ProfileProjectType>({
     resolver: zodResolver(profileProjectSchema),
     defaultValues: {
-      projectThumbnail: '',
-      projectDescription: '',
-      projectFeatured: false,
-      projectGithub: '',
-      projectLiveLink: '',
-      projectName: '',
+      projectThumbnail: selectedProject?.projectThumbnail || './main.svg',
+      projectSummary: selectedProject?.projectSummary || '',
+      isFeature: selectedProject?.isFeature || false,
+      projectGithub: selectedProject?.projectGithub || '',
+      projectLiveLink: selectedProject?.projectLiveLink || '',
+      projectName: selectedProject?.projectName || '',
     },
   });
 
   // function onSubmit(values: ProfileProjectType) {
   //   console.log(values)
   // }
-  function onSubmit() {}
+  async function onSubmit(data: ProfileProjectType) {
+    try {
+      if (file) {
+        data.projectThumbnail = await submitImage(file);
+      }
+      let response;
+      if (selectedProject?.id) {
+        response = await editProject({ data: data, id: selectedProject?.id });
+      } else {
+        response = await addUserProjects(data);
+      }
+
+      if (!response.status) {
+        return toast({
+          title: response.message || 'Error',
+          variant: 'destructive',
+        });
+      }
+      toast({
+        title: response.message,
+        variant: 'success',
+      });
+
+      handleFormClose();
+    } catch (_error) {
+      toast({
+        title: 'Something went wrong while Adding Skills',
+        description: 'Internal server error',
+        variant: 'destructive',
+      });
+    }
+  }
 
   const handleFormClose = () => {
     form.reset();
     form.clearErrors();
     handleClose();
-    setFiles(null);
+    handleImageReset();
   };
   const handleImageReset = () => {
     setFiles(null);
@@ -87,9 +137,9 @@ const ProjectForm = ({ handleClose }: { handleClose: () => void }) => {
               <FormLabel>Upload project thumbnail</FormLabel>
               <div
                 {...getRootProps()}
-                className={`w-full overflow-hidden h-44 flex justify-center items-center flex-col bg-slate-900 rounded-[8px] border border-transparent text-center mt-2 relative ${isDragActive && 'animate-pulse border-white'}`}
+                className={`w-full overflow-hidden h-44 flex justify-center items-center flex-col bg-slate-100 dark:bg-slate-900 rounded-[8px] border border-transparent text-center mt-2 relative ${isDragActive && 'animate-pulse border-white'}`}
               >
-                {file && previewImg && (
+                {previewImg && (
                   <div
                     onClick={handleImageReset}
                     className="absolute top-1 right-1 bg-red-500 text-white rounded-full h-5 w-5 flex items-center justify-center cursor-pointer"
@@ -97,7 +147,7 @@ const ProjectForm = ({ handleClose }: { handleClose: () => void }) => {
                     <X height={16} width={16} />
                   </div>
                 )}
-                {!file && (
+                {!file && !previewImg && (
                   <>
                     <input {...getInputProps({ accept: 'images' })} />
                     <CirclePlus height={24} width={24} />
@@ -111,7 +161,7 @@ const ProjectForm = ({ handleClose }: { handleClose: () => void }) => {
                     </p>
                   </>
                 )}
-                {file && previewImg && (
+                {previewImg && (
                   <Image
                     src={previewImg}
                     alt="project-image"
@@ -160,7 +210,47 @@ const ProjectForm = ({ handleClose }: { handleClose: () => void }) => {
             />
             <FormField
               control={form.control}
-              name="projectDescription"
+              name="stack"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Project Stack</FormLabel>
+                  <FormControl>
+                    <Select
+                      {...field}
+                      onValueChange={(value) =>
+                        form.setValue(
+                          'stack',
+                          value as
+                            | 'GO'
+                            | 'PYTHON'
+                            | 'MERN'
+                            | 'NEXTJS'
+                            | 'AI_GPT_APIS'
+                            | 'SPRINGBOOT'
+                            | 'OTHERS'
+                        )
+                      }
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Others" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="GO">Go</SelectItem>
+                        <SelectItem value="PYTHON">Python</SelectItem>
+                        <SelectItem value="MERN">MERN</SelectItem>
+                        <SelectItem value="NEXTJS">NextJS</SelectItem>
+                        <SelectItem value="AI_GPT_APIS">AI/GPT APIs</SelectItem>
+                        <SelectItem value="SPRINGBOOT">Springboot</SelectItem>
+                        <SelectItem value="OTHERS">Others</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="projectSummary"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel> Project Description </FormLabel>
@@ -173,18 +263,44 @@ const ProjectForm = ({ handleClose }: { handleClose: () => void }) => {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="isFeature"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      className="data-[state=checked]:bg-gray-300 data-[state=unchecked]:bg-gray-400"
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel> Feature this project. </FormLabel>
+                  </div>
+                </FormItem>
+              )}
+            />
           </div>
           <div className="py-4 flex gap-4 justify-end">
             <Button
-              type="reset"
               onClick={handleFormClose}
               variant={'outline'}
-              className="mt-0 text-white rounded-[8px]"
+              className="mt-0 text-slate-500 dark:text-white rounded-[8px]"
+              type="reset"
             >
               Cancel
             </Button>
-            <Button type="submit" className="mt-0 text-white rounded-[8px]">
-              Add Project
+            <Button
+              disabled={form.formState.isSubmitting}
+              type="submit"
+              className="mt-0 text-white rounded-[8px]"
+            >
+              {form.formState.isSubmitting
+                ? 'Please wait ...'
+                : selectedProject?.id
+                  ? 'Update Project'
+                  : 'Add Project'}
             </Button>
           </div>
         </form>

@@ -12,9 +12,9 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 const users = [
-  { id: '1', name: 'Jack', email: 'user@gmail.com' },
-  { id: '2', name: 'Admin', email: 'admin@gmail.com', role: Role.ADMIN, onBoard: true },
-  { id: '3', name: 'Hr', email: 'hr@gmail.com', role: Role.HR },
+  { id: '1', name: 'Jack', email: 'user@gmail.com', username: "jackcoder" },
+  { id: '2', name: 'Admin', email: 'admin@gmail.com', role: Role.ADMIN, onBoard: true, username: "admincoder" },
+  { id: '3', name: 'Hr', email: 'hr@gmail.com', role: Role.HR, username: "hrcoder" },
 ];
 
 let jobs = [
@@ -328,6 +328,7 @@ async function seedUsers() {
             password: hashedPassword,
             role: u.role || Role.USER,
             emailVerified: new Date(),
+            username: u.username
           },
         });
         console.log(`User created or updated: ${u.email}`);

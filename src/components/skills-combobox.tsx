@@ -74,7 +74,7 @@ export function SkillsCombobox({
   return (
     <>
       <div className="flex flex-col gap-2">
-        <FormLabel className="font-medium">Skills Required</FormLabel>
+        <FormLabel className="font-medium">Skills</FormLabel>
         <Combobox
           comboBoxSelectedValues={comboBoxSelectedValues}
           setComboBoxSelectedValues={setComboBoxSelectedValues}
@@ -83,36 +83,40 @@ export function SkillsCombobox({
           isLoading={comboBoxLoading}
         ></Combobox>
       </div>
-
-      <div className="flex flex-wrap gap-2 space-y-0">
-        {comboBoxSelectedValues.map((item, index) => (
-          <div key={index} className="flex items-csele space-y-0 group">
-            <div
-              className={`font-medium text-xs cursor-pointer flex gap-1 text-center justify-start py-2 px-4 rounded-full borderpr-1 bg-blue-100 dark:bg-blue-500 dark:bg-opacity-10 bg-opacity-90 text-blue-700 dark:text-blue-400 border-blue-800 dark:border-blue-400 '}`}
-            >
-              {_.startCase(item.toLowerCase())}
-              {
-                <Button
-                  className="p-0 h-fit bg-tranparent"
-                  onClick={() => {
-                    setComboBoxSelectedValues((prev) => {
-                      const foundIndex = prev.findIndex((val) => val === item);
-                      if (foundIndex >= 0) {
-                        const updatedComboBoxSelectedValues = [...prev];
-                        updatedComboBoxSelectedValues.splice(foundIndex, 1);
-                        return updatedComboBoxSelectedValues;
-                      }
-                      return prev;
-                    });
-                  }}
-                >
-                  <X className="text-white" size={15} />
-                </Button>
-              }
+      {comboBoxSelectedValues.length !== 0 && (
+        <div className="flex mt-3 flex-wrap gap-3 space-y-0 p-4 dark:bg-slate-900 bg-slate-100 rounded-[16px]">
+          {comboBoxSelectedValues.map((item, index) => (
+            <div key={index} className="flex items-csele space-y-0 group">
+              <div
+                className={`font-medium text-sm cursor-pointer flex items-center gap-1 text-center justify-start py-2 px-4 rounded-full borderpr-1 bg-slate-500 bg-opacity-10  dark:bg-opacity-10 text-slate-500  dark:text-slate-400 '}`}
+              >
+                {_.startCase(item.toLowerCase())}
+                {
+                  <Button
+                    className="p-0 h-fit bg-tranparent hover:bg-transparent"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setComboBoxSelectedValues((prev) => {
+                        const foundIndex = prev.findIndex(
+                          (val) => val === item
+                        );
+                        if (foundIndex >= 0) {
+                          const updatedComboBoxSelectedValues = [...prev];
+                          updatedComboBoxSelectedValues.splice(foundIndex, 1);
+                          return updatedComboBoxSelectedValues;
+                        }
+                        return prev;
+                      });
+                    }}
+                  >
+                    <X className="text-slate-500" size={15} />
+                  </Button>
+                }
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </>
   );
 }

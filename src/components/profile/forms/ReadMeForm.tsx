@@ -14,16 +14,47 @@ import {
   aboutMeSchema,
   AboutMeSchemaType,
 } from '@/lib/validators/user.profile.validator';
+import { updateAboutMe } from '@/actions/user.profile.actions';
+import { useToast } from '@/components/ui/use-toast';
 
-const ReadMeForm = ({ handleClose }: { handleClose: () => void }) => {
+const ReadMeForm = ({
+  handleClose,
+  aboutMe,
+}: {
+  handleClose: () => void;
+  aboutMe: string;
+}) => {
+  const { toast } = useToast();
+
   const form = useForm<AboutMeSchemaType>({
     resolver: zodResolver(aboutMeSchema),
     defaultValues: {
-      aboutMe: '',
+      aboutMe: aboutMe || '',
     },
   });
 
-  function onSubmit() {}
+  async function onSubmit(data: AboutMeSchemaType) {
+    try {
+      const response = await updateAboutMe(data);
+
+      if (!response.status) {
+        return toast({
+          title: response.message || 'Error',
+          variant: 'destructive',
+        });
+      }
+      toast({
+        title: response.message,
+        variant: 'success',
+      });
+      handleFormClose();
+    } catch (_error) {
+      toast({
+        variant: 'destructive',
+        title: 'Something went wrong while updating.',
+      });
+    }
+  }
 
   const handleFormClose = () => {
     form.reset();
@@ -58,13 +89,16 @@ const ReadMeForm = ({ handleClose }: { handleClose: () => void }) => {
               onClick={handleFormClose}
               variant={'outline'}
               className="mt-0 text-white rounded-[8px]"
+              type="reset"
             >
-              {' '}
-              Cancel{' '}
+              Cancel
             </Button>
-            <Button type="submit" className="mt-0 text-white rounded-[8px]">
-              {' '}
-              Add About Me{' '}
+            <Button
+              disabled={form.formState.isSubmitting}
+              type="submit"
+              className="mt-0 text-white rounded-[8px]"
+            >
+              {form.formState.isSubmitting ? 'Please Wait...' : 'Add About Me'}
             </Button>
           </div>
         </form>

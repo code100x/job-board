@@ -21,22 +21,32 @@ import { X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+import { UserType } from '@/types/user.types';
+import { updateUserDetails } from '@/actions/user.profile.actions';
 
-const EditProfileForm = ({ handleClose }: { handleClose: () => void }) => {
+const EditProfileForm = ({
+  handleClose,
+  userdetails,
+}: {
+  handleClose: () => void;
+  userdetails: UserType;
+}) => {
   const { toast } = useToast();
 
   const [file, setFile] = useState<File | null>(null);
-  const [previewImg, setPreviewImg] = useState<string | null>(null);
+  const [previewImg, setPreviewImg] = useState<string | null>(
+    userdetails.avatar || null
+  );
 
   const form = useForm<ProfileSchemaType>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      aboutMe: '',
-      username: '',
-      email: '',
-      contactEmail: '',
-      profileImage: '',
-      name: '',
+      aboutMe: userdetails.aboutMe || '',
+      username: userdetails.username || '',
+      email: userdetails.email || '',
+      contactEmail: userdetails.contactEmail || '',
+      avatar: userdetails.avatar || '/main.svg',
+      name: userdetails.name || '',
     },
   });
 
@@ -63,7 +73,27 @@ const EditProfileForm = ({ handleClose }: { handleClose: () => void }) => {
   };
 
   const onSubmit = async (data: ProfileSchemaType) => {
-    data.profileImage = (await submitImage(file)) ?? '/main.svg';
+    try {
+      data.avatar = (await submitImage(file)) ?? '/main.svg';
+      const response = await updateUserDetails(data);
+
+      if (!response.status) {
+        return toast({
+          title: response.message || 'Error',
+          variant: 'destructive',
+        });
+      }
+      toast({
+        title: response.message,
+        variant: 'success',
+      });
+      handleFormClose();
+    } catch (_error) {
+      toast({
+        variant: 'destructive',
+        title: 'Something went wrong while updating.',
+      });
+    }
   };
 
   const handleFormClose = () => {
@@ -74,6 +104,7 @@ const EditProfileForm = ({ handleClose }: { handleClose: () => void }) => {
   const profileImageRef = useRef<HTMLImageElement>(null);
 
   const handleClick = () => {
+    if (previewImg) return;
     const fileInput = document.getElementById('fileInput') as HTMLInputElement;
 
     if (fileInput) {
@@ -126,7 +157,7 @@ const EditProfileForm = ({ handleClose }: { handleClose: () => void }) => {
           <FormLabel> Profile Picture </FormLabel>
           <div className="flex justify-center">
             <div
-              className="w-40 h-40 dark:bg-gray-700 bg-gray-300 border border-dashed border-gray-500 rounded-md flex items-center justify-center cursor-pointer mb-2"
+              className="w-40 h-40 relative dark:bg-gray-700 bg-gray-300 border border-dashed border-gray-500 rounded-md flex items-center justify-center cursor-pointer mb-2"
               onClick={handleClick}
             >
               {previewImg ? (
@@ -145,16 +176,16 @@ const EditProfileForm = ({ handleClose }: { handleClose: () => void }) => {
                   className="text-white h-10 w-10"
                 />
               )}
+              {previewImg && (
+                <button
+                  type="button"
+                  onClick={clearLogoImage}
+                  className="absolute top-0 right-0 w-5 h-5 bg-red-500 rounded-full items-center flex justify-center cursor-pointer translate-x-1/2 -translate-y-1/2"
+                >
+                  <X size="16" />
+                </button>
+              )}
             </div>
-            {previewImg && (
-              <button
-                type="button"
-                onClick={clearLogoImage}
-                className="absolute top-0 right-0 w-5 h-5 bg-red-500 rounded-full items-center flex justify-center cursor-pointer translate-x-1/2 -translate-y-1/2"
-              >
-                <X size="16" />
-              </button>
-            )}
 
             <input
               id="fileInput"
@@ -258,8 +289,12 @@ const EditProfileForm = ({ handleClose }: { handleClose: () => void }) => {
           >
             Cancel
           </Button>
-          <Button type="submit" className="mt-0 text-white rounded-[8px]">
-            Update Profile
+          <Button
+            disabled={form.formState.isSubmitting}
+            type="submit"
+            className="mt-0 text-white rounded-[8px]"
+          >
+            {form.formState.isSubmitting ? 'Please wait...' : 'Update Profile'}
           </Button>
         </div>
       </form>

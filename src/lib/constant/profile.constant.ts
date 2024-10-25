@@ -17,7 +17,7 @@ export const SHEETS: Sheets = {
       'Share a brief introduction to let companies know who you are.',
   },
   editProfile: {
-    title: 'Edit Your Profile',
+    title: 'Update Your Profile',
     description:
       'Update your personal information, contact details, and social links to keep your profile current and professional.',
   },

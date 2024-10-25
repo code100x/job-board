@@ -40,11 +40,13 @@ model User {
 
   username       String @unique
 
-  contactEmail   String
+  contactEmail   String?
 
-  aboutMe        String
+  aboutMe        String?
 
   education      Education[]
+
+  resumeUpdateDate DateTime?
 }
 
 enum OauthProvider {

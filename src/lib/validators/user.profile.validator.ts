@@ -1,18 +1,10 @@
-import { EmployementType, WorkMode } from '@prisma/client';
+import {
+  DegreeType,
+  EmployementType,
+  FieldOfStudyType,
+  WorkMode,
+} from '@prisma/client';
 import { z } from 'zod';
-
-export enum DegreeEnum {
-  BTech = 'BTech',
-  MTech = 'MTech',
-  BCA = 'BCA',
-  MCA = 'MCA',
-}
-export enum FieldOfStudyEnum {
-  AI = 'AI',
-  CS = 'CS',
-  Electronics = 'Electronics',
-  Mechanical = 'Mechanical',
-}
 
 export const UserProfileSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -95,15 +87,16 @@ export const aboutMeSchema = z.object({
 });
 
 export const profileSchema = z.object({
-  profileImage: z.string(),
+  avatar: z.string().optional(),
   name: z.string().min(1, 'Name is required'),
   username: z.string().min(1, 'Username is required'),
   email: z.string().min(1, 'Email is required').email(),
-  contactEmail: z.string().min(1, 'Contact Email is required').email(),
+  contactEmail: z.string().email().optional(),
   aboutMe: z
     .string()
     .min(50, { message: 'Description must be at least 50 characters' })
-    .max(255, { message: 'Description cannot exceed 255 characters' }),
+    .max(255, { message: 'Description cannot exceed 255 characters' })
+    .optional(),
 });
 
 export const profileResumeSchema = z.object({
@@ -113,7 +106,7 @@ export const profileResumeSchema = z.object({
 export const profileProjectSchema = z.object({
   projectThumbnail: z.string().optional(),
   projectName: z.string().min(1, 'Project name is required'),
-  projectDescription: z
+  projectSummary: z
     .string()
     .min(20, { message: 'Summary must be at least 20 characters' })
     .max(255, { message: 'Summary cannot exceed 255 characters' }),
@@ -130,17 +123,26 @@ export const profileProjectSchema = z.object({
     .refine((url) => url.startsWith('https://github.com/'), {
       message: 'URL must be a GitHub link starting with "https://github.com/"',
     }),
-  projectFeatured: z.boolean().default(false),
+  isFeature: z.boolean().default(false),
+  stack: z.enum([
+    'GO',
+    'PYTHON',
+    'MERN',
+    'NEXTJS',
+    'AI_GPT_APIS',
+    'SPRINGBOOT',
+    'OTHERS',
+  ]),
 });
 
 export const profileEducationSchema = z
   .object({
     instituteName: z.string().min(1, 'Institute Name is required.'),
-    degree: z.nativeEnum(DegreeEnum, {
-      message: 'Degree is required.',
+    degree: z.nativeEnum(DegreeType, {
+      message: 'Employement type is required',
     }),
-    fieldOfStudy: z.nativeEnum(FieldOfStudyEnum, {
-      message: 'Field of Study is required.',
+    fieldOfStudy: z.nativeEnum(FieldOfStudyType, {
+      message: 'Employement type is required',
     }),
     startDate: z.date({
       required_error: 'Start date is required',
