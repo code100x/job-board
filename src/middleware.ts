@@ -22,6 +22,10 @@ export async function middleware(req: NextRequest) {
   ) {
     return NextResponse.redirect(new URL('/create-profile', req.url));
   }
+
+  if (pathname === '/admin/add-hr' && token?.role !== 'ADMIN') {
+    return NextResponse.redirect(new URL('/', req.url));
+  }
   return NextResponse.next();
 }
 
