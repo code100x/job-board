@@ -50,4 +50,9 @@ export interface UserType {
   education: EducationType[];
   project: ProjectType[];
   resumeUpdateDate: Date | null;
+  githubLink: string | null;
+  portfolioLink: string | null;
+  linkedinLink: string | null;
+  twitterLink: string | null;
+  discordLink: string | null;
 }

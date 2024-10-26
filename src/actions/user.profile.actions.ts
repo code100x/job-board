@@ -382,6 +382,11 @@ export const getUserDetailsWithId = async (id: string) => {
         aboutMe: true,
         project: true,
         resumeUpdateDate: true,
+        discordLink: true,
+        githubLink: true,
+        linkedinLink: true,
+        portfolioLink: true,
+        twitterLink: true,
       },
     });
     if (!res) throw new ErrorHandler('User Not Found', 'NOT_FOUND');
@@ -419,6 +424,11 @@ export const updateUserDetails = withSession<
         contactEmail: data.contactEmail,
         aboutMe: data.aboutMe,
         avatar: data.avatar,
+        discordLink: data.discordLink,
+        linkedinLink: data.linkedinLink,
+        twitterLink: data.twitterLink,
+        portfolioLink: data.portfolioLink,
+        githubLink: data.githubLink,
       },
     });
     revalidatePath(`/newProfile/${session.user.id}`);

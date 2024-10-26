@@ -97,6 +97,43 @@ export const profileSchema = z.object({
     .min(50, { message: 'Description must be at least 50 characters' })
     .max(255, { message: 'Description cannot exceed 255 characters' })
     .optional(),
+  githubLink: z
+    .string({ message: 'Github Link is required' })
+    .url({ message: 'Invalid URL format' })
+    .refine((url) => url.startsWith('https://github.com/'), {
+      message: 'URL must be a GitHub link starting with "https://github.com/"',
+    })
+    .optional(),
+  portfolioLink: z
+    .string({ message: 'Portfolio Link is required' })
+    .url({ message: 'Invalid URL format' })
+    .refine((url) => url.startsWith('https://'), {
+      message: 'URL must start with "https"',
+    })
+    .optional(),
+  linkedinLink: z
+    .string({ message: 'Linkedin Link is required' })
+    .url({ message: 'Invalid URL format' })
+    .refine((url) => url.startsWith('https://linkedin.com/'), {
+      message:
+        'URL must be a Linkedin link starting with "https://linkedin.com/"',
+    })
+    .optional(),
+  twitterLink: z
+    .string({ message: 'Twitter Link is required' })
+    .url({ message: 'Invalid URL format' })
+    .refine((url) => url.startsWith('https://x.com/'), {
+      message: 'URL must be a Linkedin link starting with "https://x.com/"',
+    })
+    .optional(),
+  discordLink: z
+    .string({ message: 'Discord Link is required' })
+    .url({ message: 'Invalid URL format' })
+    .refine((url) => url.startsWith('https://discordapp.com/'), {
+      message:
+        'URL must be a Linkedin link starting with "https://discordapp.com/"',
+    })
+    .optional(),
 });
 
 export const profileResumeSchema = z.object({

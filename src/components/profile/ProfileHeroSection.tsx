@@ -9,6 +9,7 @@ import { SHEETS } from '@/lib/constant/profile.constant';
 import AccountSeetingForm from './forms/AccountSeetingForm';
 import { useSession } from 'next-auth/react';
 import { UserType } from '@/types/user.types';
+import ProfileSocials from './ProfileSocials';
 
 const ProfileHeroSection = ({ userdetails }: { userdetails: UserType }) => {
   const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
@@ -27,7 +28,7 @@ const ProfileHeroSection = ({ userdetails }: { userdetails: UserType }) => {
 
   return (
     <>
-      <div className="border rounded-2xl  h-72 overflow-hidden">
+      <div className="border rounded-2xl  min-h-72 overflow-hidden">
         <div className="w-full h-32 bg-gradient-to-r from-blue-500 to-indigo-500"></div>
         <div className="p-6 relative flex-col flex gap-y-3">
           <Avatar className="h-32 w-32 absolute -top-16">
@@ -65,6 +66,7 @@ const ProfileHeroSection = ({ userdetails }: { userdetails: UserType }) => {
               @{userdetails.username}
             </a>
           </div>
+          <ProfileSocials userdetails={userdetails} />
         </div>
       </div>
       {status === 'authenticated' && data.user.id === userdetails.id && (

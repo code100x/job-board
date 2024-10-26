@@ -47,6 +47,11 @@ const EditProfileForm = ({
       contactEmail: userdetails.contactEmail || '',
       avatar: userdetails.avatar || '/main.svg',
       name: userdetails.name || '',
+      discordLink: userdetails.discordLink || '',
+      linkedinLink: userdetails.linkedinLink || '',
+      twitterLink: userdetails.twitterLink || '',
+      githubLink: userdetails.githubLink || '',
+      portfolioLink: userdetails.portfolioLink || '',
     },
   });
 
@@ -255,6 +260,86 @@ const EditProfileForm = ({
                 <FormControl>
                   <Input
                     placeholder="contact@gmail.com"
+                    {...field}
+                    className="rounded-[8px]"
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="portfolioLink"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel> Portfolio Link </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="https://"
+                    {...field}
+                    className="rounded-[8px]"
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="githubLink"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Github Link </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="https://github.com/"
+                    {...field}
+                    className="rounded-[8px]"
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="twitterLink"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>X Link </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="https://x.com/"
+                    {...field}
+                    className="rounded-[8px]"
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="linkedinLink"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Linkedin Link </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="https://linkedin.com/"
+                    {...field}
+                    className="rounded-[8px]"
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="discordLink"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Discord Link </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="https://discord.com/user"
                     {...field}
                     className="rounded-[8px]"
                   />
