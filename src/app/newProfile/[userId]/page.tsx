@@ -1,4 +1,5 @@
 import { getUserDetailsWithId } from '@/actions/user.profile.actions';
+import Custom404Page from '@/app/[...404]/page';
 import ProfileAboutMe from '@/components/profile/ProfileAboutMe';
 import ProfileEducation from '@/components/profile/ProfileEducation';
 import ProfileExperience from '@/components/profile/ProfileExperience';
@@ -18,6 +19,10 @@ const Page = async ({ params: { userId } }: { params: { userId: string } }) => {
   const res = await getUserDetailsWithId(userId);
   if (res.status) {
     userDetails = res.additional;
+  }
+
+  if (!res.status) {
+    return <Custom404Page />;
   }
 
   return (
