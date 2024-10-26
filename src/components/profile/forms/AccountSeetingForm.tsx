@@ -15,6 +15,9 @@ import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { TriangleAlert } from 'lucide-react';
+import { changePassword } from '@/actions/user.profile.actions';
+import { useToast } from '@/components/ui/use-toast';
+import { DeleteAccountDialog } from '../DeleteAccountDialog';
 
 const AccountSeetingForm = ({ handleClose }: { handleClose: () => void }) => {
   const form = useForm<UserPasswordSchemaType>({
@@ -26,7 +29,30 @@ const AccountSeetingForm = ({ handleClose }: { handleClose: () => void }) => {
     },
   });
 
-  const onSubmit = () => {};
+  const { toast } = useToast();
+
+  const onSubmit = async (values: UserPasswordSchemaType) => {
+    try {
+      const response = await changePassword(values);
+
+      if (!response.status) {
+        return toast({
+          title: response.message || 'Error',
+          variant: 'destructive',
+        });
+      }
+      toast({
+        title: response.message,
+        variant: 'success',
+      });
+      handleFormClose();
+    } catch (_error) {
+      toast({
+        variant: 'destructive',
+        title: 'Something went wrong while updating.',
+      });
+    }
+  };
 
   const handleFormClose = () => {
     form.clearErrors();
@@ -99,12 +125,18 @@ const AccountSeetingForm = ({ handleClose }: { handleClose: () => void }) => {
                 type="reset"
                 onClick={handleFormClose}
                 variant={'outline'}
-                className="mt-0 text-white rounded-[8px]"
+                className="mt-0 text-slate-500 dark:text-slate-400 rounded-[8px]"
               >
                 Cancel
               </Button>
-              <Button type="submit" className="mt-0 text-white rounded-[8px]">
-                Update Password
+              <Button
+                disabled={form.formState.isSubmitting}
+                type="submit"
+                className="mt-0 text-white rounded-[8px]"
+              >
+                {form.formState.isSubmitting
+                  ? 'Please wait...'
+                  : 'Update Profile'}
               </Button>
             </div>
           </div>
@@ -113,14 +145,14 @@ const AccountSeetingForm = ({ handleClose }: { handleClose: () => void }) => {
 
       <div className="h-60 bg-red-600 bg-opacity-10 mt-5 rounded-md flex flex-col justify-center items-center p-6 text-center ">
         <TriangleAlert height={32} width={32} className="text-[#DD503F]" />
-        <h4 className="text-xl font-bold text-slate-50">Delete account</h4>
-        <p className="text-slate-400 text-sm">
+        <h4 className="text-xl font-bold dark:text-slate-50 text-[#020817] ">
+          Delete account
+        </h4>
+        <p className="text-slate-500 dark:text-slate-400 text-sm">
           Permanently delete your account and all associated data. This action
           cannot be undone.
         </p>
-        <Button variant={'destructive'} className="mt-3">
-          Delete my account
-        </Button>
+        <DeleteAccountDialog />
       </div>
     </div>
   );

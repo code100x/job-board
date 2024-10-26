@@ -47,36 +47,39 @@ export const updateUser = async (
   }
 };
 
-export const changePassword = async (
-  email: string,
-  data: {
-    currentPassword: string;
-    newPassword: string;
-    confirmNewPassword: string;
-  }
-) => {
+export const changePassword = async (data: {
+  currentPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+}) => {
   try {
-    const existingUser = await prisma.user.findFirst({
-      where: { email: email },
-    });
+    const auth = await getServerSession(authOptions);
+
+    if (!auth || !auth?.user?.id)
+      throw new ErrorHandler('Not Authorized', 'UNAUTHORIZED');
+
     const { currentPassword, newPassword, confirmNewPassword } = data;
     if (!currentPassword || !newPassword || !confirmNewPassword) {
-      return { error: 'Password is required' };
+      throw new ErrorHandler('Invalid Data', 'BAD_REQUEST');
     }
     if (newPassword !== confirmNewPassword) {
-      return { error: 'Passwords do not match' };
+      throw new ErrorHandler('Invalid Data', 'BAD_REQUEST');
     }
 
-    if (!existingUser) return { error: 'User not found!' };
+    const existingUser = await prisma.user.findFirst({
+      where: { id: auth.user.id },
+    });
+
+    if (!existingUser) throw new ErrorHandler('User Not Found', 'NOT_FOUND');
     if (!existingUser.password) {
-      return { error: 'User password not found!' };
+      throw new ErrorHandler('Invalid Credientials', 'AUTHENTICATION_FAILED');
     }
     const matchPassword = await bcryptjs.compare(
       currentPassword,
       existingUser.password
     );
     if (!matchPassword) {
-      return { error: 'Invalid credentials' };
+      throw new ErrorHandler('Invalid Credientials', 'AUTHENTICATION_FAILED');
     }
 
     const hashedPassword = await bcryptjs.hash(newPassword, 10);
@@ -88,9 +91,15 @@ export const changePassword = async (
       },
     });
 
-    return { success: 'Your password has been successfully updated.' };
-  } catch (error) {
-    return { error: error };
+    return new SuccessResponse(
+      'Successfully Password Updated.',
+      200
+    ).serialize();
+  } catch (_error) {
+    throw new ErrorHandler(
+      'Something went wrong while changing password.',
+      'INTERNAL_SERVER_ERROR'
+    );
   }
 };
 
