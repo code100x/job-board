@@ -105,6 +105,7 @@ export const options = {
             email: email,
             password: hashedPassword,
             name: name,
+            username: 'random', // todo username
           },
           select: {
             id: true,
