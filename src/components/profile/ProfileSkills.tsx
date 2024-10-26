@@ -5,6 +5,7 @@ import { Button } from '../ui/button';
 import SheetWrapper from './sheets/SheetWrapper';
 import { SHEETS } from '@/lib/constant/profile.constant';
 import { SkillsForm } from './forms/SkillsForm';
+import ProfileEmptyContainers from './emptycontainers/ProfileEmptyContainers';
 
 const ProfileSkills = ({
   isOwner,
@@ -35,21 +36,22 @@ const ProfileSkills = ({
           </Button>
         )}
       </div>
+
       {skills.length === 0 && (
-        <div className="border rounded-2xl  h-80 overflow-hidden flex flex-col gap-y-4 px-6 items-center justify-center">
-          <Info width={32} height={32} />
-          <div className="text-center">
-            <h4 className="font-bold text-xl">
-              You haven’t added any skills yet
-            </h4>
-            <p className="text-sm font-medium text-gray-500">
-              Highlight your skills to stand out to potential employers.
-            </p>
-          </div>
-          <Button onClick={handleOpen} className="text-white rounded-sm">
-            Add your skills
-          </Button>
-        </div>
+        <ProfileEmptyContainers
+          isOwner={isOwner}
+          buttonText="Add your skills"
+          handleClick={handleOpen}
+          title={
+            isOwner ? ' You haven’t added any skills yet' : 'No Skills added.'
+          }
+          description={
+            isOwner
+              ? 'Highlight your skills to stand out to potential employers.'
+              : ''
+          }
+          Icon={Info}
+        />
       )}
       {skills.length !== 0 && (
         <div className="rounded-2xl gap-x-2 p-6 dark:bg-slate-900 bg-slate-100 flex flex-wrap">

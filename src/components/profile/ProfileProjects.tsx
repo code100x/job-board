@@ -7,6 +7,7 @@ import { SHEETS } from '@/lib/constant/profile.constant';
 import ProjectForm from './forms/ProjectForm';
 import { ProjectType } from '@/types/user.types';
 import ProfileProject from './ProfileProject';
+import ProfileEmptyContainers from './emptycontainers/ProfileEmptyContainers';
 
 const ProfileProjects = ({
   isOwner,
@@ -63,30 +64,34 @@ const ProfileProjects = ({
           </Button>
         )}
       </div>
+
       {featuredProjects.length === 0 && (
-        <div className="border rounded-2xl  h-80 overflow-hidden flex flex-col gap-y-4 px-6 items-center justify-center">
-          <Info width={32} height={32} />
-          <div className="text-center">
-            <h4 className="font-bold text-xl">
-              You haven’t added any projects yet
-            </h4>
-            <p className="text-sm font-medium text-gray-500">
-              Showcase your projects to demonstrate your skills and expertise.
-            </p>
-          </div>
-          <Button className="text-white rounded-sm" onClick={handleOpen}>
-            Add your projects
-          </Button>
-        </div>
+        <ProfileEmptyContainers
+          isOwner={isOwner}
+          buttonText="Add Your Projects"
+          handleClick={handleOpen}
+          title={
+            isOwner
+              ? 'You haven’t added any projects yet'
+              : 'No Projects Added.'
+          }
+          description={
+            isOwner
+              ? 'Showcase your projects to demonstrate your skills and expertise.'
+              : ''
+          }
+          Icon={Info}
+        />
       )}
       {featuredProjects.length !== 0 && !isSeeMore && (
         <>
-          <div className=" grid grid-cols-3 gap-x-6 gap-y-6 ">
+          <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-6 ">
             {featuredProjects.map((project) => (
               <ProfileProject
                 key={project.id}
                 project={project}
                 handleEditClick={handleEditClick}
+                isOwner={isOwner}
               />
             ))}
           </div>
@@ -106,6 +111,7 @@ const ProfileProjects = ({
                 key={project.id}
                 project={project}
                 handleEditClick={handleEditClick}
+                isOwner={isOwner}
               />
             ))}
           </div>

@@ -20,6 +20,7 @@ import { withServerActionAsyncCatcher } from '@/lib/async-catch';
 import { ServerActionReturnType } from '@/types/api.types';
 import { SuccessResponse } from '@/lib/success';
 import { withSession } from '@/lib/session';
+import { revalidatePath } from 'next/cache';
 
 export const updateUser = async (
   email: string,
@@ -162,6 +163,7 @@ export const addUserSkills = withServerActionAsyncCatcher<
         skills: data.skills,
       },
     });
+    revalidatePath(`/newProfile/${auth.user.id}`);
     return new SuccessResponse('Skills updated successfully', 200).serialize();
   } catch (_error) {
     return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
@@ -184,6 +186,7 @@ export const addUserExperience = withServerActionAsyncCatcher<
         userId: auth.user.id,
       },
     });
+    revalidatePath(`/newProfile/${auth.user.id}`);
     return new SuccessResponse(
       'Experience added successfully',
       200
@@ -208,6 +211,7 @@ export const addUserEducation = withServerActionAsyncCatcher<
         userId: auth.user.id,
       },
     });
+    revalidatePath(`/newProfile/${auth.user.id}`);
     return new SuccessResponse('Education added successfully', 200).serialize();
   } catch (_error) {
     return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
@@ -230,6 +234,7 @@ export const addUserProjects = withServerActionAsyncCatcher<
         userId: auth.user.id,
       },
     });
+    revalidatePath(`/newProfile/${auth.user.id}`);
     return new SuccessResponse('Project updated successfully', 200).serialize();
   } catch (_error) {
     return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
@@ -275,6 +280,7 @@ export const addUserResume = async (resume: string) => {
         resumeUpdateDate: new Date(),
       },
     });
+    revalidatePath(`/newProfile/${auth.user.id}`);
     return new SuccessResponse('Resume SuccessFully Uploaded', 200).serialize();
   } catch (_error) {
     return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
@@ -406,6 +412,7 @@ export const updateUserDetails = withSession<
         avatar: data.avatar,
       },
     });
+    revalidatePath(`/newProfile/${session.user.id}`);
   }
 
   return new SuccessResponse(
@@ -436,7 +443,7 @@ export const updateAboutMe = withSession<
       },
     });
   }
-
+  revalidatePath(`/newProfile/${session.user.id}`);
   return new SuccessResponse('Successfully updated About Me.', 200).serialize();
 });
 
@@ -456,6 +463,7 @@ export const deleteResume = async () => {
         resumeUpdateDate: null,
       },
     });
+    revalidatePath(`/newProfile/${auth.user.id}`);
     return new SuccessResponse('Resume Deleted Successfully', 200).serialize();
   } catch (_error) {
     return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
@@ -473,6 +481,7 @@ export const deleteProject = async (projectId: number) => {
         id: projectId,
       },
     });
+    revalidatePath(`/newProfile/${auth.user.id}`);
     return new SuccessResponse('Project Deleted Successfully', 200).serialize();
   } catch (_error) {
     return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
@@ -498,6 +507,7 @@ export const editProject = withServerActionAsyncCatcher<
         ...data,
       },
     });
+    revalidatePath(`/newProfile/${auth.user.id}`);
     return new SuccessResponse('Project updated successfully', 200).serialize();
   } catch (_error) {
     return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
@@ -522,6 +532,7 @@ export const editExperience = withServerActionAsyncCatcher<
         ...data,
       },
     });
+    revalidatePath(`/newProfile/${auth.user.id}`);
     return new SuccessResponse(
       'Experience updated successfully',
       200
@@ -549,6 +560,7 @@ export const editEducation = withServerActionAsyncCatcher<
         ...data,
       },
     });
+    revalidatePath(`/newProfile/${auth.user.id}`);
     return new SuccessResponse(
       'Experience updated successfully',
       200
@@ -571,6 +583,7 @@ export const deleteExperience = async (experienceId: number) => {
         userId: auth.user.id,
       },
     });
+    revalidatePath(`/newProfile/${auth.user.id}`);
     return new SuccessResponse('Project Deleted Successfully', 200).serialize();
   } catch (_error) {
     return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
@@ -589,6 +602,7 @@ export const deleteEducation = async (educationId: number) => {
         userId: auth.user.id,
       },
     });
+    revalidatePath(`/newProfile/${auth.user.id}`);
     return new SuccessResponse('Project Deleted Successfully', 200).serialize();
   } catch (_error) {
     return new ErrorHandler('Internal server error', 'DATABASE_ERROR');

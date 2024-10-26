@@ -74,7 +74,9 @@ const EditProfileForm = ({
 
   const onSubmit = async (data: ProfileSchemaType) => {
     try {
-      data.avatar = (await submitImage(file)) ?? '/main.svg';
+      if (file) {
+        data.avatar = (await submitImage(file)) ?? '/main.svg';
+      }
       const response = await updateUserDetails(data);
 
       if (!response.status) {
@@ -285,7 +287,7 @@ const EditProfileForm = ({
             type="reset"
             onClick={handleFormClose}
             variant={'outline'}
-            className="mt-0 text-white rounded-[8px]"
+            className="mt-0 text-slate-500 dark:text-slate-400 rounded-[8px]"
           >
             Cancel
           </Button>

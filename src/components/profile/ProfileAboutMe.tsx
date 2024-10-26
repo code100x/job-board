@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import SheetWrapper from './sheets/SheetWrapper';
 import ReadMeForm from './forms/ReadMeForm';
 import { SHEETS } from '@/lib/constant/profile.constant';
+import ProfileEmptyContainers from './emptycontainers/ProfileEmptyContainers';
 
 const ProfileAboutMe = ({
   aboutMe,
@@ -42,20 +43,20 @@ const ProfileAboutMe = ({
         )}
       </div>
       {!aboutMe && (
-        <div className="border rounded-2xl  h-80 overflow-hidden flex flex-col gap-y-4 px-6 items-center justify-center">
-          <FileText width={32} height={32} />
-          <div className="text-center">
-            <h4 className="font-bold text-xl">
-              You haven’t added an about me yet
-            </h4>
-            <p className="text-sm font-medium text-gray-500">
-              Share a brief introduction to let companies know who you are.
-            </p>
-          </div>
-          <Button onClick={handleOpen} className="text-white rounded-sm">
-            Add About Me
-          </Button>
-        </div>
+        <ProfileEmptyContainers
+          isOwner={isOwner}
+          buttonText="Add About Me"
+          handleClick={handleOpen}
+          title={
+            isOwner ? 'You haven’t added an about me yet' : 'No About Me added.'
+          }
+          description={
+            isOwner
+              ? 'Share a brief introduction to let companies know who you are.'
+              : ''
+          }
+          Icon={FileText}
+        />
       )}
       {aboutMe && (
         <div className="rounded-2xl p-6 dark:bg-slate-900 bg-slate-100">

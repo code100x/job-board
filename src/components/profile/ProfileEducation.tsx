@@ -8,6 +8,7 @@ import EducationForm from './forms/EducationForm';
 import { EducationType } from '@/types/user.types';
 import { format } from 'date-fns';
 import { EducationDeleteDialog } from './EducationDeleteDialog';
+import ProfileEmptyContainers from './emptycontainers/ProfileEmptyContainers';
 
 const ProfileEducation = ({
   isOwner,
@@ -55,20 +56,20 @@ const ProfileEducation = ({
         )}
       </div>
       {education.length === 0 && (
-        <div className="border rounded-2xl  h-80 overflow-hidden flex flex-col gap-y-4 px-6 items-center justify-center">
-          <Info width={32} height={32} />
-          <div className="text-center">
-            <h4 className="font-bold text-xl">
-              You haven’t added education yet
-            </h4>
-            <p className="text-sm font-medium text-gray-500">
-              Provide your education background to complete your profile.
-            </p>
-          </div>
-          <Button onClick={handleOpen} className="text-white rounded-sm">
-            Add your education
-          </Button>
-        </div>
+        <ProfileEmptyContainers
+          isOwner={isOwner}
+          buttonText="Add your education"
+          handleClick={handleOpen}
+          title={
+            isOwner ? 'You haven’t added education yet' : 'No Education added.'
+          }
+          description={
+            isOwner
+              ? 'Provide your education background to complete your profile.'
+              : ''
+          }
+          Icon={Info}
+        />
       )}
       {education.length !== 0 && (
         <div className="rounded-2xl p-6 dark:bg-slate-900 bg-slate-100">
@@ -97,19 +98,21 @@ const ProfileEducation = ({
                         )}
                       </div>
                     </div>
-                    <div className="flex gap-3 items-center w-fit">
-                      <EducationDeleteDialog educationId={education.id} />
-                      <Button
-                        className="bg-transparent p-0 b-0 hover:bg-transparent"
-                        onClick={() => handleEditClick(education)}
-                      >
-                        <Pencil
-                          width={16}
-                          height={16}
-                          className="dark:text-slate-400 text-slate-500"
-                        />
-                      </Button>
-                    </div>
+                    {isOwner && (
+                      <div className="flex gap-3 items-center w-fit">
+                        <EducationDeleteDialog educationId={education.id} />
+                        <Button
+                          className="bg-transparent p-0 b-0 hover:bg-transparent"
+                          onClick={() => handleEditClick(education)}
+                        >
+                          <Pencil
+                            width={16}
+                            height={16}
+                            className="dark:text-slate-400 text-slate-500"
+                          />
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

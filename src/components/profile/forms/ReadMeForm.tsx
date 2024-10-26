@@ -88,7 +88,7 @@ const ReadMeForm = ({
             <Button
               onClick={handleFormClose}
               variant={'outline'}
-              className="mt-0 text-white rounded-[8px]"
+              className="mt-0 text-slate-500 dark:text-slate-400 rounded-[8px]"
               type="reset"
             >
               Cancel

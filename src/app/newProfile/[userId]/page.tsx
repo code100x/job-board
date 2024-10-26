@@ -1,4 +1,3 @@
-'use client';
 import { getUserDetailsWithId } from '@/actions/user.profile.actions';
 import ProfileAboutMe from '@/components/profile/ProfileAboutMe';
 import ProfileEducation from '@/components/profile/ProfileEducation';
@@ -8,26 +7,18 @@ import ProfileHireme from '@/components/profile/ProfileHireme';
 import ProfileProjects from '@/components/profile/ProfileProjects';
 import ProfileResume from '@/components/profile/ProfileResume';
 import ProfileSkills from '@/components/profile/ProfileSkills';
-import { UserType } from '@/types/user.types';
-import { useSession } from 'next-auth/react';
-import React, { useEffect, useState } from 'react';
+import { authOptions } from '@/lib/authOptions';
+import { getServerSession } from 'next-auth';
 
-const Page = ({ params: { userId } }: { params: { userId: string } }) => {
-  const [userDetails, setUserDetails] = useState<null | UserType>(null);
+const Page = async ({ params: { userId } }: { params: { userId: string } }) => {
+  const session = await getServerSession(authOptions);
 
-  const { data, status } = useSession();
-
-  const isOwner = status === 'authenticated' && data?.user.id === userId;
-
-  useEffect(() => {
-    const fetchDetails = async () => {
-      const res = await getUserDetailsWithId(userId);
-      if (res.status) {
-        setUserDetails(res.additional);
-      }
-    };
-    fetchDetails();
-  }, [userId]);
+  const isOwner = session?.user.id === userId;
+  let userDetails;
+  const res = await getUserDetailsWithId(userId);
+  if (res.status) {
+    userDetails = res.additional;
+  }
 
   return (
     <>
@@ -54,7 +45,11 @@ const Page = ({ params: { userId } }: { params: { userId: string } }) => {
             isOwner={isOwner}
             education={userDetails.education}
           />
-          <ProfileHireme />
+          <ProfileHireme
+            email={userDetails.email}
+            contactEmail={userDetails.contactEmail || ''}
+            resume={userDetails.resume || ''}
+          />
         </>
       )}
     </>

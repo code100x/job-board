@@ -8,6 +8,7 @@ import ExperienceForm from './forms/ExperienceForm';
 import { ExperienceType } from '@/types/user.types';
 import { format } from 'date-fns';
 import { ExperienceDeleteDialog } from './ExperienceDeleteDialog';
+import ProfileEmptyContainers from './emptycontainers/ProfileEmptyContainers';
 
 const ProfileExperience = ({
   isOwner,
@@ -56,21 +57,24 @@ const ProfileExperience = ({
           </Button>
         )}
       </div>
+
       {experiences.length === 0 && (
-        <div className="border rounded-2xl  h-80 overflow-hidden flex flex-col gap-y-4 px-6 items-center justify-center">
-          <Info width={32} height={32} />
-          <div className="text-center">
-            <h4 className="font-bold text-xl">
-              You haven’t added work experience yet
-            </h4>
-            <p className="text-sm font-medium text-gray-500">
-              Share your experience to attract the right companies.
-            </p>
-          </div>
-          <Button onClick={handleOpen} className="text-white rounded-sm">
-            Add your work experience
-          </Button>
-        </div>
+        <ProfileEmptyContainers
+          isOwner={isOwner}
+          buttonText=" Add your work experience"
+          handleClick={handleOpen}
+          title={
+            isOwner
+              ? 'You haven’t added work experience yet'
+              : 'No Work Experience added.'
+          }
+          description={
+            isOwner
+              ? 'Share your experience to attract the right companies.'
+              : ''
+          }
+          Icon={Info}
+        />
       )}
 
       {experiences.length !== 0 && (
@@ -83,7 +87,7 @@ const ProfileExperience = ({
                   <div className="w-[2px] h-full bg-gradient-to-b from-[#3259e8] to-[#F1F5F9] dark:to-[#0F172A]"></div>
                 </div>
                 <div className="flex flex-col gap-2 mb-3 w-full">
-                  <div className="flex justify-between">
+                  <div className="flex flex-col sm:flex-row justify-between">
                     <div className="flex flex-col gap-1">
                       <h2 className="dark:text-slate-50 text-[#020817] text-xl font-bold ">
                         {experience.designation}
@@ -104,19 +108,21 @@ const ProfileExperience = ({
                         )}
                       </div>
                     </div>
-                    <div className="flex gap-3 items-center w-fit">
-                      <ExperienceDeleteDialog experienceId={experience.id} />
-                      <Button
-                        className="bg-transparent p-0 b-0 hover:bg-transparent"
-                        onClick={() => handleEditClick(experience)}
-                      >
-                        <Pencil
-                          width={16}
-                          height={16}
-                          className="dark:text-slate-400 text-slate-500"
-                        />
-                      </Button>
-                    </div>
+                    {isOwner && (
+                      <div className="flex gap-3 items-center w-fit">
+                        <ExperienceDeleteDialog experienceId={experience.id} />
+                        <Button
+                          className="bg-transparent p-0 b-0 hover:bg-transparent"
+                          onClick={() => handleEditClick(experience)}
+                        >
+                          <Pencil
+                            width={16}
+                            height={16}
+                            className="dark:text-slate-400 text-slate-500"
+                          />
+                        </Button>
+                      </div>
+                    )}
                   </div>
                   <p className="text-[#020817] dark:text-slate-50 text-base font-medium">
                     {experience.description}

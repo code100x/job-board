@@ -96,6 +96,7 @@ export const authOptions = {
               oauthProvider: 'GOOGLE',
               email: email as string,
               name: name as string,
+              username: 'ishadfoi', //to do
               avatar,
               isVerified: true,
               emailVerified: new Date(),

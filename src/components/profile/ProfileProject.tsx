@@ -9,14 +9,16 @@ import Link from 'next/link';
 const ProfileProject = ({
   project,
   handleEditClick,
+  isOwner,
 }: {
   project: ProjectType;
   handleEditClick: (project: ProjectType) => void;
+  isOwner: boolean;
 }) => {
   return (
     <div
       key={project.id}
-      className=" flex flex-col gap-y-6 p-6 dark:bg-slate-900 bg-slate-100 rounded-2xl"
+      className=" flex flex-col gap-y-6 p-3 sm:p-6 dark:bg-slate-900 bg-slate-100 rounded-2xl"
     >
       <div className="relative w-full aspect-w-16 h-48 rounded-[8px] overflow-hidden">
         <Image
@@ -31,19 +33,21 @@ const ProfileProject = ({
       <div className="flex gap-y-3 flex-col">
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-bold truncate">{project.projectName}</h2>
-          <div className="flex gap-3 items-center w-fit">
-            <ProjectDeleteDialog projectId={project.id} />
-            <Button
-              className="bg-transparent p-0 b-0 hover:bg-transparent"
-              onClick={() => handleEditClick(project)}
-            >
-              <Pencil
-                width={16}
-                height={16}
-                className="dark:text-slate-400 text-slate-500"
-              />
-            </Button>
-          </div>
+          {isOwner && (
+            <div className="flex gap-3 items-center w-fit">
+              <ProjectDeleteDialog projectId={project.id} />
+              <Button
+                className="bg-transparent p-0 b-0 hover:bg-transparent"
+                onClick={() => handleEditClick(project)}
+              >
+                <Pencil
+                  width={16}
+                  height={16}
+                  className="dark:text-slate-400 text-slate-500"
+                />
+              </Button>
+            </div>
+          )}
         </div>
         <p className="text-slate-500 dark:text-slate-400 font-medium text-sm leading-tight">
           {project.projectSummary}
@@ -52,12 +56,12 @@ const ProfileProject = ({
           {project.stack}
         </div>
       </div>
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-wrap">
         {project.projectLiveLink && (
           <Link
             target="_blank"
             href={project.projectLiveLink}
-            className="w-fit flex gap-2 items-center bg-white border border-slate-200 px-3 py-2 rounded-[8px] text-slate-500 dark:text-slate-400 dark:bg-[#020817] dark:border-slate-800"
+            className="w-fit flex gap-2 text-base items-center bg-white border border-slate-200 px-3 py-2 rounded-[8px] text-slate-500 dark:text-slate-400 dark:bg-[#020817] dark:border-slate-800"
           >
             View Project <ArrowUpRight height={16} width={16} />
           </Link>
@@ -66,14 +70,14 @@ const ProfileProject = ({
           <Link
             target="_blank"
             href={project.projectGithub}
-            className="w-fit flex gap-2 items-center border-none px-3 py-2 rounded-[8px] text-slate-500 dark:text-slate-400"
+            className="w-fit text-base flex gap-2 items-center border-none px-3 py-2 rounded-[8px] text-slate-500 dark:text-slate-400"
           >
             <Github
               height={16}
               width={16}
               className="dark:fill-slate-400 fill-slate-500"
             />{' '}
-            Github
+            View
           </Link>
         )}
       </div>
