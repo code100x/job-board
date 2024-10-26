@@ -31,14 +31,7 @@ export const adminNavbar = [
     id: 2,
     label: 'Manage Recruiters',
     path: APP_PATHS.MANAGE_RECRUITERS,
-    roleRequired: ['ADMIN', 'HR'],
-    icon: PackageSearch,
-  },
-  {
-    id: 3,
-    label: 'Payment History',
-    path: APP_PATHS.PAYMENT_HISTORY,
-    roleRequired: ['ADMIN', 'HR'],
+    roleRequired: ['ADMIN'],
     icon: PackageSearch,
   },
 ];
