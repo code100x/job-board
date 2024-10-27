@@ -10,7 +10,13 @@ export type SigninSchemaType = z.infer<typeof SigninSchema>;
 // Define the company info schema
 export const companyInfoSchema = z.object({
   name: z.string().min(1, 'Company name is required'),
-  website: z.string().url('Invalid URL'),
+  website: z
+    .string()
+    .url('Website URL is invalid')
+    .refine((url) => url.startsWith('https'), {
+      message: 'Website URL must start with https://',
+    }),
+
   description: z.string().min(10, 'Description must be at least 10 characters'),
   logo: z.string().optional(),
 });

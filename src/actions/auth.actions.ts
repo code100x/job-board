@@ -50,7 +50,7 @@ export const signUp = withServerActionAsyncCatcher<
   );
 
   try {
-    await prisma.$transaction(
+    const result = await prisma.$transaction(
       async (txn) => {
         const user = await txn.user.create({
           data: {
@@ -64,36 +64,17 @@ export const signUp = withServerActionAsyncCatcher<
           },
         });
 
+        let company = null;
         // If HR role and company info provided, create company-related data
         if (baseData.role === 'HR' && _data.companyInfo) {
-          // Create the company entry
-          const company = await txn.company.create({
+          // Create the company entry and store the result
+          company = await txn.company.create({
             data: {
               name: _data.companyInfo.name,
               website: _data.companyInfo.website || '',
               description: _data.companyInfo.description || '',
               logo: _data.companyInfo.logo || '',
               userId: user.id,
-            },
-          });
-
-          // Create a job entry associated with the company
-          await txn.job.create({
-            data: {
-              userId: user.id,
-              companyId: company.id, // Linking the job with the company
-              title: 'Company Profile',
-              companyName: _data.companyInfo.name,
-              companyBio: _data.companyInfo.description || '',
-              companyLogo: _data.companyInfo.logo || '',
-              companyEmail: baseData.email,
-              category: 'Company',
-              type: 'Full_time',
-              workMode: 'office',
-              city: '',
-              address: '',
-              application: '',
-              skills: [],
             },
           });
         }
@@ -119,7 +100,8 @@ export const signUp = withServerActionAsyncCatcher<
           secure: process.env.NODE_ENV === 'production',
         });
 
-        return user;
+        // Return both user and company information
+        return { user, company };
       },
       {
         maxWait: 5000,
@@ -129,7 +111,8 @@ export const signUp = withServerActionAsyncCatcher<
 
     return new SuccessResponse(
       'User registered successfully. A verification link has been sent to your email.',
-      201
+      201,
+      { userId: result.user.id, companyId: result.company?.id }
     ).serialize();
   } catch (err) {
     console.error('Signup error:', err);
