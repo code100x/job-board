@@ -328,7 +328,6 @@ let jobs = [
 async function seedUsers() {
   try {
     const hashedPassword = await bcrypt.hash('123456', 10);
-    console.log(users)
     for (const u of users) {
       try {
         await prisma.user.upsert({
