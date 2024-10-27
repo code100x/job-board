@@ -5,7 +5,7 @@ import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import React from 'react';
 
-const ManagePayment = async () => {
+const RecruitersPage = async () => {
   const server = await getServerSession(options);
   if (!server?.user) {
     redirect('/api/auth/signin');
@@ -81,4 +81,4 @@ const ManagePayment = async () => {
   return <ManageRecruiters recruiters={Recruiters} />;
 };
 
-export default ManagePayment;
+export default RecruitersPage;
