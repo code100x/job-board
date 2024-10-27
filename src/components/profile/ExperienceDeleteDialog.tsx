@@ -68,7 +68,7 @@ export function ExperienceDeleteDialog({
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will delete your Project.
+            This action cannot be undone. This will delete your Experience.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

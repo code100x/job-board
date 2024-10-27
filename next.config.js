@@ -34,11 +34,7 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'www.example.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'devsharmapull.b-cdn.net', // Add your new domain here
-      },
+      }
     ],
   },
 };

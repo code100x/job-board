@@ -1,6 +1,6 @@
 import { getUserDetailsWithId } from '@/actions/user.profile.actions';
 import Custom404Page from '@/app/[...404]/page';
-import ProfileAboutMe from '@/components/profile/ProfileAboutMe';
+import ProfileAboutMe from '@/components/profile/AboutMe';
 import ProfileEducation from '@/components/profile/ProfileEducation';
 import ProfileExperience from '@/components/profile/ProfileExperience';
 import ProfileHeroSection from '@/components/profile/ProfileHeroSection';

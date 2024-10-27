@@ -12,7 +12,7 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 const users = [
-  { id: '1', name: 'Jack', email: 'user@gmail.com', username: 'jackcoder' },
+  { id: '1', name: 'Jack', email: 'user@gmail.com', username: 'jackcoder', role: Role.USER },
   {
     id: '2',
     name: 'Admin',
