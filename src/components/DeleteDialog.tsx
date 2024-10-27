@@ -4,6 +4,7 @@ import { Button } from './ui/button';
 import { useToast } from './ui/use-toast';
 import { toggleDeleteJobById } from '@/actions/job.action';
 import { JobType } from '@/types/jobs.types';
+import icons from '@/lib/icons';
 import {
   Dialog,
   DialogTrigger,
@@ -13,7 +14,6 @@ import {
   DialogDescription,
   DialogFooter,
 } from './ui/dialog';
-import { ArchiveRestore, Trash2 } from 'lucide-react';
 
 const JobDialog = ({ job }: { job: JobType }) => {
   const [dialogOpen, setDialogOpen] = useState(false); // State to manage dialog visibility
@@ -43,7 +43,7 @@ const JobDialog = ({ job }: { job: JobType }) => {
             onClick={() => setDialogOpen(true)}
           >
             <Button variant="ghost" size="icon">
-              <ArchiveRestore className="h-7 w-5 text-green-500" />
+              <icons.ArchiveRestore className="h-7 w-5 text-green-500" />
             </Button>
           </span>
         ) : (
@@ -53,7 +53,7 @@ const JobDialog = ({ job }: { job: JobType }) => {
             onClick={() => setDialogOpen(true)}
           >
             <Button variant="ghost" size="icon">
-              <Trash2 className="h-7 w-5 text-red-500" />
+              <icons.trash className="h-7 w-5 text-red-500" />
             </Button>
           </span>
         )}
