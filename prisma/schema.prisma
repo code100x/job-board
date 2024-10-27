@@ -25,11 +25,11 @@ model User {
   project    Project[]
   resume     String?
 
-  oauthProvider OauthProvider? // Tracks OAuth provider (e.g., 'google')
-  oauthId       String?
-
+  oauthProvider  OauthProvider? // Tracks OAuth provider (e.g., 'google')
+  oauthId        String?
+  createdAt      DateTime       @default(now())
   blockedByAdmin DateTime?
-  onBoard        Boolean    @default(false)
+  onBoard        Boolean        @default(false)
   bookmark       Bookmark[]
 }
 

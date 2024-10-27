@@ -12,9 +12,10 @@ const JobManagement = async ({
   if (!jobs.status) {
     return <div>Error {jobs.message}</div>;
   }
+
   return (
     <div>
-      <JobManagementTable jobs={jobs} searchParams={searchParams} />
+      <JobManagementTable jobs={jobs.additional} searchParams={searchParams} />
     </div>
   );
 };

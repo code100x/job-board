@@ -1,3 +1,5 @@
+'use client';
+import React, { useState } from 'react';
 import {
   Table,
   TableBody,
@@ -15,23 +17,52 @@ import {
   SelectValue,
 } from './ui/select';
 import { Input } from './ui/input';
-import { RecruitersTypes } from '@/types/recruiters.types';
+import { getAllRecruiters } from '@/types/recruiters.types';
 import { Button } from './ui/button';
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from './ui/pagination';
+import { ServerActionReturnType } from '@/types/api.types';
 
-const ManageRecruiters = ({
-  recruiters,
-}: {
-  recruiters: RecruitersTypes[];
-}) => {
+type props = {
+  recruiters: ServerActionReturnType<getAllRecruiters>;
+};
+
+const ManageRecruiters = ({ recruiters }: props) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+  const itemsPerPage = 10;
+
+  if (!recruiters.status) {
+    return <div>Error {recruiters.message}</div>;
+  }
+
+  const recruiterList = recruiters.additional?.recruiters ?? [];
+
+  const filteredRecruiters = recruiterList.filter(
+    (recruiter) =>
+      recruiter.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      recruiter.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const totalPages = Math.ceil(filteredRecruiters.length / itemsPerPage);
+
+  const currentRecruiters = filteredRecruiters.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const handlePageChange = (page: number) => {
+    if (page > 0 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
   return (
     <div className="min-h-screen w-full max-w-6xl mx-auto p-6 md:p-8 text-gray-900 dark:text-gray-100">
       <div className="flex flex-col md:flex-row justify-between mb-6">
@@ -44,20 +75,11 @@ const ManageRecruiters = ({
           <Input
             className="pl-10 border-gray-300 text-gray-900 placeholder-gray-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-white"
             placeholder="Search recruiters...."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
         <div className="flex gap-4 items-center">
-          <Select>
-            <SelectTrigger className="w-[180px] border-gray-300 text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100">
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="All">All</SelectItem>
-              <SelectItem value="active">Active</SelectItem>
-              <SelectItem value="closed">Closed</SelectItem>
-              <SelectItem value="deleted">Deleted</SelectItem>
-            </SelectContent>
-          </Select>
           <Select>
             <SelectTrigger className="w-[180px] border-gray-300 text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100">
               <SelectValue placeholder="Sort Order" />
@@ -83,20 +105,20 @@ const ManageRecruiters = ({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {recruiters.length ? (
-                recruiters.map((recruiter) => (
+              {currentRecruiters.length ? (
+                currentRecruiters.map((recruiter) => (
                   <TableRow key={recruiter.id}>
                     <TableCell className="px-2 py-2">
-                      {recruiter.companyName}
+                      {recruiter.name}
                     </TableCell>
                     <TableCell className="px-2 py-2">
-                      {recruiter.companyEmail}
+                      {recruiter.email}
                     </TableCell>
                     <TableCell className="px-2 py-2">
-                      {recruiter.jobsPosted}
+                      {recruiter._count.jobs}
                     </TableCell>
                     <TableCell className="px-2 py-2">
-                      {recruiter.createdAt}
+                      {new Date(recruiter.createdAt).toLocaleDateString()}
                     </TableCell>
                     <TableCell className="px-2 py-2">
                       <Button variant="ghost" size="icon">
@@ -118,73 +140,36 @@ const ManageRecruiters = ({
       </div>
 
       <div className="mt-6 flex justify-start">
-        <div className="">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  className="border hover:border-blue-600 dark:bg-slate-400 dark:bg-opacity-5 dark:text-white text-black bg-slate-600 bg-opacity-15"
-                  href="#"
-                />
-              </PaginationItem>
-              <PaginationItem>
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={() => handlePageChange(currentPage - 1)}
+                className="border hover:border-blue-600 dark:bg-slate-400 dark:bg-opacity-5 dark:text-white text-black bg-slate-600 bg-opacity-15"
+              />
+            </PaginationItem>
+            {[...Array(totalPages)].map((_, index) => (
+              <PaginationItem key={index}>
                 <PaginationLink
-                  className="border hover:border-blue-600 dark:bg-slate-400 dark:bg-opacity-5 dark:text-white text-black bg-slate-600 bg-opacity-15"
-                  href="#"
+                  onClick={() => handlePageChange(index + 1)}
+                  className={`border hover:border-blue-600 dark:bg-slate-400 dark:bg-opacity-5 ${
+                    currentPage === index + 1
+                      ? 'bg-blue-600 text-white'
+                      : 'text-black dark:text-white'
+                  }`}
                 >
-                  1
+                  {index + 1}
                 </PaginationLink>
               </PaginationItem>
-              <PaginationItem>
-                <PaginationLink
-                  className="border hover:border-blue-600 dark:bg-slate-400 dark:bg-opacity-5 dark:text-white text-black bg-slate-600 bg-opacity-15"
-                  href="#"
-                  isActive
-                >
-                  2
-                </PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink
-                  className="border hover:border-blue-600 dark:bg-slate-400 dark:bg-opacity-5 dark:text-white text-black bg-slate-600 bg-opacity-15"
-                  href="#"
-                >
-                  3
-                </PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink
-                  className="border hover:border-blue-600 dark:bg-slate-400 dark:bg-opacity-5 dark:text-white text-black bg-slate-600 bg-opacity-15"
-                  href="#"
-                >
-                  <PaginationEllipsis />
-                </PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink
-                  className="border hover:border-blue-600 dark:bg-slate-400 dark:bg-opacity-5 dark:text-white text-black bg-slate-600 bg-opacity-15"
-                  href="#"
-                >
-                  9
-                </PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink
-                  className="border hover:border-blue-600 dark:bg-slate-400 dark:bg-opacity-5 dark:text-white text-black bg-slate-600 bg-opacity-15"
-                  href="#"
-                >
-                  10
-                </PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationNext
-                  className="border hover:border-blue-600 dark:bg-slate-400 dark:bg-opacity-5 dark:text-white text-black bg-slate-600 bg-opacity-15"
-                  href="#"
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </div>
+            ))}
+            <PaginationItem>
+              <PaginationNext
+                onClick={() => handlePageChange(currentPage + 1)}
+                className="border hover:border-blue-600 dark:bg-slate-400 dark:bg-opacity-5 dark:text-white text-black bg-slate-600 bg-opacity-15"
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
     </div>
   );
