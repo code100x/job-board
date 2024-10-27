@@ -6,6 +6,10 @@ export type RecruitersTypes = {
   _count: {
     jobs: number;
   };
+  company: {
+    companyName: string;
+    companyEmail: string;
+  } | null;
 };
 
 export type getAllRecruiters = {

@@ -31,6 +31,17 @@ model User {
   blockedByAdmin DateTime?
   onBoard        Boolean        @default(false)
   bookmark       Bookmark[]
+  companyId      String?        @unique
+  company        Company?       @relation(fields: [companyId], references: [id])
+}
+
+model Company {
+  id           String  @id @default(cuid())
+  companyName  String
+  companyLogo  String?
+  companyEmail String
+  companyBio   String
+  user         User?
 }
 
 enum OauthProvider {

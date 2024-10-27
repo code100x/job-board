@@ -46,8 +46,12 @@ const ManageRecruiters = ({ recruiters }: props) => {
 
   const filteredRecruiters = recruiterList.filter(
     (recruiter) =>
-      recruiter.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      recruiter.email.toLowerCase().includes(searchTerm.toLowerCase())
+      recruiter.company?.companyName
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      recruiter.company?.companyEmail
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
   );
 
   const totalPages = Math.ceil(filteredRecruiters.length / itemsPerPage);
@@ -109,10 +113,10 @@ const ManageRecruiters = ({ recruiters }: props) => {
                 currentRecruiters.map((recruiter) => (
                   <TableRow key={recruiter.id}>
                     <TableCell className="px-2 py-2">
-                      {recruiter.name}
+                      {recruiter.company?.companyName}
                     </TableCell>
                     <TableCell className="px-2 py-2">
-                      {recruiter.email}
+                      {recruiter.company?.companyEmail}
                     </TableCell>
                     <TableCell className="px-2 py-2">
                       {recruiter._count.jobs}

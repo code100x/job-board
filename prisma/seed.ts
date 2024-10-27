@@ -14,8 +14,20 @@ const prisma = new PrismaClient();
 const users = [
   { id: '1', name: 'Jack', email: 'user@gmail.com' },
   { id: '2', name: 'Admin', email: 'admin@gmail.com', role: Role.ADMIN, onBoard: true },
-  { id: '3', name: 'Hr', email: 'hr@gmail.com', role: Role.HR },
+  { id: '3', companyId: '1', name: 'Hr', email: 'hr@gmail.com', role: Role.HR, onBoard: true },
+  { id: '4', companyId: '2', name: 'John', email: 'john@gmail.com', role: Role.HR, onBoard: true },
+  { id: '5', companyId: '3', name: 'Jane', email: 'jane@gmail.com', role: Role.HR, onBoard: true },
+
+
 ];
+
+
+const companies = [
+  { id: '1', compnayEmail: "careers@techcorps.com", companyName: 'Tech Corp', companyBio: 'Leading tech solutions provider specializing in innovative web development.', companyLogo: '/main.svg' },
+  { id: '2', companyEmail: "careers@globalsolutions.com", companyName: 'Global Solutions', companyBio: 'Global Solutions offers comprehensive IT services for businesses worldwide.', companyLogo: '/main.svg' },
+  { id: '3', companyEmail: 'careers@innovatech.com', companyName: 'Innovatech', companyBio: 'Innovatech specializes in backend systems and cloud-based solutions.', companyLogo: '/main.svg' },
+]
+
 
 let jobs = [
   {
@@ -316,6 +328,7 @@ let jobs = [
 async function seedUsers() {
   try {
     const hashedPassword = await bcrypt.hash('123456', 10);
+    console.log(users)
     for (const u of users) {
       try {
         await prisma.user.upsert({
@@ -328,6 +341,7 @@ async function seedUsers() {
             password: hashedPassword,
             role: u.role || Role.USER,
             emailVerified: new Date(),
+            companyId: u.companyId
           },
         });
         console.log(`User created or updated: ${u.email}`);
@@ -338,6 +352,28 @@ async function seedUsers() {
     console.log('✅ User seed completed');
   } catch (error) {
     console.error('Error seeding users:', error);
+  }
+}
+async function seedCompanies() {
+  try {
+    await Promise.all(
+      companies.map(async (c) =>
+        prisma.company.upsert({
+          where: { id: c.id },
+          create: {
+            id: c.id,
+            companyName: c.companyName,
+            companyEmail: c.companyEmail ?? "default@example.com",
+            companyBio: c.companyBio,
+            companyLogo: c.companyLogo,
+          },
+          update: {},
+        })
+      )
+    );
+    console.log('✅ Company seed completed successfully');
+  } catch (error) {
+    console.error('Error seeding companies:', error);
   }
 }
 
@@ -401,6 +437,7 @@ async function seedJobs() {
 }
 
 async function main() {
+  await seedCompanies();
   await seedUsers();
   await seedJobs();
 }

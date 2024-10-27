@@ -338,6 +338,12 @@ export const getUserRecruiters = async () => {
             jobs: true,
           },
         },
+        company: {
+          select: {
+            companyName: true,
+            companyEmail: true,
+          },
+        },
       },
     });
     return new SuccessResponse('Recruiter SuccessFully Fetched', 200, {
