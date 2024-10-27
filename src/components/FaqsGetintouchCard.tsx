@@ -6,7 +6,9 @@ export default function FaqsGetintouchCard() {
       <p className="font-semibold md:text-base text-xs">
         Can&apos;t find what you&apos;re looking for?
       </p>
-      <Button className="md:text-base text-xs">Get in touch</Button>
+      <Button className="md:text-base text-xs" aria-label="get-in-touch">
+        Get in touch
+      </Button>
     </div>
   );
 }

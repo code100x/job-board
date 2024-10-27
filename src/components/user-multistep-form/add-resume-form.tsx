@@ -125,6 +125,7 @@ export const AddResume = () => {
             type="button"
             onClick={clearResumeFile}
             className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center cursor-pointer translate-x-1/2 -translate-y-1/2"
+            aria-label="x"
           >
             <X size="16" />
           </button>
@@ -144,7 +145,7 @@ export const AddResume = () => {
       {isLoading ? (
         <LoadingSpinner />
       ) : (
-        <Button className="mt-4 w-full" onClick={onSubmit}>
+        <Button className="mt-4 w-full" onClick={onSubmit} aria-label="submit">
           Submit
         </Button>
       )}

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin/*
+Disallow: /manage/*
+
+Sitemap: https://job.vineet.tech/sitemap.xml

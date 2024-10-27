@@ -66,6 +66,7 @@ const ToggleApproveJobButton = ({ job }: { job: JobType }) => {
               className="mt-2"
               variant={'secondary'}
               onClick={handleToggleJob}
+              aria-label="approve"
             >
               {isApproved ? 'Unapprove' : 'Approve'}
             </Button>

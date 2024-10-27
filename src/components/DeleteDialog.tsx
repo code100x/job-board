@@ -74,6 +74,7 @@ const JobDialog = ({ job }: { job: JobType }) => {
             className="mt-2"
             variant={job.deleted ? 'secondary' : 'destructive'}
             onClick={handelToggle}
+            aria-label="delete"
           >
             {job.deleted ? 'Restore' : 'Delete'}
           </Button>

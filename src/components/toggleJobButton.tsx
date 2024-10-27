@@ -22,7 +22,12 @@ const ToggleDelete = ({ job }: { job: JobType }) => {
   };
   return (
     <>
-      <Button className="mt-2" variant={'destructive'} onClick={handelToggle}>
+      <Button
+        className="mt-2"
+        variant={'destructive'}
+        onClick={handelToggle}
+        aria-label="delete"
+      >
         Delete
       </Button>
     </>

@@ -19,6 +19,7 @@ const satoshi = localFont({
 export const metadata: Metadata = {
   title: '100xJobs',
   description: 'Get your dream job',
+  // icons: '/main.png',
 };
 
 export default async function RootLayout({

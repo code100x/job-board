@@ -188,6 +188,7 @@ export const AddProject = () => {
               type="button"
               onClick={clearImage}
               className="absolute top-0 right-0 w-5 h-5 bg-red-500 rounded-full items-center flex justify-center cursor-pointer translate-x-1/2 -translate-y-1/2"
+              aria-label="x"
             >
               <X size="16" />
             </button>
@@ -290,7 +291,7 @@ export const AddProject = () => {
             <LoadingSpinner />
           </div>
         ) : (
-          <Button type="submit" className="mt-4">
+          <Button type="submit" className="mt-4" aria-label="submit">
             Submit
           </Button>
         )}

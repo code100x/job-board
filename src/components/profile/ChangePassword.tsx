@@ -158,6 +158,7 @@ export const ChangePassword = () => {
                     type="button"
                     onClick={togglePasswordVisibility}
                     className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                    aria-label="password"
                   >
                     {showPassword ? <EyeOffIcon /> : <EyeIcon />}
                   </button>
@@ -172,6 +173,7 @@ export const ChangePassword = () => {
           <Button
             disabled={isPending}
             className="bg-slate-950 text-white dark:text-slate-950 dark:bg-white rounded-md py-2 px-4 md:w-56 w-full"
+            aria-label="save"
           >
             {isPending ? <Loader /> : 'Save'}
           </Button>

@@ -107,6 +107,7 @@ export const Signin = () => {
             type="submit"
             disabled={form.formState.isSubmitting}
             className="w-full h-10"
+            aria-label="submit"
           >
             {form.formState.isSubmitting ? 'Please wait...' : 'Sign In'}
           </Button>

@@ -27,7 +27,10 @@ export const JobLanding = () => {
       </div>
       <RecentJobs />
       <div className="w-full flex justify-center items-center my-5">
-        <button className="flex items-center text-[#4E7AFF] border-none outline-none text-lg font-medium group">
+        <button
+          className="flex items-center text-[#4E7AFF] border-none outline-none text-lg font-medium group"
+          aria-label="view-all-jobs"
+        >
           <Link href={'/jobs'} className="flex items-center">
             View all jobs
             <ChevronRight className="w-4 h-4 mx-2 group-hover:translate-x-1 duration-200 ease-in-out transition" />

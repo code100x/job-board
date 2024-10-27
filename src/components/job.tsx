@@ -84,7 +84,10 @@ export const Job = ({ job }: { job: JobType }) => {
 
         <div className="mt-4 flex gap-2">
           <Link href={job.application ? job.application : ''}>
-            <Button className="justify-self-start px-6 dark:text-white py-2 w-fit h-fit">
+            <Button
+              className="justify-self-start px-6 dark:text-white py-2 w-fit h-fit"
+              aria-label="apply-now"
+            >
               Apply Now
             </Button>
           </Link>
