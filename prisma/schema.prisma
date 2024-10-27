@@ -92,6 +92,7 @@ model Job {
   maxExperience      Int?
   isVerifiedJob      Boolean         @default(false) @map("is_verified_job")
   deleted            Boolean         @default(false)
+  deletedAt          DateTime?
   postedAt           DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
 

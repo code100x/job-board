@@ -418,7 +418,7 @@ export const toggleDeleteJobById = withServerActionAsyncCatcher<
     },
     select: {
       deleted: true,
-      //   deletedAt: true,
+      deletedAt: true,
     },
   });
 
@@ -427,7 +427,7 @@ export const toggleDeleteJobById = withServerActionAsyncCatcher<
   }
 
   const isNowDeleted = !job.deleted;
-  //   const deletedAt = isNowDeleted ? new Date() : null;
+  const deletedAt = isNowDeleted ? new Date() : null;
 
   const updatedJob = await prisma.job.update({
     where: {
@@ -435,7 +435,7 @@ export const toggleDeleteJobById = withServerActionAsyncCatcher<
     },
     data: {
       deleted: isNowDeleted,
-      //   deletedAt: deletedAt,
+      deletedAt: deletedAt,
     },
   });
 
@@ -499,14 +499,14 @@ export async function updateExpiredJobs() {
   });
 }
 export const deleteOldDeltedJobs = async () => {
-  //   const twoWeeksAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000);
+  const twoWeeksAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000);
 
   await prisma.job.deleteMany({
     where: {
       deleted: true,
-      //   deletedAt: {
-      //     lte: twoWeeksAgo,
-      //   },
+      deletedAt: {
+        lte: twoWeeksAgo,
+      },
     },
   });
 };

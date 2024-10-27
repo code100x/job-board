@@ -22,7 +22,7 @@ import {
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import {
-  CompanyInfoSchema,
+  companyInfoSchema,
   SignupSchema,
   SignupData,
   CompanyInfo,
@@ -45,7 +45,7 @@ export const Signup = () => {
   });
 
   const companyForm = useForm<CompanyInfo>({
-    resolver: zodResolver(CompanyInfoSchema),
+    resolver: zodResolver(companyInfoSchema),
     defaultValues: {
       name: '',
       website: '',
