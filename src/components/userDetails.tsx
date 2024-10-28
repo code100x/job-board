@@ -7,10 +7,14 @@ const UserDetails = () => {
     <div className="h-[100vh] flex mt-14 items-center md:items-start flex-col md:flex-row  md:justify-center ">
       <div className="max-w-[300px] w-[350px] flex flex-col gap-4 items-center p-4">
         <div>
-          <Button className="w-[200px] m-auto">Applied to</Button>
+          <Button className="w-[200px] m-auto" aria-label="applied-to">
+            Applied to
+          </Button>
         </div>
         <div>
-          <Button className="w-[200px] m-auto">Update Details</Button>
+          <Button className="w-[200px] m-auto" aria-label="update-details">
+            Update Details
+          </Button>
         </div>
       </div>
       <div>
@@ -35,14 +39,16 @@ const UserDetails = () => {
             <Input placeholder="Twitter" />
           </div>
           <div>
-            <Button value={'Upload Resume'}>Upload Resume </Button>
+            <Button value={'Upload Resume'} aria-label="upload-resume">
+              Upload Resume{' '}
+            </Button>
           </div>
           <div className="flex justify-between">
             <div>
               <Input placeholder="LPA" className="max-w-[135px]" />
             </div>
             <div>
-              <Button>Submit</Button>
+              <Button aria-label="submit">Submit</Button>
             </div>
           </div>
         </div>

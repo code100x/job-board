@@ -29,7 +29,9 @@ const EmailVerifiedSuccess = () => {
         }
       >
         <Link href={APP_PATHS.SIGNIN}>
-          <Button className="w-full">Go to Login</Button>
+          <Button className="w-full" aria-label="login">
+            Go to Login
+          </Button>
         </Link>
       </FormContainer>
     </div>
@@ -44,7 +46,9 @@ const EmailVerificationLinkNotFound = () => {
         description={'The verification link you used is invalid or not found.'}
       >
         <Link href={APP_PATHS.SIGNUP}>
-          <Button className="w-full">Go to Signup</Button>
+          <Button className="w-full" aria-label="signip-redirect">
+            Go to Signup
+          </Button>
         </Link>
       </FormContainer>
     </div>

@@ -113,7 +113,11 @@ export default function VerticalLinearStepper() {
               <Box sx={{ mb: 2 }}>
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button variant="contained" sx={{ mt: 1, mr: 1 }}>
+                    <Button
+                      variant="contained"
+                      sx={{ mt: 1, mr: 1 }}
+                      aria-label="add"
+                    >
                       Add
                     </Button>
                   </DialogTrigger>
@@ -132,6 +136,7 @@ export default function VerticalLinearStepper() {
                     index === forms.length - 1 ? handleFinish : handleNext
                   }
                   sx={{ mt: 1, mr: 1 }}
+                  aria-label="next/finish"
                 >
                   {index === forms.length - 1 ? 'Finish' : 'Next'}
                 </Button>
@@ -139,6 +144,7 @@ export default function VerticalLinearStepper() {
                   disabled={index === 0}
                   onClick={handleBack}
                   sx={{ mt: 1, mr: 1 }}
+                  aria-label="back"
                 >
                   Back
                 </Button>

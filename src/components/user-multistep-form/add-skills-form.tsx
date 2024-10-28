@@ -66,7 +66,7 @@ export const AddSkills = () => {
             <LoadingSpinner />{' '}
           </div>
         ) : (
-          <Button type="submit" className="mt-4">
+          <Button type="submit" className="mt-4" aria-label="submit">
             Submit
           </Button>
         )}

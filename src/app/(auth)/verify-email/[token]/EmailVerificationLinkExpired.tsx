@@ -39,13 +39,19 @@ export const EmailVerificationLinkExpired = ({ token }: { token: string }) => {
       >
         {!isEmailSent ? (
           <Link href={APP_PATHS.SIGNIN}>
-            <Button className="w-full" disabled={isLoading}>
+            <Button
+              className="w-full"
+              disabled={isLoading}
+              aria-label="login-redirect"
+            >
               Go to Login
             </Button>
           </Link>
         ) : (
           <Link href={APP_PATHS.SIGNIN} onClick={handleResendClick}>
-            <Button className="w-full">Resend Verification Email</Button>
+            <Button className="w-full" aria-label="resend">
+              Resend Verification Email
+            </Button>
           </Link>
         )}
       </FormContainer>

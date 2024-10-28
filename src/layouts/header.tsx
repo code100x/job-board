@@ -36,7 +36,7 @@ export const CompanyLogo = () => {
     >
       <Image
         src={'/main.svg'}
-        alt="100xJobs"
+        alt="100xJobs logo"
         width={30}
         height={30}
         className="rounded"
@@ -64,7 +64,7 @@ const Header = () => {
 
   return (
     <>
-      <nav className="fixed w-full z-50 backdrop-blur-md border">
+      <nav className="fixed w-full z-50 backdrop-blur-lg border">
         <div className="flex h-[72px] w-full items-center justify-between lg:px-20 px-3 shadow-sm">
           <Link href="/" className="p-2.5">
             <CompanyLogo />
@@ -93,6 +93,7 @@ const Header = () => {
                 <button
                   className="border p-2.5 rounded-lg text-foreground/60 hover:dark:bg-[#191919] hover:bg-gray-100 md:mx-4 outline-none"
                   onClick={toggleTheme}
+                  aria-label="theme"
                 >
                   {theme === 'dark' ? (
                     <Moon className="w-4 h-4" />
@@ -112,6 +113,7 @@ const Header = () => {
                       <Button
                         variant="ghost"
                         className="relative h-8 w-8 rounded-full"
+                        aria-label="avatar"
                       >
                         <Avatar className="h-8 w-8">
                           <AvatarImage
@@ -167,6 +169,7 @@ const Header = () => {
                     onClick={() => {
                       router.push('/signin');
                     }}
+                    aria-label="login"
                   >
                     Login
                   </Button>
