@@ -1,23 +1,7 @@
 'use client';
-import { MobileNav } from '@/layouts/mobile-nav';
-import {
-  adminNavbar,
-  nonUserNavbar,
-  userNavbar,
-} from '@/lib/constant/app.constant';
-import { signOut, useSession } from 'next-auth/react';
-import Link from 'next/link';
 import { NavItem } from '@/components/navitem';
-import Image from 'next/image';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Moon, Sun } from 'lucide-react';
-import { useTheme } from 'next-themes';
-import { ADMIN_ROLE, HR_ROLE } from '@/config/app.config';
-import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useRouter } from 'next/navigation';
-import { getNameInitials } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,26 +9,39 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Skeleton } from '@/components/ui/skeleton';
+import { ADMIN_ROLE, HR_ROLE } from '@/config/app.config';
+import { MobileNav } from '@/layouts/mobile-nav';
+import {
+  adminNavbar,
+  nonUserNavbar,
+  userNavbar,
+} from '@/lib/constant/app.constant';
 import icons from '@/lib/icons';
+import { getNameInitials } from '@/lib/utils';
+import { Moon, Sun } from 'lucide-react';
+import { signOut, useSession } from 'next-auth/react';
+import { useTheme } from 'next-themes';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+
 export const CompanyLogo = () => {
   return (
-    <div
-      className="flex items-center gap-2 cursor-pointer"
-      onClick={() => {
-        window.location.href = '/';
-      }}
-    >
+    <Link href="/" className="flex items-center gap-2 p-2.5">
       <Image
         src={'/main.svg'}
-        alt="100xJobs"
+        alt="100xJobs logo"
         width={30}
         height={30}
         className="rounded"
+        priority
       />
       <h3 className="text-xl font-bold">
         100x<span className="text-blue-700">Jobs</span>
       </h3>
-    </div>
+    </Link>
   );
 };
 
@@ -66,9 +63,7 @@ const Header = () => {
     <>
       <nav className="fixed w-full z-50 backdrop-blur-md border">
         <div className="flex h-[72px] w-full items-center justify-between lg:px-20 px-3 shadow-sm">
-          <Link href="/" className="p-2.5">
-            <CompanyLogo />
-          </Link>
+          <CompanyLogo />
           <div className="flex items-center">
             <ul className="md:flex items-center gap-4 text-sm lg:gap-6 hidden mx-4">
               {session.status === 'loading'
