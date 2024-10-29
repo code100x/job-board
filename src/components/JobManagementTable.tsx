@@ -54,9 +54,11 @@ const JobManagementTable = ({ jobs, searchParams }: props) => {
     if (jobs?.jobs) {
       const filtered = jobs?.jobs.filter((job) => {
         if (statusFilter === 'All') return true;
-        if (statusFilter === 'active') return !job.deleted && !job.expired;
-        if (statusFilter === 'closed') return job.expired || job.isVerifiedJob;
+        if (statusFilter === 'active')
+          return !job.deleted && !job.expired && job.isVerifiedJob;
         if (statusFilter === 'deleted') return job.deleted;
+        if (statusFilter === 'closed')
+          return (job.expired || !job.isVerifiedJob) && !job.deleted;
         return true;
       });
 
