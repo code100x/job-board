@@ -102,7 +102,7 @@ const JobManagementTable = ({ jobs, searchParams }: props) => {
   };
 
   return (
-    <div className="min-h-screen w-full max-w-7xl mx-auto p-4 sm:p-8 text-gray-900 dark:text-gray-100">
+    <div className="min-h-screen sm:max-w-7xl max-w-96   mx-auto p-4 sm:p-8 text-gray-900 dark:text-gray-100">
       <div className="flex flex-col sm:flex-row justify-between mb-6">
         <h1 className="text-2xl font-bold mb-4 sm:mb-0">Manage Jobs</h1>
         <Link href={'/create'}>
@@ -123,7 +123,7 @@ const JobManagementTable = ({ jobs, searchParams }: props) => {
           />
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex  sm:flex-row gap-4">
           <Select onValueChange={setStatusFilter}>
             <SelectTrigger className="border-gray-800 dark:border-gray-600 text-gray-900 dark:bg-gray-800 dark:text-gray-100">
               <SelectValue placeholder="Status" />
@@ -148,58 +148,60 @@ const JobManagementTable = ({ jobs, searchParams }: props) => {
         </div>
       </div>
 
-      <div className="rounded-md border overflow-hidden dark:border-gray-600">
-        <Table>
-          <TableHeader className="bg-gray-100 dark:bg-gray-800 border-b border-gray-800 dark:border-gray-600">
-            <TableRow>
-              <TableHead>Job Title</TableHead>
-              <TableHead>Company Name</TableHead>
-              <TableHead>Job Category</TableHead>
-              <TableHead>Job Type</TableHead>
-              <TableHead>Posted Date</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Verified</TableHead>
-              <TableHead>Action</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {currentJobs.map((job) => (
-              <TableRow key={job.id}>
-                <TableCell className="px-2 py-2">{job.title}</TableCell>
-                <TableCell className="px-2 py-2">{job.companyName}</TableCell>
-                <TableCell className="px-2 py-2">{job.category}</TableCell>
-                <TableCell className="px-2 py-2">{job.type}</TableCell>
-                <TableCell className="px-2 py-2">
-                  {new Date(job.postedAt).toLocaleDateString()}
-                </TableCell>
-                <TableCell className="px-2 py-2">
-                  <span
-                    className={`px-2 py-2 rounded-full text-xs font-bold 
-                                    ${
-                                      job.deleted
-                                        ? 'bg-red-300 dark:bg-red-600 dark:bg-opacity-30 bg-opacity-30 text-red-700 dark:text-red-200'
-                                        : job.expired || !job.isVerifiedJob
-                                          ? 'bg-yellow-100 dark:bg-yellow-600 bg-opacity-50 dark:bg-opacity-30 text-yellow-700 dark:text-yellow-200'
-                                          : 'bg-green-100 dark:bg-green-600 bg-opacity-50 dark:bg-opacity-30 text-green-700 dark:text-green-200'
-                                    }`}
-                  >
-                    {job.deleted
-                      ? 'Deleted'
-                      : job.expired || !job.isVerifiedJob
-                        ? 'Closed'
-                        : 'Active'}
-                  </span>
-                </TableCell>
-                <TableCell className="px-2 py-2">
-                  <ToggleApproveJobButton job={job} />
-                </TableCell>
-                <TableCell className="px-2 py-2">
-                  <DeleteDialog job={job} />
-                </TableCell>
+      <div className="rounded-md border  overflow-hidden dark:border-gray-600 w-full  sm:max-w-7xl  max-w-96">
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader className="bg-gray-100 dark:bg-gray-800 border-b border-gray-800 dark:border-gray-600">
+              <TableRow>
+                <TableHead>Job Title</TableHead>
+                <TableHead>Company Name</TableHead>
+                <TableHead>Job Category</TableHead>
+                <TableHead>Job Type</TableHead>
+                <TableHead>Posted Date</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Verified</TableHead>
+                <TableHead>Action</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {currentJobs.map((job) => (
+                <TableRow key={job.id}>
+                  <TableCell className="px-2 py-2">{job.title}</TableCell>
+                  <TableCell className="px-2 py-2">{job.companyName}</TableCell>
+                  <TableCell className="px-2 py-2">{job.category}</TableCell>
+                  <TableCell className="px-2 py-2">{job.type}</TableCell>
+                  <TableCell className="px-2 py-2">
+                    {new Date(job.postedAt).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell className="px-2 py-2">
+                    <span
+                      className={`px-2 py-2 rounded-full text-xs font-bold 
+                              ${
+                                job.deleted
+                                  ? 'bg-red-300 dark:bg-red-600 dark:bg-opacity-30 bg-opacity-30 text-red-700 dark:text-red-200'
+                                  : job.expired || !job.isVerifiedJob
+                                    ? 'bg-yellow-100 dark:bg-yellow-600 bg-opacity-50 dark:bg-opacity-30 text-yellow-700 dark:text-yellow-200'
+                                    : 'bg-green-100 dark:bg-green-600 bg-opacity-50 dark:bg-opacity-30 text-green-700 dark:text-green-200'
+                              }`}
+                    >
+                      {job.deleted
+                        ? 'Deleted'
+                        : job.expired || !job.isVerifiedJob
+                          ? 'Closed'
+                          : 'Active'}
+                    </span>
+                  </TableCell>
+                  <TableCell className="px-2 py-2">
+                    <ToggleApproveJobButton job={job} />
+                  </TableCell>
+                  <TableCell className="px-2 py-2">
+                    <DeleteDialog job={job} />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </div>
 
       <div className="mt-6">
