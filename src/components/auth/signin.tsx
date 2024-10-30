@@ -39,8 +39,13 @@ export const Signin = () => {
     try {
       const response = await signIn('signin', { ...data, redirect: false });
       if (!response?.ok) {
+        const errorMessage =
+          response?.error?.includes('User') && response?.error?.includes('does not exist')
+            ? 'User does not exist'
+            : response?.error || 'Internal server error';
+  
         return toast({
-          title: response?.error || 'Internal server error',
+          title: errorMessage,
           variant: 'destructive',
         });
       }
@@ -48,7 +53,7 @@ export const Signin = () => {
         title: 'Login successful! Welcome back!',
         variant: 'success',
       });
-      // const redirect = searchParams.get('next') || APP_PATHS.HOME;
+  
       const searchParams = new URLSearchParams(window.location.search);
       const redirect = searchParams.get('next') || APP_PATHS.HOME;
       router.push(redirect);
@@ -60,7 +65,7 @@ export const Signin = () => {
       });
     }
   }
-
+  
   return (
     <div className="">
       <Form {...form}>
