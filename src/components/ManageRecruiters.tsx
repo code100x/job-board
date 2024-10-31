@@ -66,9 +66,8 @@ const ManageRecruiters = ({ recruiters }: props) => {
       setCurrentPage(page);
     }
   };
-
   return (
-    <div className="min-h-screen w-full max-w-6xl mx-auto p-6 md:p-8 text-gray-900 dark:text-gray-100">
+    <div className="min-h-screen w-full max-w-6xl mx-auto p-2 md:p-8 text-gray-900 dark:text-gray-100">
       <div className="flex flex-col md:flex-row justify-between mb-6">
         <h1 className="text-2xl font-bold mb-4 md:mb-0">Manage Recruiters</h1>
       </div>

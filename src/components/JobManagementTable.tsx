@@ -102,7 +102,7 @@ const JobManagementTable = ({ jobs, searchParams }: props) => {
   };
 
   return (
-    <div className="min-h-screen sm:max-w-7xl max-w-96   mx-auto p-4 sm:p-8 text-gray-900 dark:text-gray-100">
+    <div className="min-h-screen sm:max-w-7xl max-w-full   mx-auto p-2 sm:p-8 text-gray-900 dark:text-gray-100">
       <div className="flex flex-col sm:flex-row justify-between mb-6">
         <h1 className="text-2xl font-bold mb-4 sm:mb-0">Manage Jobs</h1>
         <Link href={'/create'}>
