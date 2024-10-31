@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "dev:docker": "npm run db:seed && (npx prisma studio &) && next dev",
+    "dev:docker": "npm run db:seed &&  next dev",
     "db:seed": "npx prisma db push && node --loader ts-node/esm prisma/seed.ts",
     "db:studio": "npx prisma studio",
     "check": "prettier --check \"**/*.{ts,tsx,js,jsx,md,mdx,css}\"",

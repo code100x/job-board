@@ -12,7 +12,6 @@ services:
       - ./.env
     ports:
       - "3000:3000"
-      - "5555:5555"
     develop:
       watch:
         - action: sync
@@ -43,6 +42,17 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  prisma-studio:
+    container_name: prisma-studio
+    image: timothyjmiller/prisma-studio:latest
+    restart: unless-stopped
+    env_file:
+     - ./.env
+    depends_on:
+      - app
+    ports:
+      - 5555:5555
 
 volumes:
   postgres-data:

@@ -1,9 +1,14 @@
-FROM node:20-alpine AS development
+FROM node:20-alpine AS base
 WORKDIR /app
 COPY package*.json ./
+
+FROM base AS development-dependencies
 RUN npm ci
 COPY prisma ./prisma
 RUN npx prisma generate
+
+FROM base AS development
+COPY --from=development-dependencies /app/node_modules ./node_modules
 COPY . .
 
 EXPOSE 3000
