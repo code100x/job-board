@@ -83,6 +83,7 @@ export const DeleteAccountDialog = () => {
           variant={'destructive'}
           className="mt-3"
           onClick={() => setModalOpen(true)}
+          aria-label="delete-account"
         >
           Delete my account
         </Button>
@@ -127,6 +128,7 @@ export const DeleteAccountDialog = () => {
                 <Button
                   disabled={disabled}
                   className="mt-4 bg-red-500 hover:bg-red-500 text-white"
+                  aria-label="submit"
                 >
                   {isPending ? <FaSpinner className="animate-spin" /> : 'Yes'}
                 </Button>

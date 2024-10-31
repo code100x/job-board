@@ -362,6 +362,7 @@ export const getUserDetails = async () => {
   }
 };
 
+
 export const getUserDetailsWithId = async (id: string) => {
   try {
     const res = await prisma.user.findFirst({
@@ -621,6 +622,39 @@ export const deleteEducation = async (educationId: number) => {
     });
     revalidatePath(`/newProfile/${auth.user.id}`);
     return new SuccessResponse('Project Deleted Successfully', 200).serialize();
+
+export const getUserRecruiters = async () => {
+  const auth = await getServerSession(authOptions);
+
+  if (!auth || !auth?.user?.id || auth?.user?.role !== 'ADMIN')
+    throw new ErrorHandler('Not Authorized', 'UNAUTHORIZED');
+  try {
+    const res = await prisma.user.findMany({
+      where: {
+        role: 'HR',
+      },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        createdAt: true,
+        _count: {
+          select: {
+            jobs: true,
+          },
+        },
+        company: {
+          select: {
+            companyName: true,
+            companyEmail: true,
+          },
+        },
+      },
+    });
+    return new SuccessResponse('Recruiter SuccessFully Fetched', 200, {
+      recruiters: res,
+    }).serialize();
+
   } catch (_error) {
     return new ErrorHandler('Internal server error', 'DATABASE_ERROR');
   }

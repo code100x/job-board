@@ -9,7 +9,7 @@ const JobCreateSuccess = ({ isVerifiedJob }: { isVerifiedJob: boolean }) => {
     <div>
       <h1>Job created successfully!</h1>
       <p>{message}</p>
-      <Button>Post another job</Button>
+      <Button aria-label="post-another-job">Post another job</Button>
     </div>
   );
 };
