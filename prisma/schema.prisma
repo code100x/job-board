@@ -25,12 +25,23 @@ model User {
   project    Project[]
   resume     String?
 
-  oauthProvider OauthProvider? // Tracks OAuth provider (e.g., 'google')
-  oauthId       String?
-
+  oauthProvider  OauthProvider? // Tracks OAuth provider (e.g., 'google')
+  oauthId        String?
+  createdAt      DateTime       @default(now())
   blockedByAdmin DateTime?
-  onBoard        Boolean    @default(false)
+  onBoard        Boolean        @default(false)
   bookmark       Bookmark[]
+  companyId      String?        @unique
+  company        Company?       @relation(fields: [companyId], references: [id])
+}
+
+model Company {
+  id           String  @id @default(cuid())
+  companyName  String
+  companyLogo  String?
+  companyEmail String
+  companyBio   String
+  user         User?
 }
 
 enum OauthProvider {
