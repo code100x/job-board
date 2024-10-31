@@ -29,7 +29,7 @@ import { useEffect, useState } from 'react';
 
 export const CompanyLogo = () => {
   return (
-    <Link href="/" className="flex items-center gap-2 p-2.5">
+    <div className="flex items-center gap-2">
       <Image
         src={'/main.svg'}
         alt="100xJobs logo"
@@ -41,7 +41,7 @@ export const CompanyLogo = () => {
       <h3 className="text-xl font-bold">
         100x<span className="text-blue-700">Jobs</span>
       </h3>
-    </Link>
+    </div>
   );
 };
 
@@ -63,7 +63,9 @@ const Header = () => {
     <>
       <nav className="fixed w-full z-50 backdrop-blur-md border">
         <div className="flex h-[72px] w-full items-center justify-between lg:px-20 px-3 shadow-sm">
-          <CompanyLogo />
+          <Link href="/" className="p-2.5">
+            <CompanyLogo />
+          </Link>
           <div className="flex items-center">
             <ul className="md:flex items-center gap-4 text-sm lg:gap-6 hidden mx-4">
               {session.status === 'loading'
