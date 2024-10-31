@@ -1,5 +1,5 @@
 'use client';
-import { Circle, Info, Pencil, Plus } from 'lucide-react';
+import { Circle, BookOpenCheck, Pencil, Plus } from 'lucide-react';
 import React, { useState } from 'react';
 import { Button } from '../ui/button';
 import SheetWrapper from './sheets/SheetWrapper';
@@ -68,7 +68,7 @@ const ProfileEducation = ({
               ? 'Provide your education background to complete your profile.'
               : ''
           }
-          Icon={Info}
+          Icon={BookOpenCheck}
         />
       )}
       {education.length !== 0 && (

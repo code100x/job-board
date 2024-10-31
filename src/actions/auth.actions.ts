@@ -42,8 +42,7 @@ export const signUp = withServerActionAsyncCatcher<
     await prisma.$transaction(
       async (txn) => {
         const user = await txn.user.create({
-          // todo username
-          data: { ...data, password: hashedPassword, username: 'asdif' },
+          data: { ...data, password: hashedPassword },
         });
 
         const verificationToken = await txn.verificationToken.create({

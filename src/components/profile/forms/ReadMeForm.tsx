@@ -6,6 +6,7 @@ import {
   FormDescription,
   FormField,
   FormItem,
+  FormMessage,
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 import { useForm } from 'react-hook-form';
@@ -17,7 +18,7 @@ import {
 import { updateAboutMe } from '@/actions/user.profile.actions';
 import { useToast } from '@/components/ui/use-toast';
 
-const ReadMeForm = ({
+const AboutMeForm = ({
   handleClose,
   aboutMe,
 }: {
@@ -80,6 +81,7 @@ const ReadMeForm = ({
                   <FormDescription>
                     Describe yourself between 50 to 255 characters.
                   </FormDescription>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -98,7 +100,11 @@ const ReadMeForm = ({
               type="submit"
               className="mt-0 text-white rounded-[8px]"
             >
-              {form.formState.isSubmitting ? 'Please Wait...' : 'Add About Me'}
+              {form.formState.isSubmitting
+                ? 'Please Wait...'
+                : aboutMe
+                  ? 'Update About Me'
+                  : 'Add About Me'}
             </Button>
           </div>
         </form>
@@ -107,4 +113,4 @@ const ReadMeForm = ({
   );
 };
 
-export default ReadMeForm;
+export default AboutMeForm;

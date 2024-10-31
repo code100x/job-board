@@ -83,15 +83,16 @@ export const aboutMeSchema = z.object({
   aboutMe: z
     .string()
     .min(50, { message: 'Description must be at least 50 characters' })
-    .max(255, { message: 'Description cannot exceed 255 characters' }),
+    .max(255, { message: 'Description cannot exceed 255 characters' })
+    .optional()
+    .or(z.literal('')),
 });
 
 export const profileSchema = z.object({
   avatar: z.string().optional(),
   name: z.string().min(1, 'Name is required'),
-  username: z.string().min(1, 'Username is required'),
   email: z.string().min(1, 'Email is required').email(),
-  contactEmail: z.string().email().optional(),
+  contactEmail: z.string().email().optional().or(z.literal('')),
   aboutMe: z
     .string()
     .min(50, { message: 'Description must be at least 50 characters' })
@@ -131,7 +132,7 @@ export const profileResumeSchema = z.object({
 });
 
 export const profileProjectSchema = z.object({
-  projectThumbnail: z.string().optional(),
+  projectThumbnail: z.string().min(1, 'Project Thumbnail is required.'),
   projectName: z.string().min(1, 'Project name is required'),
   projectSummary: z
     .string()
@@ -143,7 +144,8 @@ export const profileProjectSchema = z.object({
     .refine((url) => url.startsWith('https://'), {
       message: 'URL must be a https request',
     })
-    .optional(),
+    .optional()
+    .or(z.literal('')),
   projectGithub: z
     .string({ message: 'Github Link is required' })
     .url({ message: 'Invalid URL format' })

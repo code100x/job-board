@@ -49,7 +49,7 @@ const ProjectForm = ({
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       if (
-        acceptedFiles[0].size < 1024 * 1024 * 5 &&
+        acceptedFiles[0].size < 1024 * 1024 * 5 && //5mb
         acceptedFiles[0].type.includes('image')
       ) {
         setFiles(acceptedFiles[0]);
@@ -78,13 +78,13 @@ const ProjectForm = ({
     },
   });
 
-  // function onSubmit(values: ProfileProjectType) {
-  //   console.log(values)
-  // }
   async function onSubmit(data: ProfileProjectType) {
     try {
       if (file) {
-        data.projectThumbnail = await submitImage(file);
+        data.projectThumbnail = (await submitImage(file)) ?? '';
+      }
+      if (!previewImg) {
+        return;
       }
       let response;
       if (selectedProject?.id) {
@@ -123,6 +123,7 @@ const ProjectForm = ({
   const handleImageReset = () => {
     setFiles(null);
     setPreviewImg(null);
+    form.setValue('projectThumbnail', './main.svg');
   };
 
   return (
@@ -171,6 +172,12 @@ const ProjectForm = ({
                   />
                 )}
               </div>
+              <p className="text-red-700 text-xs">
+                {' '}
+                {!previewImg &&
+                  form.formState.errors.projectThumbnail?.message &&
+                  'Project Thumbnail is required.'}{' '}
+              </p>
             </div>
             <FormField
               control={form.control}

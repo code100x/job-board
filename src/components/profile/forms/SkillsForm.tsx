@@ -8,9 +8,8 @@ import {
 import { addUserSkills } from '@/actions/user.profile.actions';
 import { useToast } from '@/components/ui/use-toast';
 import { Form } from '@/components/ui/form';
-import { SkillsCombobox } from '@/components/skills-combobox';
-import { LoadingSpinner } from '@/components/loading-spinner';
 import { Button } from '@/components/ui/button';
+import { ProfileSkillsCombobox } from '../profile-skills-combobox';
 
 export const SkillsForm = ({
   handleClose,
@@ -21,7 +20,6 @@ export const SkillsForm = ({
 }) => {
   const [comboBoxSelectedValues, setComboBoxSelectedValues] =
     useState<string[]>(skills);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const form = useForm<addSkillsSchemaType>({
     resolver: zodResolver(addSkillsSchema),
@@ -32,7 +30,6 @@ export const SkillsForm = ({
   const { toast } = useToast();
   const onSubmit = async (data: addSkillsSchemaType) => {
     try {
-      setIsLoading(true);
       const response = await addUserSkills(data);
       if (!response.status) {
         return toast({
@@ -53,7 +50,6 @@ export const SkillsForm = ({
         variant: 'destructive',
       });
     } finally {
-      setIsLoading(false);
       handleClose();
     }
   };
@@ -72,16 +68,11 @@ export const SkillsForm = ({
         className="flex h-full flex-col justify-between"
       >
         <div>
-          <SkillsCombobox
+          <ProfileSkillsCombobox
             comboBoxSelectedValues={comboBoxSelectedValues}
             setComboBoxSelectedValues={setComboBoxSelectedValues}
             form={form}
-          ></SkillsCombobox>
-          {isLoading && (
-            <div className="mt-4">
-              <LoadingSpinner />{' '}
-            </div>
-          )}
+          ></ProfileSkillsCombobox>
         </div>
         <div className="py-4 flex gap-4 justify-end">
           <Button

@@ -1,5 +1,5 @@
 'use client';
-import { Circle, Info, Pencil, Plus } from 'lucide-react';
+import { Circle, Building2, Pencil, Plus } from 'lucide-react';
 import React, { useState } from 'react';
 import { Button } from '../ui/button';
 import SheetWrapper from './sheets/SheetWrapper';
@@ -73,7 +73,7 @@ const ProfileExperience = ({
               ? 'Share your experience to attract the right companies.'
               : ''
           }
-          Icon={Info}
+          Icon={Building2}
         />
       )}
 

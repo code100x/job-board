@@ -42,10 +42,9 @@ const EditProfileForm = ({
     resolver: zodResolver(profileSchema),
     defaultValues: {
       aboutMe: userdetails.aboutMe || '',
-      username: userdetails.username || '',
       email: userdetails.email || '',
       contactEmail: userdetails.contactEmail || '',
-      avatar: userdetails.avatar || '/main.svg',
+      avatar: userdetails.avatar || '',
       name: userdetails.name || '',
       discordLink: userdetails.discordLink || '',
       linkedinLink: userdetails.linkedinLink || '',
@@ -127,6 +126,7 @@ const EditProfileForm = ({
     }
     setPreviewImg(null);
     setFile(null);
+    form.setValue('avatar', '');
   };
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files ? e.target.files[0] : null;
@@ -219,22 +219,7 @@ const EditProfileForm = ({
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="username"
-                    {...field}
-                    className="rounded-[8px]"
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
+
           <FormField
             control={form.control}
             name="email"

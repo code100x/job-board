@@ -1,11 +1,11 @@
 'use client';
-import { FileText, Pencil } from 'lucide-react';
+import { SquareUserRound, Pencil } from 'lucide-react';
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import SheetWrapper from './sheets/SheetWrapper';
-import ReadMeForm from './forms/ReadMeForm';
 import { SHEETS } from '@/lib/constant/profile.constant';
 import ProfileEmptyContainers from './emptycontainers/ProfileEmptyContainers';
+import AboutMeForm from './forms/ReadMeForm';
 
 const ProfileAboutMe = ({
   aboutMe,
@@ -55,7 +55,7 @@ const ProfileAboutMe = ({
               ? 'Share a brief introduction to let companies know who you are.'
               : ''
           }
-          Icon={FileText}
+          Icon={SquareUserRound}
         />
       )}
       {aboutMe && (
@@ -70,7 +70,7 @@ const ProfileAboutMe = ({
           title={title}
           description={SHEETS.aboutMe.description}
         >
-          <ReadMeForm handleClose={handleClose} aboutMe={aboutMe} />
+          <AboutMeForm handleClose={handleClose} aboutMe={aboutMe} />
         </SheetWrapper>
       )}
     </>

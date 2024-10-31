@@ -38,8 +38,6 @@ model User {
   twitterLink    String?
   discordLink    String?
 
-  username       String @unique
-
   contactEmail   String?
 
   aboutMe        String?

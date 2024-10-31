@@ -369,7 +369,6 @@ export const getUserDetailsWithId = async (id: string) => {
         id: id,
       },
       select: {
-        username: true,
         name: true,
         id: true,
         skills: true,
@@ -419,7 +418,6 @@ export const updateUserDetails = withSession<
       },
       data: {
         name: data.name,
-        username: data.username,
         email: data.email,
         contactEmail: data.contactEmail,
         aboutMe: data.aboutMe,

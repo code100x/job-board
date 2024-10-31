@@ -38,7 +38,6 @@ export interface ExperienceType {
 
 export interface UserType {
   name: string;
-  username: string;
   id: string;
   email: string;
   skills: string[];
