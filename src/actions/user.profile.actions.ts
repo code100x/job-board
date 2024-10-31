@@ -9,7 +9,7 @@ import {
   ProfileProjectType,
   profileSchema,
   ProfileSchemaType,
-  // projectSchemaType,
+  projectSchemaType,
   UserProfileSchemaType,
 } from '@/lib/validators/user.profile.validator';
 import bcryptjs from 'bcryptjs';
@@ -228,7 +228,7 @@ export const addUserEducation = withServerActionAsyncCatcher<
 });
 
 export const addUserProjects = withServerActionAsyncCatcher<
-  ProfileProjectType,
+  projectSchemaType,
   ServerActionReturnType
 >(async (data) => {
   const auth = await getServerSession(authOptions);
