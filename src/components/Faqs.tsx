@@ -36,6 +36,7 @@ export default function Faqs() {
                 className="flex w-full justify-between items-center cursor-pointer focus:outline-none dark:bg-[#0F172A] bg-[#F1F5F9] p-4 rounded-xl"
                 onClick={() => toggleExpand(i)}
                 aria-expanded={expandedIndex === i}
+                aria-label="toggle-expand"
               >
                 <p className="text-left font-medium dark:text-white text-gray-900">
                   {faq.question}

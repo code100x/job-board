@@ -1,4 +1,9 @@
-import { EmployementType, WorkMode } from '@prisma/client';
+import {
+  DegreeType,
+  EmployementType,
+  FieldOfStudyType,
+  WorkMode,
+} from '@prisma/client';
 import { z } from 'zod';
 
 export const UserProfileSchema = z.object({
@@ -74,10 +79,120 @@ export const projectSchema = z.object({
   ]),
 });
 
+export const aboutMeSchema = z.object({
+  aboutMe: z
+    .string()
+    .min(50, { message: 'Description must be at least 50 characters' })
+    .max(255, { message: 'Description cannot exceed 255 characters' })
+    .optional()
+    .or(z.literal('')),
+});
+
+export const profileSchema = z.object({
+  avatar: z.string().optional(),
+  name: z.string().min(1, 'Name is required'),
+  email: z.string().min(1, 'Email is required').email(),
+  contactEmail: z.string().email().optional().or(z.literal('')),
+  aboutMe: z
+    .string()
+    .min(50, { message: 'Description must be at least 50 characters' })
+    .max(255, { message: 'Description cannot exceed 255 characters' })
+    .optional(),
+  githubLink: z
+    .string()
+    .refine((url) => url === '' || url.startsWith('https://github.com/'), {
+      message: 'URL must be a GitHub link starting with "https://github.com/"',
+    }),
+  portfolioLink: z
+    .string()
+    .refine((url) => url === '' || url.startsWith('https://'), {
+      message: 'URL must start with "https"',
+    }),
+  linkedinLink: z
+    .string()
+    .refine((url) => url === '' || url.startsWith('https://linkedin.com/'), {
+      message:
+        'URL must be a LinkedIn link starting with "https://linkedin.com/"',
+    }),
+  twitterLink: z
+    .string()
+    .refine((url) => url === '' || url.startsWith('https://x.com/'), {
+      message: 'URL must be a Twitter link starting with "https://x.com/"',
+    }),
+  discordLink: z
+    .string()
+    .refine((url) => url === '' || url.startsWith('https://discordapp.com/'), {
+      message:
+        'URL must be a Discord link starting with "https://discordapp.com/"',
+    }),
+});
+
+export const profileResumeSchema = z.object({
+  resume: z.string().min(1, 'Resume is required.'),
+});
+
+export const profileProjectSchema = z.object({
+  projectThumbnail: z.string().min(1, 'Project Thumbnail is required.'),
+  projectName: z.string().min(1, 'Project name is required'),
+  projectSummary: z
+    .string()
+    .min(20, { message: 'Summary must be at least 20 characters' })
+    .max(255, { message: 'Summary cannot exceed 255 characters' }),
+  projectLiveLink: z
+    .string()
+    .url({ message: 'Invalid URL format' })
+    .refine((url) => url.startsWith('https://'), {
+      message: 'URL must be a https request',
+    })
+    .optional()
+    .or(z.literal('')),
+  projectGithub: z
+    .string({ message: 'Github Link is required' })
+    .url({ message: 'Invalid URL format' })
+    .refine((url) => url.startsWith('https://github.com/'), {
+      message: 'URL must be a GitHub link starting with "https://github.com/"',
+    }),
+  isFeature: z.boolean().default(false),
+  stack: z.enum([
+    'GO',
+    'PYTHON',
+    'MERN',
+    'NEXTJS',
+    'AI_GPT_APIS',
+    'SPRINGBOOT',
+    'OTHERS',
+  ]),
+});
+
+export const profileEducationSchema = z
+  .object({
+    instituteName: z.string().min(1, 'Institute Name is required.'),
+    degree: z.nativeEnum(DegreeType, {
+      message: 'Employement type is required',
+    }),
+    fieldOfStudy: z.nativeEnum(FieldOfStudyType, {
+      message: 'Employement type is required',
+    }),
+    startDate: z.date({
+      required_error: 'Start date is required',
+      invalid_type_error: 'Invalid date',
+    }),
+    endDate: z.date({ invalid_type_error: 'Invalid date' }).optional(),
+  })
+  .refine((data) => !data.endDate || data.startDate <= data.endDate, {
+    message: 'Start date cannot be later than end date.',
+    path: ['endDate'],
+  });
+
 export type projectSchemaType = z.infer<typeof projectSchema>;
 export type expFormSchemaType = z.infer<typeof expFormSchema>;
 export type addSkillsSchemaType = z.infer<typeof addSkillsSchema>;
 export type UserPasswordSchemaType = z.infer<typeof UserPasswordSchema>;
+export type AboutMeSchemaType = z.infer<typeof aboutMeSchema>;
+export type ProfileSchemaType = z.infer<typeof profileSchema>;
+export type ProfileResumeType = z.infer<typeof profileResumeSchema>;
+export type ProfileProjectType = z.infer<typeof profileProjectSchema>;
+export type profileEducationType = z.infer<typeof profileEducationSchema>;
 
 export const UserProfileDestroySchema = z.object({
   random: z

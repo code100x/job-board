@@ -43,6 +43,7 @@ const ApproveJobDialog = ({
                 className="mt-2"
                 variant={'secondary'}
                 onClick={handleClick}
+                aria-label="approve"
               >
                 Approve
               </Button>

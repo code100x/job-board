@@ -138,6 +138,7 @@ export const EditProfilePicture = () => {
           disabled={isPending}
           onClick={removeImage}
           className="flex items-center justify-center gap-3 text-xs text-red-400 bg-none border-none bg-transparent hover:bg-transparent"
+          aria-label="remove"
         >
           <Trash className="w-4 h-4" />
           Remove

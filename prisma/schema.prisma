@@ -25,12 +25,37 @@ model User {
   project    Project[]
   resume     String?
 
-  oauthProvider OauthProvider? // Tracks OAuth provider (e.g., 'google')
-  oauthId       String?
-
+  oauthProvider  OauthProvider? // Tracks OAuth provider (e.g., 'google')
+  oauthId        String?
+  createdAt      DateTime       @default(now())
   blockedByAdmin DateTime?
-  onBoard        Boolean    @default(false)
+  onBoard        Boolean        @default(false)
   bookmark       Bookmark[]
+
+  githubLink     String?
+  portfolioLink  String?
+  linkedinLink   String?
+  twitterLink    String?
+  discordLink    String?
+
+  contactEmail   String?
+
+  aboutMe        String?
+
+  education      Education[]
+
+  resumeUpdateDate DateTime?
+  companyId      String?        @unique
+  company        Company?       @relation(fields: [companyId], references: [id])
+}
+
+model Company {
+  id           String  @id @default(cuid())
+  companyName  String
+  companyLogo  String?
+  companyEmail String
+  companyBio   String
+  user         User?
 }
 
 enum OauthProvider {
@@ -110,6 +135,17 @@ model Experience {
   user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model Education {
+  id                Int             @id @default(autoincrement())
+  instituteName     String
+  degree            DegreeType
+  fieldOfStudy      FieldOfStudyType
+  startDate         DateTime
+  endDate           DateTime?
+  userId            String
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 model Project {
   id               Int          @id @default(autoincrement())
   projectName      String
@@ -120,6 +156,7 @@ model Project {
   stack            ProjectStack @default(OTHERS)
   userId           String
   user             User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  isFeature        Boolean @default(false)
 }
 
 enum ProjectStack {
@@ -154,4 +191,18 @@ enum EmployementType {
   Part_time
   Internship
   Contract
+}
+
+enum DegreeType {
+  BTech
+  MTech
+  BCA
+  MCA
+}
+
+enum FieldOfStudyType {
+  AI
+  Machine_Learning
+  CS
+  Mechanical
 }

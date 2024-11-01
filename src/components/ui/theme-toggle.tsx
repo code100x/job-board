@@ -21,6 +21,7 @@ export function ModeToggle() {
           variant="ghost"
           size="icon"
           className="text-slate-500 dark:text-slate-400 focus-visible:outline-0 focus-visible:ring-0 focus-visible:ring-offset-0 py-2 h-10 w-10 px-0 border rounded-sm text-center"
+          aria-label="toggle-theme"
         >
           <Icon
             icon="sun"

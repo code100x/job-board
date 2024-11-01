@@ -1,23 +1,7 @@
 'use client';
-import { MobileNav } from '@/layouts/mobile-nav';
-import {
-  adminNavbar,
-  nonUserNavbar,
-  userNavbar,
-} from '@/lib/constant/app.constant';
-import { signOut, useSession } from 'next-auth/react';
-import Link from 'next/link';
 import { NavItem } from '@/components/navitem';
-import Image from 'next/image';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Moon, Sun } from 'lucide-react';
-import { useTheme } from 'next-themes';
-import { ADMIN_ROLE, HR_ROLE } from '@/config/app.config';
-import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useRouter } from 'next/navigation';
-import { getNameInitials } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,21 +9,34 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Skeleton } from '@/components/ui/skeleton';
+import { ADMIN_ROLE, HR_ROLE } from '@/config/app.config';
+import { MobileNav } from '@/layouts/mobile-nav';
+import {
+  adminNavbar,
+  nonUserNavbar,
+  userNavbar,
+} from '@/lib/constant/app.constant';
 import icons from '@/lib/icons';
+import { getNameInitials } from '@/lib/utils';
+import { Moon, Sun } from 'lucide-react';
+import { signOut, useSession } from 'next-auth/react';
+import { useTheme } from 'next-themes';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+
 export const CompanyLogo = () => {
   return (
-    <div
-      className="flex items-center gap-2 cursor-pointer"
-      onClick={() => {
-        window.location.href = '/';
-      }}
-    >
+    <div className="flex items-center gap-2">
       <Image
         src={'/main.svg'}
-        alt="100xJobs"
+        alt="100xJobs logo"
         width={30}
         height={30}
         className="rounded"
+        priority
       />
       <h3 className="text-xl font-bold">
         100x<span className="text-blue-700">Jobs</span>
@@ -64,7 +61,7 @@ const Header = () => {
 
   return (
     <>
-      <nav className="fixed w-full z-50 backdrop-blur-md border">
+      <nav className="fixed w-full z-50 backdrop-blur-lg border">
         <div className="flex h-[72px] w-full items-center justify-between lg:px-20 px-3 shadow-sm">
           <Link href="/" className="p-2.5">
             <CompanyLogo />
@@ -93,6 +90,7 @@ const Header = () => {
                 <button
                   className="border p-2.5 rounded-lg text-foreground/60 hover:dark:bg-[#191919] hover:bg-gray-100 md:mx-4 outline-none"
                   onClick={toggleTheme}
+                  aria-label="theme"
                 >
                   {theme === 'dark' ? (
                     <Moon className="w-4 h-4" />
@@ -112,6 +110,7 @@ const Header = () => {
                       <Button
                         variant="ghost"
                         className="relative h-8 w-8 rounded-full"
+                        aria-label="avatar"
                       >
                         <Avatar className="h-8 w-8">
                           <AvatarImage
@@ -142,7 +141,10 @@ const Header = () => {
                     >
                       <DropdownMenuItem>
                         <icons.profile className="mr-2 h-4 w-4" />
-                        <Link className="w-full" href={'/profile'}>
+                        <Link
+                          className="w-full"
+                          href={'/profile/' + session.data.user.id}
+                        >
                           Profile
                         </Link>
                       </DropdownMenuItem>
@@ -167,6 +169,7 @@ const Header = () => {
                     onClick={() => {
                       router.push('/signin');
                     }}
+                    aria-label="login"
                   >
                     Login
                   </Button>

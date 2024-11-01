@@ -25,6 +25,7 @@ export const PasswordInput = ({ placeholder, field }: PasswordInputProps) => {
         type="button"
         onClick={togglePasswordVisibility}
         className="absolute right-2 top-1/2 transform -translate-y-1/2"
+        aria-label="password"
       >
         {showPassword ? <EyeOffIcon /> : <EyeIcon />}
       </button>

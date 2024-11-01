@@ -52,7 +52,12 @@ export const ForgotPassword = () => {
         }}
       />
 
-      <Button type="submit" className="mt-4" disabled={isLoading}>
+      <Button
+        type="submit"
+        className="mt-4"
+        disabled={isLoading}
+        aria-label="submit"
+      >
         Submit
       </Button>
     </form>

@@ -13,6 +13,7 @@ export type JobType = {
   skills: string[];
   id: string;
   title: string;
+  expired: Boolean;
   description: string | null;
   companyName: string;
   postedAt: Date;

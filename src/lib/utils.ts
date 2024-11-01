@@ -1,3 +1,4 @@
+import { uploadFileAction } from '@/actions/upload-to-cdn';
 import { EMAIL_VERIFICATION_LINK_EXPIRATION_TIME } from '@/config/auth.config';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -34,4 +35,26 @@ export const isTokenExpiredUtil = (createdAt: Date) => {
   return (
     now - tokenCreationTime > EMAIL_VERIFICATION_LINK_EXPIRATION_TIME * 1000
   );
+};
+
+export const submitImage = async (file: File | null) => {
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    const uniqueFileName = `${Date.now()}-${file.name}`;
+    formData.append('uniqueFileName', uniqueFileName);
+
+    const res = await uploadFileAction(formData, 'webp');
+    if (!res) {
+      throw new Error('Failed to upload resume');
+    }
+
+    const uploadRes = res;
+    return uploadRes.url;
+  } catch (error) {
+    console.error('Image upload failed:', error);
+  }
 };

@@ -66,6 +66,7 @@ export const ShareJobDialog = ({ job }: { job: JobType }) => {
           variant="outline"
           size="sm"
           className="px-4 py-2 h-fit gap-2 flex items-center"
+          aria-label="share-job"
         >
           Share Job <Share2 size={16} />
         </Button>
@@ -81,6 +82,7 @@ export const ShareJobDialog = ({ job }: { job: JobType }) => {
               variant="outline"
               className="w-full justify-start gap-2"
               onClick={() => option.shareFunction(job)}
+              aria-label="share-on-social"
             >
               {option.icon}
               Share on {option.name}
