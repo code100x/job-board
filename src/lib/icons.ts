@@ -6,6 +6,7 @@ import {
   FaTelegramPlane,
   FaYoutube,
   FaSpinner,
+  FaDiscord,
 } from 'react-icons/fa';
 import {
   ArrowRight,
@@ -38,6 +39,7 @@ const icons = {
   youtube: FaYoutube,
   linkedin: FaLinkedin,
   github: FaGithub,
+  discord: FaDiscord,
   instagram: FaInstagram,
   telergam: FaTelegramPlane,
   loading: FaSpinner,

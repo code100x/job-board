@@ -24,7 +24,7 @@ import {
 } from '@/lib/validators/user.profile.validator';
 
 import { deleteUser } from '@/actions/user.profile.actions';
-import { Trash, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { FaSpinner } from 'react-icons/fa';
 
 export const DeleteAccountDialog = () => {
@@ -80,13 +80,12 @@ export const DeleteAccountDialog = () => {
     <Dialog open={modalOpen}>
       <DialogTrigger asChild>
         <Button
-          className="w-40 flex gap-2 text-red-500"
-          variant={'ghost'}
+          variant={'destructive'}
+          className="mt-3"
           onClick={() => setModalOpen(true)}
           aria-label="delete-account"
         >
-          <Trash size={15} />
-          Delete Account
+          Delete my account
         </Button>
       </DialogTrigger>
 

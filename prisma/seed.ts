@@ -17,8 +17,6 @@ const users = [
   { id: '3', companyId: '1', name: 'Hr', email: 'hr@gmail.com', role: Role.HR, onBoard: true },
   { id: '4', companyId: '2', name: 'John', email: 'john@gmail.com', role: Role.HR, onBoard: true },
   { id: '5', companyId: '3', name: 'Jane', email: 'jane@gmail.com', role: Role.HR, onBoard: true },
-
-
 ];
 
 
@@ -75,7 +73,6 @@ let jobs = [
     minSalary: null,
     maxSalary: null,
     isVerifiedJob: false,
-
   },
   {
     id: '3',
@@ -99,7 +96,7 @@ let jobs = [
     minSalary: 90000,
     maxSalary: 120000,
     isVerifiedJob: true,
-    deleted: true
+    deleted: true,
   },
   {
     id: '4',
@@ -148,7 +145,7 @@ let jobs = [
     minSalary: 110000,
     maxSalary: 150000,
     isVerifiedJob: true,
-    deleted: true
+    deleted: true,
   },
   {
     id: '6',
@@ -174,7 +171,6 @@ let jobs = [
     minSalary: 80000,
     maxSalary: 100000,
     isVerifiedJob: false,
-
   },
   {
     id: '7',
@@ -199,8 +195,7 @@ let jobs = [
     minSalary: 70000,
     maxSalary: 90000,
     isVerifiedJob: false,
-    delted: true
-
+    delted: true,
   },
   {
     id: '8',
@@ -225,8 +220,7 @@ let jobs = [
     minSalary: null,
     maxSalary: null,
     isVerifiedJob: true,
-    deleted: true
-
+    deleted: true,
   },
   {
     id: '9',
@@ -249,7 +243,6 @@ let jobs = [
     minSalary: 100000,
     maxSalary: 130000,
     isVerifiedJob: true,
-
   },
   {
     id: '10',
@@ -274,7 +267,6 @@ let jobs = [
     minSalary: 75000,
     maxSalary: 95000,
     isVerifiedJob: false,
-
   },
   {
     id: '11',
@@ -296,7 +288,6 @@ let jobs = [
     minSalary: 25000,
     maxSalary: 50000,
     isVerifiedJob: true,
-
   },
   {
     id: '12',
@@ -321,7 +312,7 @@ let jobs = [
     minSalary: null,
     maxSalary: null,
     isVerifiedJob: true,
-    delted: false
+    delted: false,
   },
 ];
 

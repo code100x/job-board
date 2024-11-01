@@ -119,7 +119,8 @@ export const AddProject = () => {
     try {
       setIsLoading(true);
       data.projectThumbnail = (await submitImage(file)) ?? '';
-      const response = await addUserProjects(data);
+      // todo isFeature
+      const response = await addUserProjects({ ...data });
       if (!response.status) {
         return toast({
           title: response.message || 'Error',

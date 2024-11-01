@@ -3,7 +3,6 @@
 import { useState, useTransition } from 'react';
 
 import { useForm } from 'react-hook-form';
-import { useSession } from 'next-auth/react';
 import { useToast } from '../ui/use-toast';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -28,7 +27,6 @@ import {
 import Loader from '../loader';
 
 export const ChangePassword = () => {
-  const session = useSession();
   const { toast } = useToast();
 
   const { register, watch } = useForm();
@@ -60,14 +58,19 @@ export const ChangePassword = () => {
   const handleFormSubmit = async (data: UserPasswordSchemaType) => {
     try {
       startTransition(() => {
-        changePassword(session.data?.user.email as string, data)
+        changePassword(data)
           .then((res) => {
-            res?.error
-              ? toast({
-                  title: (res.error as string) || 'something went wrong',
-                  variant: 'destructive',
-                })
-              : toast({ title: res.success as string, variant: 'success' });
+            res?.status &&
+              toast({
+                title: res.message as string,
+                variant: 'success',
+              });
+          })
+          .catch((error) => {
+            toast({
+              title: error.message as string,
+              variant: 'destructive',
+            });
           })
           .then(() => {
             form.reset();
