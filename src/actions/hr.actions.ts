@@ -47,6 +47,7 @@ export const createHR = withSession<
         companyName: companyName,
         companyBio: companyBio,
         companyLogo: companyLogo,
+        companyEmail: email,
       },
     });
 

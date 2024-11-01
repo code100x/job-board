@@ -159,13 +159,6 @@ model Project {
   isFeature        Boolean @default(false)
 }
 
-model Company {
-  id          String  @id @default(cuid())
-  companyName String
-  companyLogo String?
-  companyBio  String
-  user        User?
-}
 
 enum ProjectStack {
   GO
