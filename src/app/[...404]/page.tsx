@@ -43,6 +43,7 @@ const Custom404Page = () => {
         <Button
           asChild
           className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-full transition-colors duration-300"
+          aria-label="home-redirect"
         >
           <Link href="/">
             <span className="flex items-center">

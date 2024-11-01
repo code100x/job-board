@@ -19,6 +19,7 @@ export const GoogleOauthButton = ({ label }: { label: string }) => (
       signIn('google');
     }}
     className="w-full h-10 bg-white border border-gray-300 text-gray-700 font-medium hover:bg-gray-50"
+    aria-label="google-oauth-button"
   >
     <svg
       className="w-4 h-4 mr-2"

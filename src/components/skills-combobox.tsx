@@ -105,6 +105,7 @@ export function SkillsCombobox({
                       return prev;
                     });
                   }}
+                  aria-label="x"
                 >
                   <X className="text-white" size={15} />
                 </Button>

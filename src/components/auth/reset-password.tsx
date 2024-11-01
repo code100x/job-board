@@ -78,7 +78,7 @@ export const ResetPassword = () => {
       {errorMessage ? (
         <p className="text-sm font-medium text-destructive">{errorMessage}</p>
       ) : null}
-      <Button type="submit" disabled={isLoading}>
+      <Button type="submit" disabled={isLoading} aria-label="submit">
         Submit
       </Button>
     </form>
@@ -114,6 +114,7 @@ export const PasswordInput = ({
         type="button"
         onClick={togglePasswordVisibility}
         className="absolute right-2 top-1/2 transform -translate-y-1/2 focus:outline-none"
+        aria-label="toggle-password"
       >
         {showPassword ? <EyeOffIcon /> : <EyeIcon />}
       </button>

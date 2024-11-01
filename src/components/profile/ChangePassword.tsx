@@ -3,7 +3,6 @@
 import { useState, useTransition } from 'react';
 
 import { useForm } from 'react-hook-form';
-import { useSession } from 'next-auth/react';
 import { useToast } from '../ui/use-toast';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -28,7 +27,6 @@ import {
 import Loader from '../loader';
 
 export const ChangePassword = () => {
-  const session = useSession();
   const { toast } = useToast();
 
   const { register, watch } = useForm();
@@ -60,14 +58,19 @@ export const ChangePassword = () => {
   const handleFormSubmit = async (data: UserPasswordSchemaType) => {
     try {
       startTransition(() => {
-        changePassword(session.data?.user.email as string, data)
+        changePassword(data)
           .then((res) => {
-            res?.error
-              ? toast({
-                  title: (res.error as string) || 'something went wrong',
-                  variant: 'destructive',
-                })
-              : toast({ title: res.success as string, variant: 'success' });
+            res?.status &&
+              toast({
+                title: res.message as string,
+                variant: 'success',
+              });
+          })
+          .catch((error) => {
+            toast({
+              title: error.message as string,
+              variant: 'destructive',
+            });
           })
           .then(() => {
             form.reset();
@@ -158,6 +161,7 @@ export const ChangePassword = () => {
                     type="button"
                     onClick={togglePasswordVisibility}
                     className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                    aria-label="password"
                   >
                     {showPassword ? <EyeOffIcon /> : <EyeIcon />}
                   </button>
@@ -172,6 +176,7 @@ export const ChangePassword = () => {
           <Button
             disabled={isPending}
             className="bg-slate-950 text-white dark:text-slate-950 dark:bg-white rounded-md py-2 px-4 md:w-56 w-full"
+            aria-label="save"
           >
             {isPending ? <Loader /> : 'Save'}
           </Button>

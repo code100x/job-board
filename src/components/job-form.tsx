@@ -566,6 +566,7 @@ const PostJobForm = () => {
                               <PopoverTrigger asChild>
                                 <Button
                                   variant="outline"
+                                  aria-label="pick-date"
                                   className={`w-[240px] pl-3 text-left font-normal dark:bg-gray-800 
                                       `} // No color change on hover
                                 >
@@ -675,6 +676,7 @@ const PostJobForm = () => {
                     <button
                       type="button"
                       onClick={clearLogoImage}
+                      aria-label="x"
                       className="absolute top-0 right-0 w-5 h-5 bg-red-500 rounded-full items-center flex justify-center cursor-pointer translate-x-1/2 -translate-y-1/2"
                     >
                       <X size="16" />
@@ -751,7 +753,11 @@ const PostJobForm = () => {
               </div>
             </div>
             <div className="w-full flex justify-end items-center my-4 ">
-              <Button type="submit" disabled={form.formState.isSubmitting}>
+              <Button
+                type="submit"
+                disabled={form.formState.isSubmitting}
+                aria-label="submit-job"
+              >
                 {form.formState.isSubmitting ? 'Please wait...' : 'Create Job'}
               </Button>
             </div>

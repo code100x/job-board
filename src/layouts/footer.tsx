@@ -20,6 +20,7 @@ const Footer = () => {
               key={i}
               href={social.href}
               className="p-3 rounded-full border mx-2 hover:bg-slate-50 duration-150 ease-in-out transition"
+              aria-label={`${social.icon}-logo`}
             >
               <Icon icon={social.icon} className="w-4 h-4" />
             </Link>

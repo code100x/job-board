@@ -63,7 +63,10 @@ export function MobileNav() {
 
   return (
     <Sheet>
-      <SheetTrigger className="border p-2.5 rounded-lg text-foreground/60 hover:dark:bg-[#191919] hover:bg-gray-100">
+      <SheetTrigger
+        className="border p-2.5 rounded-lg text-foreground/60 hover:dark:bg-[#191919] hover:bg-gray-100"
+        aria-label="mob-nav-menu"
+      >
         <Menu className="w-4 h-4" />
       </SheetTrigger>
       <SheetContent className="w-full">
@@ -151,6 +154,7 @@ export function MobileNav() {
               <button
                 onClick={handleSignout}
                 className="text-[#DD503F] flex items-center justify-start font-medium text-lg"
+                aria-label="logout"
               >
                 <LogOut className="w-4 h-4" />
                 <p className="mx-1">Logout</p>
