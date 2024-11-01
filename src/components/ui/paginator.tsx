@@ -34,10 +34,12 @@ export const PaginationPages = ({
           <PaginationLink
             onClick={() => paginationHandler(i)}
             role="button"
-            className={cn('rounded-full dark:bg-neutral-900 bg-neutral-100', {
-              'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-black ':
-                i === currentPage,
-            })}
+            className={cn(
+              ' border dark:bg-slate-400 dark:bg-opacity-5 dark:text-white',
+              {
+                ' text-black bg-slate-600 bg-opacity-15   ': i === currentPage,
+              }
+            )}
           >
             {i}
           </PaginationLink>
@@ -52,10 +54,12 @@ export const PaginationPages = ({
             onClick={() => paginationHandler(i)}
             // isActive={i === currentPage}
             role="button"
-            className={cn('rounded-full dark:bg-neutral-900 bg-neutral-100', {
-              'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-black ':
-                i === currentPage,
-            })}
+            className={cn(
+              ' border dark:bg-slate-400 dark:bg-opacity-5 dark:text-white',
+              {
+                ' text-black bg-slate-600 bg-opacity-15   ': i === currentPage,
+              }
+            )}
           >
             {i}
           </PaginationLink>
@@ -77,11 +81,13 @@ export const PaginationPages = ({
           <PaginationLink
             role="button"
             onClick={() => paginationHandler(i)}
-            // isActive={i === currentPage}
-            className={cn('rounded-full dark:bg-neutral-900 bg-neutral-100', {
-              'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-black ':
-                i === currentPage,
-            })}
+            isActive={i === currentPage}
+            className={cn(
+              ' border dark:bg-slate-400 dark:bg-opacity-5 dark:text-white',
+              {
+                ' text-black bg-slate-600 bg-opacity-15   ': i === currentPage,
+              }
+            )}
           >
             {i}
           </PaginationLink>

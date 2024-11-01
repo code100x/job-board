@@ -174,6 +174,7 @@ export const EditProfile = ({ name, email }: Props) => {
             <Button
               disabled={isPending}
               className="bg-slate-950 text-white dark:text-slate-950 dark:bg-white rounded-md py-2 px-4 md:w-56 w-full"
+              aria-label="submit"
             >
               {isPending ? <Loader /> : 'Save'}
             </Button>

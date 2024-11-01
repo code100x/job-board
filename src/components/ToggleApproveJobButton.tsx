@@ -14,7 +14,7 @@ import { Button } from './ui/button';
 import { useToast } from './ui/use-toast';
 import { toggleApproveJob } from '@/actions/job.action';
 import { JobType } from '@/types/jobs.types';
-import { Badge } from './ui/badge';
+import { Switch } from './ui/switch';
 
 const ToggleApproveJobButton = ({ job }: { job: JobType }) => {
   const { toast } = useToast();
@@ -41,13 +41,7 @@ const ToggleApproveJobButton = ({ job }: { job: JobType }) => {
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger>
-        <Badge
-          className={`cursor-pointer tracking-wide ${
-            !isApproved ? 'bg-zinc-700 text-white' : 'bg-green-500 text-white'
-          }`}
-        >
-          {isApproved ? 'Approved' : 'Unapproved'}
-        </Badge>
+        <Switch checked={job.isVerifiedJob ? true : false} />
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -66,6 +60,7 @@ const ToggleApproveJobButton = ({ job }: { job: JobType }) => {
               className="mt-2"
               variant={'secondary'}
               onClick={handleToggleJob}
+              aria-label="approve"
             >
               {isApproved ? 'Unapprove' : 'Approve'}
             </Button>

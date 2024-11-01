@@ -20,19 +20,18 @@ export const userNavbar = [
   { id: 2, label: 'Contact us', path: APP_PATHS.CONTACT_US },
 ];
 export const adminNavbar = [
-  { id: 1, label: 'Explore jobs', path: APP_PATHS.JOBS },
   {
-    id: 2,
+    id: 1,
     label: 'Manage Jobs',
     path: APP_PATHS.MANAGE_JOBS,
     roleRequired: ['ADMIN', 'HR'],
     icon: PackageSearch,
   },
   {
-    id: 3,
-    label: 'Post a job',
-    path: APP_PATHS.POST_JOB,
-    roleRequired: ['ADMIN', 'HR'],
+    id: 2,
+    label: 'Manage Recruiters',
+    path: APP_PATHS.MANAGE_RECRUITERS,
+    roleRequired: ['ADMIN'],
     icon: PackageSearch,
   },
   {

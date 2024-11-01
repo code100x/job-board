@@ -18,6 +18,7 @@ export const Welcome = () => {
         variant="link"
         className="mt-4 text-primary underline"
         onClick={() => router.push(APP_PATHS.SIGNIN)}
+        aria-label="go-to-login"
       >
         Go to Login
       </Button>
@@ -56,7 +57,12 @@ const CountdownButton = () => {
   }, [isDisabled, secondsRemaining]);
 
   return (
-    <Button onClick={handleClick} disabled={isDisabled} className="w-full">
+    <Button
+      onClick={handleClick}
+      disabled={isDisabled}
+      className="w-full"
+      aria-label="wait"
+    >
       {isDisabled
         ? `Wait ${secondsRemaining} second${secondsRemaining !== 1 ? 's' : ''}...`
         : 'Click Me'}

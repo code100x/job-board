@@ -270,7 +270,7 @@ export const AddExperience = () => {
               <LoadingSpinner />{' '}
             </div>
           ) : (
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full" aria-label="submit">
               Submit
             </Button>
           )}

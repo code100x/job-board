@@ -59,6 +59,7 @@ export function ProfileMenu() {
           variant="ghost"
           size="icon"
           className="focus-visible:outline-0 focus-visible:ring-0 focus-visible:ring-offset-0 py-2 h-8 w-8 px-0"
+          aria-label="profile"
         >
           <Icon icon="profile" className="h-[1.2rem] w-[1.2rem]" />
           <span className="sr-only">Profile</span>
