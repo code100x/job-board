@@ -22,27 +22,6 @@ const page = async ({ params }: { params: JobByIdSchemaType }) => {
     staleTime: 1000 * 60 * 5,
   });
 
-  // const job = await getJobById(params);
-  // if (!job.status) {
-  //   return;
-  // }
-
-  // const jobDetail = job.additional?.job;
-  // if (!jobDetail) {
-  //   return redirect('/jobs');
-  // }
-
-  // const curatedJobs = await getRecommendedJobs({
-  //   id: jobDetail.id,
-  //   category: jobDetail.category,
-  // });
-
-  // if (!curatedJobs.status) {
-  //   return;
-  // }
-
-  // const recommendedJobs = curatedJobs.additional?.jobs;
-
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="container max-w-8xl h-fit mx-auto my-8">
