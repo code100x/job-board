@@ -1,4 +1,5 @@
-import { getAllJobs, GetUserBookmarksId } from '@/actions/job.action';
+'use client';
+import { getAllJobs } from '@/actions/job.action';
 import { DEFAULT_PAGE, JOBS_PER_PAGE } from '@/config/app.config';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
@@ -10,31 +11,34 @@ import { Pagination, PaginationContent, PaginationItem } from './ui/pagination';
 import { PaginationPages } from './ui/paginator';
 import JobCard from './Jobcard';
 import APP_PATHS from '@/config/path.config';
+import { useQuery } from '@tanstack/react-query';
 
 type PaginatorProps = {
   searchParams: JobQuerySchemaType;
+  userbookmarks: { jobId: string }[] | null;
 };
 
-const AllJobs = async ({ searchParams }: PaginatorProps) => {
-  const [jobs, getUserBookmarks] = await Promise.all([
-    await getAllJobs(searchParams),
-    await GetUserBookmarksId(),
-  ]);
+const AllJobs = ({ searchParams, userbookmarks }: PaginatorProps) => {
+  const userbookmarkArr: { jobId: string }[] | null = userbookmarks;
 
-  const userbookmarkArr: { jobId: string }[] | null = getUserBookmarks.data;
-
-  if (!jobs.status || !jobs.additional) {
-    return <div>Error {jobs.message}</div>;
+  const { data } = useQuery({
+    queryKey: ['jobs', searchParams],
+    queryFn: () => getAllJobs(searchParams),
+    staleTime: 1000 * 60 * 5,
+  });
+  if (!data?.status || !data?.additional) {
+    return <div>Error {data?.message}</div>;
   }
+  const jobs = data;
 
   const totalPages =
     Math.ceil((jobs.additional?.totalJobs || 0) / JOBS_PER_PAGE) ||
     DEFAULT_PAGE;
   const currentPage = parseInt(searchParams.page?.toString()) || DEFAULT_PAGE;
-
+  const jobsLength = jobs.additional?.jobs.length || 0; // Defaults to 0 if undefined
   return (
     <div className="bg-background py-4 grid gap-3 w-full">
-      {jobs.additional.jobs.length > 0 ? (
+      {jobsLength > 0 ? (
         jobs.additional?.jobs.map((job, index) => (
           <JobCard
             job={job}

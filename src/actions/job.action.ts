@@ -188,9 +188,25 @@ export const getRecommendedJobs = withServerActionAsyncCatcher<
   ServerActionReturnType<getAllRecommendedJobs>
 >(async (data) => {
   const result = RecommendedJobSchema.parse(data);
-  const { id, category } = result;
+  const { id } = result;
 
-  // fettching the latest three jobs excluding the current job and in the same category
+  const job = await prisma.job.findUnique({
+    where: { id }, // Ensure params.id is available
+    select: {
+      id: true,
+      category: true,
+      // Add any other fields you need from the job
+    },
+  });
+
+  if (!job) {
+    throw new Error('Job not found');
+  }
+
+  // Use the category from the fetched job
+  const { category } = job;
+
+  // Fetch the latest three jobs excluding the current job and in the same category
   const jobs = await prisma.job.findMany({
     where: {
       category: category,
