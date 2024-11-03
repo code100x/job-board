@@ -5,10 +5,6 @@ import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 
 export default function RecentJobs() {
-  // const [recentJobs, getUserBookmarks] = await Promise.all([
-  //   await getRecentJobs(),
-  //   await GetUserBookmarksId(),
-  // ]);
   const session = useSession();
 
   const { data } = useQuery({

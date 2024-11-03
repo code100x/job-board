@@ -191,11 +191,10 @@ export const getRecommendedJobs = withServerActionAsyncCatcher<
   const { id } = result;
 
   const job = await prisma.job.findUnique({
-    where: { id }, // Ensure params.id is available
+    where: { id },
     select: {
       id: true,
       category: true,
-      // Add any other fields you need from the job
     },
   });
 
@@ -203,10 +202,8 @@ export const getRecommendedJobs = withServerActionAsyncCatcher<
     throw new Error('Job not found');
   }
 
-  // Use the category from the fetched job
   const { category } = job;
 
-  // Fetch the latest three jobs excluding the current job and in the same category
   const jobs = await prisma.job.findMany({
     where: {
       category: category,
@@ -252,7 +249,7 @@ export const getRecommendedJobs = withServerActionAsyncCatcher<
       orderBy: {
         postedAt: 'desc',
       },
-      take: 3, // Fallback to showing latest 3 jobs from other categories
+      take: 3,
       select: {
         id: true,
         type: true,
