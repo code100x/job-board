@@ -50,11 +50,13 @@ const Page = async ({ params: { userId } }: { params: { userId: string } }) => {
             isOwner={isOwner}
             education={userDetails.education}
           />
-          <ProfileHireme
-            email={userDetails.email}
-            contactEmail={userDetails.contactEmail || ''}
-            resume={userDetails.resume || ''}
-          />
+          {!isOwner && (
+            <ProfileHireme
+              email={userDetails.email}
+              contactEmail={userDetails.contactEmail || ''}
+              resume={userDetails.resume || ''}
+            />
+          )}
         </>
       )}
     </>

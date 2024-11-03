@@ -30,7 +30,7 @@ const ProfileEmptyContainers = ({
         </p>
       </div>
       {isOwner && (
-        <Button onClick={handleClick} className="text-white rounded-sm">
+        <Button onClick={handleClick} className="text-white rounded-xs">
           {buttonText}
         </Button>
       )}

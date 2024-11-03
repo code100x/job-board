@@ -11,7 +11,7 @@ const ProfileSocials = ({ userdetails }: { userdetails: UserType }) => {
         <Link
           target="_blank"
           href={userdetails.githubLink}
-          className="px-3 dark:text-slate-50 flex gap-1 items-center w-fit py-2 text-base dark:bg-slate-900 bg-slate-100 rounded-[8px] "
+          className="px-3 dark:text-slate-50 flex gap-3 items-center w-fit py-2 text-base dark:bg-slate-900 bg-slate-100 rounded-[8px] "
         >
           <Icon
             icon={'github'}
@@ -24,7 +24,7 @@ const ProfileSocials = ({ userdetails }: { userdetails: UserType }) => {
         <Link
           target="_blank"
           href={userdetails.linkedinLink}
-          className="px-3 dark:text-slate-50 flex gap-1 items-center w-fit py-2 text-base dark:bg-slate-900 bg-slate-100 rounded-[8px] "
+          className="px-3 dark:text-slate-50 flex gap-3 items-center w-fit py-2 text-base dark:bg-slate-900 bg-slate-100 rounded-[8px] "
         >
           <Icon
             icon={'linkedin'}
@@ -37,7 +37,7 @@ const ProfileSocials = ({ userdetails }: { userdetails: UserType }) => {
         <Link
           target="_blank"
           href={userdetails.twitterLink}
-          className="px-3 dark:text-slate-50 flex gap-1 items-center w-fit py-2 text-base dark:bg-slate-900 bg-slate-100 rounded-[8px] "
+          className="px-3 dark:text-slate-50 flex gap-3 items-center w-fit py-2 text-base dark:bg-slate-900 bg-slate-100 rounded-[8px] "
         >
           <Icon
             icon={'twitter'}
@@ -50,7 +50,7 @@ const ProfileSocials = ({ userdetails }: { userdetails: UserType }) => {
         <Link
           target="_blank"
           href={userdetails.discordLink}
-          className="px-3 dark:text-slate-50 flex gap-1 items-center w-fit py-2 text-base dark:bg-slate-900 bg-slate-100 rounded-[8px] "
+          className="px-3 dark:text-slate-50 flex gap-3 items-center w-fit py-2 text-base dark:bg-slate-900 bg-slate-100 rounded-[8px] "
         >
           <Icon
             icon={'discord'}
@@ -64,7 +64,7 @@ const ProfileSocials = ({ userdetails }: { userdetails: UserType }) => {
         <Link
           target="_blank"
           href={userdetails.portfolioLink}
-          className="px-3 dark:text-slate-50 flex gap-1 items-center w-fit py-2 text-base dark:bg-slate-900 bg-slate-100 rounded-[8px] "
+          className="px-3 dark:text-slate-50 flex gap-3 items-center w-fit py-2 text-base dark:bg-slate-900 bg-slate-100 rounded-[8px] "
         >
           <Globe
             width={24}
