@@ -159,6 +159,7 @@ model Project {
   isFeature        Boolean @default(false)
 }
 
+
 enum ProjectStack {
   GO
   PYTHON

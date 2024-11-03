@@ -34,6 +34,13 @@ export const adminNavbar = [
     roleRequired: ['ADMIN'],
     icon: PackageSearch,
   },
+  {
+    id: 4,
+    label: 'Add HR',
+    path: APP_PATHS.ADD_HR,
+    roleRequired: ['ADMIN'],
+    icon: PackageSearch,
+  },
 ];
 export const userProfileNavbar = [
   { id: 1, label: 'My Account', path: APP_PATHS.PROFILE },
