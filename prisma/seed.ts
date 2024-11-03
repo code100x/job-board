@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import {
   PrismaClient,
   Currency,
@@ -14,20 +13,10 @@ const prisma = new PrismaClient();
 const users = [
   { id: '1', name: 'Jack', email: 'user@gmail.com' },
   { id: '2', name: 'Admin', email: 'admin@gmail.com', role: Role.ADMIN, onBoard: true },
-  { id: '3', companyId: '1', name: 'Hr', email: 'hr@gmail.com', role: Role.HR, onBoard: true },
-  { id: '4', companyId: '2', name: 'John', email: 'john@gmail.com', role: Role.HR, onBoard: true },
-  { id: '5', companyId: '3', name: 'Jane', email: 'jane@gmail.com', role: Role.HR, onBoard: true },
+  { id: '3', name: 'Hr', email: 'hr@gmail.com', role: Role.HR },
 ];
 
-
-const companies = [
-  { id: '1', compnayEmail: "careers@techcorps.com", companyName: 'Tech Corp', companyBio: 'Leading tech solutions provider specializing in innovative web development.', companyLogo: '/main.svg' },
-  { id: '2', companyEmail: "careers@globalsolutions.com", companyName: 'Global Solutions', companyBio: 'Global Solutions offers comprehensive IT services for businesses worldwide.', companyLogo: '/main.svg' },
-  { id: '3', companyEmail: 'careers@innovatech.com', companyName: 'Innovatech', companyBio: 'Innovatech specializes in backend systems and cloud-based solutions.', companyLogo: '/main.svg' },
-]
-
-
-let jobs = [
+const jobs = [
   {
     id: '1',
     userId: '1',
@@ -41,7 +30,7 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    hasExperiencerange: true,
+    hasExperienceRange: true,
     minExperience: 1,
     maxExperience: 2,
     companyLogo: '',
@@ -67,7 +56,7 @@ let jobs = [
     currency: Currency.USD,
     hasExpiryDate: true,
     expiryDate: new Date(new Date().setDate(new Date().getDate() + 49)),
-    hasExperiencerange: false,
+    hasExperienceRange: false,
     companyLogo: '',
     hasSalaryRange: false,
     minSalary: null,
@@ -75,35 +64,11 @@ let jobs = [
     isVerifiedJob: false,
   },
   {
-    id: '3',
-    userId: '1',
-    title: 'Full Stack Developer',
-    description: 'Develop both client-side and server-side software.',
-    companyName: 'Global Solutions',
-    companyBio:
-      'Global Solutions offers comprehensive IT services for businesses worldwide.',
-    companyEmail: 'recruitment@globalsolutions.com',
-    category: 'development',
-    type: EmployementType.Full_time,
-    workMode: WorkMode.hybrid,
-    currency: Currency.USD,
-    hasExpiryDate: false,
-    hasExperiencerange: true,
-    minExperience: 3,
-    maxExperience: 4,
-    companyLogo: '',
-    hasSalaryRange: true,
-    minSalary: 90000,
-    maxSalary: 120000,
-    isVerifiedJob: true,
-    deleted: true,
-  },
-  {
     id: '4',
     userId: '2',
     title: 'DevOps Engineer',
     description:
-      'Automate and streamline the company’s operations and processes.',
+      'Automate and streamline the company operations and processes.',
     companyName: 'DevOps Ltd.',
     companyBio:
       'DevOps Ltd. specializes in automation and cloud infrastructure management.',
@@ -112,7 +77,7 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    hasExperiencerange: true,
+    hasExperienceRange: true,
     minExperience: 1,
     maxExperience: 2,
     hasExpiryDate: true,
@@ -122,30 +87,6 @@ let jobs = [
     minSalary: 50000,
     maxSalary: 70000,
     isVerifiedJob: true,
-  },
-  {
-    id: '5',
-    userId: '1',
-    title: 'Product Manager',
-    description:
-      'Oversee product development and ensure the success of the product.',
-    companyName: 'Productive Minds',
-    companyBio:
-      'Productive Minds helps businesses achieve their goals through strategic product management.',
-    companyEmail: 'hr@productiveminds.com',
-    category: 'management',
-    type: EmployementType.Full_time,
-    workMode: WorkMode.hybrid,
-    currency: Currency.USD,
-    hasExpiryDate: true,
-    expiryDate: new Date(new Date().setDate(new Date().getDate() + 49)),
-    hasExperiencerange: false,
-    companyLogo: '',
-    hasSalaryRange: true,
-    minSalary: 110000,
-    maxSalary: 150000,
-    isVerifiedJob: true,
-    deleted: true,
   },
   {
     id: '6',
@@ -161,7 +102,7 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.office,
     currency: Currency.USD,
-    hasExperiencerange: true,
+    hasExperienceRange: true,
     minExperience: 1,
     maxExperience: 2,
     companyLogo: '',
@@ -171,56 +112,6 @@ let jobs = [
     minSalary: 80000,
     maxSalary: 100000,
     isVerifiedJob: false,
-  },
-  {
-    id: '7',
-    userId: '1',
-    title: 'UX/UI Designer',
-    description:
-      'Design user-friendly interfaces for web and mobile applications.',
-    companyName: 'Creative Designs',
-    companyBio:
-      'Creative Designs excels in crafting intuitive and visually appealing user interfaces.',
-    companyEmail: 'careers@creativedesigns.com',
-    category: 'design',
-    type: EmployementType.Full_time,
-    workMode: WorkMode.remote,
-    currency: Currency.USD,
-    hasExperiencerange: true,
-    hasExpiryDate: false,
-    minExperience: 1,
-    maxExperience: 2,
-    companyLogo: '',
-    hasSalaryRange: true,
-    minSalary: 70000,
-    maxSalary: 90000,
-    isVerifiedJob: false,
-    delted: true,
-  },
-  {
-    id: '8',
-    userId: '2',
-    title: 'Mobile App Developer',
-    description: 'Develop and maintain mobile applications.',
-    companyName: 'App Innovators',
-    companyBio:
-      'App Innovators is a leader in mobile application development and innovation.',
-    companyEmail: 'careers@appinnovators.com',
-    category: 'development',
-    type: EmployementType.Full_time,
-    workMode: WorkMode.hybrid,
-    currency: Currency.USD,
-    hasExperiencerange: true,
-    hasExpiryDate: true,
-    expiryDate: new Date(new Date().setDate(new Date().getDate() + 49)),
-    minExperience: 1,
-    maxExperience: 2,
-    companyLogo: '',
-    hasSalaryRange: false,
-    minSalary: null,
-    maxSalary: null,
-    isVerifiedJob: true,
-    deleted: true,
   },
   {
     id: '9',
@@ -234,7 +125,7 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.office,
     currency: Currency.USD,
-    hasExperiencerange: true,
+    hasExperienceRange: true,
     hasExpiryDate: false,
     minExperience: 1,
     maxExperience: 2,
@@ -257,7 +148,7 @@ let jobs = [
     type: EmployementType.Full_time,
     workMode: WorkMode.remote,
     currency: Currency.USD,
-    hasExperiencerange: true,
+    hasExperienceRange: true,
     minExperience: 1,
     maxExperience: 2,
     companyLogo: '',
@@ -284,7 +175,7 @@ let jobs = [
     companyLogo: '',
     hasSalaryRange: true,
     hasExpiryDate: false,
-    hasExperiencerange: false,
+    hasExperienceRange: false,
     minSalary: 25000,
     maxSalary: 50000,
     isVerifiedJob: true,
@@ -304,7 +195,7 @@ let jobs = [
     currency: Currency.USD,
     hasExpiryDate: true,
     expiryDate: new Date(new Date().setDate(new Date().getDate() + 49)),
-    hasExperiencerange: true,
+    hasExperienceRange: true,
     minExperience: 1,
     maxExperience: 2,
     companyLogo: '',
@@ -312,7 +203,6 @@ let jobs = [
     minSalary: null,
     maxSalary: null,
     isVerifiedJob: true,
-    delted: false,
   },
 ];
 
@@ -331,7 +221,7 @@ async function seedUsers() {
             password: hashedPassword,
             role: u.role || Role.USER,
             emailVerified: new Date(),
-            companyId: u.companyId
+            onBoard: u.onBoard || false,
           },
         });
         console.log(`User created or updated: ${u.email}`);
@@ -344,28 +234,6 @@ async function seedUsers() {
     console.error('Error seeding users:', error);
   }
 }
-async function seedCompanies() {
-  try {
-    await Promise.all(
-      companies.map(async (c) =>
-        prisma.company.upsert({
-          where: { id: c.id },
-          create: {
-            id: c.id,
-            companyName: c.companyName,
-            companyEmail: c.companyEmail ?? "default@example.com",
-            companyBio: c.companyBio,
-            companyLogo: c.companyLogo,
-          },
-          update: {},
-        })
-      )
-    );
-    console.log('✅ Company seed completed successfully');
-  } catch (error) {
-    console.error('Error seeding companies:', error);
-  }
-}
 
 async function seedJobs() {
   try {
@@ -376,13 +244,35 @@ async function seedJobs() {
 
     const validJobs = jobs.filter((job) => existingUserIds.has(job.userId));
 
+    // Create companies first, one per user
+    const userCompanies = new Map();
+    for (const job of validJobs) {
+      if (!userCompanies.has(job.userId)) {
+        const company = await prisma.company.upsert({
+          where: { userId: job.userId },
+          update: {},
+          create: {
+            name: job.companyName,
+            description: job.companyBio,
+            website: faker.internet.url(),
+            userId: job.userId,
+          },
+        });
+        userCompanies.set(job.userId, company);
+      }
+    }
+
+    // Then create jobs using the existing companies
     await Promise.all(
-      validJobs.map(async (j) =>
-        prisma.job.upsert({
+      validJobs.map(async (j) => {
+        const company = userCompanies.get(j.userId);
+
+        return prisma.job.upsert({
           where: { id: j.id },
           create: {
             id: j.id,
             userId: j.userId,
+            companyId: company.id,
             title: j.title,
             description: j.description,
             companyName: j.companyName,
@@ -395,7 +285,7 @@ async function seedJobs() {
             application: 'https://x.com/100xDevs',
             city: faker.location.city(),
             address: faker.location.city(),
-            hasExperiencerange: j.hasExperiencerange,
+            hasExperiencerange: j.hasExperienceRange,
             hasExpiryDate: j.hasExpiryDate,
             expiryDate: j.expiryDate,
             minExperience: j.minExperience,
@@ -417,8 +307,8 @@ async function seedJobs() {
             isVerifiedJob: j.isVerifiedJob,
           },
           update: {},
-        })
-      )
+        });
+      })
     );
     console.log('✅ Job seed completed successfully');
   } catch (error) {
@@ -427,9 +317,8 @@ async function seedJobs() {
 }
 
 async function main() {
-  await seedCompanies();
   await seedUsers();
   await seedJobs();
 }
 
-main();
+main()

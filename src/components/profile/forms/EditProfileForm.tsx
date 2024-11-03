@@ -41,7 +41,7 @@ const EditProfileForm = ({
   const form = useForm<ProfileSchemaType>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      aboutMe: userdetails.aboutMe || '',
+      aboutMe: userdetails.about || '',
       email: userdetails.email || '',
       contactEmail: userdetails.contactEmail || '',
       avatar: userdetails.avatar || '',

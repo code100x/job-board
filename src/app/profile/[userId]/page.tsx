@@ -30,10 +30,7 @@ const Page = async ({ params: { userId } }: { params: { userId: string } }) => {
       {userDetails && (
         <>
           <ProfileHeroSection userdetails={userDetails} />
-          <ProfileAboutMe
-            aboutMe={userDetails.aboutMe || ''}
-            isOwner={isOwner}
-          />
+          <ProfileAboutMe aboutMe={userDetails.about || ''} isOwner={isOwner} />
           <ProfileResume
             resume={userDetails.resume || ''}
             isOwner={isOwner}

@@ -44,15 +44,16 @@ const ManageRecruiters = ({ recruiters }: props) => {
 
   const recruiterList = recruiters.additional?.recruiters ?? [];
 
-  const filteredRecruiters = recruiterList.filter(
-    (recruiter) =>
-      recruiter.company?.companyName
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase()) ||
-      recruiter.company?.companyEmail
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-  );
+  const filteredRecruiters = recruiterList.filter((recruiter) => {
+    const companyName = recruiter.company?.name?.toLowerCase() ?? '';
+    const companyWebsite = recruiter.company?.website?.toLowerCase() ?? '';
+    const searchTermLower = searchTerm.toLowerCase();
+
+    return (
+      companyName.includes(searchTermLower) ||
+      companyWebsite.includes(searchTermLower)
+    );
+  });
 
   const totalPages = Math.ceil(filteredRecruiters.length / itemsPerPage);
 
@@ -112,10 +113,10 @@ const ManageRecruiters = ({ recruiters }: props) => {
                 currentRecruiters.map((recruiter) => (
                   <TableRow key={recruiter.id}>
                     <TableCell className="px-2 py-2">
-                      {recruiter.company?.companyName}
+                      {recruiter.company?.name}
                     </TableCell>
                     <TableCell className="px-2 py-2">
-                      {recruiter.company?.companyEmail}
+                      {recruiter.company?.website}
                     </TableCell>
                     <TableCell className="px-2 py-2">
                       {recruiter._count.jobs}

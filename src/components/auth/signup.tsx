@@ -1,45 +1,76 @@
 'use client';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import APP_PATHS from '@/config/path.config';
-import {
-  SignupSchema,
-  SignupSchemaType,
-} from '@/lib/validators/auth.validator';
+import { Textarea } from '@/components/ui/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
-
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '../ui/form';
 import { useToast } from '../ui/use-toast';
 import { signUp } from '@/actions/auth.actions';
-import { DemarcationLine, GoogleOauthButton } from './social-auth';
-import { PasswordInput } from '../password-input';
+import APP_PATHS from '@/config/path.config';
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormControl,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import {
+  companyInfoSchema,
+  SignupSchema,
+  SignupData,
+  CompanyInfo,
+} from '@/lib/validators/auth.validator';
+import ImageUpload from '../image-upload';
 
 export const Signup = () => {
   const { toast } = useToast();
   const router = useRouter();
+  const [isHr, setIsHr] = useState(false);
 
-  const form = useForm<SignupSchemaType>({
+  const form = useForm<SignupData>({
     resolver: zodResolver(SignupSchema),
     defaultValues: {
       name: '',
       email: '',
       password: '',
+      role: 'USER',
     },
   });
 
-  async function signupHandler(data: SignupSchemaType) {
+  const companyForm = useForm<CompanyInfo>({
+    resolver: zodResolver(companyInfoSchema),
+    defaultValues: {
+      name: '',
+      website: '',
+      description: '',
+    },
+  });
+
+  async function signupHandler(data: Omit<SignupData, 'companyInfo'>) {
     try {
-      const response = await signUp(data);
+      const signupData: SignupData = {
+        ...data,
+        role: isHr ? 'HR' : 'USER',
+      };
+
+      if (isHr) {
+        const companyData = companyForm.getValues();
+        if (companyData.name) {
+          signupData.companyInfo = {
+            name: companyData.name,
+            website: companyData.website,
+            description: companyData.description,
+          };
+        }
+      }
+
+      const response = await signUp(signupData);
+
       if (!response.status) {
         toast({
           title: response.message || 'Something went wrong',
@@ -50,12 +81,11 @@ export const Signup = () => {
           title: response.message || 'Signup successful! Welcome to 100xJobs!',
           variant: 'success',
         });
-
-        router.push(APP_PATHS.WELCOME);
+        router.push(APP_PATHS.HOME);
       }
-    } catch {
+    } catch (error) {
       toast({
-        title: 'something went wrong',
+        title: `something went wrong ${error}`,
         variant: 'destructive',
       });
     }
@@ -101,20 +131,69 @@ export const Signup = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <PasswordInput field={field} placeholder="Password" />
+                  <Input type="password" {...field} placeholder="Password" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <div className="flex justify-end">
-            <Link
-              href={APP_PATHS.FORGOT_PASSWORD}
-              className="text-xs text-muted-foreground font-medium hover:underline"
-            >
-              Forgot your password?
-            </Link>
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="hr-mode"
+              checked={isHr}
+              onCheckedChange={(checked) => setIsHr(checked)}
+            />
+            <Label htmlFor="hr-mode">I&apos;m an HR professional</Label>
           </div>
+
+          {isHr && (
+            <div className="space-y-4">
+              <FormField
+                control={companyForm.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Company Name</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Company Name" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={companyForm.control}
+                name="website"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Company Website</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="https://example.com" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={companyForm.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Company Description</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        placeholder="Tell us about your company"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <ImageUpload />
+            </div>
+          )}
+
           <Button
             type="submit"
             disabled={form.formState.isSubmitting}
@@ -123,21 +202,8 @@ export const Signup = () => {
           >
             {form.formState.isSubmitting ? 'Please wait...' : 'Create Account'}
           </Button>
-          <DemarcationLine />
-          <GoogleOauthButton label="Sign up with Google" />
         </form>
       </Form>
-      <div className="flex items-center justify-center mt-6">
-        <span className="text-muted-foreground">
-          Already have an account?{' '}
-          <Link
-            href={APP_PATHS.SIGNIN}
-            className="text-muted-foreground font-semibold hover:underline"
-          >
-            Sign In
-          </Link>
-        </span>
-      </div>
     </>
   );
 };

@@ -378,7 +378,7 @@ export const getUserDetailsWithId = async (id: string) => {
         contactEmail: true,
         resume: true,
         avatar: true,
-        aboutMe: true,
+        about: true,
         project: true,
         resumeUpdateDate: true,
         discordLink: true,
@@ -420,7 +420,7 @@ export const updateUserDetails = withSession<
         name: data.name,
         email: data.email,
         contactEmail: data.contactEmail,
-        aboutMe: data.aboutMe,
+        about: data.aboutMe,
         avatar: data.avatar,
         discordLink: data.discordLink,
         linkedinLink: data.linkedinLink,
@@ -456,7 +456,7 @@ export const updateAboutMe = withSession<
         id: session.user.id,
       },
       data: {
-        aboutMe: data.aboutMe,
+        about: data.aboutMe,
       },
     });
   }
@@ -647,8 +647,8 @@ export const getUserRecruiters = async () => {
         },
         company: {
           select: {
-            companyName: true,
-            companyEmail: true,
+            name: true,
+            website: true,
           },
         },
       },

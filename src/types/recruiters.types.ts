@@ -7,8 +7,8 @@ export type RecruitersTypes = {
     jobs: number;
   };
   company: {
-    companyName: string;
-    companyEmail: string;
+    name: string; // changed from companyName to match Prisma schema
+    website: string | null; // changed from companyEmail to match Prisma schema
   } | null;
 };
 

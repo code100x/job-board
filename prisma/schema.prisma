@@ -8,18 +8,16 @@ datasource db {
 }
 
 model User {
-  id   String @id @default(cuid())
-  name String
-
-  password   String?
-  avatar     String?
-  isVerified Boolean @default(false)
-  role       Role    @default(USER)
-  jobs       Job[]
-
+  id            String    @id @default(cuid())
+  name          String
   email         String    @unique
+  password      String?
+  avatar        String?
+  isVerified    Boolean   @default(false)
+  role          Role      @default(USER)
   emailVerified DateTime?
 
+  jobs       Job[]
   skills     String[]
   experience Experience[]
   project    Project[]
@@ -31,31 +29,29 @@ model User {
   blockedByAdmin DateTime?
   onBoard        Boolean        @default(false)
   bookmark       Bookmark[]
-
-  githubLink     String?
-  portfolioLink  String?
-  linkedinLink   String?
-  twitterLink    String?
-  discordLink    String?
-
-  contactEmail   String?
-
-  aboutMe        String?
-
-  education      Education[]
-
-  resumeUpdateDate DateTime?
+  company        Company?       @relation("UserCompany")
   companyId      String?        @unique
-  company        Company?       @relation(fields: [companyId], references: [id])
+  education      Education[]
+  resumeUpdateDate     DateTime?
+  contactEmail String?
+  about String?
+  discordLink String?
+    linkedinLink String?
+    twitterLink String?
+    githubLink String?
+    portfolioLink String?
+
 }
 
 model Company {
-  id           String  @id @default(cuid())
-  companyName  String
-  companyLogo  String?
-  companyEmail String
-  companyBio   String
-  user         User?
+  id          String  @id @default(cuid())
+  name        String
+  logo        String?
+  website     String?
+  description String?
+  jobs        Job[]
+  user        User?   @relation("UserCompany", fields: [userId], references: [id])
+  userId      String? @unique
 }
 
 enum OauthProvider {
@@ -80,6 +76,7 @@ enum TokenType {
 model Job {
   id                 String          @id @default(cuid())
   userId             String
+  companyId          String
   title              String
   description        String?
   companyName        String          @map("company_name")
@@ -108,8 +105,10 @@ model Job {
   deletedAt          DateTime?
   postedAt           DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
-  user               User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  bookmark           Bookmark[]
+
+  user     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company  Company    @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  bookmark Bookmark[]
 }
 
 model Bookmark {
@@ -132,18 +131,18 @@ model Experience {
   endDate           DateTime?
   description       String
   userId            String
-  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User            @relation(fields: [userId], references: [id])
 }
 
 model Education {
-  id                Int             @id @default(autoincrement())
-  instituteName     String
-  degree            DegreeType
-  fieldOfStudy      FieldOfStudyType
-  startDate         DateTime
-  endDate           DateTime?
-  userId            String
-  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id            Int              @id @default(autoincrement())
+  instituteName String
+  degree        DegreeType
+  fieldOfStudy  FieldOfStudyType
+  startDate     DateTime
+  endDate       DateTime?
+  userId        String
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Project {
@@ -156,7 +155,7 @@ model Project {
   stack            ProjectStack @default(OTHERS)
   userId           String
   user             User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  isFeature        Boolean @default(false)
+  isFeature        Boolean      @default(false)
 }
 
 enum ProjectStack {

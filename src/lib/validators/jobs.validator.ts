@@ -17,6 +17,7 @@ export const JobPostSchema = z
       message: 'Curreny is required',
     }),
     skills: z.array(z.string()).optional(),
+    companyId: z.string(),
     category: z.string(),
     companyEmail: z.string().email('Invalid email').min(1, 'Email is required'),
     companyBio: z.string().min(1, 'Company Bio is required'),
