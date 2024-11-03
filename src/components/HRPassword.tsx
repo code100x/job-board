@@ -34,14 +34,15 @@ const HRPassword = ({
   }
   return (
     <>
-      <div className="dark:bg-gray-900 bg-gray-100 w-full dark:text-gray-300 p-6 rounded-lg space-y-7">
+      <div className="dark:bg-gray-900 bg-gray-100 w-full dark:text-gray-300 p-6 rounded-lg space-y-7 xl:text-lg">
         <p> HR Created Successfully! Below are the details</p>
-        <div className="w-full dark:bg-gray-800 border-none text-white rounded-lg p-4 flex flex-col gap-2">
+        <div className="w-full dark:bg-gray-800 border-none dark:text-white bg-gray-200 rounded-lg p-4 flex flex-col gap-2 xl:text-lg">
           <p>Password</p>
           <div className="flex items-center gap-3">
             <Input
               value={password}
               type={isPasswordVisible ? 'text' : 'password'}
+              className="xl:text-base"
             />
             <div className="flex">
               <Button

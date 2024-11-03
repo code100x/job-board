@@ -55,10 +55,10 @@ export const createHR = withSession<
       data: {
         email: email,
         password: hashedPassword,
-        isVerified: true,
         name: name,
         role: 'HR',
         companyId: company.id,
+        emailVerified: new Date(),
       },
     });
 

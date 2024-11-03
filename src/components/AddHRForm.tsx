@@ -9,6 +9,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from '@/components/ui/form';
 import { useToast } from './ui/use-toast';
 import { uploadFileAction } from '@/actions/upload-to-cdn';
@@ -155,14 +156,17 @@ const AddHRForm = () => {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-medium"> Name *</FormLabel>
+                      <FormLabel className="block text-sm mb-1 dark:text-gray-400 font-normal xl:text-base ">
+                        Name *
+                      </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
-                          className="w-full dark:bg-gray-800 border-none text-white"
+                          className="w-full dark:bg-gray-800 border-none dark:text-white"
                           placeholder="Name"
                         />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -171,29 +175,32 @@ const AddHRForm = () => {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-medium"> Email *</FormLabel>
+                      <FormLabel className="block text-sm mb-1 dark:text-gray-400 font-normal xl:text-base">
+                        Email *
+                      </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
-                          className="w-full dark:bg-gray-800 border-none text-white"
+                          className="w-full dark:bg-gray-800 border-none dark:text-white"
                           placeholder="name@gmail.com"
                         />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
 
               <div className="dark:bg-gray-900 bg-gray-100 w-full p-6 rounded-lg  mx-auto dark:text-gray-300">
-                <h2 className="text-lg font-semibold mb-4 dark:text-gray-300">
-                  Company
+                <h2 className="text-2xl font-semibold mb-4 dark:text-gray-300 ">
+                  Company Details
                 </h2>
 
                 {/* Logo Upload Section */}
                 <div className="flex flex-col items-center mb-6">
                   <div className="relative">
                     <div
-                      className="w-20 h-20 dark:bg-gray-700 bg-gray-300 border border-dashed border-gray-500 rounded-md flex items-center justify-center cursor-pointer mb-2"
+                      className="w-20 h-20 dark:bg-gray-700  bg-gray-300 border border-dashed border-gray-500 rounded-md flex items-center justify-center cursor-pointer mb-2"
                       onClick={handleClick}
                     >
                       {previewImg ? (
@@ -226,7 +233,7 @@ const AddHRForm = () => {
                     accept="image/*"
                     onChange={handleFileChange}
                   />
-                  <p className="text-sm text-gray-500 text-center">
+                  <p className="text-sm dark:text-gray-400 text-gray-500 text-center font-normal xl:text-base">
                     Click the avatar to change or upload your company logo
                   </p>
                 </div>
@@ -239,22 +246,23 @@ const AddHRForm = () => {
                     name="companyName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="block text-sm mb-1 dark:text-gray-400 font-normal">
+                        <FormLabel className="block text-sm mb-1 dark:text-gray-400 font-normal xl:text-base">
                           Company Name *
                         </FormLabel>
                         <FormControl>
                           <Input
                             {...field}
-                            className="w-full dark:bg-gray-800 border-none text-white"
+                            className="w-full dark:bg-gray-800 border-none dark:text-white"
                             placeholder="Company Name"
                           />
                         </FormControl>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
                   <div className="mt-5">
-                    <label className="block text-sm mb-1 dark:text-gray-400">
-                      Company bio *
+                    <label className="block text-sm mb-1 dark:text-gray-400 font-normal xl:text-base">
+                      Company bio
                     </label>
                   </div>
                   <div className="dark:bg-gray-800 rounded-xl mt-2 overflow-hidden">
@@ -264,6 +272,7 @@ const AddHRForm = () => {
                       onDescriptionChange={handleDescriptionChange}
                       placeholder={'Tell us about your company'}
                     />
+                    <FormMessage />
                   </div>
                 </div>
               </div>
