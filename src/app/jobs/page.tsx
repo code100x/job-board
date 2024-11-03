@@ -11,8 +11,13 @@ import { Suspense } from 'react';
 import getQueryClient from '../../providers/queryClient';
 import { GetUserBookmarksId, getAllJobs } from '@/actions/job.action';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
+import { getServerSession } from 'next-auth';
 
 const page = async ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
+  const session = await getServerSession();
+  if (!session) {
+    redirect('/auth/signin');
+  }
   const parsedData = JobQuerySchema.safeParse(searchParams);
   if (!(parsedData.success && parsedData.data)) {
     console.error(parsedData.error);
@@ -27,7 +32,10 @@ const page = async ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
     queryFn: () => getAllJobs(parsedSearchParams),
     staleTime: 1000 * 60 * 5,
   });
-  const UserBookmarks = await GetUserBookmarksId();
+  await queryClient.prefetchQuery({
+    queryKey: ['UserBookmarksId', session?.user?.id],
+    queryFn: () => GetUserBookmarksId(),
+  });
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
@@ -53,10 +61,7 @@ const page = async ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
                 </div>
               }
             >
-              <AllJobs
-                userbookmarks={UserBookmarks.data}
-                searchParams={parsedSearchParams}
-              />
+              <AllJobs searchParams={parsedSearchParams} />
             </Suspense>
           </div>
         </div>

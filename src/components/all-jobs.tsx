@@ -1,5 +1,5 @@
 'use client';
-import { getAllJobs } from '@/actions/job.action';
+import { GetUserBookmarksId, getAllJobs } from '@/actions/job.action';
 import { DEFAULT_PAGE, JOBS_PER_PAGE } from '@/config/app.config';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { JobQuerySchemaType } from '@/lib/validators/jobs.validator';
@@ -12,14 +12,20 @@ import { PaginationPages } from './ui/paginator';
 import JobCard from './Jobcard';
 import APP_PATHS from '@/config/path.config';
 import { useQuery } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
 
 type PaginatorProps = {
   searchParams: JobQuerySchemaType;
-  userbookmarks: { jobId: string }[] | null;
 };
 
-const AllJobs = ({ searchParams, userbookmarks }: PaginatorProps) => {
-  const userbookmarkArr: { jobId: string }[] | null = userbookmarks;
+const AllJobs = ({ searchParams }: PaginatorProps) => {
+  // const userbookmarkArr: { jobId: string }[] | null = userbookmarks;
+  const session = useSession();
+
+  const userbookmark = useQuery({
+    queryKey: ['UserBookmarksId', session?.data?.user?.id],
+    queryFn: () => GetUserBookmarksId(),
+  });
 
   const { data } = useQuery({
     queryKey: ['jobs', searchParams],
@@ -30,6 +36,8 @@ const AllJobs = ({ searchParams, userbookmarks }: PaginatorProps) => {
     return <div>Error {data?.message}</div>;
   }
   const jobs = data;
+  const userbookmarkArr: { jobId: string }[] | null =
+    userbookmark.data?.data || null;
 
   const totalPages =
     Math.ceil((jobs.additional?.totalJobs || 0) / JOBS_PER_PAGE) ||
