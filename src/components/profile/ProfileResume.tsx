@@ -37,7 +37,7 @@ const ProfileResume = ({
         {isOwner && (
           <Button
             variant={'outline'}
-            className="px-3 py-2 rounded-sm text-slate-500 dark:text-slate-400 flex gap-2"
+            className="px-3 py-2 rounded-xs text-slate-500 dark:text-slate-400 flex gap-2"
             onClick={handleOpen}
           >
             <Pencil height={16} width={16} /> Edit

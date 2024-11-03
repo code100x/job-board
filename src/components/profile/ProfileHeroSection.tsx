@@ -49,7 +49,7 @@ const ProfileHeroSection = ({ userdetails }: { userdetails: UserType }) => {
               <>
                 <Button
                   variant={'outline'}
-                  className="px-3 py-2 rounded-sm"
+                  className="px-3 py-2 rounded-xs"
                   onClick={handleOpen}
                 >
                   <Pencil height={16} width={16} />
@@ -57,7 +57,7 @@ const ProfileHeroSection = ({ userdetails }: { userdetails: UserType }) => {
                 <Button
                   onClick={() => setIsAccountOpen(true)}
                   variant={'outline'}
-                  className="px-3 py-2 rounded-sm"
+                  className="px-3 py-2 rounded-xs"
                 >
                   <Settings height={16} width={16} />
                 </Button>
