@@ -17,7 +17,7 @@ const page = async ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
   }
   const parsedSearchParams = parsedData.data;
   return (
-    <div className="container grid sm:gap-6 gap-4 mt-12">
+    <div className="container relative grid sm:gap-6 gap-4 mt-12">
       <div className="grid gap-2">
         <h1 className="text-3xl sm:text-4xl font-bold">Explore Jobs</h1>
         <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
@@ -25,22 +25,31 @@ const page = async ({ searchParams }: { searchParams: JobQuerySchemaType }) => {
           aspirations.
         </p>
       </div>
+
       <div className="flex gap-6">
-        <div className="hidden sm:block border  h-fit rounded-lg w-[310px] ">
-          <JobFilters searchParams={parsedSearchParams} />
+        <div className="hidden w-[310px] rounded-lg sm:block border h-[calc(100vh-100px)] overflow-y-auto scrollbar-custom sticky top-[5.5rem]">
+          <div className=" ">
+            <JobFilters searchParams={parsedSearchParams} />
+          </div>
         </div>
-        <div className="grow">
-          <JobsHeader searchParams={parsedSearchParams} />
-          <Suspense
-            key={JSON.stringify(parsedSearchParams)}
-            fallback={
-              <div className="flex justify-center items-center h-full gap-5 ">
-                <Loader />
-              </div>
-            }
-          >
-            <AllJobs searchParams={parsedSearchParams} />
-          </Suspense>
+
+        <div className="grow flex flex-col bg-background">
+          <div className="sticky top-[4.5rem] bg-background dark:bg-background z-10 py-4">
+            <JobsHeader searchParams={parsedSearchParams} />
+          </div>
+
+          <div className="grow bg-background">
+            <Suspense
+              key={JSON.stringify(parsedSearchParams)}
+              fallback={
+                <div className="flex justify-center items-center h-full gap-5">
+                  <Loader />
+                </div>
+              }
+            >
+              <AllJobs searchParams={parsedSearchParams} />
+            </Suspense>
+          </div>
         </div>
       </div>
     </div>
