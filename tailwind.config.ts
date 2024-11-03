@@ -1,5 +1,7 @@
 import type { Config } from 'tailwindcss';
 const { fontFamily } = require('tailwindcss/defaultTheme');
+import plugin from 'tailwindcss/plugin';
+
 const {
   default: flattenColorPalette,
 } = require('tailwindcss/lib/util/flattenColorPalette');
@@ -119,7 +121,35 @@ const config = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate'), addVariablesForColors],
+  plugins: [
+    require('tailwindcss-animate'),
+    addVariablesForColors,
+    plugin(({ addUtilities }) => {
+      addUtilities({
+        '.scrollbar-hide': {
+          '-ms-overflow-style': 'none',
+          'scrollbar-width': 'none',
+          '&::-webkit-scrollbar': {
+            display: 'none',
+          },
+        },
+        '.scrollbar-custom': {
+          '&::-webkit-scrollbar': {
+            width: '12px',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: '#1d2839', // Customize thumb color
+            borderRadius: '6px',
+            border: '3px solid transparent', // Add space around thumb
+            backgroundClip: 'content-box', // Adjust thumb size
+          },
+          '&::-webkit-scrollbar-track': {
+            background: 'transparent', // Hide track
+          },
+        },
+      });
+    }),
+  ],
 } satisfies Config;
 
 export default config;
