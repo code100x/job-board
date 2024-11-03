@@ -1,5 +1,4 @@
 'use client';
-import { JobType } from '@/types/jobs.types';
 import Icon from './ui/icon';
 import { formatSalary } from '@/lib/utils';
 import { Button } from './ui/button';
@@ -8,11 +7,29 @@ import { Briefcase, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import Linkify from 'linkify-react';
 import { ShareJobDialog } from './ShareJobDialog';
+import { useParams } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import { getJobById } from '@/actions/job.action';
 const options = {
   defaultProtocol: 'https',
   target: '_blank',
 };
-export const Job = ({ job }: { job: JobType }) => {
+export const Job = () => {
+  const params = useParams();
+  const id: any = params.id;
+  const { data } = useQuery({
+    queryKey: ['jobs', { id }],
+    queryFn: () => getJobById({ id }),
+    staleTime: 1000 * 60 * 5,
+  });
+  if (!data?.status) {
+    return <div>Error </div>;
+  }
+  const job = data?.additional?.job;
+  if (!job) {
+    return <div>Error</div>;
+  }
+
   return (
     <aside className="col-span-1 flex flex-col gap-6 lg:col-span-4 ">
       <section className="grid gap-5 border-2 shadow-sm p-6 w-full bg-gradient-to-b from-[#F1F5F9] to-white dark:from-darkBgSecondary dark:to-darkBgTertiary rounded-lg">
