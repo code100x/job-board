@@ -54,7 +54,7 @@ const ProfileSkills = ({
         />
       )}
       {skills.length !== 0 && (
-        <div className="rounded-2xl gap-x-2 p-6 dark:bg-slate-900 bg-slate-100 flex flex-wrap">
+        <div className="rounded-2xl gap-2 p-6 dark:bg-slate-900 bg-slate-100 flex flex-wrap">
           {skills.map((title) => {
             return (
               <div
