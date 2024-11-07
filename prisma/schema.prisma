@@ -13,6 +13,7 @@ model User {
 
   password   String?
   avatar     String?
+  banner     String?
   isVerified Boolean @default(false)
   role       Role    @default(USER)
   jobs       Job[]
