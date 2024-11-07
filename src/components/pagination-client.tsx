@@ -15,6 +15,7 @@ const PaginationPreviousButton = ({
   return (
     <PaginationPrevious
       onClick={() =>
+        currentPage - PAGE_INCREMENT >= PAGE_INCREMENT &&
         setQueryParams({
           page: (currentPage - PAGE_INCREMENT).toString(),
         })
@@ -39,6 +40,7 @@ const PaginationNextButton = ({
     <PaginationNext
       role="button"
       onClick={() =>
+        currentPage > totalPages - PAGE_INCREMENT &&
         setQueryParams({
           page: (currentPage + PAGE_INCREMENT).toString(),
         })
