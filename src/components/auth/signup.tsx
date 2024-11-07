@@ -148,10 +148,20 @@ export const Signup = () => {
                     placeholder="Enter your password"
                   />
                 </FormControl>
-                <div className="mt-2 space-y-1">
-                  {passwordRequirements.map((req, idx) => (
-                    <PasswordRequirement key={idx} {...req} />
-                  ))}
+                <div className="mt-2 space-y-1 flex  justify-between">
+                  <div>
+                    {passwordRequirements.map((req, idx) => (
+                      <PasswordRequirement key={idx} {...req} />
+                    ))}
+                  </div>
+                  <div>
+                    <Link
+                      href={APP_PATHS.FORGOT_PASSWORD}
+                      className="text-xs text-muted-foreground font-medium hover:underline "
+                    >
+                      Forgot your password?
+                    </Link>
+                  </div>
                 </div>
               </FormItem>
             )}
