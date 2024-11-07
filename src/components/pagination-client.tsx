@@ -21,7 +21,7 @@ const PaginationPreviousButton = ({
         })
       }
       className=" border dark:bg-slate-400 dark:bg-opacity-5 dark:text-white text-black bg-slate-600 bg-opacity-15   "
-      aria-disabled={currentPage - PAGE_INCREMENT < PAGE_INCREMENT}
+      //aria-disabled={currentPage - PAGE_INCREMENT < PAGE_INCREMENT}
       role="button"
     />
   );
@@ -46,7 +46,7 @@ const PaginationNextButton = ({
         })
       }
       className=" border dark:bg-slate-400 dark:bg-opacity-5 dark:text-white text-black bg-slate-600 bg-opacity-15"
-      aria-disabled={currentPage > totalPages - PAGE_INCREMENT}
+      //aria-disabled={currentPage > totalPages - PAGE_INCREMENT}
     />
   );
 };
