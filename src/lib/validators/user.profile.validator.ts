@@ -90,6 +90,7 @@ export const aboutMeSchema = z.object({
 
 export const profileSchema = z.object({
   avatar: z.string().optional(),
+  banner: z.string().optional(),
   name: z.string().min(1, 'Name is required'),
   email: z.string().min(1, 'Email is required').email(),
   contactEmail: z.string().email().optional().or(z.literal('')),

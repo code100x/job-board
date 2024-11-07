@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -19,7 +18,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { uploadFileAction } from '@/actions/upload-to-cdn';
 import { X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { UserType } from '@/types/user.types';
 import { updateUserDetails } from '@/actions/user.profile.actions';
@@ -33,18 +31,22 @@ const EditProfileForm = ({
 }) => {
   const { toast } = useToast();
 
-  const [file, setFile] = useState<File | null>(null);
-  const [previewImg, setPreviewImg] = useState<string | null>(
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [bannerFile, setBannerFile] = useState<File | null>(null);
+  const [previewAvatarImg, setPreviewAvatarImg] = useState<string | null>(
     userdetails.avatar || null
+  );
+  const [previewBannerImg, setPreviewBannerImg] = useState<string | null>(
+    userdetails.banner || null
   );
 
   const form = useForm<ProfileSchemaType>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      aboutMe: userdetails.aboutMe || '',
       email: userdetails.email || '',
       contactEmail: userdetails.contactEmail || '',
       avatar: userdetails.avatar || '',
+      banner: userdetails.banner || '',
       name: userdetails.name || '',
       discordLink: userdetails.discordLink || '',
       linkedinLink: userdetails.linkedinLink || '',
@@ -78,8 +80,11 @@ const EditProfileForm = ({
 
   const onSubmit = async (data: ProfileSchemaType) => {
     try {
-      if (file) {
-        data.avatar = (await submitImage(file)) ?? '/main.svg';
+      if (avatarFile) {
+        data.avatar = (await submitImage(avatarFile)) ?? '/main.svg';
+      }
+      if (bannerFile) {
+        data.banner = (await submitImage(bannerFile)) ?? '';
       }
       const response = await updateUserDetails(data);
 
@@ -108,27 +113,50 @@ const EditProfileForm = ({
     handleClose();
   };
   const profileImageRef = useRef<HTMLImageElement>(null);
+  const bannerImageRef = useRef<HTMLImageElement>(null);
 
-  const handleClick = () => {
-    if (previewImg) return;
-    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+  const handleClick = (inputType: string) => {
+    if (!inputType) return;
+    if (
+      (inputType === 'avatarFileInput' && previewAvatarImg) ||
+      (inputType === 'bannerFileInput' && previewBannerImg)
+    )
+      return;
+
+    const fileInput = document.getElementById(
+      `${inputType}`
+    ) as HTMLInputElement;
 
     if (fileInput) {
       fileInput.click();
     }
   };
 
-  const clearLogoImage = () => {
-    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+  const clearLogoImage = (inputType: string) => {
+    if (!inputType) return;
+    const fileInput = document.getElementById(
+      `${inputType}`
+    ) as HTMLInputElement;
 
     if (fileInput) {
       fileInput.value = '';
     }
-    setPreviewImg(null);
-    setFile(null);
-    form.setValue('avatar', '');
+    if (inputType === 'avatarFileInput') {
+      setPreviewAvatarImg(null);
+      setAvatarFile(null);
+      form.setValue('avatar', '');
+    } else if (inputType === 'bannerFileInput') {
+      setPreviewBannerImg(null);
+      setBannerFile(null);
+      form.setValue('banner', '');
+    }
   };
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    inputType: string
+  ) => {
+    if (!inputType) return;
     const selectedFile = e.target.files ? e.target.files[0] : null;
     if (!selectedFile) {
       return;
@@ -143,14 +171,22 @@ const EditProfileForm = ({
     }
     const reader = new FileReader();
     reader.onload = () => {
-      if (profileImageRef.current) {
-        profileImageRef.current.src = reader.result as string;
+      if (inputType === 'bannerFileInput') {
+        if (bannerImageRef.current) {
+          bannerImageRef.current.src = reader.result as string;
+        }
+        setPreviewBannerImg(reader.result as string);
+      } else {
+        if (profileImageRef.current) {
+          profileImageRef.current.src = reader.result as string;
+        }
+        setPreviewAvatarImg(reader.result as string);
       }
-      setPreviewImg(reader.result as string);
     };
     reader.readAsDataURL(selectedFile);
     if (selectedFile) {
-      setFile(selectedFile);
+      if (inputType === 'bannerFileInput') setBannerFile(selectedFile);
+      else setAvatarFile(selectedFile);
     }
   };
 
@@ -161,32 +197,37 @@ const EditProfileForm = ({
         className="space-y-8 h-full flex flex-col justify-between"
       >
         <div className="flex flex-col gap-y-4">
-          <FormLabel> Profile Picture </FormLabel>
+          <FormLabel> Banner Picture </FormLabel>
           <div className="flex justify-center">
             <div
-              className="w-40 h-40 relative dark:bg-gray-700 bg-gray-300 border border-dashed border-gray-500 rounded-md flex items-center justify-center cursor-pointer mb-2"
-              onClick={handleClick}
+              className="w-full h-28 relative dark:bg-gray-700 bg-gray-300 border border-dashed border-gray-500 rounded-md flex items-center justify-center cursor-pointer mb-2"
+              onClick={() => handleClick('bannerFileInput')}
             >
-              {previewImg ? (
+              {previewBannerImg ? (
                 <Image
-                  src={previewImg}
-                  ref={profileImageRef}
-                  className="object-contain w-full h-full rounded-md overflow-hidden"
-                  alt="Company Logo"
+                  src={previewBannerImg}
+                  ref={bannerImageRef}
+                  className="object-cover w-full h-full rounded-md overflow-hidden"
+                  alt="Banner Logo"
                   width={160}
                   height={160}
                 />
               ) : (
-                <FaFileUpload
-                  height={80}
-                  width={80}
-                  className="text-white h-10 w-10"
-                />
+                <div className="flex flex-col justify-center items-center gap-2">
+                  <FaFileUpload
+                    height={80}
+                    width={80}
+                    className="text-white h-10 w-10"
+                  />
+                  <div className="text-sm text-gray-400 dark:text-gray-300 text-center px-4">
+                    Upload banner image
+                  </div>
+                </div>
               )}
-              {previewImg && (
+              {previewBannerImg && (
                 <button
                   type="button"
-                  onClick={clearLogoImage}
+                  onClick={() => clearLogoImage('bannerFileInput')}
                   className="absolute top-0 right-0 w-5 h-5 bg-red-500 rounded-full items-center flex justify-center cursor-pointer translate-x-1/2 -translate-y-1/2"
                 >
                   <X size="16" />
@@ -195,11 +236,58 @@ const EditProfileForm = ({
             </div>
 
             <input
-              id="fileInput"
+              id="bannerFileInput"
               className="hidden"
               type="file"
               accept="image/*"
-              onChange={handleFileChange}
+              onChange={(event) => handleFileChange(event, 'bannerFileInput')}
+            />
+          </div>
+
+          <FormLabel> Profile Picture </FormLabel>
+          <div className="flex justify-center">
+            <div
+              className="w-40 h-40 relative dark:bg-gray-700 bg-gray-300 border border-dashed border-gray-500 rounded-md flex items-center justify-center cursor-pointer mb-2"
+              onClick={() => handleClick('avatarFileInput')}
+            >
+              {previewAvatarImg ? (
+                <Image
+                  src={previewAvatarImg}
+                  ref={profileImageRef}
+                  className="object-cover w-full h-full rounded-md overflow-hidden"
+                  alt="Company Logo"
+                  width={160}
+                  height={160}
+                />
+              ) : (
+                <div className="flex flex-col justify-center items-center gap-2">
+                  <FaFileUpload
+                    height={80}
+                    width={80}
+                    className="text-white h-10 w-10"
+                  />
+                  <div className="text-sm text-gray-400 dark:text-gray-300 text-center px-4">
+                    Upload profile image
+                  </div>
+                </div>
+              )}
+              {previewAvatarImg && (
+                <button
+                  type="button"
+                  onClick={() => clearLogoImage('avatarFileInput')}
+                  className="absolute top-0 right-0 w-5 h-5 bg-red-500 rounded-full items-center flex justify-center cursor-pointer translate-x-1/2 -translate-y-1/2"
+                >
+                  <X size="16" />
+                </button>
+              )}
+            </div>
+
+            <input
+              id="avatarFileInput"
+              className="hidden"
+              type="file"
+              accept="image/*"
+              onChange={(event) => handleFileChange(event, 'avatarFileInput')}
             />
           </div>
 
@@ -329,25 +417,6 @@ const EditProfileForm = ({
                     className="rounded-[8px]"
                   />
                 </FormControl>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="aboutMe"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>About Me</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="Write here"
-                    {...field}
-                    className="rounded-[8px]"
-                  />
-                </FormControl>
-                <FormDescription>
-                  Describe yourself between 50 to 255 characters.
-                </FormDescription>
               </FormItem>
             )}
           />

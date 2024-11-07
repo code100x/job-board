@@ -44,6 +44,7 @@ export interface UserType {
   contactEmail: string | null;
   resume: string | null;
   avatar: string | null;
+  banner: string | null;
   aboutMe: string | null;
   experience: ExperienceType[];
   education: EducationType[];

@@ -11,6 +11,7 @@ import { useSession } from 'next-auth/react';
 import { UserType } from '@/types/user.types';
 import ProfileSocials from './ProfileSocials';
 import { ProfileShareDialog } from './ProfileShare';
+import Image from 'next/image';
 
 const ProfileHeroSection = ({ userdetails }: { userdetails: UserType }) => {
   const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
@@ -30,7 +31,18 @@ const ProfileHeroSection = ({ userdetails }: { userdetails: UserType }) => {
   return (
     <>
       <div className="border rounded-2xl  min-h-72 overflow-hidden">
-        <div className="w-full h-32 bg-gradient-to-r from-blue-500 to-indigo-500"></div>
+        {userdetails.banner ? (
+          <div className="relative w-full h-32">
+            <Image
+              alt="banner-img"
+              src={userdetails.banner}
+              className="object-cover"
+              layout="fill"
+            />
+          </div>
+        ) : (
+          <div className="w-full h-32 bg-gradient-to-r from-blue-500 to-indigo-500"></div>
+        )}
         <div className="p-6 relative flex-col flex gap-y-3">
           <Avatar className="h-32 w-32 absolute -top-16 bg-slate-100 dark:bg-slate-900">
             {userdetails.avatar && (
