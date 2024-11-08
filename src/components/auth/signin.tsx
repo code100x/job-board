@@ -22,6 +22,7 @@ import {
 import { useToast } from '../ui/use-toast';
 import { DemarcationLine, GoogleOauthButton } from './social-auth';
 import { PasswordInput } from '../password-input';
+import { LoadingSpinner } from '../loading-spinner';
 
 export const Signin = () => {
   const { toast } = useToast();
@@ -40,10 +41,11 @@ export const Signin = () => {
       const response = await signIn('signin', { ...data, redirect: false });
       if (!response?.ok) {
         const errorMessage =
-          response?.error?.includes('User') && response?.error?.includes('does not exist')
+          response?.error?.includes('User') &&
+          response?.error?.includes('does not exist')
             ? 'User does not exist'
             : response?.error || 'Internal server error';
-  
+
         return toast({
           title: errorMessage,
           variant: 'destructive',
@@ -53,7 +55,7 @@ export const Signin = () => {
         title: 'Login successful! Welcome back!',
         variant: 'success',
       });
-  
+
       const searchParams = new URLSearchParams(window.location.search);
       const redirect = searchParams.get('next') || APP_PATHS.HOME;
       router.push(redirect);
@@ -65,7 +67,7 @@ export const Signin = () => {
       });
     }
   }
-  
+
   return (
     <div className="">
       <Form {...form}>
@@ -114,7 +116,13 @@ export const Signin = () => {
             className="w-full h-10"
             aria-label="submit"
           >
-            {form.formState.isSubmitting ? 'Please wait...' : 'Sign In'}
+            {form.formState.isSubmitting ? (
+              <>
+                <LoadingSpinner className="mr-2 size-5" /> Please wait...
+              </>
+            ) : (
+              'Sign In'
+            )}
           </Button>
           <DemarcationLine />
           <GoogleOauthButton label="Sign in with Google" />

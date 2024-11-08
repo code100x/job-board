@@ -23,6 +23,7 @@ import { useToast } from '../ui/use-toast';
 import { signUp } from '@/actions/auth.actions';
 import { DemarcationLine, GoogleOauthButton } from './social-auth';
 import { PasswordInput } from '../password-input';
+import { LoadingSpinner } from '../loading-spinner';
 
 export const Signup = () => {
   const { toast } = useToast();
@@ -121,7 +122,13 @@ export const Signup = () => {
             className="w-full h-10"
             aria-label="submit"
           >
-            {form.formState.isSubmitting ? 'Please wait...' : 'Create Account'}
+            {form.formState.isSubmitting ? (
+              <>
+                <LoadingSpinner className="mr-2 size-5" /> Please wait...
+              </>
+            ) : (
+              'Create Account'
+            )}
           </Button>
           <DemarcationLine />
           <GoogleOauthButton label="Sign up with Google" />
