@@ -1,9 +1,15 @@
 'use client';
+import { cn } from '@/lib/utils';
 
-export const LoadingSpinner = () => {
+export const LoadingSpinner = (props: { className?: string }) => {
   return (
     <div className="flex justify-center items-center">
-      <div className="size-6 border-4 border-t-4 border-gray-200 rounded-full animate-spin border-t-blue-500"></div>
+      <div
+        className={cn(
+          'size-6 border-4 border-t-4 border-gray-200 rounded-full animate-spin border-t-blue-500',
+          props.className
+        )}
+      ></div>
     </div>
   );
 };
