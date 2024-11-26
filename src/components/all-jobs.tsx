@@ -10,12 +10,35 @@ import { Pagination, PaginationContent, PaginationItem } from './ui/pagination';
 import { PaginationPages } from './ui/paginator';
 import JobCard from './Jobcard';
 import APP_PATHS from '@/config/path.config';
+import { getServerSession } from 'next-auth';
+import { options } from '@/lib/auth';
+import { FormContainer } from '@/layouts/form-container';
+import { Button } from './ui/button';
+import Link from 'next/link';
 
 type PaginatorProps = {
   searchParams: JobQuerySchemaType;
 };
 
 const AllJobs = async ({ searchParams }: PaginatorProps) => {
+  const session = await getServerSession(options);
+
+  // If no session exists, show a login/register prompt
+  if (!session || !session.user) {
+    return (
+      <FormContainer
+        heading={'Login'}
+        description={'Need to login for accessing this!'}
+      >
+        <Link href="/signin">
+          <Button type="submit" className="w-full h-10" aria-label="submit">
+            Login
+          </Button>
+        </Link>
+      </FormContainer>
+    );
+  }
+
   const [jobs, getUserBookmarks] = await Promise.all([
     await getAllJobs(searchParams),
     await GetUserBookmarksId(),
